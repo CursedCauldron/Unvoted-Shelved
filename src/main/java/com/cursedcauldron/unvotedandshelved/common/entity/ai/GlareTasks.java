@@ -2,7 +2,6 @@ package com.cursedcauldron.unvotedandshelved.common.entity.ai;
 
 import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
 import com.cursedcauldron.unvotedandshelved.common.entity.ai.task.AerealStrollTask;
-import com.cursedcauldron.unvotedandshelved.common.entity.ai.task.FindDarkSpotTask;
 import com.cursedcauldron.unvotedandshelved.common.entity.ai.task.SeekDarknessTask;
 import com.cursedcauldron.unvotedandshelved.common.entity.ai.task.StrollTask;
 import com.cursedcauldron.unvotedandshelved.core.registries.USActivity;
@@ -50,7 +49,8 @@ public class GlareTasks {
         brain.registerActivity(Activity.IDLE,
                 ImmutableList.of(
                         Pair.of(0, new RunSometimesTask<>(new LookAtEntityTask(EntityType.PLAYER, 6.0F), RangedInteger.createRangedInteger(30, 60))),
-                        Pair.of(4, new MultiTask<>(
+                        Pair.of(1, new SeekDarknessTask(20, 0.6F)),
+                        Pair.of(2, new MultiTask<>(
                                 ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryModuleStatus.VALUE_ABSENT),
                                 ImmutableSet.of(),
                                 MultiTask.Ordering.ORDERED,
@@ -60,9 +60,8 @@ public class GlareTasks {
                                         Pair.of(new StrollTask(0.6F), 2),
                                         Pair.of(new SupplementedTask<>(GlareEntity::isInAir, new DummyTask(30, 60)), 5),
                                         Pair.of(new SupplementedTask<>(GlareEntity::isOnGround, new DummyTask(30, 60)), 5)
-                                )))
-                )
-                );
+                                        )))
+                ));
     }
 
     public static void addFindDarknessActivities(Brain<GlareEntity> brain) {
@@ -72,6 +71,6 @@ public class GlareTasks {
     }
 
     public static void updateActivities(GlareEntity glare) {
-        glare.getBrain().switchActivities(ImmutableList.of(USActivity.FIND_DARKNESS.get(), Activity.IDLE));
+//        glare.getBrain().switchActivities(ImmutableList.of(USActivity.FIND_DARKNESS.get(), Activity.IDLE));
     }
 }

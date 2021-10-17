@@ -61,6 +61,7 @@ public class FindDarkSpotTask extends Task<CreatureEntity> {
                 }
             }
         }
+
         return false;
     }
 }
