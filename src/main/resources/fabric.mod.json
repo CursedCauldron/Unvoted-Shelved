@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "unvotedandshelved",
+  "version": "${version}",
+  "name": "Unvoted&Shelved",
+  "description": "Introducing outvoted Mobs from Mob Vote",
+  "authors": [
+    "CursedCauldronMods", "Dopadream", "ItsBlackGear", "Ninni", "Orcinus"
+  ],
+  "contact": {
+  },
+  "license": "NONE",
+  "icon": "assets/unvotedandshelved/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved"
+    ],
+    "client": [
+      "com.cursedcauldron.unvotedandshelved.core.ClientUnvotedAndShelved"
+    ]
+  },
+  "mixins": [
+    "unvotedandshelved.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "minecraft": "1.17.x"
+  }
+}

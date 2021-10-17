@@ -3,21 +3,17 @@ package com.cursedcauldron.unvotedandshelved.core.registries;
 import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.entity.SpawnGroup;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 //<>
 
 public class USEntities {
-    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, UnvotedAndShelved.MODID);
+    public static final EntityType<GlareEntity> GLARE = register("glare", EntityType.Builder.create(GlareEntity::new, SpawnGroup.CREATURE).setDimensions(0.9F, 1.3F).maxTrackingRange(8));
 
-    public static final RegistryObject<EntityType<GlareEntity>> GLARE   = registerEntity("glare", EntityType.Builder.create(GlareEntity::new, EntityClassification.CREATURE).size(0.9F, 1.3F).trackingRange(10));
-
-    public static <E extends Entity> RegistryObject<EntityType<E>> registerEntity(String key, EntityType.Builder<E> entityBuilder) {
-        return ENTITIES.register(key, () -> entityBuilder.build(new ResourceLocation(UnvotedAndShelved.MODID, key).toString()));
+    private static <T extends Entity> EntityType<T> register(String id, EntityType.Builder<T> type) {
+        return Registry.register(Registry.ENTITY_TYPE, new Identifier(UnvotedAndShelved.MODID, id), type.build(id));
     }
 }

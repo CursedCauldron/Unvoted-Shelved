@@ -1,1 +1,9 @@
-rootProject.name = 'UnvotedAndShelved'
+pluginManagement {
+    repositories {
+        maven {
+            name = 'Fabric'
+            url = 'https://maven.fabricmc.net/'
+        }
+        gradlePluginPortal()
+    }
+}
