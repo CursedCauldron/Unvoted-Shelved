@@ -1,7 +1,7 @@
 package com.cursedcauldron.unvotedandshelved.common.entity.ai;
 
 import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
-import com.cursedcauldron.unvotedandshelved.common.entity.ai.task.AerealStrollTask;
+import com.cursedcauldron.unvotedandshelved.common.entity.ai.task.AerialStrollTask;
 import com.cursedcauldron.unvotedandshelved.common.entity.ai.task.SeekDarknessTask;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -55,7 +55,7 @@ public class GlareBrain {
                                 CompositeTask.Order.ORDERED,
                                 CompositeTask.RunMode.TRY_ALL,
                                 ImmutableList.of(
-                                        Pair.of(new AerealStrollTask(0.6F), 2),
+                                        Pair.of(new AerialStrollTask(0.6F), 2),
                                         Pair.of(new StrollTask(0.6F), 2),
                                         Pair.of(new ConditionalTask<>(GlareEntity::isInAir, new WaitTask(30, 60)), 5),
                                         Pair.of(new ConditionalTask<>(GlareEntity::isOnGround, new WaitTask(30, 60)), 5)

@@ -10,10 +10,10 @@ import org.jetbrains.annotations.Nullable;
 
 //<>
 
-public class AerealStrollTask extends StrollTask {
+public class AerialStrollTask extends StrollTask {
 	public static final int[][] NORMALIZED_POS_MULTIPLIERS = new int[][]{{1, 1}, {3, 3}, {5, 5}, {6, 5}, {7, 7}, {10, 7}};
 
-	public AerealStrollTask(float speed) {
+	public AerialStrollTask(float speed) {
 		super(speed);
 	}
 
