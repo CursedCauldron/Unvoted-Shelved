@@ -2,70 +2,66 @@ package com.cursedcauldron.unvotedandshelved.common.entity.ai.task;
 
 import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.ai.brain.MemoryModuleState;
 import net.minecraft.entity.ai.brain.MemoryModuleType;
-import net.minecraft.entity.ai.brain.task.LookTargetUtil;
 import net.minecraft.entity.ai.brain.task.Task;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.LightType;
 
 //<>
 
 public class SeekDarknessTask extends Task<GlareEntity> {
     private final int range;
     private final float speed;
-    private long time;
+    private BlockPos darkPos;
 
     public SeekDarknessTask(int range, float speed) {
-        super(ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryModuleState.VALUE_ABSENT, MemoryModuleType.LOOK_TARGET, MemoryModuleState.REGISTERED));
+        super(ImmutableMap.of(MemoryModuleType.AVOID_TARGET, MemoryModuleState.VALUE_ABSENT, MemoryModuleType.WALK_TARGET, MemoryModuleState.VALUE_ABSENT, MemoryModuleType.LOOK_TARGET, MemoryModuleState.REGISTERED));
         this.range = range;
         this.speed = speed;
     }
 
     @Override
+    protected boolean shouldRun(ServerWorld worldIn, GlareEntity owner) {
+        return this.ableToFindDarkness(worldIn, owner) && owner.isAlive();
+    }
+
+    @Override
+    protected boolean shouldKeepRunning(ServerWorld world, GlareEntity entity, long time) {
+        return this.ableToFindDarkness(world, entity) && entity.isAlive() && !entity.isGrumpy();
+    }
+
+    @Override
+    protected void keepRunning(ServerWorld world, GlareEntity entity, long time) {
+        super.keepRunning(world, entity, time);
+        if (this.ableToFindDarkness(world, entity)) {
+            entity.getNavigation().startMovingTo(this.darkPos.getX(), this.darkPos.getY(), this.darkPos.getZ(), this.speed);
+        }
+    }
+
     protected void finishRunning(ServerWorld world, GlareEntity entity, long time) {
-        this.time = time + 20L + 2L;
+        super.finishRunning(world, entity, time);
+        this.darkPos = null;
+        entity.setGrumpy(world.getLightLevel(LightType.BLOCK, entity.getBlockPos()) == 0 && world.getLightLevel(LightType.SKY, entity.getBlockPos()) == 0);
     }
 
-    @Override
-    protected boolean shouldRun(ServerWorld serverWorld, GlareEntity entity) {
-        return !entity.isGrumpy();
-    }
-
-    @Override
-    protected void run(ServerWorld serverWorld, GlareEntity entity, long time) {
-        if (time >= this.time) {
-            BlockPos currentPos = null;
-            BlockPos darknessPos = null;
-            BlockPos entityPos = entity.getBlockPos();
-            Iterable<BlockPos> iterateOutwards = BlockPos.iterateOutwards(entityPos, this.range, this.range, this.range);
-
-            for (BlockPos positions : iterateOutwards) {
-                if (positions.getX() != entityPos.getX() || positions.getZ() != entityPos.getZ()) {
-                    BlockState aboveState = entity.world.getBlockState(positions.up());
-                    BlockState currentState = entity.world.getBlockState(positions);
-                    if (currentState.getLuminance() == 0) {
-                        if (aboveState.isAir()) {
-                            currentPos = positions.toImmutable();
-                            break;
-                        }
-
-                        if (darknessPos == null && !positions.isWithinDistance(entity.getPos(), 1.5D)) {
-                            darknessPos = positions.toImmutable();
+    private boolean ableToFindDarkness(ServerWorld worldIn, GlareEntity entity) {
+        for (int x = -8; x <= 8; x++) {
+            for (int z = -8; z <= 8; z++) {
+                for (int y = -8; y <= 8; y++) {
+                    BlockPos entityPos = entity.getBlockPos();
+                    BlockPos blockPos = new BlockPos(entityPos.getX() + x, entityPos.getY() + y, entityPos.getZ() + z);
+                    if (entityPos.isWithinDistance(blockPos, 8)) {
+                        if (worldIn.getLightLevel(LightType.BLOCK, blockPos) == 0 && worldIn.getLightLevel(LightType.SKY, blockPos) == 0) {
+                            this.darkPos = blockPos;
+                            return true;
                         }
                     }
                 }
             }
-
-            if (currentPos == null) {
-                currentPos = darknessPos;
-            }
-
-            if (currentPos != null) {
-                this.time = time + 40L;
-                LookTargetUtil.walkTowards(entity, currentPos, this.speed, 0);
-            }
         }
+
+        return false;
     }
 }

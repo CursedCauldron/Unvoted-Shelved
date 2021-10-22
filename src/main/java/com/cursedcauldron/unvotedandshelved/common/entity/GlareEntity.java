@@ -121,16 +121,16 @@ public class GlareEntity extends PassiveEntity implements Flutterer {
 
     @Override
     protected EntityNavigation createNavigation(World world) {
-        BirdNavigation navigation = new BirdNavigation(this, world) {
+        BirdNavigation navigator = new BirdNavigation(this, world) {
             @Override
             public boolean isValidPosition(BlockPos pos) {
                 return !this.world.getBlockState(pos.down()).isAir();
             }
         };
-        navigation.setCanPathThroughDoors(false);
-        navigation.setCanSwim(false);
-        navigation.setCanEnterOpenDoors(true);
-        return navigation;
+        navigator.setCanPathThroughDoors(false);
+        navigator.setCanSwim(false);
+        navigator.setCanEnterOpenDoors(true);
+        return navigator;
     }
 
     @Override
