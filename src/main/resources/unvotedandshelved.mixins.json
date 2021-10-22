@@ -4,6 +4,7 @@
   "package": "com.cursedcauldron.unvotedandshelved.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
+    "ActivityInvoker"
   ],
   "client": [
   ],

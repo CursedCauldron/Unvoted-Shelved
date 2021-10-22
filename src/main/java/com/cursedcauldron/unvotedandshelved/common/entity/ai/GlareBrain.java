@@ -3,6 +3,7 @@ package com.cursedcauldron.unvotedandshelved.common.entity.ai;
 import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
 import com.cursedcauldron.unvotedandshelved.common.entity.ai.task.AerialStrollTask;
 import com.cursedcauldron.unvotedandshelved.common.entity.ai.task.SeekDarknessTask;
+import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -64,12 +65,10 @@ public class GlareBrain {
     }
 
     public static void addFindDarknessActivities(Brain<GlareEntity> brain) {
-//        brain.registerActivity(USActivity.FIND_DARKNESS.get(),
-//                ImmutableList.of(Pair.of(0, new SeekDarknessTask(20, 0.6F))));
-//                ImmutableList.of(Pair.of(0, new FindDarkSpotTask(0.6F))));
+                brain.setTaskList(UnvotedAndShelved.FIND_DARKNESS, ImmutableList.of(Pair.of(0, new SeekDarknessTask(20, 0.6F)))); //, ImmutableList.of(Pair.of(0, new FindDarkSpotTask(0.6F)))); what the fuck is this???
     }
 
     public static void updateActivities(GlareEntity glare) {
-//        glare.getBrain().switchActivities(ImmutableList.of(USActivity.FIND_DARKNESS.get(), Activity.IDLE));
+                glare.getBrain().resetPossibleActivities(ImmutableList.of(UnvotedAndShelved.FIND_DARKNESS, Activity.IDLE));
     }
 }
