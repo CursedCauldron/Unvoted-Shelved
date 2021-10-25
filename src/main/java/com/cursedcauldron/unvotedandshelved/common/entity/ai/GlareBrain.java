@@ -51,6 +51,7 @@ public class GlareBrain {
     public static ActionResult playerInteract(GlareEntity glare, PlayerEntity player, Hand hand) {
         ItemStack itemStack = player.getStackInHand(hand);
         if (isGlowBerry(glare, itemStack)) {
+            addFindDarknessActivities(glare.getBrain());
             if (!player.getAbilities().creativeMode) {
                 itemStack.decrement(1);
                 return ActionResult.SUCCESS;
