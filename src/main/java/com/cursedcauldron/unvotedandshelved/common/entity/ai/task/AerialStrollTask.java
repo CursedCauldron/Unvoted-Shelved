@@ -1,11 +1,13 @@
 package com.cursedcauldron.unvotedandshelved.common.entity.ai.task;
 
+import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
 import net.minecraft.entity.ai.brain.task.LookTargetUtil;
 import net.minecraft.entity.ai.brain.task.StrollTask;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.LightType;
 import org.jetbrains.annotations.Nullable;
 
 //<>
@@ -42,4 +44,6 @@ public class AerialStrollTask extends StrollTask {
 
 		return targetPos;
 	}
+
+
 }

@@ -9,28 +9,31 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.brain.Activity;
-import net.minecraft.entity.ai.brain.Brain;
-import net.minecraft.entity.ai.brain.MemoryModuleState;
-import net.minecraft.entity.ai.brain.MemoryModuleType;
-import net.minecraft.entity.ai.brain.task.CompositeTask;
-import net.minecraft.entity.ai.brain.task.ConditionalTask;
-import net.minecraft.entity.ai.brain.task.FollowMobTask;
-import net.minecraft.entity.ai.brain.task.LookAroundTask;
-import net.minecraft.entity.ai.brain.task.StayAboveWaterTask;
-import net.minecraft.entity.ai.brain.task.StrollTask;
-import net.minecraft.entity.ai.brain.task.TimeLimitedTask;
-import net.minecraft.entity.ai.brain.task.WaitTask;
-import net.minecraft.entity.ai.brain.task.WanderAroundTask;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.brain.*;
+import net.minecraft.entity.ai.brain.task.*;
+import net.minecraft.entity.mob.PiglinEntity;
+import net.minecraft.entity.passive.AxolotlBrain;
+import net.minecraft.entity.passive.AxolotlEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
+
+import static com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved.FIND_DARKNESS;
 
 //<>
 
 public class GlareBrain {
-    public static Brain<?> create(Brain<GlareEntity> brain) {
+    public static boolean isGlowBerry(GlareEntity glare, ItemStack stack) {
+        return stack.isOf(Items.GLOW_BERRIES);
+    }
+
+    public static Brain<?> create(GlareEntity glare, Brain<GlareEntity> brain) {
         addCoreActivities(brain);
         addIdleActivities(brain);
-        addFindDarknessActivities(brain);
         brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
         brain.setDefaultActivity(Activity.IDLE);
         brain.resetPossibleActivities();
@@ -45,13 +48,25 @@ public class GlareBrain {
         ));
     }
 
+    public static ActionResult playerInteract(GlareEntity glare, PlayerEntity player, Hand hand) {
+        ItemStack itemStack = player.getStackInHand(hand);
+        if (isGlowBerry(glare, itemStack)) {
+            if (!player.getAbilities().creativeMode) {
+                itemStack.decrement(1);
+                return ActionResult.SUCCESS;
+            } else {
+                return ActionResult.PASS;
+            }
+        }
+        return ActionResult.CONSUME;
+    }
+
     private static void addIdleActivities(Brain<GlareEntity> brain) {
         brain.setTaskList(Activity.IDLE,
                 ImmutableList.of(
                         Pair.of(0, new TimeLimitedTask<>(new FollowMobTask(EntityType.PLAYER, 6.0F), UniformIntProvider.create(30, 60))),
-                        Pair.of(1, new SeekDarknessTask(20, 0.6F)),
                         Pair.of(2, new CompositeTask<>(
-                                ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryModuleState.VALUE_ABSENT),
+                                ImmutableMap.of(net.minecraft.entity.ai.brain.MemoryModuleType.WALK_TARGET, MemoryModuleState.VALUE_ABSENT),
                                 ImmutableSet.of(),
                                 CompositeTask.Order.ORDERED,
                                 CompositeTask.RunMode.TRY_ALL,
@@ -65,10 +80,20 @@ public class GlareBrain {
     }
 
     public static void addFindDarknessActivities(Brain<GlareEntity> brain) {
-                brain.setTaskList(UnvotedAndShelved.FIND_DARKNESS, ImmutableList.of(Pair.of(0, new SeekDarknessTask(20, 0.6F)))); //, ImmutableList.of(Pair.of(0, new FindDarkSpotTask(0.6F)))); what the fuck is this???
+        brain.setTaskList(FIND_DARKNESS,
+                ImmutableList.of(
+                    Pair.of(0, new SeekDarknessTask(20, 0.6F)),
+                    Pair.of(2, new CompositeTask<>(
+                            ImmutableMap.of(),
+                            ImmutableSet.of(UnvotedAndShelved.SEEK_TICKS),
+                            CompositeTask.Order.ORDERED,
+                            CompositeTask.RunMode.TRY_ALL,
+                            ImmutableList.of()
+                    ))));
+
     }
 
     public static void updateActivities(GlareEntity glare) {
-                glare.getBrain().resetPossibleActivities(ImmutableList.of(UnvotedAndShelved.FIND_DARKNESS, Activity.IDLE));
+                glare.getBrain().resetPossibleActivities(ImmutableList.of(FIND_DARKNESS, Activity.IDLE));
     }
 }

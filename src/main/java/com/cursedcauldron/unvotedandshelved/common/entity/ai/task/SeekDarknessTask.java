@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.entity.ai.brain.MemoryModuleState;
 import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.ai.brain.task.Task;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.LightType;
@@ -29,7 +30,7 @@ public class SeekDarknessTask extends Task<GlareEntity> {
 
     @Override
     protected boolean shouldKeepRunning(ServerWorld world, GlareEntity entity, long time) {
-        return this.ableToFindDarkness(world, entity) && entity.isAlive() && !entity.isGrumpy();
+        return this.ableToFindDarkness(world, entity) && entity.isAlive() && !entity.isGrumpy() && !entity.isInsideWaterOrBubbleColumn();
     }
 
     @Override
@@ -43,7 +44,6 @@ public class SeekDarknessTask extends Task<GlareEntity> {
     protected void finishRunning(ServerWorld world, GlareEntity entity, long time) {
         super.finishRunning(world, entity, time);
         this.darkPos = null;
-        entity.setGrumpy(world.getLightLevel(LightType.BLOCK, entity.getBlockPos()) == 0 && world.getLightLevel(LightType.SKY, entity.getBlockPos()) == 0);
     }
 
     private boolean ableToFindDarkness(ServerWorld worldIn, GlareEntity entity) {
