@@ -2,6 +2,7 @@ package com.cursedcauldron.unvotedandshelved.common.entity;
 
 import com.cursedcauldron.unvotedandshelved.common.entity.ai.GlareBrain;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
+import com.cursedcauldron.unvotedandshelved.core.registries.SoundRegistry;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
 import net.minecraft.block.BlockState;
@@ -56,8 +57,6 @@ public class GlareEntity extends PassiveEntity implements Flutterer {
     private static final TrackedData<Boolean> FINDING_DARKNESS = DataTracker.registerData(GlareEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Integer> GRUMPY_TICKS;
 
-    private float currentPitch;
-    private float lastPitch;
 
     public GlareEntity(EntityType<? extends PassiveEntity> entityType, World world) {
         super(entityType, world);
@@ -183,7 +182,7 @@ public class GlareEntity extends PassiveEntity implements Flutterer {
             this.setGrumpyTick(i - 1);
         }
         GlareEntity entity = this;
-        entity.setGrumpy((world.getLightLevel(LightType.BLOCK, entity.getBlockPos()) == 0 && world.getLightLevel(LightType.SKY, entity.getBlockPos()) == 0) || (world.getLightLevel(LightType.BLOCK, entity.getBlockPos()) == 0 && world.getTimeOfDay() >= 13000));
+        entity.setGrumpy((world.getLightLevel(LightType.BLOCK, entity.getBlockPos()) == 0 && world.getLightLevel(LightType.SKY, entity.getBlockPos()) == 0) || (world.getLightLevel(LightType.BLOCK, entity.getBlockPos()) == 0 && world.getTimeOfDay() >= 13000) || (world.getLightLevel(LightType.BLOCK, entity.getBlockPos()) == 0 && world.isThundering()));
     }
 
 
@@ -214,6 +213,20 @@ public class GlareEntity extends PassiveEntity implements Flutterer {
             boolean bl = GlareBrain.isGlowBerry(this, player.getStackInHand(hand));
             return bl ? ActionResult.SUCCESS : ActionResult.PASS;
         }
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound()
+    {
+        return this.isGrumpy() ? SoundRegistry.GLARE_GRUMPY_IDLE : SoundRegistry.GLARE_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return SoundEvents.BLOCK_MOSS_STEP;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.BLOCK_MOSS_BREAK;
     }
 
     public void setParticle(){

@@ -1,0 +1,22 @@
+{
+  "glare_grumpy_idle": {
+    "sounds": [
+      "unvotedandshelved:mob/glare/say1_grumpy",
+      "unvotedandshelved:mob/glare/say2_grumpy",
+      "unvotedandshelved:mob/glare/say3_grumpy",
+      "unvotedandshelved:mob/glare/say4_grumpy",
+      "unvotedandshelved:mob/glare/say5_grumpy"
+    ],
+    "subtitle": "subtitles.unvotedandshelved.glare_grumpy_idle"
+  },
+  "glare_idle": {
+    "sounds": [
+      "unvotedandshelved:mob/glare/say1",
+      "unvotedandshelved:mob/glare/say2",
+      "unvotedandshelved:mob/glare/say3",
+      "unvotedandshelved:mob/glare/say4",
+      "unvotedandshelved:mob/glare/say5"
+    ],
+    "subtitle": "subtitles.unvotedandshelved.glare_idle"
+  }
+}
