@@ -1,12 +1,11 @@
 package com.cursedcauldron.unvotedandshelved.core.registries;
 
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Locale;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 
 public final class RegistryHelper
 {
@@ -25,7 +24,7 @@ public final class RegistryHelper
 
                     T value = (T) field.get(from);
                     String regName = field.getName().toLowerCase(Locale.ENGLISH);
-                    Identifier id = UnvotedAndShelved.ID(regName);
+                    ResourceLocation id = UnvotedAndShelved.ID(regName);
 
                     Registry.register(registry, id, value);
 
@@ -44,7 +43,7 @@ public final class RegistryHelper
 
     public interface RegistryCallback<T>
     {
-        void callback(Registry<T> registry, T registryObject, Identifier identifier);
+        void callback(Registry<T> registry, T registryObject, ResourceLocation identifier);
     }
 
     private RegistryHelper()

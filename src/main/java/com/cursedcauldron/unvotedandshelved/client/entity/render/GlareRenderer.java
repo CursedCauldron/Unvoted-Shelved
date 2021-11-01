@@ -6,23 +6,23 @@ import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.entity.MobEntityRenderer;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.resources.ResourceLocation;
 
 //<>
 
 @Environment(EnvType.CLIENT)
-public class GlareRenderer extends MobEntityRenderer<GlareEntity, GlareModel<GlareEntity>> {
-    private static final Identifier NORMAL_TEXTURE = new Identifier(UnvotedAndShelved.MODID, "textures/entity/glare/glare.png");
-    private static final Identifier GRUMPY_TEXTURE = new Identifier(UnvotedAndShelved.MODID, "textures/entity/glare/glare_grumpy.png");
+public class GlareRenderer extends MobRenderer<GlareEntity, GlareModel<GlareEntity>> {
+    private static final ResourceLocation NORMAL_TEXTURE = new ResourceLocation(UnvotedAndShelved.MODID, "textures/entity/glare/glare.png");
+    private static final ResourceLocation GRUMPY_TEXTURE = new ResourceLocation(UnvotedAndShelved.MODID, "textures/entity/glare/glare_grumpy.png");
 
-    public GlareRenderer(EntityRendererFactory.Context context) {
-        super(context, new GlareModel<>(context.getPart(USEntityRenderer.GLARE)), 0.6F);
+    public GlareRenderer(EntityRendererProvider.Context context) {
+        super(context, new GlareModel<>(context.bakeLayer(USEntityRenderer.GLARE)), 0.6F);
     }
 
     @Override
-    public Identifier getTexture(GlareEntity entity) {
+    public ResourceLocation getTextureLocation(GlareEntity entity) {
         return entity.isGrumpy() ? GRUMPY_TEXTURE : NORMAL_TEXTURE;
     }
 
