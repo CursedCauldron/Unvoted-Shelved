@@ -54,7 +54,7 @@ public class GlareBrain {
         Brain<?> brain = glare.getBrain();
         ItemStack itemStack = player.getItemInHand(hand);
         if (isGlowBerry(glare, itemStack)) {
-            glare.setDarkTicks(200);
+            glare.setDarkTicks(1000);
             if (!player.getAbilities().instabuild) {
                 itemStack.shrink(1);
                 brain.setMemory(UnvotedAndShelved.GIVEN_GLOWBERRY, glare);

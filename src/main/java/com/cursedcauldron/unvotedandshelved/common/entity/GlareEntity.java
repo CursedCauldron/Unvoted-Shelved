@@ -187,7 +187,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         if (this.brain.getMemory(UnvotedAndShelved.DATA_GLARE_DARK_TICKS_REMAINING).isPresent()) {
             int d = this.brain.getMemory(UnvotedAndShelved.DATA_GLARE_DARK_TICKS_REMAINING).get();
             if (d > 0) {
-                this.level.addParticle(ParticleTypes.FALLING_SPORE_BLOSSOM, this.getRandomX(0.6D), this.getRandomY(), this.getRandomZ(0.6D), 0.0D, 0.0D, 0.0D);
+                level.addParticle(ParticleTypes.FALLING_SPORE_BLOSSOM, this.getRandomX(0.6D), this.getRandomY(), this.getRandomZ(0.6D), 0.0D, 0.0D, 0.0D);
                 System.out.println(d);
             }
         }

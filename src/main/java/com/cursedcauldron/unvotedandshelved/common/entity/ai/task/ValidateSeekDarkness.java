@@ -17,6 +17,7 @@ public class ValidateSeekDarkness extends Behavior<GlareEntity> {
 
     protected void start(ServerLevel serverLevel, GlareEntity glare, long l) {
         Brain<GlareEntity> brain = glare.getBrain();
+        if (brain.getMemory(UnvotedAndShelved.DATA_GLARE_DARK_TICKS_REMAINING).isPresent()) {
         int i = brain.getMemory(UnvotedAndShelved.DATA_GLARE_DARK_TICKS_REMAINING).get();
         if (i <= 0) {
             System.out.println("Erasing memory");
@@ -26,7 +27,7 @@ public class ValidateSeekDarkness extends Behavior<GlareEntity> {
         } else {
             System.out.println("Setting memory");
             brain.setMemory(UnvotedAndShelved.DATA_GLARE_DARK_TICKS_REMAINING, (i - 1));
-            System.out.println(brain.getMemory(UnvotedAndShelved.DATA_GLARE_DARK_TICKS_REMAINING));
+            }
         }
     }
 }
