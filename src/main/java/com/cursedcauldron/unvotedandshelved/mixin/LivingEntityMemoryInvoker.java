@@ -11,9 +11,9 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(MemoryModuleType.class)
-public interface MemoryInvoker {
+public interface LivingEntityMemoryInvoker {
     @Invoker("register")
-    static <U> MemoryModuleType<U> invokeRegister(String id, Codec<U> codec) {
+    static <U> MemoryModuleType<U> invokeRegister(String string) {
         throw new AssertionError();
     }
 }

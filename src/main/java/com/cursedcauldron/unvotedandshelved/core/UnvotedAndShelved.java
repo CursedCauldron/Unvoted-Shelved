@@ -4,6 +4,7 @@ import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
 import com.cursedcauldron.unvotedandshelved.core.registries.SoundRegistry;
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import com.cursedcauldron.unvotedandshelved.mixin.ActivityInvoker;
+import com.cursedcauldron.unvotedandshelved.mixin.LivingEntityMemoryInvoker;
 import com.cursedcauldron.unvotedandshelved.mixin.MemoryInvoker;
 import com.google.common.reflect.Reflection;
 import com.mojang.serialization.Codec;
@@ -11,6 +12,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.item.CreativeModeTab;
@@ -24,6 +26,7 @@ public class UnvotedAndShelved implements ModInitializer {
     public static Activity FIND_DARKNESS = ActivityInvoker.invokeRegister("find_darkness");
     public static MemoryModuleType<Integer> GRUMPY_TICKS = MemoryInvoker.invokeRegister("grumpy_ticks", Codec.INT);
     public static MemoryModuleType<Integer> DATA_GLARE_DARK_TICKS_REMAINING = MemoryInvoker.invokeRegister("darkness_ticks", Codec.INT);
+    public static MemoryModuleType<LivingEntity> GIVEN_GLOWBERRY = LivingEntityMemoryInvoker.invokeRegister("given_glowberry");
     public static final Item GLARE_SPAWN_EGG = new SpawnEggItem(USEntities.GLARE, 7837492, 5204011, new Item.Properties().tab(CreativeModeTab.TAB_MISC));
 
     @Override
