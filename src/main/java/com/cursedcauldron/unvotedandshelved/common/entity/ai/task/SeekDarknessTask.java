@@ -3,6 +3,7 @@ package com.cursedcauldron.unvotedandshelved.common.entity.ai.task;
 import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.google.common.collect.ImmutableMap;
+import net.fabricmc.loader.impl.lib.sat4j.core.Vec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.Brain;
@@ -10,6 +11,7 @@ import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,9 +24,10 @@ import static com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved.DATA_G
 public class SeekDarknessTask extends Behavior<GlareEntity> {
     private final int range;
     private final float speed;
-    private double wantedX;
-    private double wantedY;
-    private double wantedZ;
+    private BlockPos darkPos;
+    private int wantedX;
+    private int wantedY;
+    private int wantedZ;
 
     public SeekDarknessTask(int range, float speed) {
         super(ImmutableMap.of(DATA_GLARE_DARK_TICKS_REMAINING, MemoryStatus.VALUE_PRESENT));
@@ -35,56 +38,58 @@ public class SeekDarknessTask extends Behavior<GlareEntity> {
 
     protected boolean checkExtraStartConditions(ServerLevel worldIn, GlareEntity owner) {
         System.out.println("Checking start conditions...");
-        long time = 0;
+        long time = worldIn.getGameTime();
         return setWantedPos(worldIn, owner, time);
     }
 
-
-
-
     protected boolean canStillUse(ServerLevel level, GlareEntity glare, long time) {
         System.out.println("Checking if can use..");
-        return !glare.isInWaterOrBubble() && glare.getBrain().hasMemoryValue(DATA_GLARE_DARK_TICKS_REMAINING) && glare.getNavigation().isDone() && (this.setWantedPos(level, glare, time));
+        return !glare.isInWaterOrBubble() && glare.getBrain().hasMemoryValue(DATA_GLARE_DARK_TICKS_REMAINING) && !glare.getNavigation().isDone();
     }
 
-    @Nullable
-    protected Vec3 getDarkPos(ServerLevel level, GlareEntity glare) {
+    protected boolean getDarkPos(ServerLevel level, GlareEntity glare) {
         Random random = glare.getRandom();
-        BlockPos blockPos = glare.blockPosition();
         System.out.println("Getting dark pos...");
-        for (int i = 0; i < range; ++i) {
-            BlockPos blockPos2 = blockPos.offset(random.nextInt(200) - 100, random.nextInt(60) - 30, random.nextInt(200) - 100);
-                if ((level.getBrightness(LightLayer.BLOCK, blockPos2) == 0 && level.getBrightness(LightLayer.SKY, blockPos2) == 0) ||
-                        (level.getBrightness(LightLayer.BLOCK, blockPos2) == 0 && level.getDayTime() >= 13000) ||
-                        (level.getBrightness(LightLayer.BLOCK, blockPos2) == 0 && level.isThundering()) && (level.isInWorldBounds(blockPos) && level.isEmptyBlock(blockPos))) {
-                    System.out.println(blockPos2);
-                    return Vec3.atBottomCenterOf(blockPos2);
-                } else
-                return null;
+        for (int x = -range; x <= range; x++) {
+            for (int z = -range; z <= range; z++) {
+                for (int y = -range; y <= range; y++) {
+                    BlockPos entityPos = glare.blockPosition();
+                    BlockPos blockPos2 = new BlockPos(entityPos.getX() + x, entityPos.getY() + y, entityPos.getZ() + z);
+                    if (entityPos.closerThan(blockPos2, range)) {
+                        if ((level.isInWorldBounds(blockPos2) && level.isEmptyBlock(blockPos2) && level.getBlockState(blockPos2).isPathfindable(level, blockPos2, PathComputationType.LAND)) &&
+                                ((level.getBrightness(LightLayer.BLOCK, blockPos2) == 0 && level.getBrightness(LightLayer.SKY, blockPos2) == 0) ||
+                                        (level.getBrightness(LightLayer.BLOCK, blockPos2) == 0 && level.getDayTime() >= 13000) ||
+                                        (level.getBrightness(LightLayer.BLOCK, blockPos2) == 0 && level.isThundering()))) {
+                            System.out.println(blockPos2);
+                            this.darkPos = blockPos2;
+                            return true;
+                        }
+                    }
+                }
             }
-        return null;
         }
+        return false;
+    }
+
 
     protected boolean setWantedPos(ServerLevel level, GlareEntity glare, long time) {
         System.out.println("Setting wanted pos...");
-        Vec3 vec3 = this.getDarkPos(level, glare);
-        if (vec3 == null) {
-            glare.setDarkTicks(0);
+        boolean vec3 = this.getDarkPos(level, glare);
+        if (!vec3) {
             doStop(level, glare, time);
             return false;
         } else {
-            this.wantedX = vec3.x;
-            this.wantedY = vec3.y;
-            this.wantedZ = vec3.z;
+            this.wantedX = this.darkPos.getX();
+            this.wantedY = this.darkPos.getY();
+            this.wantedZ = this.darkPos.getZ();
             return true;
         }
     }
 
     protected void stop(ServerLevel world, GlareEntity entity, long time) {
         System.out.println("Stopping!");
-        Brain<GlareEntity> brain = entity.getBrain();
-        brain.eraseMemory(UnvotedAndShelved.DATA_GLARE_DARK_TICKS_REMAINING);
-        brain.eraseMemory(UnvotedAndShelved.GIVEN_GLOWBERRY);
+        entity.setDarkTicks(0);
+        entity.setFindingDarkness(false);
     }
 
     protected void start(ServerLevel level, GlareEntity glare, long time) {

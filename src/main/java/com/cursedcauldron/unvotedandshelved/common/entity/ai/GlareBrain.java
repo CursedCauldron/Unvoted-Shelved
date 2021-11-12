@@ -89,7 +89,7 @@ public class GlareBrain {
     public static void addFindDarknessActivities(Brain<GlareEntity> brain) {
         brain.addActivityAndRemoveMemoriesWhenStopped(FIND_DARKNESS,
                 ImmutableList.of
-                        (Pair.of(0, new SeekDarknessTask(20, 0.6F))),
+                        (Pair.of(0, new SeekDarknessTask(40, 0.6F))),
                 ImmutableSet.of(Pair.of(UnvotedAndShelved.DATA_GLARE_DARK_TICKS_REMAINING, MemoryStatus.VALUE_PRESENT)),
                 ImmutableSet.of(UnvotedAndShelved.DATA_GLARE_DARK_TICKS_REMAINING));
     }

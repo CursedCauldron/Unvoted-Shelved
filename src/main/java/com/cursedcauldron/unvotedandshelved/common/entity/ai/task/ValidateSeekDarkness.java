@@ -27,6 +27,7 @@ public class ValidateSeekDarkness extends Behavior<GlareEntity> {
         } else {
             System.out.println("Setting memory");
             brain.setMemory(UnvotedAndShelved.DATA_GLARE_DARK_TICKS_REMAINING, (i - 1));
+            System.out.println(i);
             }
         }
     }
