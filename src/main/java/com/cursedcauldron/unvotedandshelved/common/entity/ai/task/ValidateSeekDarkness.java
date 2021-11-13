@@ -21,12 +21,14 @@ public class ValidateSeekDarkness extends Behavior<GlareEntity> {
         int i = brain.getMemory(UnvotedAndShelved.DATA_GLARE_DARK_TICKS_REMAINING).get();
         if (i <= 0) {
             System.out.println("Erasing memory");
+            glare.setDarkTicks(0);
             brain.eraseMemory(UnvotedAndShelved.DATA_GLARE_DARK_TICKS_REMAINING);
             brain.eraseMemory(UnvotedAndShelved.GIVEN_GLOWBERRY);
             brain.useDefaultActivity();
         } else {
             System.out.println("Setting memory");
             brain.setMemory(UnvotedAndShelved.DATA_GLARE_DARK_TICKS_REMAINING, (i - 1));
+            glare.level.addParticle(ParticleTypes.FALLING_SPORE_BLOSSOM, glare.getRandomX(0.6D), glare.getRandomY(), glare.getRandomZ(0.6D), 0.0D, 0.0D, 0.0D);
             System.out.println(i);
             }
         }
