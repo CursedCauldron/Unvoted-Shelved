@@ -1,6 +1,5 @@
 package com.cursedcauldron.unvotedandshelved.common.entity.ai.task;
 
-import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.PathfinderMob;

@@ -2,8 +2,7 @@ package com.cursedcauldron.unvotedandshelved.common.entity.ai;
 
 import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
 import com.cursedcauldron.unvotedandshelved.common.entity.ai.task.AerialStrollTask;
-import com.cursedcauldron.unvotedandshelved.common.entity.ai.task.SeekDarknessTask;
-import com.cursedcauldron.unvotedandshelved.common.entity.ai.task.ValidateSeekDarkness;
+import com.cursedcauldron.unvotedandshelved.common.entity.ai.task.GlowberryStrollTask;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -21,7 +20,6 @@ import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
-import static com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved.FIND_DARKNESS;
 
 //<>
 
@@ -29,8 +27,8 @@ public class GlareBrain {
 
     public static Brain<?> create(GlareEntity glare, Brain<GlareEntity> brain) {
         addCoreActivities(brain);
+        addFindDarknessActivity(brain);
         addIdleActivities(brain);
-        addFindDarknessActivities(brain);
         brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
         brain.setDefaultActivity(Activity.IDLE);
         brain.useDefaultActivity();
@@ -40,7 +38,6 @@ public class GlareBrain {
     private static void addCoreActivities(Brain<GlareEntity> brain) {
         brain.addActivity(Activity.CORE, 0, ImmutableList.of(
                 new Swim(0.8F),
-                new ValidateSeekDarkness(),
                 new LookAtTargetSink(45, 90),
                 new MoveToTargetSink()
         ));
@@ -54,17 +51,45 @@ public class GlareBrain {
         Brain<?> brain = glare.getBrain();
         ItemStack itemStack = player.getItemInHand(hand);
         if (isGlowBerry(glare, itemStack)) {
-            glare.setDarkTicks(1000);
             if (!player.getAbilities().instabuild) {
                 itemStack.shrink(1);
                 brain.setMemory(UnvotedAndShelved.GIVEN_GLOWBERRY, glare);
+                if (brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).isPresent()) {
+                    int i = brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get();
+                    glare.setGlowberries(i + 1);
+                    System.out.println(brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get());
+                    return InteractionResult.SUCCESS;
+                } else {
+                    brain.setMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN, 0);
+                    if (brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).isPresent()) {
+                        int i = brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get();
+                        glare.setGlowberries(i + 1);
+                        System.out.println(brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get());
+                        return InteractionResult.SUCCESS;
+                    }
+                }
+            } else if (brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).isPresent()) {
+                int i = brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get();
+                glare.setGlowberries(i + 1);
+                System.out.println(brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get());
                 return InteractionResult.SUCCESS;
             } else {
-                brain.setMemory(UnvotedAndShelved.GIVEN_GLOWBERRY, glare);
-                return InteractionResult.PASS;
+                brain.setMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN, 0);
+                if (brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).isPresent()) {
+                    int i = brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get();
+                    glare.setGlowberries(i + 1);
+                    System.out.println(brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get());
+                    return InteractionResult.SUCCESS;
+                }
             }
         }
         return InteractionResult.CONSUME;
+    }
+    private static void addFindDarknessActivity(Brain<GlareEntity> brain) {
+        brain.addActivityAndRemoveMemoriesWhenStopped(UnvotedAndShelved.GOTO_DARKNESS,
+                ImmutableList.of(Pair.of(0, new GlowberryStrollTask(20,0.6F))),
+                ImmutableSet.of(Pair.of(UnvotedAndShelved.GIVEN_GLOWBERRY, MemoryStatus.VALUE_PRESENT)),
+                ImmutableSet.of(UnvotedAndShelved.GIVEN_GLOWBERRY));
     }
 
 
@@ -80,25 +105,15 @@ public class GlareBrain {
                                 ImmutableList.of(
                                         Pair.of(new AerialStrollTask(0.6F), 2),
                                         Pair.of(new RandomStroll(0.6F), 2),
+                                        Pair.of(new GlowberryStrollTask(20,0.6F), 2),
                                         Pair.of(new RunIf<>(GlareEntity::isFlying, new DoNothing(30, 60)), 5),
                                         Pair.of(new RunIf<>(GlareEntity::isOnGround, new DoNothing(30, 60)), 5)
                                 )))
                 ));
     }
 
-    public static void addFindDarknessActivities(Brain<GlareEntity> brain) {
-        brain.addActivityAndRemoveMemoriesWhenStopped(FIND_DARKNESS,
-                ImmutableList.of
-                        (Pair.of(0, new SeekDarknessTask(40, 0.6F))),
-                ImmutableSet.of(Pair.of(UnvotedAndShelved.DATA_GLARE_DARK_TICKS_REMAINING, MemoryStatus.VALUE_PRESENT)),
-                ImmutableSet.of(UnvotedAndShelved.DATA_GLARE_DARK_TICKS_REMAINING));
-    }
-
     public static void updateActivities(GlareEntity glare) {
         Brain<GlareEntity> brain = glare.getBrain();
-        Activity activity = brain.getActiveNonCoreActivity().orElse(null);
-        if (activity != FIND_DARKNESS) {
-            brain.setActiveActivityToFirstValid(ImmutableList.of(FIND_DARKNESS, Activity.IDLE));
-        }
+        brain.setActiveActivityToFirstValid(ImmutableList.of(UnvotedAndShelved.GOTO_DARKNESS, Activity.IDLE));
     }
 }
