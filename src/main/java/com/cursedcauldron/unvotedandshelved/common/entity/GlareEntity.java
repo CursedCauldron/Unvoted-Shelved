@@ -287,7 +287,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
 
 
     public void setLightblock(BlockPos pos) {
-        BlockState blockState = Blocks.GLOWSTONE.defaultBlockState();
+        BlockState blockState = Blocks.SHROOMLIGHT.defaultBlockState();
         if (level.getBlockState(pos).isAir()) {
             level.setBlockAndUpdate(pos, blockState);
         }

@@ -29,6 +29,7 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
         this.range = range;
         this.speed = speed;
     }
+
     @Override
     protected boolean checkExtraStartConditions(ServerLevel worldIn, GlareEntity owner) {
         System.out.println("Checking start conditions...");
@@ -39,21 +40,20 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
     @Override
     protected boolean canStillUse(ServerLevel level, GlareEntity glare, long time) {
         System.out.println("Checking can still use...");
-        return (glare.getBrain().getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get() >= 1);
+        return (glare.getBrain().getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get() >= 1) && (this.darkPos != null);
     }
-
 
 
     protected boolean getDarkPos(ServerLevel level, GlareEntity glare) {
         if (this.darkPos == null) {
             System.out.println("Getting dark pos...");
-            for (int x = -8; x <= 8; x++) {
-                for (int z = -8; z <= 8; z++) {
-                    for (int y = -1; y <= 1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ; y++) {
+            for (int x = -range; x <= range; x++) {
+                for (int z = -range; z <= range; z++) {
+                    for (int y = -10; y <= 10; y++) {
                         BlockPos entityPos = glare.blockPosition();
                         BlockPos blockPos2 = new BlockPos(entityPos.getX() + x, entityPos.getY() + y, entityPos.getZ() + z);
                         if (entityPos.closerThan(blockPos2, range)) {
-                            if ((level.isInWorldBounds(blockPos2) && level.isEmptyBlock(blockPos2) && level.getBlockState(blockPos2).isPathfindable(level, blockPos2, PathComputationType.LAND) && !level.getBlockState(blockPos2).isPathfindable(level, blockPos2, PathComputationType.WATER)) &&
+                            if ((level.isInWorldBounds(blockPos2) && level.getBlockState(blockPos2).isAir() && level.isEmptyBlock(blockPos2) && level.getBlockState(blockPos2).isPathfindable(level, blockPos2, PathComputationType.LAND) && !level.getBlockState(blockPos2).isPathfindable(level, blockPos2, PathComputationType.WATER)) &&
                                     ((level.getBrightness(LightLayer.BLOCK, blockPos2) == 0 && level.getBrightness(LightLayer.SKY, blockPos2) == 0) ||
                                             (level.getBrightness(LightLayer.BLOCK, blockPos2) == 0 && level.isNight()) ||
                                             (level.getBrightness(LightLayer.BLOCK, blockPos2) == 0 && level.isThundering()))) {
@@ -76,17 +76,24 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
         if (this.getDarkPos(level, entity)) {
             System.out.println("Navigating");
             Brain<GlareEntity> brain = entity.getBrain();
-            System.out.println("Found a dark spot!");
-            entity.getNavigation().stop();
-            int i = brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get();
-            if (brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).isPresent()) {
-                BlockPos blockPos = new BlockPos(this.darkPos.getX(), this.darkPos.getY() + 2, this.darkPos.getZ());
-                entity.getNavigation().moveTo(this.darkPos.getX(), this.darkPos.getY(), this.darkPos.getZ(), speed);
-                if ((entity.blockPosition().getX() == this.darkPos.getX()) && (entity.blockPosition().getZ() == this.darkPos.getZ())) {
-                    entity.setLightblock(blockPos);
-                    entity.setGlowberries(i - 1);
-                    this.darkPos = null;
+            if ((level.isInWorldBounds(darkPos) && level.getBlockState(darkPos).isAir() && level.isEmptyBlock(darkPos) && level.getBlockState(darkPos).isPathfindable(level, darkPos, PathComputationType.LAND) && !level.getBlockState(darkPos).isPathfindable(level, darkPos, PathComputationType.WATER)) &&
+                    ((level.getBrightness(LightLayer.BLOCK, darkPos) == 0 && level.getBrightness(LightLayer.SKY, darkPos) == 0) ||
+                            (level.getBrightness(LightLayer.BLOCK, darkPos) == 0 && level.isNight()) ||
+                            (level.getBrightness(LightLayer.BLOCK, darkPos) == 0 && level.isThundering()))) {
+                System.out.println("Found a dark spot!");
+                entity.getNavigation().stop();
+                int i = brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get();
+                if (brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).isPresent()) {
+                    BlockPos blockPos = new BlockPos(this.darkPos.getX(), (this.darkPos.getY() + 4), this.darkPos.getZ());
+                    entity.getNavigation().moveTo(this.darkPos.getX(), this.darkPos.getY(), this.darkPos.getZ(), speed);
+                    if (entity.blockPosition().closerThan(darkPos, 3)) {
+                        entity.setLightblock(blockPos);
+                        entity.setGlowberries(i - 1);
+                        this.darkPos = null;
+                    }
                 }
+            } else {
+                this.darkPos = null;
             }
         }
     }
@@ -95,7 +102,7 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
     protected void stop(ServerLevel level, GlareEntity entity, long time) {
         System.out.println("Stopping!");
         if (this.darkPos != null) {
-        System.out.println("Navigating");
+            System.out.println("Navigating");
             Brain<GlareEntity> brain = entity.getBrain();
             System.out.println("Found a dark spot!");
             entity.getNavigation().stop();
@@ -103,7 +110,7 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
             if (brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).isPresent()) {
                 BlockPos blockPos = new BlockPos(this.darkPos.getX(), this.darkPos.getY() + 1, this.darkPos.getZ());
                 entity.getNavigation().moveTo(this.darkPos.getX(), this.darkPos.getY(), this.darkPos.getZ(), speed);
-                if ((entity.blockPosition().getX() == this.darkPos.getX()) && (entity.blockPosition().getZ() == this.darkPos.getZ())) {
+                if (entity.blockPosition().closerThan(darkPos, 3)) {
                     entity.setLightblock(blockPos);
                     entity.setGlowberries(i - 1);
                     this.darkPos = null;
@@ -125,7 +132,7 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
             if (brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).isPresent()) {
                 BlockPos blockPos = new BlockPos(this.darkPos.getX(), this.darkPos.getY(), this.darkPos.getZ());
                 entity.getNavigation().moveTo(this.darkPos.getX(), this.darkPos.getY(), this.darkPos.getZ(), speed);
-                if ((entity.blockPosition().getX() == this.darkPos.getX()) && (entity.blockPosition().getZ() == this.darkPos.getZ())) {
+                if (entity.blockPosition().closerThan(darkPos, 3)) {
                     entity.setLightblock(blockPos);
                     entity.setGlowberries(i - 1);
                     this.darkPos = null;
