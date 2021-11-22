@@ -15,10 +15,13 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.*;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
+import net.minecraft.world.entity.monster.piglin.Piglin;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.phys.Vec3;
 
 
 //<>
@@ -41,6 +44,10 @@ public class GlareBrain {
                 new LookAtTargetSink(45, 90),
                 new MoveToTargetSink()
         ));
+    }
+    private static Vec3 getRandomNearbyPos(GlareEntity glare) {
+        Vec3 vec3 = LandRandomPos.getPos(glare, 4, 2);
+        return vec3 == null ? glare.position() : vec3;
     }
 
     public static boolean isGlowBerry(GlareEntity glare, ItemStack stack) {
