@@ -15,12 +15,12 @@ repositories {
 }
 
 dependencies {
-    minecraft "com.mojang:minecraft:1.18-pre1"
+    minecraft "com.mojang:minecraft:1.18-pre8"
     mappings loom.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:0.12.5"
 
     //Fabric api
-    modImplementation "net.fabricmc.fabric-api:fabric-api:0.42.2+1.18"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:0.43.0+1.18"
 }
 
 processResources {
@@ -32,7 +32,7 @@ processResources {
     }
 }
 
-def targetJavaVersion = 16
+def targetJavaVersion = 17
 tasks.withType(JavaCompile).configureEach {
     // ensure that the encoding is set to UTF-8, no matter what the system default is
     // this fixes some edge cases with special characters not displaying correctly
