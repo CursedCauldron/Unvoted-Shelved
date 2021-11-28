@@ -5,14 +5,20 @@ import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
+import net.minecraft.world.entity.ai.util.HoverRandomPos;
 import net.minecraft.world.entity.animal.Bee;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
@@ -55,12 +61,12 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
     protected void getDarkPos(ServerLevel level, GlareEntity glare) {
         if (this.darkPos == null) {
             System.out.println("Getting dark pos...");
-            for (int x = range; x <= range; x++) {
-                for (int z = -range; z <= range; z++) {
-                    for (int y = -range; y <= range; y++) {
+            for (int x = getRandomNumber(0, -range); x <= getRandomNumber(0, range); x++) {
+                for (int z = getRandomNumber(0, -range); z <= getRandomNumber(0, range); z++) {
+                    for (int y = getRandomNumber(0, -range); y <= getRandomNumber(0, range); y++) {
                         BlockPos entityPos = glare.blockPosition();
                         BlockPos blockPos2 = new BlockPos(entityPos.getX() + x, entityPos.getY() + y, entityPos.getZ() + z);
-                            if ((level.isInWorldBounds(blockPos2) && level.getBlockState(blockPos2).isAir() && level.isEmptyBlock(blockPos2) && (level.getBlockState(blockPos2).isPathfindable(level, entityPos, PathComputationType.LAND)) &&
+                            if ((level.isInWorldBounds(blockPos2) && level.getBlockState(blockPos2).isAir() && level.isEmptyBlock(blockPos2) && (level.getBlockState(blockPos2).isPathfindable(level, blockPos2, PathComputationType.LAND)) &&
                                     ((level.getBrightness(LightLayer.BLOCK, blockPos2) == 0 && level.getBrightness(LightLayer.SKY, blockPos2) == 0) ||
                                             (level.getBrightness(LightLayer.BLOCK, blockPos2) == 0 && level.isNight()) ||
                                             (level.getBrightness(LightLayer.BLOCK, blockPos2) == 0 && level.isThundering())))) {
@@ -74,6 +80,10 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
                 }
             }
         }
+
+    public int getRandomNumber(int min, int max) {
+        return (int) ((Math.random() * (max - min)) + min);
+    }
 
     private static int getRandomOffset(Random random) {
         return random.nextInt(3) - 1;
