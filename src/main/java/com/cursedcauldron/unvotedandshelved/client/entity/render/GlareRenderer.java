@@ -2,6 +2,7 @@ package com.cursedcauldron.unvotedandshelved.client.entity.render;
 
 import com.cursedcauldron.unvotedandshelved.client.entity.GlareModel;
 import com.cursedcauldron.unvotedandshelved.client.entity.USEntityRenderer;
+import com.cursedcauldron.unvotedandshelved.client.entity.render.feature.GlareGlowberriesLayer;
 import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import net.fabricmc.api.EnvType;
@@ -23,6 +24,7 @@ public class GlareRenderer extends MobRenderer<GlareEntity, GlareModel<GlareEnti
 
     public GlareRenderer(EntityRendererProvider.Context context) {
         super(context, new GlareModel<>(context.bakeLayer(USEntityRenderer.GLARE)), 0.6F);
+        this.addLayer(new GlareGlowberriesLayer<>(this));
     }
 
     @Override
