@@ -8,6 +8,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -64,6 +66,7 @@ public class GlareBrain {
                 if (brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).isPresent()) {
                     int i = brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get();
                     glare.setGlowberries(i + 1);
+                    glare.playSound(SoundEvents.CAVE_VINES_PLACE, 1.0f, 1.0f);
                     System.out.println(brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get());
                     return InteractionResult.SUCCESS;
                 } else {
@@ -71,6 +74,7 @@ public class GlareBrain {
                     if (brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).isPresent()) {
                         int i = brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get();
                         glare.setGlowberries(i + 1);
+                        glare.playSound(SoundEvents.CAVE_VINES_PLACE, 1.0f, 1.0f);
                         System.out.println(brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get());
                         return InteractionResult.SUCCESS;
                     }
@@ -78,6 +82,7 @@ public class GlareBrain {
             } else if (brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).isPresent()) {
                 int i = brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get();
                 glare.setGlowberries(i + 1);
+                glare.playSound(SoundEvents.CAVE_VINES_PLACE, 1.0f, 1.0f);
                 System.out.println(brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get());
                 return InteractionResult.SUCCESS;
             } else {
@@ -85,6 +90,7 @@ public class GlareBrain {
                 if (brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).isPresent()) {
                     int i = brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get();
                     glare.setGlowberries(i + 1);
+                    glare.playSound(SoundEvents.CAVE_VINES_PLACE, 1.0f, 1.0f);
                     System.out.println(brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get());
                     return InteractionResult.SUCCESS;
                 }

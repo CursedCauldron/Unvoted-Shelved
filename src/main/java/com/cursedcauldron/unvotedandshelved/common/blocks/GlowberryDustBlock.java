@@ -65,7 +65,8 @@ public class GlowberryDustBlock extends Block
         if (!level.isClientSide) {
             if (item.is(GLASS_BOTTLE)) {
                 level.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 1);
-                player.setItemInHand(interactionHand, GLOWBERRY_DUST.getCloneItemStack(level, blockPos, blockState));
+                item.shrink(1);
+                player.addItem(GLOWBERRY_DUST.getCloneItemStack(level, blockPos, blockState));
                 return InteractionResult.SUCCESS;
             }
         }

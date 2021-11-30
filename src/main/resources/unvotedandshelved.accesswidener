@@ -1,2 +1,0 @@
-accessWidener v1 named
-accessible method net/minecraft/world/entity/EntityType register (Ljava/lang/String;Lnet/minecraft/world/entity/EntityType$Builder;)Lnet/minecraft/world/entity/EntityType;
