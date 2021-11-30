@@ -6,8 +6,17 @@ import com.cursedcauldron.unvotedandshelved.core.registries.SoundRegistry;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.animal.axolotl.Axolotl;
+import net.minecraft.world.entity.monster.Skeleton;
+import net.minecraft.world.entity.monster.Spider;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,6 +56,8 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import org.lwjgl.system.CallbackI;
 
+import static com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved.GLOWBERRY_DUST;
+
 //<>
 
 public class GlareEntity extends AgeableMob implements FlyingAnimal {
@@ -68,7 +79,15 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         this.setPathfindingMalus(BlockPathTypes.FENCE, -1.0F);
     }
 
+    @Nullable
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
 
+        if (spawnGroupData == null) {
+            spawnGroupData = new AgeableMobGroupData(false);
+        }
+
+        return spawnGroupData;
+    }
 
     @Override
     protected Brain.Provider<GlareEntity> brainProvider() {
@@ -287,9 +306,10 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
 
 
     public void setLightblock(BlockPos pos) {
-        BlockState blockState = Blocks.SHROOMLIGHT.defaultBlockState();
+        BlockState blockState = GLOWBERRY_DUST.defaultBlockState();
         if (level.getBlockState(pos).isAir()) {
             level.setBlockAndUpdate(pos, blockState);
+            this.playSound(SoundEvents.RESPAWN_ANCHOR_CHARGE, 1.0f, 1.5f);
         }
     }
 

@@ -6,7 +6,8 @@
   "mixins": [
     "ActivityInvoker",
     "LivingEntityMemoryInvoker",
-    "MemoryInvoker"
+    "MemoryInvoker",
+    "OverworldBiomeBuilderMixin"
   ],
   "client": [
   ],
