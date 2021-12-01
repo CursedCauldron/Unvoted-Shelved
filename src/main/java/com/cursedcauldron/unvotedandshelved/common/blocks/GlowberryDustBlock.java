@@ -62,15 +62,19 @@ public class GlowberryDustBlock extends Block
     @Override
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         ItemStack item = player.getItemInHand(interactionHand);
-        if (!level.isClientSide) {
+        if (!player.getAbilities().instabuild) {
             if (item.is(GLASS_BOTTLE)) {
-                level.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 1);
                 item.shrink(1);
                 player.addItem(GLOWBERRY_DUST.getCloneItemStack(level, blockPos, blockState));
+                level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
+                level.playSound(player, blockPos, SoundEvents.RESPAWN_ANCHOR_CHARGE, SoundSource.BLOCKS, 1.0F, 1.5F);
                 return InteractionResult.SUCCESS;
             }
+        } else if (item.is(GLASS_BOTTLE)) {
+            level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
+            level.playSound(player, blockPos, SoundEvents.RESPAWN_ANCHOR_CHARGE, SoundSource.BLOCKS, 1.0F, 1.5F);
+            return InteractionResult.SUCCESS;
         }
-        level.playSound(player, blockPos, SoundEvents.RESPAWN_ANCHOR_CHARGE, SoundSource.BLOCKS, 1.0F, 1.5F);
         return InteractionResult.CONSUME;
     }
 
