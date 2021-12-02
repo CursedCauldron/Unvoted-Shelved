@@ -59,10 +59,6 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
             for (int x = getRandomNumber(0, -range); x <= getRandomNumber(0, range); x++) {
                 for (int z = getRandomNumber(0, -range); z <= getRandomNumber(0, range); z++) {
                     for (int y = getRandomNumber(0, -range); y <= getRandomNumber(0, range); y++) {
-                        System.out.println("finding");
-                        System.out.println(x);
-                        System.out.print(", " + y);
-                        System.out.print(", " + z);
                         BlockPos entityPos = glare.blockPosition();
                         BlockPos blockPos2 = new BlockPos(entityPos.getX() + x, entityPos.getY() + y, entityPos.getZ() + z);
                         BlockPos spacePos = blockPos2.below();
@@ -73,7 +69,6 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
                                         (level.getBrightness(LightLayer.BLOCK, blockPos2) == 0 && level.isThundering())))) {
                             glare.getBrain().setMemory(UnvotedAndShelved.DARK_POS, blockPos2);
                             this.darkPos = blockPos2;
-                            System.out.println(this.darkPos);
                             return;
                         }
                     }
@@ -113,7 +108,6 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
                     if (bl) {
                         BlockPos blockPos = new BlockPos(this.darkPos.getX(), this.darkPos.getY(), this.darkPos.getZ());
                         BehaviorUtils.setWalkAndLookTargetMemories(entity, getNearbyPos(entity, blockPos), this.speed, 3);
-                        System.out.println("navigating");
                         if (entity.blockPosition().closerThan(darkPos, 3)) {
                             entity.setLightblock(blockPos);
                             entity.setGlowberries(i - 1);
@@ -131,7 +125,6 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
 
     @Override
     protected void stop(ServerLevel level, GlareEntity entity, long time) {
-        System.out.println("stopped");
         if (this.darkPos != null) {
             Brain<GlareEntity> brain = entity.getBrain();
             BlockPos entityPos = entity.blockPosition();
@@ -146,7 +139,6 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
                     if (bl) {
                         BlockPos blockPos = new BlockPos(this.darkPos.getX(), this.darkPos.getY(), this.darkPos.getZ());
                         BehaviorUtils.setWalkAndLookTargetMemories(entity, getNearbyPos(entity, blockPos), this.speed, 3);
-                        System.out.println("navigating");
                         if (entity.blockPosition().closerThan(darkPos, 3)) {
                             entity.setLightblock(blockPos);
                             entity.setGlowberries(i - 1);
@@ -166,7 +158,6 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
     protected void start(ServerLevel level, GlareEntity entity, long time) {
         this.groundNavigation = new GroundPathNavigation(entity, level);
         this.getDarkPos(level, entity);
-        System.out.println("starting");
         if (this.darkPos != null) {
             Brain<GlareEntity> brain = entity.getBrain();
             BlockPos entityPos = entity.blockPosition();
