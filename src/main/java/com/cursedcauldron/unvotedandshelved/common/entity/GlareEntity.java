@@ -196,7 +196,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
             }
         };
         navigator.setCanOpenDoors(false);
-        navigator.setCanFloat(false);
+        navigator.setCanFloat(true);
         navigator.setCanPassDoors(true);
         return navigator;
     }

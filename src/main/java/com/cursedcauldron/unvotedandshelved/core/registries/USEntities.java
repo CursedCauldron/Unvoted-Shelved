@@ -15,7 +15,7 @@ import static net.minecraft.world.level.biome.Biomes.LUSH_CAVES;
 //<>
 
 public class USEntities {
-    public static final EntityType<GlareEntity> GLARE = register("glare", EntityType.Builder.of(GlareEntity::new, MobCategory.AXOLOTLS).sized(0.9F, 1.3F).clientTrackingRange(8));
+    public static final EntityType<GlareEntity> GLARE = register("glare", EntityType.Builder.of(GlareEntity::new, MobCategory.AXOLOTLS).sized(0.8F, 1.2F).clientTrackingRange(8));
     private static <T extends Entity> EntityType<T> register(String id, EntityType.Builder<T> type) {
         return Registry.register(Registry.ENTITY_TYPE, new ResourceLocation(UnvotedAndShelved.MODID, id), type.build(id));
     }
