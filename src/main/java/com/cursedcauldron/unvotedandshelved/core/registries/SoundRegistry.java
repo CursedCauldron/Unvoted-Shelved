@@ -8,6 +8,8 @@ public class SoundRegistry {
 
     public static final SoundEvent GLARE_GRUMPY_IDLE = new SoundEvent(UnvotedAndShelved.ID("glare_grumpy_idle"));
     public static final SoundEvent GLARE_IDLE = new SoundEvent(UnvotedAndShelved.ID("glare_idle"));
+    public static final SoundEvent DEEZ_NUTS = new SoundEvent(UnvotedAndShelved.ID("deez_nuts"));
+
 
 
     public static void init()

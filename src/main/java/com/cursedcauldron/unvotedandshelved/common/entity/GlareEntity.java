@@ -204,7 +204,6 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
     private void updateGrumpy(Level level) {
         if (!level.isClientSide()) {
             int x = this.level.getSkyDarken();
-            System.out.println(x);
             if (x > 0) {
                 this.setGrumpy((level.getBrightness(LightLayer.BLOCK, this.blockPosition()) == 0 && level.getBrightness(LightLayer.SKY, this.blockPosition()) >= 0)
                         || (level.getBrightness(LightLayer.BLOCK, this.blockPosition()) == 0 && level.isThundering()));

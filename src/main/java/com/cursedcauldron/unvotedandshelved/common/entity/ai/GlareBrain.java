@@ -67,7 +67,6 @@ public class GlareBrain {
                     int i = brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get();
                     glare.setGlowberries(i + 1);
                     glare.playSound(SoundEvents.CAVE_VINES_PLACE, 1.0f, 1.0f);
-                    System.out.println(brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get());
                     return InteractionResult.SUCCESS;
                 } else {
                     brain.setMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN, 0);
@@ -75,7 +74,6 @@ public class GlareBrain {
                         int i = brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get();
                         glare.setGlowberries(i + 1);
                         glare.playSound(SoundEvents.CAVE_VINES_PLACE, 1.0f, 1.0f);
-                        System.out.println(brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get());
                         return InteractionResult.SUCCESS;
                     }
                 }
@@ -83,7 +81,6 @@ public class GlareBrain {
                 int i = brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get();
                 glare.setGlowberries(i + 1);
                 glare.playSound(SoundEvents.CAVE_VINES_PLACE, 1.0f, 1.0f);
-                System.out.println(brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get());
                 return InteractionResult.SUCCESS;
             } else {
                 brain.setMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN, 0);
@@ -91,7 +88,6 @@ public class GlareBrain {
                     int i = brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get();
                     glare.setGlowberries(i + 1);
                     glare.playSound(SoundEvents.CAVE_VINES_PLACE, 1.0f, 1.0f);
-                    System.out.println(brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get());
                     return InteractionResult.SUCCESS;
                 }
             }

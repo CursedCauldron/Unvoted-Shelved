@@ -18,5 +18,10 @@
       "unvotedandshelved:mob/glare/say5"
     ],
     "subtitle": "subtitles.unvotedandshelved.glare_idle"
+  },
+  "deez_nuts": {
+    "sounds": [
+      "unvotedandshelved:nothing"
+    ]
   }
 }
