@@ -47,6 +47,7 @@ public class GlareBrain {
                 new MoveToTargetSink()
         ));
     }
+
     private static Vec3 getRandomNearbyPos(GlareEntity glare) {
         Vec3 vec3 = LandRandomPos.getPos(glare, 4, 2);
         return vec3 == null ? glare.position() : vec3;
@@ -59,44 +60,47 @@ public class GlareBrain {
     public static InteractionResult playerInteract(GlareEntity glare, Player player, InteractionHand hand) {
         Brain<?> brain = glare.getBrain();
         ItemStack itemStack = player.getItemInHand(hand);
-        if (isGlowBerry(glare, itemStack)) {
-            if (!player.getAbilities().instabuild) {
-                itemStack.shrink(1);
-                brain.setMemory(UnvotedAndShelved.GIVEN_GLOWBERRY, glare);
-                if (brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).isPresent()) {
-                    int i = brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get();
-                    glare.setGlowberries(i + 1);
-                    glare.playSound(SoundEvents.CAVE_VINES_PLACE, 1.0f, 1.0f);
-                    return InteractionResult.SUCCESS;
-                } else {
-                    brain.setMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN, 0);
-                    if (brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).isPresent()) {
-                        int i = brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get();
+        brain.setMemory(UnvotedAndShelved.GIVEN_GLOWBERRY, glare);
+        if (brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).isPresent()) {
+            int i = brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get();
+            if (!(i >= 5)) {
+                if (isGlowBerry(glare, itemStack)) {
+                    if (!player.getAbilities().instabuild) {
+                        itemStack.shrink(1);
+                        brain.setMemory(UnvotedAndShelved.GIVEN_GLOWBERRY, glare);
+                        if (brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).isPresent()) {
+                            glare.setGlowberries(i + 1);
+                            glare.playSound(SoundEvents.CAVE_VINES_PLACE, 1.0f, 1.0f);
+                            return InteractionResult.SUCCESS;
+                        } else {
+                            brain.setMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN, 0);
+                            if (brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).isPresent()) {
+                                glare.setGlowberries(i + 1);
+                                glare.playSound(SoundEvents.CAVE_VINES_PLACE, 1.0f, 1.0f);
+                                return InteractionResult.SUCCESS;
+                            }
+                        }
+                    } else if (brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).isPresent()) {
                         glare.setGlowberries(i + 1);
                         glare.playSound(SoundEvents.CAVE_VINES_PLACE, 1.0f, 1.0f);
                         return InteractionResult.SUCCESS;
+                    } else {
+                        brain.setMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN, 0);
+                        if (brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).isPresent()) {
+                            glare.setGlowberries(i + 1);
+                            glare.playSound(SoundEvents.CAVE_VINES_PLACE, 1.0f, 1.0f);
+                            return InteractionResult.SUCCESS;
+                        }
                     }
-                }
-            } else if (brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).isPresent()) {
-                int i = brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get();
-                glare.setGlowberries(i + 1);
-                glare.playSound(SoundEvents.CAVE_VINES_PLACE, 1.0f, 1.0f);
-                return InteractionResult.SUCCESS;
-            } else {
-                brain.setMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN, 0);
-                if (brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).isPresent()) {
-                    int i = brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get();
-                    glare.setGlowberries(i + 1);
-                    glare.playSound(SoundEvents.CAVE_VINES_PLACE, 1.0f, 1.0f);
-                    return InteractionResult.SUCCESS;
                 }
             }
         }
         return InteractionResult.CONSUME;
     }
+
     private static void addFindDarknessActivity(Brain<GlareEntity> brain) {
         brain.addActivityAndRemoveMemoriesWhenStopped(UnvotedAndShelved.GOTO_DARKNESS,
-                ImmutableList.of(Pair.of(0, new GlowberryStrollTask(20,0.6F))),
+                ImmutableList.of(Pair.of(0, new GlowberryStrollTask(20, 0.6F))),
                 ImmutableSet.of(Pair.of(UnvotedAndShelved.GIVEN_GLOWBERRY, MemoryStatus.VALUE_PRESENT)),
                 ImmutableSet.of(UnvotedAndShelved.GIVEN_GLOWBERRY));
     }
@@ -114,7 +118,7 @@ public class GlareBrain {
                                 ImmutableList.of(
                                         Pair.of(new AerialStrollTask(0.6F), 2),
                                         Pair.of(new RandomStroll(0.6F), 2),
-                                        Pair.of(new GlowberryStrollTask(10,0.6F), 2),
+                                        Pair.of(new GlowberryStrollTask(10, 0.6F), 2),
                                         Pair.of(new RunIf<>(GlareEntity::isFlying, new DoNothing(10, 20)), 5),
                                         Pair.of(new RunIf<>(GlareEntity::isOnGround, new DoNothing(10, 20)), 5)
                                 )))
