@@ -95,8 +95,8 @@ public class GlowberryDustBlock extends Block
         double f = (double)k + random.nextDouble();
         level.addParticle(GLOWBERRY_DUST_PARTICLES, d, e, f, 0.0, 0.0, 0.0);
         BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
-        for (int l = 0; l < 0.1; ++l) {
-            mutableBlockPos.set(i + Mth.nextInt(random, -10, 1), j - random.nextInt(1), k + Mth.nextInt(random, -10, 1));
+        for (int l = 0; l < 1; ++l) {
+            mutableBlockPos.set(i + Mth.nextInt(random, 0, 0), j - random.nextInt(1), k + Mth.nextInt(random, 0, 0));
             BlockState blockState2 = level.getBlockState(mutableBlockPos);
             if (blockState2.isCollisionShapeFullBlock(level, mutableBlockPos)) continue;
             level.addParticle(GLOWBERRY_DUST_PARTICLES, (double)mutableBlockPos.getX() + random.nextDouble(), (double)mutableBlockPos.getY() + random.nextDouble(), (double)mutableBlockPos.getZ() + random.nextDouble(), 0.0, 0.0, 0.0);
