@@ -105,7 +105,7 @@ public class GlareBrain {
     public static void addIdleActivities(Brain<GlareEntity> brain) {
         brain.addActivity(Activity.IDLE,
                 ImmutableList.of(
-                        Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(30, 60))),
+                        Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(5, 10))),
                         Pair.of(2, new GateBehavior<>(
                                 ImmutableMap.of(net.minecraft.world.entity.ai.memory.MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT),
                                 ImmutableSet.of(),
@@ -115,8 +115,8 @@ public class GlareBrain {
                                         Pair.of(new AerialStrollTask(0.6F), 2),
                                         Pair.of(new RandomStroll(0.6F), 2),
                                         Pair.of(new GlowberryStrollTask(10,0.6F), 2),
-                                        Pair.of(new RunIf<>(GlareEntity::isFlying, new DoNothing(30, 60)), 5),
-                                        Pair.of(new RunIf<>(GlareEntity::isOnGround, new DoNothing(30, 60)), 5)
+                                        Pair.of(new RunIf<>(GlareEntity::isFlying, new DoNothing(10, 20)), 5),
+                                        Pair.of(new RunIf<>(GlareEntity::isOnGround, new DoNothing(10, 20)), 5)
                                 )))
                 ));
     }
