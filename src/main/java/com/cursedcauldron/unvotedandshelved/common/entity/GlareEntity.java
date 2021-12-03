@@ -225,6 +225,11 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
             this.setGlowberries(berryAmount);
             this.level.addParticle(ParticleTypes.FALLING_SPORE_BLOSSOM, this.getRandomX(0.6D), this.getRandomY(), this.getRandomZ(0.6D), 0.0D, 0.0D, 0.0D);
         }
+        if (this.isLeashed()) {
+            if (!this.getBlockStateOn().isAir()) {
+                this.setDeltaMovement(this.getDeltaMovement().add(0.0D, 0.01, 0.0D));
+            }
+        }
     }
 
     @Override

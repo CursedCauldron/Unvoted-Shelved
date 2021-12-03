@@ -33,7 +33,7 @@ public class AerialStrollTask extends RandomStroll {
 	protected void start(ServerLevel serverLevel, PathfinderMob pathfinderMob, long l) {
 		Vec3 vec3 = this.findPos(pathfinderMob);
 		if (vec3 != null) {
-			pathfinderMob.getNavigation().moveTo(pathfinderMob.getNavigation().createPath(new BlockPos(vec3), 1), 1.0D);
+			BehaviorUtils.setWalkAndLookTargetMemories(pathfinderMob, new BlockPos(vec3), 0.6F, 3 );
 		}
 	}
 
