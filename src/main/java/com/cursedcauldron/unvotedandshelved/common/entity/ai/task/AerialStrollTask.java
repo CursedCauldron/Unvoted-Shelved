@@ -22,7 +22,7 @@ public class AerialStrollTask extends RandomStroll {
 	private Vec3 hoverPos;
 
 	protected boolean checkExtraStartConditions(ServerLevel serverWorld, PathfinderMob pathAwareEntity) {
-		return pathAwareEntity.isInWaterOrBubble();
+		return hoverPos != null;
 	}
 
 	@Nullable
@@ -51,7 +51,6 @@ public class AerialStrollTask extends RandomStroll {
 		return (livingEntity.getRandom().nextFloat() * 2.0F - 1.0F) * 0.33333334F;
 	}
 
-
 	protected void tick(ServerLevel serverLevel, PathfinderMob livingEntity, long l) {
 		boolean bl = livingEntity.position().distanceTo(this.hoverPos) <= 0.1D;
 		boolean bl2 = true;
@@ -73,6 +72,7 @@ public class AerialStrollTask extends RandomStroll {
 			this.setWantedPos(livingEntity);
 		}
 	}
+
 	private void setWantedPos(PathfinderMob livingEntity) {
 		livingEntity.getMoveControl().setWantedPosition(this.hoverPos.x(), this.hoverPos.y(), this.hoverPos.z(), 0.3499999940395355D);
 	}

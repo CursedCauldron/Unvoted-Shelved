@@ -81,7 +81,6 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
 
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
-
         if (spawnGroupData == null) {
             spawnGroupData = new AgeableMobGroupData(false);
         }
@@ -98,6 +97,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
     protected Brain<?> makeBrain(Dynamic<?> dynamic) {
         return GlareBrain.create(this, this.brainProvider().makeBrain(dynamic));
     }
+
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
@@ -152,8 +152,8 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         GlareBrain.updateActivities(this);
         this.level.getProfiler().pop();
         if (!this.isNoAi()) {
-            Optional<Integer> optional = this.getBrain().getMemory(UnvotedAndShelved.DARK_TICKS_REMAINING);
-            this.setFindingDarkness(optional.isPresent() && optional.get() > 0);
+            Optional<Integer> ticksRemaining = this.getBrain().getMemory(UnvotedAndShelved.DARK_TICKS_REMAINING);
+            this.setFindingDarkness(ticksRemaining.isPresent() && ticksRemaining.get() > 0);
         }
     }
 
@@ -203,32 +203,29 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
 
     private void updateGrumpy(Level level) {
         if (!level.isClientSide()) {
-            int x = this.level.getSkyDarken();
-            if (x > 0) {
+            int skyLight = this.level.getSkyDarken();
+            if (skyLight > 0) {
                 this.setGrumpy((level.getBrightness(LightLayer.BLOCK, this.blockPosition()) == 0 && level.getBrightness(LightLayer.SKY, this.blockPosition()) >= 0)
                         || (level.getBrightness(LightLayer.BLOCK, this.blockPosition()) == 0 && level.isThundering()));
             } else {
                 this.setGrumpy((level.getBrightness(LightLayer.BLOCK, this.blockPosition()) == 0 && level.getBrightness(LightLayer.SKY, this.blockPosition()) == 0)
                         || (level.getBrightness(LightLayer.BLOCK, this.blockPosition()) == 0 && level.isThundering()));
-                }
             }
         }
-
+    }
 
     @Override
-
     public void aiStep() {
         super.aiStep();
         if (level.getGameTime() % 20L == 0L) {
             updateGrumpy(this.level);
         }
-        int d = this.getGlowberries();
-        if (d > 0) {
-            this.setGlowberries(d);
+        int berryAmount = this.getGlowberries();
+        if (berryAmount > 0) {
+            this.setGlowberries(berryAmount);
             this.level.addParticle(ParticleTypes.FALLING_SPORE_BLOSSOM, this.getRandomX(0.6D), this.getRandomY(), this.getRandomZ(0.6D), 0.0D, 0.0D, 0.0D);
         }
     }
-
 
     @Override
     public boolean causeFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource) {
@@ -259,8 +256,6 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
 //        }
 // }
 
-
-
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         InteractionResult actionResult = super.mobInteract(player, hand);
@@ -275,8 +270,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
     }
 
     @Override
-    protected SoundEvent getAmbientSound()
-    {
+    protected SoundEvent getAmbientSound() {
         return this.isGrumpy() ? SoundRegistry.GLARE_GRUMPY_IDLE : SoundRegistry.GLARE_IDLE;
     }
 
@@ -301,9 +295,6 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         GLOWBERRIES_GIVEN = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.INT);
     }
 
-
-
-
     public void setLightblock(BlockPos pos) {
         BlockState blockState = GLOWBERRY_DUST.defaultBlockState();
         if (level.getBlockState(pos).isAir()) {
@@ -312,9 +303,9 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         }
     }
 
-    public void setGlowberries(int i) {
-        this.brain.setMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN, i);
-        this.entityData.set(GLOWBERRIES_GIVEN, i);
+    public void setGlowberries(int amount) {
+        this.brain.setMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN, amount);
+        this.entityData.set(GLOWBERRIES_GIVEN, amount);
     }
 
     public int getGlowberries() {
