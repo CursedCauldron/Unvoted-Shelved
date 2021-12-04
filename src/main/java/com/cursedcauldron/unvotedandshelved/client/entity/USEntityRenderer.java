@@ -1,5 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.client.entity;
 
+import com.cursedcauldron.unvotedandshelved.client.entity.render.CopperGolemRenderer;
 import com.cursedcauldron.unvotedandshelved.client.entity.render.GlareRenderer;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
@@ -18,6 +19,8 @@ public class USEntityRenderer {
 
     public static void registerRenderers() {
         EntityRendererRegistry.register(USEntities.GLARE, GlareRenderer::new);
+        EntityRendererRegistry.register(USEntities.COPPER_GOLEM, CopperGolemRenderer::new);
         EntityModelLayerRegistry.registerModelLayer(GLARE, GlareModel::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(CopperGolemModel.LAYER_LOCATION, CopperGolemModel::createBodyLayer);
     }
 }

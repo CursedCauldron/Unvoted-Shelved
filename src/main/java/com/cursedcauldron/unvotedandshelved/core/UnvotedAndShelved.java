@@ -2,6 +2,7 @@ package com.cursedcauldron.unvotedandshelved.core;
 
 import com.cursedcauldron.unvotedandshelved.common.blocks.GlowberryDustBlock;
 import com.cursedcauldron.unvotedandshelved.common.blocks.GlowberryDustBlockItem;
+import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
 import com.cursedcauldron.unvotedandshelved.core.registries.SoundRegistry;
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
@@ -33,6 +34,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 
 import static com.cursedcauldron.unvotedandshelved.core.registries.SoundRegistry.DEEZ_NUTS;
+import static com.cursedcauldron.unvotedandshelved.core.registries.USEntities.COPPER_GOLEM;
 import static com.cursedcauldron.unvotedandshelved.core.registries.USEntities.GLARE;
 import static net.minecraft.world.level.biome.Biomes.LUSH_CAVES;
 
@@ -68,6 +70,7 @@ public class UnvotedAndShelved implements ModInitializer {
         Registry.register(Registry.ITEM, new ResourceLocation(MODID, "glowberry_dust_bottle"), new GlowberryDustBlockItem(GLOWBERRY_DUST, new FabricItemSettings().group(CreativeModeTab.TAB_DECORATIONS)));
         GLOWBERRY_DUST = Registry.register(Registry.BLOCK, new ResourceLocation(MODID, "glowberry_dust"), GLOWBERRY_DUST);
         FabricDefaultAttributeRegistry.register(GLARE, GlareEntity.createGlareAttributes());
+        FabricDefaultAttributeRegistry.register(COPPER_GOLEM, CopperGolemEntity.createCopperGolemAttributes());
 
     }
     public static ResourceLocation ID(String path)

@@ -75,7 +75,7 @@ public class GlareModel<T extends Entity> extends HierarchicalModel<T> {
 
         if (!isGrumpy) {
             speed = 1.0F;
-            this.body.y = Mth.cos(limbAngle * speed * 0.3F) * degree * 0.2F* limbDistance + 17;
+            this.body.y = Mth.cos(limbAngle * speed * 0.3F) * degree * 0.2F * limbDistance + 17;
             this.leaves.z = Mth.cos(-1.0F + limbAngle * speed * 0.3F) * degree * 0.1F * limbDistance + 0.05F;
             this.leaves.xRot = Mth.cos(-1.0F + limbAngle * speed * 0.3F) * degree * 0.3F * limbDistance + 0.1F;
             this.leaves.y = Mth.cos(limbDistance - 0.05F) - 2;
