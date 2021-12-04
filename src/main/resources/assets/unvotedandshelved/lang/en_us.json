@@ -2,5 +2,6 @@
   "subtitles.unvotedandshelved.glare_grumpy_idle": "Glare Grumbles",
   "subtitles.unvotedandshelved.glare_idle": "Glare Mumbles",
   "item.unvotedandshelved.glare_spawn_egg": "Glare Spawn Egg",
-  "block.unvotedandshelved.glowberry_dust": "Bottle of Glowberry Dust"
+  "block.unvotedandshelved.glowberry_dust": "Bottle of Glowberry Dust",
+  "entity.unvotedandshelved.glare": "Glare"
 }
