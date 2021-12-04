@@ -21,6 +21,7 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.schedule.Activity;
@@ -39,7 +40,6 @@ import static net.minecraft.world.level.biome.Biomes.LUSH_CAVES;
 
 public class UnvotedAndShelved implements ModInitializer {
     public static final String MODID = "unvotedandshelved";
-    public static Activity FIND_DARKNESS = ActivityInvoker.invokeRegister("find_darkness");
     public static Activity GOTO_DARKNESS = ActivityInvoker.invokeRegister("goto_darkness");
     public static MemoryModuleType<Integer> GRUMPY_TICKS = MemoryInvoker.invokeRegister("grumpy_ticks", Codec.INT);
     public static MemoryModuleType<Integer> DARK_TICKS_REMAINING = MemoryInvoker.invokeRegister("darkness_ticks", Codec.INT);
@@ -61,7 +61,7 @@ public class UnvotedAndShelved implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        BiomeModifications.addSpawn(BiomeSelectors.includeByKey(LUSH_CAVES),MobCategory.AMBIENT, GLARE, 2,1,1);
+        BiomeModifications.addSpawn(BiomeSelectors.includeByKey(LUSH_CAVES), MobCategory.UNDERGROUND_WATER_CREATURE, GLARE, 10, 1, 1);
         SoundRegistry.init();
         Reflection.initialize(USEntities.class);
         Registry.register(Registry.ITEM, new ResourceLocation(MODID, "glare_spawn_egg"), GLARE_SPAWN_EGG);
