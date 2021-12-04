@@ -7,7 +7,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -20,8 +19,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.gameevent.GameEvent;
-
-import static com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved.GLOWBERRY_DUST;
 
 public class GlowberryDustBlockItem extends BlockItem {
     public GlowberryDustBlockItem(Block block, Properties properties) {
@@ -59,7 +56,7 @@ public class GlowberryDustBlockItem extends BlockItem {
         }
         SoundType soundType = blockState2.getSoundType();
         level.playSound(player, blockPos, this.getPlaceSound(blockState2), SoundSource.BLOCKS, (soundType.getVolume() + 1.0f) / 2.0f, soundType.getPitch() * 0.8f);
-        level.gameEvent((Entity)player, GameEvent.BLOCK_PLACE, blockPos);
+        level.gameEvent(player, GameEvent.BLOCK_PLACE, blockPos);
         if (player == null || !player.getAbilities().instabuild) {
             assert player != null;
             itemStack.shrink(1);
@@ -88,6 +85,6 @@ public class GlowberryDustBlockItem extends BlockItem {
         return blockState2;
     }
     private static <T extends Comparable<T>> BlockState updateState(BlockState blockState, Property<T> property, String string) {
-        return property.getValue(string).map(comparable -> (BlockState)blockState.setValue(property, comparable)).orElse(blockState);
+        return property.getValue(string).map(comparable -> blockState.setValue(property, comparable)).orElse(blockState);
     }
 }
