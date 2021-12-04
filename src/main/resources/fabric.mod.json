@@ -9,7 +9,7 @@
   ],
   "contact": {
   },
-  "license": "NONE",
+  "license": "MIT",
   "icon": "assets/unvotedandshelved/icon.png",
   "environment": "*",
   "entrypoints": {

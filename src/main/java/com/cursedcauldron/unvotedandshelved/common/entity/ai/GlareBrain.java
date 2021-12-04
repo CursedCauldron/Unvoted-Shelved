@@ -83,6 +83,7 @@ public class GlareBrain {
                 }
             }
         }
+        glare.setPersistenceRequired();
         return InteractionResult.CONSUME;
     }
 
