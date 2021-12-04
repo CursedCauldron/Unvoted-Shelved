@@ -45,6 +45,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
+import static com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved.GIVEN_GLOWBERRY;
 import static com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved.GLOWBERRY_DUST;
 
 //<>
@@ -94,6 +95,10 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         this.entityData.define(FINDING_DARKNESS, false);
         this.entityData.define(GRUMPY_TICKS, 0);
         this.entityData.define(GLOWBERRIES_GIVEN, 0);
+    }
+
+    public boolean requiresCustomPersistence() {
+        return super.requiresCustomPersistence() || this.getBrain().hasMemoryValue(GIVEN_GLOWBERRY);
     }
 
     @Override
