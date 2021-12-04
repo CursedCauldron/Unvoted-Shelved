@@ -61,7 +61,7 @@ public class UnvotedAndShelved implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        BiomeModifications.addSpawn(BiomeSelectors.includeByKey(LUSH_CAVES),MobCategory.AXOLOTLS,GLARE, 1,1,1);
+        BiomeModifications.addSpawn(BiomeSelectors.includeByKey(LUSH_CAVES),MobCategory.AMBIENT, GLARE, 2,1,1);
         SoundRegistry.init();
         Reflection.initialize(USEntities.class);
         Registry.register(Registry.ITEM, new ResourceLocation(MODID, "glare_spawn_egg"), GLARE_SPAWN_EGG);
