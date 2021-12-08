@@ -52,7 +52,7 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
     }
 
     private boolean isValidSpawnPos(BlockPos blockPos, ServerLevel level) {
-        return !level.getBlockState(blockPos).is(Blocks.VINE) && !level.getBlockState(blockPos).is(BlockTags.LEAVES) && !level.getBlockState(blockPos).isAir() && !level.getFluidState(blockPos).is(Fluids.WATER) && !level.getFluidState(blockPos).is(Fluids.FLOWING_WATER);
+        return !level.getBlockState(blockPos).is(Blocks.VINE) && !level.getBlockState(blockPos).is(BlockTags.LEAVES) &&  !level.getBlockState(blockPos).is(BlockTags.CAVE_VINES) && !level.getBlockState(blockPos).isAir() && !level.getFluidState(blockPos).is(Fluids.WATER) && !level.getFluidState(blockPos).is(Fluids.FLOWING_WATER);
     }
 
     protected void getDarkPos(ServerLevel level, GlareEntity glare) {
