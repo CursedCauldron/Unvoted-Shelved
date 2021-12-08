@@ -12,6 +12,7 @@ import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 
@@ -51,7 +52,7 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
     }
 
     private boolean isValidSpawnPos(BlockPos blockPos, ServerLevel level) {
-        return !level.getBlockState(blockPos).is(BlockTags.LEAVES) && !level.getBlockState(blockPos).isAir() && !level.getFluidState(blockPos).is(Fluids.WATER) && !level.getFluidState(blockPos).is(Fluids.FLOWING_WATER);
+        return !level.getBlockState(blockPos).is(Blocks.VINE) && !level.getBlockState(blockPos).is(BlockTags.LEAVES) && !level.getBlockState(blockPos).isAir() && !level.getFluidState(blockPos).is(Fluids.WATER) && !level.getFluidState(blockPos).is(Fluids.FLOWING_WATER);
     }
 
     protected void getDarkPos(ServerLevel level, GlareEntity glare) {
