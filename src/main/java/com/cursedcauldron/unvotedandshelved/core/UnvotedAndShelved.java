@@ -2,10 +2,10 @@ package com.cursedcauldron.unvotedandshelved.core;
 
 import com.cursedcauldron.unvotedandshelved.common.blocks.GlowberryDustBlock;
 import com.cursedcauldron.unvotedandshelved.common.blocks.GlowberryDustBlockItem;
-import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
 import com.cursedcauldron.unvotedandshelved.core.registries.SoundRegistry;
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
+import com.cursedcauldron.unvotedandshelved.core.registries.USGeoEntities;
 import com.cursedcauldron.unvotedandshelved.mixin.ActivityInvoker;
 import com.cursedcauldron.unvotedandshelved.mixin.LivingEntityMemoryInvoker;
 import com.cursedcauldron.unvotedandshelved.mixin.MemoryInvoker;
@@ -16,26 +16,29 @@ import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
-import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.ai.memory.MemoryModuleType;
-import net.minecraft.world.entity.schedule.Activity;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.SpawnEggItem;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Material;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.ai.brain.Activity;
+import net.minecraft.entity.ai.brain.MemoryModuleType;
+import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.SpawnEggItem;
+import net.minecraft.particle.DefaultParticleType;
+import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
+import software.bernie.example.EntityUtils;
+import software.bernie.geckolib3.GeckoLib;
+
 
 import static com.cursedcauldron.unvotedandshelved.core.registries.SoundRegistry.GLOWBERRY_DUST_STEP;
-import static com.cursedcauldron.unvotedandshelved.core.registries.USEntities.COPPER_GOLEM;
 import static com.cursedcauldron.unvotedandshelved.core.registries.USEntities.GLARE;
-import static net.minecraft.world.level.biome.Biomes.LUSH_CAVES;
+import static net.minecraft.world.biome.BiomeKeys.LUSH_CAVES;
 
 //<>
 
@@ -47,33 +50,34 @@ public class UnvotedAndShelved implements ModInitializer {
     public static MemoryModuleType<Integer> GLOWBERRIES_GIVEN = MemoryInvoker.invokeRegister("glowberries_given", Codec.INT);
     public static MemoryModuleType<LivingEntity> GIVEN_GLOWBERRY = LivingEntityMemoryInvoker.invokeRegister("given_glowberry");
     public static MemoryModuleType<BlockPos> DARK_POS = LivingEntityMemoryInvoker.invokeRegister("dark_pos");
-    public static final Item GLARE_SPAWN_EGG = new SpawnEggItem(GLARE, 7837492, 5204011, new Item.Properties().tab(CreativeModeTab.TAB_MISC));
-    public static final SoundType GLOW = new SoundType(1.0f, 2.0f, SoundEvents.RESPAWN_ANCHOR_CHARGE, GLOWBERRY_DUST_STEP, SoundEvents.RESPAWN_ANCHOR_CHARGE , SoundEvents.RESPAWN_ANCHOR_CHARGE, SoundEvents.RESPAWN_ANCHOR_CHARGE);
-    public static GlowberryDustBlock GLOWBERRY_DUST = new GlowberryDustBlock(BlockBehaviour.Properties.of(Material.AIR).strength(-1.0f, 3600000.8f).noDrops().sound(GLOW).lightLevel(GlowberryDustBlock.LIGHT_EMISSION));
-    public static final SimpleParticleType GLOWBERRY_DUST_PARTICLES = register("glowberry_dust", false);
+    public static final Item GLARE_SPAWN_EGG = new SpawnEggItem(GLARE, 7837492, 5204011, new Item.Settings().group(ItemGroup.MISC));
+    public static final BlockSoundGroup GLOW = new BlockSoundGroup(1.0f, 2.0f, SoundEvents.BLOCK_RESPAWN_ANCHOR_CHARGE, GLOWBERRY_DUST_STEP, SoundEvents.BLOCK_RESPAWN_ANCHOR_CHARGE , SoundEvents.BLOCK_RESPAWN_ANCHOR_CHARGE, SoundEvents.BLOCK_RESPAWN_ANCHOR_CHARGE);
+    public static GlowberryDustBlock GLOWBERRY_DUST = new GlowberryDustBlock(AbstractBlock.Settings.of(Material.AIR).strength(-1.0f, 3600000.8f).dropsNothing().sounds(GLOW).luminance(GlowberryDustBlock.LIGHT_EMISSION));
+    public static final DefaultParticleType GLOWBERRY_DUST_PARTICLES = register("glowberry_dust", false);
 
 
-    public static SimpleParticleType register(String key, boolean alwaysShow) {
-        return Registry.register(Registry.PARTICLE_TYPE, new ResourceLocation(MODID, key), new AbstractSimpleParticleType(alwaysShow));
+    public static DefaultParticleType register(String key, boolean alwaysShow) {
+        return Registry.register(Registry.PARTICLE_TYPE, new Identifier(MODID, key), new AbstractSimpleParticleType(alwaysShow));
     }
-
 
 
 
     @Override
     public void onInitialize() {
-        BiomeModifications.addSpawn(BiomeSelectors.includeByKey(LUSH_CAVES), MobCategory.UNDERGROUND_WATER_CREATURE, GLARE, 10, 1, 1);
+        BiomeModifications.addSpawn(BiomeSelectors.includeByKey(LUSH_CAVES), SpawnGroup.UNDERGROUND_WATER_CREATURE, GLARE, 10, 1, 1);
         SoundRegistry.init();
+        GeckoLib.initialize();
         Reflection.initialize(USEntities.class);
-        Registry.register(Registry.ITEM, new ResourceLocation(MODID, "glare_spawn_egg"), GLARE_SPAWN_EGG);
-        Registry.register(Registry.ITEM, new ResourceLocation(MODID, "glowberry_dust_bottle"), new GlowberryDustBlockItem(GLOWBERRY_DUST, new FabricItemSettings().group(CreativeModeTab.TAB_DECORATIONS)));
-        GLOWBERRY_DUST = Registry.register(Registry.BLOCK, new ResourceLocation(MODID, "glowberry_dust"), GLOWBERRY_DUST);
+        Registry.register(Registry.ITEM, new Identifier(MODID, "glare_spawn_egg"), GLARE_SPAWN_EGG);
+        Registry.register(Registry.ITEM, new Identifier(MODID, "glowberry_dust_bottle"), new GlowberryDustBlockItem(GLOWBERRY_DUST, new FabricItemSettings().group(ItemGroup.DECORATIONS)));
+        GLOWBERRY_DUST = Registry.register(Registry.BLOCK, new Identifier(MODID, "glowberry_dust"), GLOWBERRY_DUST);
         FabricDefaultAttributeRegistry.register(GLARE, GlareEntity.createGlareAttributes());
-        FabricDefaultAttributeRegistry.register(COPPER_GOLEM, CopperGolemEntity.createCopperGolemAttributes());
-
+        new USGeoEntities();
+        FabricDefaultAttributeRegistry.register(USGeoEntities.COPPER_GOLEM,
+                EntityUtils.createGenericEntityAttributes().add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.7F));
     }
-    public static ResourceLocation ID(String path)
+    public static Identifier ID(String path)
     {
-        return new ResourceLocation(MODID, path);
+        return new Identifier(MODID, path);
     }
 }

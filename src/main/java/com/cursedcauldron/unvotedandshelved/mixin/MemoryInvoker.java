@@ -1,7 +1,7 @@
 package com.cursedcauldron.unvotedandshelved.mixin;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.entity.ai.brain.MemoryModuleType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 

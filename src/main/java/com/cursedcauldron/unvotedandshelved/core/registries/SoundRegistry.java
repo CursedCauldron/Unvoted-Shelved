@@ -1,8 +1,8 @@
 package com.cursedcauldron.unvotedandshelved.core.registries;
 
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
-import net.minecraft.core.Registry;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.registry.Registry;
 
 public class SoundRegistry {
 
