@@ -22,7 +22,6 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.schedule.Activity;
@@ -33,7 +32,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 
-import static com.cursedcauldron.unvotedandshelved.core.registries.SoundRegistry.DEEZ_NUTS;
+import static com.cursedcauldron.unvotedandshelved.core.registries.SoundRegistry.GLOWBERRY_DUST_STEP;
 import static com.cursedcauldron.unvotedandshelved.core.registries.USEntities.COPPER_GOLEM;
 import static com.cursedcauldron.unvotedandshelved.core.registries.USEntities.GLARE;
 import static net.minecraft.world.level.biome.Biomes.LUSH_CAVES;
@@ -49,7 +48,7 @@ public class UnvotedAndShelved implements ModInitializer {
     public static MemoryModuleType<LivingEntity> GIVEN_GLOWBERRY = LivingEntityMemoryInvoker.invokeRegister("given_glowberry");
     public static MemoryModuleType<BlockPos> DARK_POS = LivingEntityMemoryInvoker.invokeRegister("dark_pos");
     public static final Item GLARE_SPAWN_EGG = new SpawnEggItem(GLARE, 7837492, 5204011, new Item.Properties().tab(CreativeModeTab.TAB_MISC));
-    public static final SoundType GLOW = new SoundType(1.0f, 2.0f, SoundEvents.RESPAWN_ANCHOR_CHARGE, DEEZ_NUTS, SoundEvents.RESPAWN_ANCHOR_CHARGE , SoundEvents.RESPAWN_ANCHOR_CHARGE, SoundEvents.RESPAWN_ANCHOR_CHARGE);
+    public static final SoundType GLOW = new SoundType(1.0f, 2.0f, SoundEvents.RESPAWN_ANCHOR_CHARGE, GLOWBERRY_DUST_STEP, SoundEvents.RESPAWN_ANCHOR_CHARGE , SoundEvents.RESPAWN_ANCHOR_CHARGE, SoundEvents.RESPAWN_ANCHOR_CHARGE);
     public static GlowberryDustBlock GLOWBERRY_DUST = new GlowberryDustBlock(BlockBehaviour.Properties.of(Material.AIR).strength(-1.0f, 3600000.8f).noDrops().sound(GLOW).lightLevel(GlowberryDustBlock.LIGHT_EMISSION));
     public static final SimpleParticleType GLOWBERRY_DUST_PARTICLES = register("glowberry_dust", false);
 
