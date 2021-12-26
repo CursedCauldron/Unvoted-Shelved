@@ -1,8 +1,5 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
 
 plugins {
-    id 'com.github.johnrengelman.shadow' version '7.1.1'
-    id 'java'
     id 'fabric-loom' version '0.10-SNAPSHOT'
     id 'maven-publish'
 }
@@ -12,46 +9,22 @@ group = project.maven_group
 
 repositories {
     maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
-
 }
 
-configurations {
-    shade
-    modImplementation.extendsFrom(shade)
-}
 
 dependencies {
     minecraft "com.mojang:minecraft:1.18.1"
     mappings "net.fabricmc:yarn:1.18.1+build.12:v2"
     modImplementation "net.fabricmc:fabric-loader:0.12.12"
-    //Fabric api
-    shadow localGroovy()
-    shadow gradleApi()
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:0.45.0+1.18"
-    modImplementation 'software.bernie.geckolib:geckolib-fabric-1.18:3.0.23'
-
+    modImplementation include('software.bernie.geckolib:geckolib-fabric-1.18:3.0.23')
 }
 
-shadowJar {
-    configurations = [project.configurations.shade] // <- Tell shadowJar to shade dependencies from 'shade'
-
-    // Skip unnecessary assets and duplicated java files GeckoLib comes with
-    exclude 'software/bernie/example/**'
-    exclude 'assets/geckolib3/**'
-    exclude '**/*.java'
-
-    relocate 'software.bernie.geckolib', 'software.bernie.modid.geckolib' // <- Move the shadowed geckolib package. This prevents classpath conflicts in runtime
-
-    classifier ''
-
-    finalizedBy 'reobfShadowJar' // <- Finish shading with reobfuscation
+tasks.withType(AbstractArchiveTask) {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
 }
-
-artifacts {
-    archives tasks.shadowJar // <- Add the shadowJar task to the archives configuration
-}
-
 
 processResources {
     inputs.property "version", project.version
@@ -94,8 +67,6 @@ jar {
 }
 
 
-
-
 // configure the maven publication
 publishing {
     publications {
@@ -118,6 +89,4 @@ publishing {
         // retrieving dependencies.
     }
 }
-
-jar.finalizedBy('reobfJar')
 

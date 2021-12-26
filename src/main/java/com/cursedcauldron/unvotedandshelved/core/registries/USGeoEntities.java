@@ -17,11 +17,8 @@ public class USGeoEntities {
 
     public static <T extends Entity> EntityType<T> buildEntity(EntityType.EntityFactory<T> entity, Class<T> entityClass,
                                                                float width, float height, SpawnGroup group) {
-        if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
-            String name = "copper_golem";
-            return EntityRegistryBuilder.<T>createBuilder(new Identifier(UnvotedAndShelved.MODID, name)).entity(entity)
-                    .category(group).dimensions(EntityDimensions.changing(width, height)).build();
-        }
-        return null;
+        String name = "copper_golem";
+        return EntityRegistryBuilder.<T>createBuilder(new Identifier(UnvotedAndShelved.MODID, name)).entity(entity)
+                .category(group).dimensions(EntityDimensions.changing(width, height)).build();
     }
 }
