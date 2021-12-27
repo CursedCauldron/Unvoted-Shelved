@@ -39,14 +39,12 @@ public class ClientUnvotedAndShelved implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         USEntityRenderer.registerRenderers();
-        if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
             EntityRendererRegistry.INSTANCE.register(USGeoEntities.COPPER_GOLEM, CopperGolemRenderer::new);
 
 
             ClientSidePacketRegistry.INSTANCE.register(ClientUnvotedAndShelved.EntityPacket.ID, (ctx, buf) -> {
                 ClientUnvotedAndShelved.EntityPacketOnClient.onPacket(ctx, buf);
             });
-        }
     }
 
     public class EntityPacketOnClient {

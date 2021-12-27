@@ -9,8 +9,6 @@ import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.example.client.model.entity.ExampleEntityModel;
-import software.bernie.example.entity.GeoExampleEntity;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
 public class CopperGolemRenderer extends GeoEntityRenderer<CopperGolemEntity> {

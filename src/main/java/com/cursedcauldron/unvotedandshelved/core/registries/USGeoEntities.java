@@ -17,8 +17,8 @@ public class USGeoEntities {
 
     public static <T extends Entity> EntityType<T> buildEntity(EntityType.EntityFactory<T> entity, Class<T> entityClass,
                                                                float width, float height, SpawnGroup group) {
-        String name = "copper_golem";
-        return EntityRegistryBuilder.<T>createBuilder(new Identifier(UnvotedAndShelved.MODID, name)).entity(entity)
-                .category(group).dimensions(EntityDimensions.changing(width, height)).build();
+            String name = "copper_golem";
+            return EntityRegistryBuilder.<T>createBuilder(new Identifier(UnvotedAndShelved.MODID, name)).entity(entity)
+                    .category(group).dimensions(EntityDimensions.changing(width, height)).build();
     }
 }

@@ -2,6 +2,7 @@ package com.cursedcauldron.unvotedandshelved.core;
 
 import com.cursedcauldron.unvotedandshelved.common.blocks.GlowberryDustBlock;
 import com.cursedcauldron.unvotedandshelved.common.blocks.GlowberryDustBlockItem;
+import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
 import com.cursedcauldron.unvotedandshelved.core.registries.SoundRegistry;
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
@@ -16,6 +17,8 @@ import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
+import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Material;
 import net.minecraft.entity.LivingEntity;
@@ -27,18 +30,27 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.particle.DefaultParticleType;
+import net.minecraft.resource.ResourceManager;
+import net.minecraft.resource.ResourceType;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.profiler.Profiler;
 import net.minecraft.util.registry.Registry;
 import software.bernie.example.EntityUtils;
 import software.bernie.geckolib3.GeckoLib;
+import software.bernie.geckolib3.resource.GeckoLibCache;
 
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 import static com.cursedcauldron.unvotedandshelved.core.registries.SoundRegistry.GLOWBERRY_DUST_STEP;
 import static com.cursedcauldron.unvotedandshelved.core.registries.USEntities.GLARE;
+import static com.cursedcauldron.unvotedandshelved.core.registries.USGeoEntities.COPPER_GOLEM;
 import static net.minecraft.world.biome.BiomeKeys.LUSH_CAVES;
+import static software.bernie.geckolib3.GeckoLib.hasInitialized;
 
 //<>
 
@@ -61,6 +73,26 @@ public class UnvotedAndShelved implements ModInitializer {
     }
 
 
+    public static void initialize() {
+        if (!hasInitialized) {
+            ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES)
+                    .registerReloadListener(new IdentifiableResourceReloadListener() {
+                        @Override
+                        public Identifier getFabricId() {
+                            return new Identifier(UnvotedAndShelved.MODID, "models");
+                        }
+
+                        @Override
+                        public CompletableFuture<Void> reload(Synchronizer synchronizer, ResourceManager manager,
+                                                              Profiler prepareProfiler, Profiler applyProfiler, Executor prepareExecutor,
+                                                              Executor applyExecutor) {
+                            return GeckoLibCache.getInstance().reload(synchronizer, manager, prepareProfiler,
+                                    applyProfiler, prepareExecutor, applyExecutor);
+                        }
+                    });
+        }
+        hasInitialized = true;
+    }
 
     @Override
     public void onInitialize() {
@@ -73,8 +105,8 @@ public class UnvotedAndShelved implements ModInitializer {
         GLOWBERRY_DUST = Registry.register(Registry.BLOCK, new Identifier(MODID, "glowberry_dust"), GLOWBERRY_DUST);
         FabricDefaultAttributeRegistry.register(GLARE, GlareEntity.createGlareAttributes());
         new USGeoEntities();
-        FabricDefaultAttributeRegistry.register(USGeoEntities.COPPER_GOLEM,
-                EntityUtils.createGenericEntityAttributes().add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.7F));
+        FabricDefaultAttributeRegistry.register(COPPER_GOLEM, CopperGolemEntity.createGolemAttributes());
+
     }
     public static Identifier ID(String path)
     {

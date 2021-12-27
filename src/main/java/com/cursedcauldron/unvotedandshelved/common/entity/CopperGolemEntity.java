@@ -54,6 +54,9 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable, IAnim
         return this.factory;
     }
 
+    public static DefaultAttributeContainer.Builder createGolemAttributes() {
+        return MobEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 10.0D).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.2600000238418579D);
+    }
 
     protected SoundEvent getStepSound() {
         return SoundEvents.BLOCK_COPPER_STEP;
@@ -74,7 +77,7 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable, IAnim
 
     @Override
     protected void initGoals() {
-        this.goalSelector.add(5, new WanderAroundGoal(this, 0.7F));
+        this.goalSelector.add(5, new WanderAroundGoal(this, 0.2600000238418579D));
         this.goalSelector.add(1, new LookAtEntityGoal(this, PlayerEntity.class, 6.0F));
         this.goalSelector.add(1, new LookAroundGoal(this));
         super.initGoals();
