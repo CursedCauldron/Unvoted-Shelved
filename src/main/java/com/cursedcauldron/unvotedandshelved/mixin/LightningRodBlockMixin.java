@@ -32,8 +32,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Iterator;
 import java.util.function.Predicate;
 
-@Mixin(CarvedPumpkinBlock.class)
-public class CarvedPumpkinBlockMixin {
+@Mixin(LightningRodBlock.class)
+public class LightningRodBlockMixin extends Block {
     @Nullable
     private BlockPattern copperGolemPattern;
     @Nullable
@@ -41,16 +41,23 @@ public class CarvedPumpkinBlockMixin {
     private static final Predicate<BlockState> IS_GOLEM_HEAD_PREDICATE = (state) -> state != null && (state.isOf(Blocks.CARVED_PUMPKIN) || state.isOf(Blocks.JACK_O_LANTERN));
     private static final Predicate<BlockState> IS_GOLEM_HEAD_TIP_PREDICATE = (state) -> state != null && (state == Blocks.LIGHTNING_ROD.getDefaultState().with(LightningRodBlock.FACING, Direction.UP));
 
-    @Inject(at = @At("HEAD"), method = "canDispense", cancellable = true)
+    public LightningRodBlockMixin(Settings settings) {
+        super(settings);
+    }
+
     public void canDispense(WorldView world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         if (this.getCopperGolemDispenserPattern().searchAround(world, pos) != null) {
             cir.setReturnValue(true);
         }
     }
 
+    public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
+        if (!oldState.isOf(state.getBlock())) {
+            this.trySpawnEntity(world, pos);
+        }
+    }
 
-    @Inject(at = @At("HEAD"), method = "trySpawnEntity")
-    public void trySpawnEntity(World world, BlockPos pos, CallbackInfo ci) {
+    public void trySpawnEntity(World world, BlockPos pos) {
         BlockPattern.Result result = this.getCopperGolemPattern().searchAround(world, pos);
         int i;
         ServerPlayerEntity serverPlayerEntity;
