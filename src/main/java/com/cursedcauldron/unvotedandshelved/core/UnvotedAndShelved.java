@@ -5,6 +5,7 @@ import com.cursedcauldron.unvotedandshelved.common.blocks.GlowberryDustBlockItem
 import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
 import com.cursedcauldron.unvotedandshelved.core.registries.SoundRegistry;
+import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import com.cursedcauldron.unvotedandshelved.core.registries.USGeoEntities;
 import com.cursedcauldron.unvotedandshelved.mixin.ActivityInvoker;
@@ -98,6 +99,7 @@ public class UnvotedAndShelved implements ModInitializer {
     public void onInitialize() {
         BiomeModifications.addSpawn(BiomeSelectors.includeByKey(LUSH_CAVES), SpawnGroup.UNDERGROUND_WATER_CREATURE, GLARE, 10, 1, 1);
         SoundRegistry.init();
+        USBlocks.register();
         GeckoLib.initialize();
         Reflection.initialize(USEntities.class);
         Registry.register(Registry.ITEM, new Identifier(MODID, "glare_spawn_egg"), GLARE_SPAWN_EGG);
