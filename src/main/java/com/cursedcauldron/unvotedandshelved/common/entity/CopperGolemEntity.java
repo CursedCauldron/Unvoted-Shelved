@@ -77,7 +77,7 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable, IAnim
 
     @Override
     protected void initGoals() {
-        this.goalSelector.add(5, new WanderAroundGoal(this, 0.2600000238418579D));
+        this.goalSelector.add(5, new WanderAroundGoal(this, 1.0F));
         this.goalSelector.add(1, new LookAtEntityGoal(this, PlayerEntity.class, 6.0F));
         this.goalSelector.add(1, new LookAroundGoal(this));
         super.initGoals();
