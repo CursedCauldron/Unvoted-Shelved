@@ -102,11 +102,6 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable, IAnim
                 this.setCooldownTicks(this.getCooldownTicks() - 1);
             }
         }
-        for (PlayerEntity player : this.world.getNonSpectatingEntities(PlayerEntity.class, this.getBoundingBox().expand(32.0D))) {
-            if (player.isAlive()) {
-                player.sendSystemMessage(new TranslatableText("The Cooldown Ticks are " + this.getCooldownTicks()), player.getUuid());
-            }
-        }
     }
 
     protected SoundEvent getStepSound() {
