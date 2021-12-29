@@ -9,6 +9,13 @@ import software.bernie.geckolib3.model.AnimatedTickingGeoModel;
 import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
 public class CopperGolemModel extends AnimatedTickingGeoModel<CopperGolemEntity> {
+    private static final Identifier[] TEXTURES = new Identifier[]{
+            UnvotedAndShelved.ID("textures/entity/copper_golem/copper_golem.png"),
+            UnvotedAndShelved.ID("textures/entity/copper_golem/exposed_copper_golem.png"),
+            UnvotedAndShelved.ID("textures/entity/copper_golem/weathered_copper_golem.png"),
+            UnvotedAndShelved.ID("textures/entity/copper_golem/oxidized_copper_golem.png")
+    };
+
     @Override
     public Identifier getAnimationFileLocation(CopperGolemEntity entity) {
         return new Identifier(UnvotedAndShelved.MODID, "animations/coppergolem.animation.json");
@@ -21,8 +28,10 @@ public class CopperGolemModel extends AnimatedTickingGeoModel<CopperGolemEntity>
 
     @Override
     public Identifier getTextureLocation(CopperGolemEntity entity) {
-        return new Identifier(UnvotedAndShelved.MODID, "textures/entity/copper_golem/copper_golem.png");
+        //Prevent Crash
+        return entity.getOxidationStage() > 3 ? TEXTURES[0] : TEXTURES[entity.getOxidationStage()];
     }
+
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override

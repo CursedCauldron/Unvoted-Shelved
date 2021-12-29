@@ -7,8 +7,11 @@ import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
 import com.cursedcauldron.unvotedandshelved.core.registries.SoundRegistry;
 import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
+import com.cursedcauldron.unvotedandshelved.core.registries.USConfiguredStructures;
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import com.cursedcauldron.unvotedandshelved.core.registries.USGeoEntities;
+import com.cursedcauldron.unvotedandshelved.core.registries.USStructureProcessors;
+import com.cursedcauldron.unvotedandshelved.core.registries.USStructures;
 import com.cursedcauldron.unvotedandshelved.mixin.ActivityInvoker;
 import com.cursedcauldron.unvotedandshelved.mixin.LivingEntityMemoryInvoker;
 import com.cursedcauldron.unvotedandshelved.mixin.MemoryInvoker;
@@ -23,17 +26,14 @@ import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.CarvedPumpkinBlock;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.LightningRodBlock;
 import net.minecraft.block.Material;
 import net.minecraft.block.dispenser.FallibleItemDispenserBehavior;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.ai.brain.Activity;
 import net.minecraft.entity.ai.brain.MemoryModuleType;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -47,16 +47,17 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPointer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.profiler.Profiler;
+import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.event.GameEvent;
-import net.minecraft.world.gen.BlockSource;
-import software.bernie.example.EntityUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import software.bernie.geckolib3.GeckoLib;
 import software.bernie.geckolib3.resource.GeckoLibCache;
-
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -111,6 +112,10 @@ public class UnvotedAndShelved implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        USStructures.setupAndRegisterStructureFeatures();
+        USConfiguredStructures.registerConfiguredStructures();
+        addStructureSpawningToDimensionAndBiomes();
+        USStructureProcessors.initProcessors();
         BiomeModifications.addSpawn(BiomeSelectors.includeByKey(LUSH_CAVES), SpawnGroup.UNDERGROUND_WATER_CREATURE, GLARE, 10, 1, 1);
         SoundRegistry.init();
         USBlocks.register();
@@ -144,8 +149,25 @@ public class UnvotedAndShelved implements ModInitializer {
         });
 
     }
+
     public static Identifier ID(String path)
     {
         return new Identifier(MODID, path);
     }
+
+    public static void addStructureSpawningToDimensionAndBiomes() {
+        BiomeModifications.addStructure(
+                BiomeSelectors.categories(
+                        Biome.Category.DESERT,
+                        Biome.Category.EXTREME_HILLS,
+                        Biome.Category.FOREST,
+                        Biome.Category.ICY,
+                        Biome.Category.JUNGLE,
+                        Biome.Category.PLAINS,
+                        Biome.Category.TAIGA,
+                        Biome.Category.SAVANNA),
+                RegistryKey.of(Registry.CONFIGURED_STRUCTURE_FEATURE_KEY, BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.getId(USConfiguredStructures.CONFIGURED_RUINED_CAPITAL))
+        );
+    }
+
 }

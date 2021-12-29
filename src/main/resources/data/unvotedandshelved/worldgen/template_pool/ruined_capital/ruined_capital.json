@@ -1,0 +1,17 @@
+{
+  "name": "unvotedandshelved:ruined_capital/start_pool",
+
+  "fallback": "minecraft:empty",
+
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "location": "unvotedandshelved:ruined_capital/ruined_capital",
+        "processors": "unvotedandshelved:ruined_capital/ruined_capital",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}
