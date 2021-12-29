@@ -1,5 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.mixin;
 
+import com.cursedcauldron.unvotedandshelved.api.LightningRodAccess;
 import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.core.registries.USGeoEntities;
 import net.minecraft.advancement.criterion.Criteria;
@@ -33,7 +34,7 @@ import java.util.Iterator;
 import java.util.function.Predicate;
 
 @Mixin(LightningRodBlock.class)
-public class LightningRodBlockMixin extends Block {
+public class LightningRodBlockMixin extends Block implements LightningRodAccess {
     @Nullable
     private BlockPattern copperGolemPattern;
     @Nullable
@@ -43,12 +44,6 @@ public class LightningRodBlockMixin extends Block {
 
     public LightningRodBlockMixin(Settings settings) {
         super(settings);
-    }
-
-    public void canDispense(WorldView world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-        if (this.getCopperGolemDispenserPattern().searchAround(world, pos) != null) {
-            cir.setReturnValue(true);
-        }
     }
 
     public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
@@ -89,7 +84,7 @@ public class LightningRodBlockMixin extends Block {
 
     private BlockPattern getCopperGolemDispenserPattern() {
         if (this.copperGolemDispenserPattern == null) {
-            this.copperGolemDispenserPattern = BlockPatternBuilder.start().aisle("^", " ", "#").where('^', CachedBlockPosition.matchesBlockState(IS_GOLEM_HEAD_TIP_PREDICATE)).where('#', CachedBlockPosition.matchesBlockState(BlockStatePredicate.forBlock(Blocks.COPPER_BLOCK))).build();
+            this.copperGolemDispenserPattern = BlockPatternBuilder.start().aisle(" ", "^", "#").where('^', CachedBlockPosition.matchesBlockState(IS_GOLEM_HEAD_PREDICATE)).where('#', CachedBlockPosition.matchesBlockState(BlockStatePredicate.forBlock(Blocks.COPPER_BLOCK))).build();
         }
 
         return this.copperGolemDispenserPattern;
@@ -103,4 +98,8 @@ public class LightningRodBlockMixin extends Block {
         return this.copperGolemPattern;
     }
 
+    @Override
+    public boolean canDispense(WorldView worldView, BlockPos pos) {
+        return this.getCopperGolemDispenserPattern().searchAround(worldView, pos) != null;
+    }
 }
