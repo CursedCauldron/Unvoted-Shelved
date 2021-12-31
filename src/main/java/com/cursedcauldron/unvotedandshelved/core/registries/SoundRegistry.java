@@ -9,6 +9,7 @@ public class SoundRegistry {
     public static final SoundEvent GLARE_GRUMPY_IDLE = new SoundEvent(UnvotedAndShelved.ID("glare_grumpy_idle"));
     public static final SoundEvent GLARE_IDLE = new SoundEvent(UnvotedAndShelved.ID("glare_idle"));
     public static final SoundEvent GLOWBERRY_DUST_STEP = new SoundEvent(UnvotedAndShelved.ID("glowberry_dust_step"));
+    public static final SoundEvent COPPER_CLICK = new SoundEvent(UnvotedAndShelved.ID("copper_button_click"));
 
 
 
