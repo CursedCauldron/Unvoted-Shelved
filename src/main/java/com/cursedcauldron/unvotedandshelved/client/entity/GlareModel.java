@@ -34,10 +34,10 @@ public class GlareModel<T extends Entity> extends SinglePartEntityModel<T> {
                 ModelPartBuilder.create()
                         .uv(0, 0)
                         .mirrored(false)
-                        .cuboid(-7.0F, -13.0F, -1.0F, 14.0F, 13.0F, 8.0F, new Dilation(0.0F))
+                        .cuboid(-7.0F, -13.0F, -1.0F, 14.0F, 13.0F, 16.0F, new Dilation(0.0F))
                         .uv(0, 21)
                         .mirrored(false)
-                        .cuboid(-7.0F, -13.0F, -7.0F, 14.0F, 13.0F, 6.0F, new Dilation(0.0F)),
+                        .cuboid(-7.0F, -13.0F, -7.0F, 14.0F, 13.0F, 12.0F, new Dilation(0.0F)),
                 ModelTransform.pivot(0.0F, 17.0F, 0.0F)
         );
 
@@ -46,7 +46,7 @@ public class GlareModel<T extends Entity> extends SinglePartEntityModel<T> {
                 ModelPartBuilder.create()
                         .uv(0, 40)
                         .mirrored(false)
-                        .cuboid(-6.0F, 0.0F, -5.0F, 12.0F, 7.0F, 10.0F, new Dilation(0.0F)),
+                        .cuboid(-6.0F, 0.0F, -5.0F, 12.0F, 7.0F, 20.0F, new Dilation(0.0F)),
                 ModelTransform.pivot(0.0F, 0.0F, 0.0F)
         );
 
@@ -55,7 +55,7 @@ public class GlareModel<T extends Entity> extends SinglePartEntityModel<T> {
                 ModelPartBuilder.create()
                         .uv(44, 48)
                         .mirrored(false)
-                        .cuboid(-4.0F, 0.0F, -3.0F, 8.0F, 10.0F, 6.0F, new Dilation(0.0F)),
+                        .cuboid(-4.0F, 0.0F, -3.0F, 8.0F, 10.0F, 12.0F, new Dilation(0.0F)),
                 ModelTransform.pivot(0.0F, 0.0F, 0.0F)
         );
 
