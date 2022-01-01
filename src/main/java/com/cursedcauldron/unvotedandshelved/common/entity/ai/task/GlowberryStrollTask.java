@@ -7,6 +7,7 @@ import java.util.Random;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.ai.brain.Brain;
 import net.minecraft.entity.ai.brain.MemoryModuleState;
+import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.ai.brain.task.LookTargetUtil;
 import net.minecraft.entity.ai.brain.task.Task;
 import net.minecraft.entity.ai.pathing.MobNavigation;
@@ -29,8 +30,7 @@ public class GlowberryStrollTask extends Task<GlareEntity> {
 
 
     public GlowberryStrollTask(int range, float speed) {
-        super(ImmutableMap.of(UnvotedAndShelved.GLOWBERRIES_GIVEN, MemoryModuleState.VALUE_PRESENT));
-
+        super(ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryModuleState.VALUE_PRESENT));
         this.range = range;
         this.speed = speed;
     }
@@ -96,7 +96,6 @@ public class GlowberryStrollTask extends Task<GlareEntity> {
         super.keepRunning(level, entity, time);
         if (this.darkPos != null) {
             Brain<GlareEntity> brain = entity.getBrain();
-            BlockPos entityPos = entity.getBlockPos();
             BlockPos groundPos = this.darkPos.down().down();
             if ((level.isInBuildLimit(darkPos) && level.getBlockState(darkPos).isAir() && !level.getBlockState(groundPos).isAir() && level.isAir(darkPos) && level.getBlockState(darkPos).canPathfindThrough(level, darkPos, NavigationType.LAND) &&
                     ((level.getLightLevel(LightType.BLOCK, darkPos) == 0 && level.getLightLevel(LightType.SKY, darkPos) == 0) ||

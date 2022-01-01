@@ -1,13 +1,17 @@
 package com.cursedcauldron.unvotedandshelved.common.entity;
 
-import com.cursedcauldron.unvotedandshelved.common.entity.ai.goals.FindButtonGoal;
+import com.cursedcauldron.unvotedandshelved.common.entity.ai.CopperGolemBrain;
+import com.cursedcauldron.unvotedandshelved.common.entity.ai.GlareBrain;
+import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
+import com.google.common.collect.ImmutableList;
+import com.mojang.serialization.Dynamic;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LightningEntity;
-import net.minecraft.entity.ai.goal.LookAroundGoal;
-import net.minecraft.entity.ai.goal.LookAtEntityGoal;
-import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
-import net.minecraft.entity.ai.goal.WanderAroundGoal;
+import net.minecraft.entity.ai.brain.Brain;
+import net.minecraft.entity.ai.brain.MemoryModuleType;
+import net.minecraft.entity.ai.brain.sensor.Sensor;
+import net.minecraft.entity.ai.brain.sensor.SensorType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -16,8 +20,6 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.GolemEntity;
-import net.minecraft.entity.passive.MooshroomEntity;
-import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
@@ -27,11 +29,9 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -43,15 +43,19 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import java.util.Optional;
 import java.util.UUID;
+
 
 //<>
 
 public class CopperGolemEntity extends GolemEntity implements IAnimatable, IAnimationTickable {
+    protected static final ImmutableList<SensorType<? extends Sensor<? super CopperGolemEntity>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_PLAYERS);
+    protected static final ImmutableList<MemoryModuleType<?>> MEMORY_MODULES = ImmutableList.of(UnvotedAndShelved.GLOWBERRIES_GIVEN, UnvotedAndShelved.GRUMPY_TICKS, UnvotedAndShelved.DARK_TICKS_REMAINING, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.AVOID_TARGET);
     private static final TrackedData<Integer> STAGES = DataTracker.registerData(CopperGolemEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final TrackedData<Integer> SPEED = DataTracker.registerData(CopperGolemEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Boolean> WAXED = DataTracker.registerData(CopperGolemEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private int cooldownTicks;
-    private boolean canPerformGoals;
     @Nullable
     private UUID lightningId;
     AnimationFactory factory = new AnimationFactory(this);
@@ -64,6 +68,7 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable, IAnim
     protected void initDataTracker() {
         super.initDataTracker();
         this.dataTracker.startTracking(STAGES, 0);
+        this.dataTracker.startTracking(SPEED, 120);
         this.dataTracker.startTracking(WAXED, false);
     }
 
@@ -96,11 +101,30 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable, IAnim
     }
 
     @Override
+    protected void mobTick() {
+        this.world.getProfiler().push("coppergolemBrain");
+        this.getBrain().tick((ServerWorld)this.world, this);
+        this.world.getProfiler().pop();
+        this.world.getProfiler().push("coppergolemActivityUpdate");
+        CopperGolemBrain.updateActivities(this);
+        this.world.getProfiler().pop();
+    }
+
+    @Override
+    protected Brain.Profile<CopperGolemEntity> createBrainProfile() {
+        return Brain.createProfile(MEMORY_MODULES, SENSOR_TYPES);
+    }
+
+    @Override
+    protected Brain<?> deserializeBrain(Dynamic<?> dynamic) {
+        return CopperGolemBrain.create(this, this.createBrainProfile().deserialize(dynamic));
+    }
+
+    @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
         this.setCooldownTicks(nbt.getInt("CooldownTicks"));
         this.setOxidationStage(nbt.getInt("OxidationStage"));
-        this.setPerformGoal(nbt.getBoolean("PerformGoal"));
         this.setWaxed(nbt.getBoolean("Waxed"));
     }
 
@@ -109,7 +133,6 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable, IAnim
         super.writeCustomDataToNbt(nbt);
         nbt.putInt("CooldownTicks", this.getCooldownTicks());
         nbt.putInt("OxidationStage", this.getOxidationStage());
-        nbt.putBoolean("PerformGoal", this.canPerformGoal());
         nbt.putBoolean("Waxed", this.isWaxed());
     }
 
@@ -129,13 +152,6 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable, IAnim
         return this.dataTracker.get(STAGES);
     }
 
-    public void setPerformGoal(boolean performGoal) {
-        this.canPerformGoals = performGoal;
-    }
-
-    public boolean canPerformGoal() {
-        return this.canPerformGoals;
-    }
 
     public int getCooldownTicks() {
         return this.cooldownTicks;
@@ -182,14 +198,10 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable, IAnim
     }
 
     @Override
-    protected void mobTick() {
-        super.mobTick();
-        if (!this.world.isClient()) {
-            if (!this.canPerformGoal()) {
-                this.setCooldownTicks(this.getCooldownTicks() - 1);
-            }
-        }
+    public Brain<CopperGolemEntity> getBrain() {
+        return (Brain<CopperGolemEntity>)super.getBrain();
     }
+
 
     protected SoundEvent getStepSound() {
         return SoundEvents.BLOCK_COPPER_STEP;
@@ -208,16 +220,11 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable, IAnim
     }
 
     @Override
-    protected void initGoals() {
-        this.goalSelector.add(1, new FindButtonGoal(this));
-        this.goalSelector.add(2, new WanderAroundFarGoal(this, 1.0F));
-        this.goalSelector.add(3, new LookAtEntityGoal(this, PlayerEntity.class, 6.0F));
-        this.goalSelector.add(4, new LookAtEntityGoal(this, VillagerEntity.class, 6.0F));
-        this.goalSelector.add(5, new LookAroundGoal(this));
-    }
-
-    @Override
     public int tickTimer() {
         return age;
+    }
+
+    public int getCooldownState() {
+        return getDataTracker().get(SPEED);
     }
 }

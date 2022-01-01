@@ -36,7 +36,7 @@ import static com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved.GLOWBE
 
 //<>
 
-public class GlareBrain {
+public class  GlareBrain {
 
     public static Brain<?> create(GlareEntity glare, Brain<GlareEntity> brain) {
         addCoreActivities(brain);
