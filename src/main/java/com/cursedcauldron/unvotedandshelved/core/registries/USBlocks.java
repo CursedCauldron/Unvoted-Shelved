@@ -9,6 +9,7 @@ import net.minecraft.block.Material;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -18,7 +19,7 @@ public class USBlocks {
     private static final Map<Identifier, Block> BLOCKS = Maps.newHashMap();
     private static final Map<Identifier, Item> ITEMS = Maps.newHashMap();
 
-    public static final Block COPPER_BUTTON = registerBlock("copper_button", new CopperButtonBlock(AbstractBlock.Settings.of(Material.DECORATION).noCollision().strength(0.5F)), ItemGroup.REDSTONE);
+    public static final Block COPPER_BUTTON = registerBlock("copper_button", new CopperButtonBlock(AbstractBlock.Settings.of(Material.DECORATION).noCollision().strength(0.5F).sounds(BlockSoundGroup.COPPER)), ItemGroup.REDSTONE);
 
     public static <B extends Block> B registerBlock(String name, B block, ItemGroup group) {
         BLOCKS.put(UnvotedAndShelved.ID(name), block);
