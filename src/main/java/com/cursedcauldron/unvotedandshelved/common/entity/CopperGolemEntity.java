@@ -19,6 +19,7 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.passive.GlowSquidEntity;
 import net.minecraft.entity.passive.GolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
@@ -55,28 +56,51 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable, IAnim
     private static final TrackedData<Integer> STAGES = DataTracker.registerData(CopperGolemEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> SPEED = DataTracker.registerData(CopperGolemEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Boolean> WAXED = DataTracker.registerData(CopperGolemEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<Integer> BUTTON_TICKS = DataTracker.registerData(CopperGolemEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final TrackedData<Integer> BUTTON_TICKS_DOWN = DataTracker.registerData(CopperGolemEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final TrackedData<Integer> BUTTON_TICKS_UP = DataTracker.registerData(CopperGolemEntity.class, TrackedDataHandlerRegistry.INTEGER);
+
     private int cooldownTicks;
     @Nullable
     private UUID lightningId;
-    AnimationFactory factory = new AnimationFactory(this);
+    private AnimationFactory factory = new AnimationFactory(this);
 
     public CopperGolemEntity(EntityType<? extends GolemEntity> entityType, World level) {
         super(entityType, level);
+        this.ignoreCameraFrustum = true;
     }
 
     @Override
     protected void initDataTracker() {
         super.initDataTracker();
         this.dataTracker.startTracking(STAGES, 0);
+        this.dataTracker.startTracking(BUTTON_TICKS, 0);
+        this.dataTracker.startTracking(BUTTON_TICKS_DOWN, 0);
+        this.dataTracker.startTracking(BUTTON_TICKS_UP, 0);
         this.dataTracker.startTracking(SPEED, 120);
         this.dataTracker.startTracking(WAXED, false);
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("coppergolem.animation.walk", true));
+        if (getButtonTicks() > 0 || getButtonDownTicks() > 0 || getButtonUpTicks() > 0) {
+            if (getButtonTicks() > 0) {
+                event.getController().setAnimation(new AnimationBuilder().clearAnimations());
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.coppergolem.button", false));
+            }
+            if (getButtonDownTicks() > 0) {
+                event.getController().setAnimation(new AnimationBuilder().clearAnimations());
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.coppergolem.button_down", false));
+            }
+            if (getButtonUpTicks() > 0) {
+                event.getController().setAnimation(new AnimationBuilder().clearAnimations());
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.coppergolem.button_up", false));
+            }
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("coppergolem.animation.idle", true));
+            if (event.isMoving()) {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.coppergolem.walk", true));
+            } else {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.coppergolem.idle", true));
+            }
         }
         return PlayState.CONTINUE;
     }
@@ -108,6 +132,26 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable, IAnim
         this.world.getProfiler().push("coppergolemActivityUpdate");
         CopperGolemBrain.updateActivities(this);
         this.world.getProfiler().pop();
+        int i = this.getCooldownTicks();
+        if (i > 0) {
+            this.setCooldownTicks(i - 1);
+        }
+        int b = this.getButtonTicks();
+        if (b > 0) {
+            this.getNavigation().stop();
+            this.setButtonTicks(b - 1);
+        }
+        int c = this.getButtonDownTicks();
+        if (c > 0) {
+            this.getNavigation().stop();
+            this.setButtonDownTicks(c - 1);
+        }
+        int d = this.getButtonUpTicks();
+        if (d > 0) {
+            this.getNavigation().stop();
+            this.setButtonUpTicks(d - 1);
+        }
+        System.out.println("b = " + (b));
     }
 
     @Override
@@ -119,6 +163,7 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable, IAnim
     protected Brain<?> deserializeBrain(Dynamic<?> dynamic) {
         return CopperGolemBrain.create(this, this.createBrainProfile().deserialize(dynamic));
     }
+
 
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
@@ -159,6 +204,25 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable, IAnim
 
     public void setCooldownTicks(int cooldownTicks) {
         this.cooldownTicks = cooldownTicks;
+    }
+
+    public void setButtonTicks(int ticks) {
+        this.dataTracker.set(BUTTON_TICKS, ticks);
+    }
+    public int getButtonTicks() {
+        return this.dataTracker.get(BUTTON_TICKS);
+    }
+    public void setButtonDownTicks(int ticks) {
+        this.dataTracker.set(BUTTON_TICKS_DOWN, ticks);
+    }
+    public int getButtonDownTicks() {
+        return this.dataTracker.get(BUTTON_TICKS_DOWN);
+    }
+    public void setButtonUpTicks(int ticks) {
+        this.dataTracker.set(BUTTON_TICKS_UP, ticks);
+    }
+    public int getButtonUpTicks() {
+        return this.dataTracker.get(BUTTON_TICKS_UP);
     }
 
     @Override

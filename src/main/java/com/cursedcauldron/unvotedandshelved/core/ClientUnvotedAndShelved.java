@@ -23,6 +23,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
+import software.bernie.example.client.renderer.entity.ReplacedCreeperRenderer;
 import software.bernie.geckolib3.GeckoLib;
 
 import java.util.UUID;
@@ -39,10 +40,9 @@ public class ClientUnvotedAndShelved implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         USEntityRenderer.registerRenderers();
-            EntityRendererRegistry.INSTANCE.register(USGeoEntities.COPPER_GOLEM, CopperGolemRenderer::new);
+        EntityRendererRegistry.INSTANCE.register(USGeoEntities.COPPER_GOLEM, (ctx) -> new CopperGolemRenderer(ctx));
 
-
-            ClientSidePacketRegistry.INSTANCE.register(ClientUnvotedAndShelved.EntityPacket.ID, (ctx, buf) -> {
+        ClientSidePacketRegistry.INSTANCE.register(ClientUnvotedAndShelved.EntityPacket.ID, (ctx, buf) -> {
                 ClientUnvotedAndShelved.EntityPacketOnClient.onPacket(ctx, buf);
             });
     }
@@ -96,5 +96,6 @@ public class ClientUnvotedAndShelved implements ClientModInitializer {
         private static PacketByteBuf createBuffer() {
             return new PacketByteBuf(Unpooled.buffer());
         }
+
     }
 }

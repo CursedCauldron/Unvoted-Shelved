@@ -73,6 +73,7 @@ import static software.bernie.geckolib3.GeckoLib.hasInitialized;
 public class UnvotedAndShelved implements ModInitializer {
     public static final String MODID = "unvotedandshelved";
     public static Activity GOTO_DARKNESS = ActivityInvoker.invokeRegister("goto_darkness");
+    public static Activity GOTO_BUTTON = ActivityInvoker.invokeRegister("goto_button");
     public static MemoryModuleType<Integer> GRUMPY_TICKS = MemoryInvoker.invokeRegister("grumpy_ticks", Codec.INT);
     public static MemoryModuleType<Integer> DARK_TICKS_REMAINING = MemoryInvoker.invokeRegister("darkness_ticks", Codec.INT);
     public static MemoryModuleType<Integer> GLOWBERRIES_GIVEN = MemoryInvoker.invokeRegister("glowberries_given", Codec.INT);
@@ -120,6 +121,7 @@ public class UnvotedAndShelved implements ModInitializer {
         SoundRegistry.init();
         USBlocks.register();
         GeckoLib.initialize();
+        initialize();
         Reflection.initialize(USEntities.class);
         Registry.register(Registry.ITEM, new Identifier(MODID, "glare_spawn_egg"), GLARE_SPAWN_EGG);
         Registry.register(Registry.ITEM, new Identifier(MODID, "glowberry_dust_bottle"), new GlowberryDustBlockItem(GLOWBERRY_DUST, new FabricItemSettings().group(ItemGroup.DECORATIONS)));
