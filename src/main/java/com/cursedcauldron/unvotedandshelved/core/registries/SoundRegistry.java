@@ -11,10 +11,9 @@ public class SoundRegistry {
     public static final SoundEvent GLOWBERRY_DUST_STEP = new SoundEvent(UnvotedAndShelved.ID("glowberry_dust_step"));
     public static final SoundEvent COPPER_CLICK = new SoundEvent(UnvotedAndShelved.ID("copper_button_click"));
 
-
-
     public static void init()
     {
         RegistryHelper.register(Registry.SOUND_EVENT, SoundEvent.class, SoundRegistry.class);
     }
+
 }

@@ -12,15 +12,12 @@ import net.minecraft.client.render.entity.MobEntityRenderer;
 import net.minecraft.util.Identifier;
 
 //<>
-
 @Environment(EnvType.CLIENT)
 public class GlareRenderer extends MobEntityRenderer<GlareEntity, GlareModel<GlareEntity>> {
     private static final Identifier NORMAL_TEXTURE = new Identifier(UnvotedAndShelved.MODID, "textures/entity/glare/glare.png");
     private static final Identifier GRUMPY_TEXTURE = new Identifier(UnvotedAndShelved.MODID, "textures/entity/glare/glare_grumpy.png");
     private static final Identifier LIT_TEXTURE = new Identifier(UnvotedAndShelved.MODID, "textures/entity/glare/glare_lit.png");
     private static final Identifier GRUMPY_LIT_TEXTURE = new Identifier(UnvotedAndShelved.MODID, "textures/entity/glare/glare_grumpy_lit.png");
-
-
 
     public GlareRenderer(EntityRendererFactory.Context context) {
         super(context, new GlareModel<>(context.getPart(USEntityRenderer.GLARE)), 0.6F);

@@ -15,7 +15,7 @@ import software.bernie.geckolib3.resource.GeckoLibCache;
 import java.util.Collections;
 
 public class CopperGolemModel extends AnimatedTickingGeoModel<CopperGolemEntity> {
-    private static final Identifier[] TEXTURES = new Identifier[]{
+    private static final Identifier[] TEXTURES = new Identifier[] {
             UnvotedAndShelved.ID("textures/entity/copper_golem/copper_golem.png"),
             UnvotedAndShelved.ID("textures/entity/copper_golem/exposed_copper_golem.png"),
             UnvotedAndShelved.ID("textures/entity/copper_golem/weathered_copper_golem.png"),
@@ -38,7 +38,6 @@ public class CopperGolemModel extends AnimatedTickingGeoModel<CopperGolemEntity>
         return entity.getOxidationStage() > 3 ? TEXTURES[0] : TEXTURES[entity.getOxidationStage()];
     }
 
-
     @Override
     public void setLivingAnimations(CopperGolemEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
@@ -50,4 +49,5 @@ public class CopperGolemModel extends AnimatedTickingGeoModel<CopperGolemEntity>
             head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 180F));
         }
     }
+
 }

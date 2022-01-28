@@ -7,8 +7,7 @@
     "ActivityInvoker",
     "LightningRodBlockMixin",
     "LivingEntityMemoryInvoker",
-    "MemoryInvoker",
-    "NoiseChunkGeneratorMixin"
+    "MemoryInvoker"
   ],
   "client": [
   ],

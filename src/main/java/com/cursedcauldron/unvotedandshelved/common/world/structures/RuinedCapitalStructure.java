@@ -1,7 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.common.world.structures;
 
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
-import com.cursedcauldron.unvotedandshelved.core.registries.USGeoEntities;
 import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.structure.PoolStructurePiece;
@@ -10,11 +9,9 @@ import net.minecraft.structure.StructureGeneratorFactory;
 import net.minecraft.structure.StructurePiecesGenerator;
 import net.minecraft.structure.pool.StructurePoolBasedGenerator;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.Pool;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.Heightmap;
-import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
 import net.minecraft.world.gen.feature.StructureFeature;
 import net.minecraft.world.gen.feature.StructurePoolFeatureConfig;
@@ -27,17 +24,11 @@ public class RuinedCapitalStructure extends StructureFeature<StructurePoolFeatur
         super(configCodec, RuinedCapitalStructure::createPiecesGenerator, PostPlacementProcessor.EMPTY);
     }
 
-    public static final Pool<SpawnSettings.SpawnEntry> OXIDIZED_GOLEM = Pool.of(new SpawnSettings.SpawnEntry(USGeoEntities.COPPER_GOLEM, 1, 1, 1));
-
     private static boolean isFeatureChunk(StructureGeneratorFactory.Context<StructurePoolFeatureConfig> context) {
         BlockPos spawnXZPosition = context.chunkPos().getCenterAtY(0);
-
         int landHeight = context.chunkGenerator().getHeightInGround(spawnXZPosition.getX(), spawnXZPosition.getZ(), Heightmap.Type.WORLD_SURFACE_WG, context.world());
-
         VerticalBlockSample columnOfBlocks = context.chunkGenerator().getColumnSample(spawnXZPosition.getX(), spawnXZPosition.getZ(), context.world());
-
         BlockState topBlock = columnOfBlocks.getState(landHeight);
-
         return topBlock.getFluidState().isEmpty();
     }
 
