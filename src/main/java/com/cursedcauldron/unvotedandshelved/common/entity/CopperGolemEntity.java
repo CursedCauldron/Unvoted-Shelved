@@ -1,7 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.common.entity;
 
 import com.cursedcauldron.unvotedandshelved.common.entity.ai.CopperGolemBrain;
-import com.cursedcauldron.unvotedandshelved.common.entity.ai.GlareBrain;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
@@ -21,7 +20,6 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.passive.GlowSquidEntity;
 import net.minecraft.entity.passive.GolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
@@ -46,7 +44,6 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-import java.util.Optional;
 import java.util.UUID;
 
 
@@ -234,7 +231,7 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable, IAnim
         UUID uuid = lightning.getUuid();
         if (!uuid.equals(this.lightningId)) {
             this.lightningId = uuid;
-            this.setOxidationStage(this.getOxidationStage() - 1);
+            this.setOxidationStage(this.getOxidationStage() - (1 + random.nextInt(2)));
             world.syncWorldEvent(3002, this.getBlockPos(), 0);
         }
     }
@@ -250,12 +247,12 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable, IAnim
             this.setWaxed(true);
             return ActionResult.SUCCESS;
         }
-        else if (stack.getItem() instanceof AxeItem && this.getOxidationStage() > 0) {
+        else if (stack.getItem() instanceof AxeItem) {
             if (this.isWaxed()) {
                 this.setWaxed(false);
                 this.world.playSound(player, this.getBlockPos(), SoundEvents.ITEM_AXE_WAX_OFF, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 this.world.syncWorldEvent(player, 3004, this.getBlockPos(), 0);
-            } else {
+            } else if (this.getOxidationStage() > 0) {
                 this.setOxidationStage(this.getOxidationStage() - 1);
                 world.playSound(player, this.getBlockPos(), SoundEvents.ITEM_AXE_SCRAPE, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 world.syncWorldEvent(player, 3005, this.getBlockPos(), 0);

@@ -2,7 +2,6 @@ package com.cursedcauldron.unvotedandshelved.core.registries;
 
 import com.cursedcauldron.unvotedandshelved.common.blocks.CopperButtonBlock;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
-import com.google.common.collect.Maps;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
@@ -13,11 +12,11 @@ import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class USBlocks {
-    private static final Map<Identifier, Block> BLOCKS = Maps.newHashMap();
-    private static final Map<Identifier, Item> ITEMS = Maps.newHashMap();
+    private static final ConcurrentHashMap<Identifier, Block> BLOCKS = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Identifier, Item> ITEMS = new ConcurrentHashMap<>();
 
     public static final Block COPPER_BUTTON = registerBlock("copper_button", new CopperButtonBlock(AbstractBlock.Settings.of(Material.DECORATION).noCollision().strength(0.5F).sounds(BlockSoundGroup.COPPER)), ItemGroup.REDSTONE);
 
