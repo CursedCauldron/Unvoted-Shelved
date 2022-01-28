@@ -12,6 +12,8 @@ import net.minecraft.entity.ai.brain.Brain;
 import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.ai.brain.sensor.Sensor;
 import net.minecraft.entity.ai.brain.sensor.SensorType;
+import net.minecraft.entity.ai.control.LookControl;
+import net.minecraft.entity.ai.control.MoveControl;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -67,6 +69,8 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable, IAnim
 
     public CopperGolemEntity(EntityType<? extends GolemEntity> entityType, World level) {
         super(entityType, level);
+        this.moveControl = new CopperGolemMoveControl(this);
+        this.lookControl = new CopperGolemLookControl(this);
         this.ignoreCameraFrustum = true;
     }
 
@@ -290,5 +294,37 @@ public class CopperGolemEntity extends GolemEntity implements IAnimatable, IAnim
 
     public int getCooldownState() {
         return getDataTracker().get(SPEED);
+    }
+
+    private static class CopperGolemMoveControl extends MoveControl {
+        private final CopperGolemEntity copperGolemEntity;
+
+        public CopperGolemMoveControl(CopperGolemEntity copperGolemEntity) {
+            super(copperGolemEntity);
+            this.copperGolemEntity = copperGolemEntity;
+        }
+
+        @Override
+        public void tick() {
+            if (this.copperGolemEntity.getOxidationStage() < 3) {
+                super.tick();
+            }
+        }
+    }
+
+    private static class CopperGolemLookControl extends LookControl {
+        private final CopperGolemEntity copperGolemEntity;
+
+        public CopperGolemLookControl(CopperGolemEntity copperGolemEntity) {
+            super(copperGolemEntity);
+            this.copperGolemEntity = copperGolemEntity;
+        }
+
+        @Override
+        public void tick() {
+            if (this.copperGolemEntity.getOxidationStage() < 3) {
+                super.tick();
+            }
+        }
     }
 }
