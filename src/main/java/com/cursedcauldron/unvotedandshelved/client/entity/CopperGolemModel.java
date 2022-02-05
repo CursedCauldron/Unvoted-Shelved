@@ -2,25 +2,23 @@ package com.cursedcauldron.unvotedandshelved.client.entity;
 
 import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
-import net.minecraft.client.MinecraftClient;
+import com.google.common.collect.Maps;
 import net.minecraft.util.Identifier;
-import software.bernie.example.entity.GeoExampleEntity;
+import net.minecraft.util.Util;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedTickingGeoModel;
 import software.bernie.geckolib3.model.provider.data.EntityModelData;
-import software.bernie.geckolib3.resource.GeckoLibCache;
 
-import java.util.Collections;
+import java.util.Map;
 
 public class CopperGolemModel extends AnimatedTickingGeoModel<CopperGolemEntity> {
-    private static final Identifier[] TEXTURES = new Identifier[] {
-            UnvotedAndShelved.ID("textures/entity/copper_golem/copper_golem.png"),
-            UnvotedAndShelved.ID("textures/entity/copper_golem/exposed_copper_golem.png"),
-            UnvotedAndShelved.ID("textures/entity/copper_golem/weathered_copper_golem.png"),
-            UnvotedAndShelved.ID("textures/entity/copper_golem/oxidized_copper_golem.png")
-    };
+    private static final Map<CopperGolemEntity.OxidationStage, Identifier> TEXTURES = Util.make(Maps.newHashMap(), (oxidateionStages) -> {
+        CopperGolemEntity.OxidationStage[] stages = CopperGolemEntity.OxidationStage.OXIDATION_STAGES;
+        for (CopperGolemEntity.OxidationStage stage : stages) {
+            oxidateionStages.put(stage, new Identifier(UnvotedAndShelved.MODID, String.format("textures/entity/copper_golem/%s_copper_golem.png", stage.getName())));
+        }
+    });
 
     @Override
     public Identifier getAnimationFileLocation(CopperGolemEntity entity) {
@@ -34,8 +32,7 @@ public class CopperGolemModel extends AnimatedTickingGeoModel<CopperGolemEntity>
 
     @Override
     public Identifier getTextureLocation(CopperGolemEntity entity) {
-        //Prevent Crash
-        return entity.getOxidationStage() > 3 ? TEXTURES[0] : TEXTURES[entity.getOxidationStage()];
+        return TEXTURES.get(entity.getOxidationStage());
     }
 
     @Override
