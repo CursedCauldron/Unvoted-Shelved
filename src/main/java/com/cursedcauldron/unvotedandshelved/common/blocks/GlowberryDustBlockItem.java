@@ -47,7 +47,7 @@ public class GlowberryDustBlockItem extends BlockItem {
         BlockState blockState2 = level.getBlockState(blockPos);
         Hand hand = blockPlaceContext2.getHand();
         if (blockState2.isOf(blockState.getBlock())) {
-            blockState2 = placeFromTag(blockPos, level, itemStack, blockState2);
+            blockState2 = placeFromNbt(blockPos, level, itemStack, blockState2);
             this.postPlacement(blockPos, level, player, itemStack, blockState2);
             blockState2.getBlock().onPlaced(level, blockPos, blockState2, player, itemStack);
             if (player instanceof ServerPlayerEntity) {
@@ -66,7 +66,7 @@ public class GlowberryDustBlockItem extends BlockItem {
     }
 
 
-    private BlockState placeFromTag(BlockPos blockPos, World level, ItemStack itemStack, BlockState blockState) {
+    private BlockState placeFromNbt(BlockPos blockPos, World level, ItemStack itemStack, BlockState blockState) {
         BlockState blockState2 = blockState;
         NbtCompound compoundTag = itemStack.getNbt();
         if (compoundTag != null) {
