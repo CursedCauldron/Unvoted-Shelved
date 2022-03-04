@@ -10,8 +10,11 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.brain.Activity;
 import net.minecraft.entity.ai.brain.Brain;
 import net.minecraft.entity.ai.brain.MemoryModuleState;
+import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.ai.brain.task.*;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
+
+import static net.minecraft.entity.ai.brain.MemoryModuleType.WALK_TARGET;
 
 
 public class CopperGolemBrain {
@@ -38,7 +41,7 @@ public class CopperGolemBrain {
                 ImmutableList.of(
                         Pair.of(0, new TimeLimitedTask<>(new FollowMobTask(EntityType.PLAYER, 6.0F), UniformIntProvider.create(5, 10))),
                         Pair.of(2, new CompositeTask<>(
-                                ImmutableMap.of(net.minecraft.entity.ai.brain.MemoryModuleType.WALK_TARGET, MemoryModuleState.VALUE_ABSENT),
+                                ImmutableMap.of(WALK_TARGET, MemoryModuleState.VALUE_ABSENT),
                                 ImmutableSet.of(),
                                 CompositeTask.Order.ORDERED,
                                 CompositeTask.RunMode.TRY_ALL,

@@ -43,7 +43,7 @@ public class FindButtonTask extends Task<CopperGolemEntity> {
 
     @Override
     protected boolean shouldKeepRunning(ServerWorld level, CopperGolemEntity golem, long time) {
-        return (this.getNearbyCopperButtons(golem) != null);
+        return golem.getOxidationStage() != CopperGolemEntity.OxidationStage.OXIDIZED && (this.getNearbyCopperButtons(golem) != null);
     }
 
     private BlockPos getNearbyCopperButtons(CopperGolemEntity golem) {

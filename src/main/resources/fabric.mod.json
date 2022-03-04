@@ -20,6 +20,7 @@
       "com.cursedcauldron.unvotedandshelved.core.ClientUnvotedAndShelved"
     ]
   },
+  "accessWidener": "unvotedandshelved.accesswidener",
   "mixins": [
     "unvotedandshelved.mixins.json"
   ],

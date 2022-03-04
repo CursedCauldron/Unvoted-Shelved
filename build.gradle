@@ -28,6 +28,10 @@ tasks.withType(AbstractArchiveTask) {
     reproducibleFileOrder = true
 }
 
+loom {
+    accessWidenerPath = file("src/main/resources/unvotedandshelved.accesswidener")
+}
+
 processResources {
     inputs.property "version", project.version
     filteringCharset "UTF-8"
