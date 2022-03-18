@@ -1,8 +1,8 @@
-package com.cursedcauldron.unvotedandshelved.entities.ai;
+package com.cursedcauldron.unvotedandshelved.entities.ai.glare;
 
 import com.cursedcauldron.unvotedandshelved.entities.GlareEntity;
-import com.cursedcauldron.unvotedandshelved.entities.ai.task.AerialStrollTask;
-import com.cursedcauldron.unvotedandshelved.entities.ai.task.GlowberryStrollTask;
+import com.cursedcauldron.unvotedandshelved.entities.ai.glare.task.AerialStrollTask;
+import com.cursedcauldron.unvotedandshelved.entities.ai.glare.task.GlowberryStrollTask;
 import com.cursedcauldron.unvotedandshelved.init.USActivities;
 import com.cursedcauldron.unvotedandshelved.init.USMemoryModules;
 import com.google.common.collect.ImmutableList;
@@ -34,7 +34,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 
 //<>
-public class  GlareBrain {
+public class GlareBrain {
 
     public static Brain<?> create(GlareEntity glare, Brain<GlareEntity> brain) {
         addCoreActivities(brain);

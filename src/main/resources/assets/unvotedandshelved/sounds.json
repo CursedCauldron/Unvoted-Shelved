@@ -23,5 +23,10 @@
     "sounds": [
       "unvotedandshelved:nothing"
     ]
+  },
+  "copper_button_click": {
+    "sounds": [
+      "unvotedandshelved:block/copper_button/click"
+    ]
   }
 }

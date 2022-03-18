@@ -1,4 +1,4 @@
-package com.cursedcauldron.unvotedandshelved.entities.ai.task;
+package com.cursedcauldron.unvotedandshelved.entities.ai.glare.task;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

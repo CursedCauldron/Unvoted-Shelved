@@ -1,4 +1,4 @@
-package com.cursedcauldron.unvotedandshelved.entities.ai.task;
+package com.cursedcauldron.unvotedandshelved.entities.ai.glare.task;
 
 import com.cursedcauldron.unvotedandshelved.entities.GlareEntity;
 import com.cursedcauldron.unvotedandshelved.init.USMemoryModules;

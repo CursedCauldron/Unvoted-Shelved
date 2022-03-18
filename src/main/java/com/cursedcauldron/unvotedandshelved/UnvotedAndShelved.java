@@ -1,5 +1,6 @@
 package com.cursedcauldron.unvotedandshelved;
 
+import com.cursedcauldron.unvotedandshelved.events.MiscEvents;
 import com.cursedcauldron.unvotedandshelved.events.MobEvents;
 import com.cursedcauldron.unvotedandshelved.events.WorldEvents;
 import com.cursedcauldron.unvotedandshelved.init.USActivities;
@@ -36,6 +37,7 @@ public class UnvotedAndShelved {
         eventBus.register(this);
         eventBus.register(new WorldEvents());
         eventBus.register(new MobEvents());
+        eventBus.register(new MiscEvents());
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

@@ -1,6 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.entities;
 
-import com.cursedcauldron.unvotedandshelved.entities.ai.GlareBrain;
+import com.cursedcauldron.unvotedandshelved.entities.ai.glare.GlareBrain;
 import com.cursedcauldron.unvotedandshelved.init.USBlocks;
 import com.cursedcauldron.unvotedandshelved.init.USMemoryModules;
 import com.cursedcauldron.unvotedandshelved.init.USSoundEvents;
@@ -36,11 +36,9 @@ import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
-import net.minecraft.world.entity.ambient.Bat;
 import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -51,7 +49,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
-import java.util.Random;
 
 //<>
 public class GlareEntity extends AgeableMob implements FlyingAnimal {
