@@ -1,4 +1,4 @@
-//package com.cursedcauldron.unvotedandshelved.common.entity.ai.goals;
+//package com.cursedcauldron.unvotedandshelved.entities.ai.goals;
 //
 //import com.cursedcauldron.unvotedandshelved.common.blocks.CopperButtonBlock;
 //import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;

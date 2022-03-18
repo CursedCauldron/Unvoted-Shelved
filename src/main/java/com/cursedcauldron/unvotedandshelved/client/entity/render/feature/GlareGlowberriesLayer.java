@@ -1,40 +1,41 @@
 package com.cursedcauldron.unvotedandshelved.client.entity.render.feature;
 
-import com.cursedcauldron.unvotedandshelved.client.entity.GlareModel;
-import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
-import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.feature.FeatureRenderer;
-import net.minecraft.client.render.entity.feature.FeatureRendererContext;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.Identifier;
+import com.cursedcauldron.unvotedandshelved.UnvotedAndShelved;
+import com.cursedcauldron.unvotedandshelved.client.entity.models.GlareModel;
+import com.cursedcauldron.unvotedandshelved.entities.GlareEntity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@Environment(EnvType.CLIENT)
-public class GlareGlowberriesLayer<T extends GlareEntity, M extends GlareModel<T>> extends FeatureRenderer<T, M> {
-    private static final RenderLayer GLARE_BERRIES = RenderLayer.getEyes(new Identifier(UnvotedAndShelved.MODID, "textures/entity/glare/glare_lit_e.png"));
-    private static final RenderLayer GLARE_GRUMPY_BERRIES = RenderLayer.getEyes(new Identifier(UnvotedAndShelved.MODID, "textures/entity/glare/glare_grumpy_lit_e.png"));
+@OnlyIn(Dist.CLIENT)
+public class GlareGlowberriesLayer<T extends GlareEntity, M extends GlareModel<T>> extends RenderLayer<T, M> {
+    private static final RenderType GLARE_BERRIES = RenderType.eyes(new ResourceLocation(UnvotedAndShelved.MODID, "textures/entity/glare/glare_lit_e.png"));
+    private static final RenderType GLARE_GRUMPY_BERRIES = RenderType.eyes(new ResourceLocation(UnvotedAndShelved.MODID, "textures/entity/glare/glare_grumpy_lit_e.png"));
 
-    public GlareGlowberriesLayer(FeatureRendererContext<T, M> renderLayerParent) {
-        super(renderLayerParent);
+    public GlareGlowberriesLayer(RenderLayerParent<T, M> model) {
+        super(model);
     }
 
     @Override
-    public void render(MatrixStack poseStack, VertexConsumerProvider multiBufferSource, int i, T entity, float f, float g, float h, float j, float k, float l) {
-        RenderLayer renderType = this.renderType(entity);
+    public void render(PoseStack poseStack, MultiBufferSource multiBufferSource, int i, T entity, float f, float g, float h, float j, float k, float l) {
+        RenderType renderType = this.renderType(entity);
         if (renderType != null) {
             VertexConsumer vertexConsumer = multiBufferSource.getBuffer(renderType);
-            this.getContextModel().render(poseStack, vertexConsumer, 15728640, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
+            this.getParentModel().renderToBuffer(poseStack, vertexConsumer, 15728640, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         }
     }
 
-    public RenderLayer renderType(GlareEntity glare){
+    public RenderType renderType(T glare){
         if (glare.getGlowberries() > 0) {
             return glare.isGrumpy() ? GLARE_GRUMPY_BERRIES : GLARE_BERRIES;
         } else return null;
     };
+
 }
