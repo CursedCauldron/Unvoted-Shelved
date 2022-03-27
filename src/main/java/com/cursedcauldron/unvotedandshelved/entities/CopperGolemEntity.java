@@ -54,20 +54,20 @@ public class CopperGolemEntity extends AbstractGolem {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        this.setVariant(CopperGolemEntity.Stage.BY_ID[tag.getInt("Stage")]);
+        this.setStage(CopperGolemEntity.Stage.BY_ID[tag.getInt("Stage")]);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putInt("Stage", this.getVariant().getId());
+        tag.putInt("Stage", this.getStage().getId());
     }
 
-    public CopperGolemEntity.Stage getVariant() {
+    public CopperGolemEntity.Stage getStage() {
         return CopperGolemEntity.Stage.BY_ID[this.entityData.get(STAGE)];
     }
 
-    private void setVariant(CopperGolemEntity.Stage stage) {
+    private void setStage(CopperGolemEntity.Stage stage) {
         this.entityData.set(STAGE, stage.getId());
     }
 

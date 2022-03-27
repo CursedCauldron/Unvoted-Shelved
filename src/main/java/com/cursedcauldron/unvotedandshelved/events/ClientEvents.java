@@ -1,7 +1,9 @@
 package com.cursedcauldron.unvotedandshelved.events;
 
 import com.cursedcauldron.unvotedandshelved.UnvotedAndShelved;
+import com.cursedcauldron.unvotedandshelved.client.entity.models.CopperGolemModel;
 import com.cursedcauldron.unvotedandshelved.client.entity.models.GlareModel;
+import com.cursedcauldron.unvotedandshelved.client.entity.render.CopperGolemRenderer;
 import com.cursedcauldron.unvotedandshelved.client.entity.render.GlareRenderer;
 import com.cursedcauldron.unvotedandshelved.init.USBlocks;
 import com.cursedcauldron.unvotedandshelved.init.USEntityTypes;
@@ -30,11 +32,13 @@ public class ClientEvents {
     @SubscribeEvent
     public static void registerEntityRenderer(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(USEntityTypes.GLARE.get(), GlareRenderer::new);
+        event.registerEntityRenderer(USEntityTypes.COPPER_GOLEM.get(), CopperGolemRenderer::new);
     }
 
     @SubscribeEvent
     public static void registerEntityLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(USModelLayers.GLARE, GlareModel::getLayerDefinition);
+        event.registerLayerDefinition(USModelLayers.COPPER_GOLEM, CopperGolemModel::getLayerDefinition);
     }
 
     @SubscribeEvent

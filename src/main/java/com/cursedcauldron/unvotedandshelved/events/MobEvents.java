@@ -1,6 +1,7 @@
 package com.cursedcauldron.unvotedandshelved.events;
 
 import com.cursedcauldron.unvotedandshelved.UnvotedAndShelved;
+import com.cursedcauldron.unvotedandshelved.entities.CopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.entities.GlareEntity;
 import com.cursedcauldron.unvotedandshelved.init.USEntityTypes;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -13,6 +14,7 @@ public class MobEvents {
     @SubscribeEvent
     public static void registerEntityAttributes(EntityAttributeCreationEvent event) {
         event.put(USEntityTypes.GLARE.get(), GlareEntity.createAttributes().build());
+        event.put(USEntityTypes.COPPER_GOLEM.get(), CopperGolemEntity.createAttributes().build());
     }
 
 }

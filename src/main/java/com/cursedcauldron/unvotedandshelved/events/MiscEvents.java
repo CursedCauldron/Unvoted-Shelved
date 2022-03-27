@@ -12,6 +12,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
@@ -42,6 +43,7 @@ public class MiscEvents {
         if (stack.getItem() == Items.HONEYCOMB) {
             Optional<BlockState> waxables = Optional.ofNullable(WAXABLES.get().get(state.getBlock())).map((blockState) -> blockState.withPropertiesOf(state));
             if (waxables.isPresent()) {
+                event.setCanceled(true);
                 if (player instanceof ServerPlayer) {
                     CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer) player, blockPos, stack);
                 }
@@ -50,7 +52,8 @@ public class MiscEvents {
                 }
                 world.setBlock(blockPos, waxables.get(), 1);
                 world.levelEvent(player, 3003, blockPos, 0);
-                player.swing(hand);
+//                player.swing(hand);
+                event.setCancellationResult(InteractionResult.SUCCESS);
             }
         }
         if (stack.getItem() instanceof AxeItem) {
@@ -70,9 +73,11 @@ public class MiscEvents {
                 finalState = previousWaxed;
             }
             if (finalState.isPresent()) {
+                event.setCanceled(true);
                 world.setBlock(blockPos, finalState.get(), 11);
                 stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
                 player.swing(hand);
+                event.setCancellationResult(InteractionResult.SUCCESS);
             }
         }
     }

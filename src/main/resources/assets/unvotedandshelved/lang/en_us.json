@@ -4,5 +4,9 @@
   "item.unvotedandshelved.glare_spawn_egg": "Glare Spawn Egg",
   "block.unvotedandshelved.glowberry_dust": "Bottle of Glowberry Dust",
   "block.unvotedandshelved.copper_button": "Copper Button",
+  "block.unvotedandshelved.exposed_copper_button": "Exposed Copper Button",
+  "block.unvotedandshelved.weathered_copper_button": "Weathered Copper Button",
+  "block.unvotedandshelved.oxidized_copper_button": "Oxidized Copper Button",
+  "entity.unvotedandshelved.copper_golem": "Copper Golem",
   "entity.unvotedandshelved.glare": "Glare"
 }

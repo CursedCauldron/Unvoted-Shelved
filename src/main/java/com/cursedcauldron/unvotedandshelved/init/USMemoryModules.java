@@ -23,6 +23,7 @@ public class USMemoryModules {
     public static final RegistryObject<MemoryModuleType<Integer>> GLOWBERRIES_GIVEN = register("glowberries_given", Codec.INT);
     public static final RegistryObject<MemoryModuleType<Integer>> COPPER_BUTTON_COOLDOWN_TICKS = register("copper_button_cooldown_ticks", Codec.INT);
     public static final RegistryObject<MemoryModuleType<BlockPos>> DARK_POS = register("dark_pos");
+    public static final RegistryObject<MemoryModuleType<Boolean>> COPPER_BUTTON = register("copper_button");
     public static final RegistryObject<MemoryModuleType<BlockPos>> COPPER_BUTTON_POS = register("copper_button_pos");
 
     public static <U> RegistryObject<MemoryModuleType<U>> register(String key, Codec<U> codec) {

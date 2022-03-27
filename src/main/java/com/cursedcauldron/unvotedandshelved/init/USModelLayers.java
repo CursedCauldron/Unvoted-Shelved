@@ -7,5 +7,6 @@ import net.minecraft.resources.ResourceLocation;
 public class USModelLayers {
 
     public static final ModelLayerLocation GLARE = new ModelLayerLocation(new ResourceLocation(UnvotedAndShelved.MODID, "glare"), "main");
+    public static final ModelLayerLocation COPPER_GOLEM = new ModelLayerLocation(new ResourceLocation(UnvotedAndShelved.MODID, "copper_golem"), "main");
 
 }

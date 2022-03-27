@@ -33,8 +33,8 @@ public class WeatheringCopperButtonBlock extends CopperButtonBlock implements We
     }
 
     @Override
-    public void randomTick(BlockState p_60551_, ServerLevel p_60552_, BlockPos p_60553_, Random p_60554_) {
-        super.randomTick(p_60551_, p_60552_, p_60553_, p_60554_);
+    public void randomTick(BlockState state, ServerLevel world, BlockPos blockPos, Random random) {
+        this.onRandomTick(state, world, blockPos, random);
     }
 
     @Override
