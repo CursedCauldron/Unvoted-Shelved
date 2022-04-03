@@ -24,9 +24,7 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.animal.AbstractGolem;
-import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -38,7 +36,7 @@ import java.util.Comparator;
 import java.util.Optional;
 
 public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
-    protected static final ImmutableList<SensorType<? extends Sensor<? super CopperGolemEntity>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_PLAYERS, SensorType.HURT_BY);
+    protected static final ImmutableList<SensorType<? extends Sensor<? super CopperGolemEntity>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.HURT_BY);
     protected static final ImmutableList<MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(MemoryModuleType.LOOK_TARGET, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS.get(), USMemoryModules.COPPER_BUTTON.get());
     private static final EntityDataAccessor<Integer> STAGE = SynchedEntityData.defineId(CopperGolemEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> WAXED = SynchedEntityData.defineId(CopperGolemEntity.class, EntityDataSerializers.BOOLEAN);
@@ -128,10 +126,16 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
             this.level.levelEvent(player, 3003, this.blockPosition(), 0);
             return InteractionResult.SUCCESS;
         }
-        else if (stack.getItem() instanceof AxeItem && this.isWaxed()) {
-            this.setWaxed(false);
-            this.level.playSound(player, this.blockPosition(), SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
-            this.level.levelEvent(player, 3004, this.blockPosition(), 0);
+        else if (stack.getItem() instanceof AxeItem) {
+            if (this.isWaxed()) {
+                this.setWaxed(false);
+                this.level.playSound(player, this.blockPosition(), SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
+                this.level.levelEvent(player, 3004, this.blockPosition(), 0);
+            } else {
+                this.setStage(Stage.values()[this.getStage().getId() - 1]);
+                this.level.playSound(player, this.blockPosition(), SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
+                this.level.levelEvent(player, 3005, this.blockPosition(), 0);
+            }
             return InteractionResult.SUCCESS;
         }
         else if (this.getHealth() < this.getMaxHealth() && stack.is(Items.COPPER_INGOT)) {
@@ -154,6 +158,15 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
 //        System.out.println(this.getBrain().getActiveActivities());
         Optional<Integer> memory = this.getBrain().getMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS.get());
         memory.ifPresent(integer -> System.out.println("The copper button cooldown is " + integer));
+        if (!this.level.isClientSide()) {
+            if (!this.isWaxed() || this.getStage() != Stage.OXIDIZED) {
+                float randomChance = this.random.nextFloat();
+                if (randomChance < 3.4290552E-4F) {
+                    System.out.println("The random chance is " + randomChance);
+                    this.setStage(Stage.values()[this.getStage().getId() + 1]);
+                }
+            }
+        }
     }
 
     @Override
