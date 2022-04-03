@@ -132,9 +132,11 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
                 this.level.playSound(player, this.blockPosition(), SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
                 this.level.levelEvent(player, 3004, this.blockPosition(), 0);
             } else {
-                this.setStage(Stage.values()[this.getStage().getId() - 1]);
-                this.level.playSound(player, this.blockPosition(), SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
-                this.level.levelEvent(player, 3005, this.blockPosition(), 0);
+                if (this.getStage() != Stage.UNAFFECTED) {
+                    this.setStage(Stage.values()[this.getStage().getId() - 1]);
+                    this.level.playSound(player, this.blockPosition(), SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    this.level.levelEvent(player, 3005, this.blockPosition(), 0);
+                }
             }
             return InteractionResult.SUCCESS;
         }
@@ -159,6 +161,11 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
         Optional<Integer> memory = this.getBrain().getMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS.get());
         memory.ifPresent(integer -> System.out.println("The copper button cooldown is " + integer));
         if (!this.level.isClientSide()) {
+            if (this.getStage() == Stage.OXIDIZED) {
+                this.getBrain().removeAllBehaviors();
+            } else {
+                CopperGolemBrain.updateActivity(this);
+            }
             if (!this.isWaxed() || this.getStage() != Stage.OXIDIZED) {
                 float randomChance = this.random.nextFloat();
                 if (randomChance < 3.4290552E-4F) {
