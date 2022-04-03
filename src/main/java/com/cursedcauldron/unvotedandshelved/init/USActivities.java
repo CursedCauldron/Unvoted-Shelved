@@ -13,6 +13,7 @@ public class USActivities {
     public static final DeferredRegister<Activity> ACTIVITIES = DeferredRegister.create(ForgeRegistries.ACTIVITIES, UnvotedAndShelved.MODID);
 
     public static final RegistryObject<Activity> GOTO_DARKNESS = register("goto_darkness");
+    public static final RegistryObject<Activity> PRESS_COPPER_BUTTON = register("press_copper_button");
 
     public static RegistryObject<Activity> register(String key) {
         return ACTIVITIES.register(key, () -> new Activity(key));

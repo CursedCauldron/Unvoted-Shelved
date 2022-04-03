@@ -1,20 +1,38 @@
 package com.cursedcauldron.unvotedandshelved.entities.ai.copper_golem;
 
 import com.cursedcauldron.unvotedandshelved.entities.CopperGolemEntity;
+import com.cursedcauldron.unvotedandshelved.entities.ai.copper_golem.task.FindCopperButtonTask;
+import com.cursedcauldron.unvotedandshelved.entities.ai.copper_golem.task.PressCopperButtonTask;
+import com.cursedcauldron.unvotedandshelved.init.USActivities;
 import com.cursedcauldron.unvotedandshelved.init.USMemoryModules;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.mojang.datafixers.util.Pair;
+import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.AnimalPanic;
 import net.minecraft.world.entity.ai.behavior.CountDownCooldownTicks;
+import net.minecraft.world.entity.ai.behavior.DoNothing;
 import net.minecraft.world.entity.ai.behavior.LookAtTargetSink;
 import net.minecraft.world.entity.ai.behavior.MoveToTargetSink;
+import net.minecraft.world.entity.ai.behavior.RandomStroll;
+import net.minecraft.world.entity.ai.behavior.RunOne;
+import net.minecraft.world.entity.ai.behavior.RunSometimes;
+import net.minecraft.world.entity.ai.behavior.SetEntityLookTarget;
+import net.minecraft.world.entity.ai.behavior.SetWalkTargetFromLookTarget;
+import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.schedule.Activity;
 
+/**
+ * @author Orcinus
+ */
 public class CopperGolemBrain {
 
     public static Brain<?> create(CopperGolemEntity copperGolemEntity, Brain<CopperGolemEntity> brain) {
         addCoreActivities(brain);
+        addIdleActivities(brain);
+        addCopperButtonActivities(brain);
         brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
         brain.setDefaultActivity(Activity.IDLE);
         brain.useDefaultActivity();
@@ -22,7 +40,50 @@ public class CopperGolemBrain {
     }
 
     private static void addCoreActivities(Brain<CopperGolemEntity> brain) {
-        brain.addActivity(Activity.CORE, 0, ImmutableList.of(new AnimalPanic(2.0f), new LookAtTargetSink(45, 90), new MoveToTargetSink(), new CountDownCooldownTicks(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS.get())));
+        brain.addActivity(
+                Activity.CORE,
+                0,
+                ImmutableList.of(
+                        new AnimalPanic(1.0f),
+                        new LookAtTargetSink(45, 90),
+                        new MoveToTargetSink(),
+                        new CountDownCooldownTicks(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS.get())));
+    }
+
+    private static void addIdleActivities(Brain<CopperGolemEntity> brain) {
+        brain.addActivityWithConditions(
+                Activity.IDLE,
+                ImmutableList.of(
+                        Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(30, 60))),
+                        Pair.of(1, new RunOne<>(
+                                ImmutableList.of(
+                                        Pair.of(new RandomStroll(0.5F), 2),
+                                        Pair.of(new SetWalkTargetFromLookTarget(1.0F, 3), 2),
+                                        Pair.of(new DoNothing(30, 60), 1))
+                        ))),
+                ImmutableSet.of(
+                        Pair.of(USMemoryModules.COPPER_BUTTON.get(), MemoryStatus.VALUE_ABSENT)));
+    }
+
+    private static void addCopperButtonActivities(Brain<CopperGolemEntity> brain) {
+        brain.addActivityWithConditions(
+                USActivities.PRESS_COPPER_BUTTON.get(),
+                ImmutableList.of(
+                        Pair.of(0, new FindCopperButtonTask()),
+                        Pair.of(1, new PressCopperButtonTask())
+                ),
+                ImmutableSet.of(
+                        Pair.of(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS.get(), MemoryStatus.VALUE_ABSENT)
+                )
+        );
+    }
+
+    public static void updateActivity(CopperGolemEntity entity) {
+        entity.getBrain().setActiveActivityToFirstValid(
+                ImmutableList.of(
+                        USActivities.PRESS_COPPER_BUTTON.get(), Activity.IDLE
+                )
+        );
     }
 
 }

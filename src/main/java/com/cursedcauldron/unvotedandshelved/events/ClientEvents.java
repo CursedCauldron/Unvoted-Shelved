@@ -27,6 +27,7 @@ public class ClientEvents {
     @SubscribeEvent
     public static void onClientSetup(final FMLClientSetupEvent event) {
         ItemBlockRenderTypes.setRenderLayer(USBlocks.GLOWBERRY_DUST.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(USBlocks.COPPER_PALLET.get(), RenderType.cutout());
     }
 
     @SubscribeEvent

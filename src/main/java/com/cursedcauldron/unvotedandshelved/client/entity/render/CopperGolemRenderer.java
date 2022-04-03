@@ -2,12 +2,14 @@ package com.cursedcauldron.unvotedandshelved.client.entity.render;
 
 import com.cursedcauldron.unvotedandshelved.UnvotedAndShelved;
 import com.cursedcauldron.unvotedandshelved.client.entity.models.CopperGolemModel;
+import com.cursedcauldron.unvotedandshelved.client.entity.render.feature.CopperGolemPowerLayer;
 import com.cursedcauldron.unvotedandshelved.entities.CopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.init.USModelLayers;
 import com.google.common.collect.Maps;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.layers.CreeperPowerLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
