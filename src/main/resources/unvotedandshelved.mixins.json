@@ -8,7 +8,10 @@
     "LightningEntityMixin",
     "LightningRodBlockMixin",
     "LivingEntityMemoryInvoker",
-    "MemoryInvoker"
+    "MemoryInvoker",
+    "ModelPartAccessor",
+    "ModelPartMixin",
+    "PartDefinitionMixin"
   ],
   "client": [
   ],
