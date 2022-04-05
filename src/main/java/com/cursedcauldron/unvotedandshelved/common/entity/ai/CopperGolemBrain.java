@@ -6,15 +6,20 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.brain.Activity;
-import net.minecraft.entity.ai.brain.Brain;
-import net.minecraft.entity.ai.brain.MemoryModuleState;
-import net.minecraft.entity.ai.brain.MemoryModuleType;
-import net.minecraft.entity.ai.brain.task.*;
-import net.minecraft.util.math.intprovider.UniformIntProvider;
+import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.Brain;
+import net.minecraft.world.entity.ai.behavior.GateBehavior;
+import net.minecraft.world.entity.ai.behavior.LookAtTargetSink;
+import net.minecraft.world.entity.ai.behavior.MoveToTargetSink;
+import net.minecraft.world.entity.ai.behavior.RandomStroll;
+import net.minecraft.world.entity.ai.behavior.RunSometimes;
+import net.minecraft.world.entity.ai.behavior.SetEntityLookTarget;
+import net.minecraft.world.entity.ai.behavior.Swim;
+import net.minecraft.world.entity.ai.memory.MemoryStatus;
+import net.minecraft.world.entity.schedule.Activity;
 
-import static net.minecraft.entity.ai.brain.MemoryModuleType.WALK_TARGET;
+import static net.minecraft.world.entity.ai.memory.MemoryModuleType.WALK_TARGET;
 
 
 public class CopperGolemBrain {
@@ -24,29 +29,29 @@ public class CopperGolemBrain {
         addIdleActivities(brain);
         brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
         brain.setDefaultActivity(Activity.IDLE);
-        brain.resetPossibleActivities();
+        brain.useDefaultActivity();
         return brain;
     }
 
     private static void addCoreActivities(Brain<CopperGolemEntity> brain) {
-        brain.setTaskList(Activity.CORE, 0, ImmutableList.of(
-                new StayAboveWaterTask(0.8F),
-                new LookAroundTask(45, 90),
-                new WanderAroundTask()
+        brain.addActivity(Activity.CORE, 0, ImmutableList.of(
+                new Swim(0.8F),
+                new LookAtTargetSink(45, 90),
+                new MoveToTargetSink()
         ));
     }
 
     public static void addIdleActivities(Brain<CopperGolemEntity> brain) {
-        brain.setTaskList(Activity.IDLE,
+        brain.addActivity(Activity.IDLE,
                 ImmutableList.of(
-                        Pair.of(0, new TimeLimitedTask<>(new FollowMobTask(EntityType.PLAYER, 6.0F), UniformIntProvider.create(5, 10))),
-                        Pair.of(2, new CompositeTask<>(
-                                ImmutableMap.of(WALK_TARGET, MemoryModuleState.VALUE_ABSENT),
+                        Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(5, 10))),
+                        Pair.of(2, new GateBehavior<>(
+                                ImmutableMap.of(WALK_TARGET, MemoryStatus.VALUE_ABSENT),
                                 ImmutableSet.of(),
-                                CompositeTask.Order.ORDERED,
-                                CompositeTask.RunMode.TRY_ALL,
+                                GateBehavior.OrderPolicy.ORDERED,
+                                GateBehavior.RunningPolicy.TRY_ALL,
                                 ImmutableList.of(
-                                        Pair.of(new StrollTask(0.6F), 2),
+                                        Pair.of(new RandomStroll(0.6F), 2),
                                         Pair.of(new FindButtonTask(16, 0.6F), 2)
                                 )))
                 ));
@@ -54,6 +59,6 @@ public class CopperGolemBrain {
 
     public static void updateActivities(CopperGolemEntity golem) {
         Brain<CopperGolemEntity> brain = golem.getBrain();
-        brain.resetPossibleActivities(ImmutableList.of(Activity.IDLE));
+        brain.setActiveActivityToFirstValid(ImmutableList.of(Activity.IDLE));
     }
 }

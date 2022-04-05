@@ -1,90 +1,90 @@
 package com.cursedcauldron.unvotedandshelved.common.blocks;
 
-import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.Property;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.gameevent.GameEvent;
 
 public class GlowberryDustBlockItem extends BlockItem {
-    public GlowberryDustBlockItem(Block block, Settings properties) {
+    public GlowberryDustBlockItem(Block block, Properties properties) {
         super(block, properties);
     }
 
-    public ActionResult place(ItemPlacementContext blockPlaceContext) {
+    public InteractionResult place(BlockPlaceContext blockPlaceContext) {
         if (!blockPlaceContext.canPlace()) {
-            return ActionResult.FAIL;
+            return InteractionResult.FAIL;
         }
-        ItemPlacementContext blockPlaceContext2 = this.getPlacementContext(blockPlaceContext);
+        BlockPlaceContext blockPlaceContext2 = this.updatePlacementContext(blockPlaceContext);
         if (blockPlaceContext2 == null) {
-            return ActionResult.FAIL;
+            return InteractionResult.FAIL;
         }
         BlockState blockState = this.getPlacementState(blockPlaceContext2);
         if (blockState == null) {
-            return ActionResult.FAIL;
+            return InteractionResult.FAIL;
         }
-        if (!this.place(blockPlaceContext2, blockState)) {
-            return ActionResult.FAIL;
+        if (!this.placeBlock(blockPlaceContext2, blockState)) {
+            return InteractionResult.FAIL;
         }
-        BlockPos blockPos = blockPlaceContext2.getBlockPos();
-        World level = blockPlaceContext2.getWorld();
-        PlayerEntity player = blockPlaceContext2.getPlayer();
-        ItemStack itemStack = blockPlaceContext2.getStack();
+        BlockPos blockPos = blockPlaceContext2.getClickedPos();
+        Level level = blockPlaceContext2.getLevel();
+        Player player = blockPlaceContext2.getPlayer();
+        ItemStack itemStack = blockPlaceContext2.getItemInHand();
         BlockState blockState2 = level.getBlockState(blockPos);
-        Hand hand = blockPlaceContext2.getHand();
-        if (blockState2.isOf(blockState.getBlock())) {
-            blockState2 = placeFromNbt(blockPos, level, itemStack, blockState2);
-            this.postPlacement(blockPos, level, player, itemStack, blockState2);
-            blockState2.getBlock().onPlaced(level, blockPos, blockState2, player, itemStack);
-            if (player instanceof ServerPlayerEntity) {
-                Criteria.PLACED_BLOCK.trigger((ServerPlayerEntity)player, blockPos, itemStack);
+        InteractionHand hand = blockPlaceContext2.getHand();
+        if (blockState2.is(blockState.getBlock())) {
+            blockState2 = updateBlockStateFromTag(blockPos, level, itemStack, blockState2);
+            this.updateCustomBlockEntityTag(blockPos, level, player, itemStack, blockState2);
+            blockState2.getBlock().setPlacedBy(level, blockPos, blockState2, player, itemStack);
+            if (player instanceof ServerPlayer) {
+                CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer)player, blockPos, itemStack);
             }
         }
-        BlockSoundGroup soundType = blockState2.getSoundGroup();
-        level.playSound(player, blockPos, this.getPlaceSound(blockState2), SoundCategory.BLOCKS, (soundType.getVolume() + 1.0f) / 2.0f, soundType.getPitch() * 0.8f);
-        level.emitGameEvent(player, GameEvent.BLOCK_PLACE, blockPos);
-        if (player == null || !player.getAbilities().creativeMode) {
+        SoundType soundType = blockState2.getSoundType();
+        level.playSound(player, blockPos, this.getPlaceSound(blockState2), SoundSource.BLOCKS, (soundType.getVolume() + 1.0f) / 2.0f, soundType.getPitch() * 0.8f);
+        level.gameEvent(player, GameEvent.BLOCK_PLACE, blockPos);
+        if (player == null || !player.getAbilities().instabuild) {
             assert player != null;
-            itemStack.decrement(1);
-            player.giveItemStack(Items.GLASS_BOTTLE.getDefaultStack());
+            itemStack.shrink(1);
+            player.addItem(Items.GLASS_BOTTLE.getDefaultInstance());
         }
-        return ActionResult.success(level.isClient);
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
 
-    private BlockState placeFromNbt(BlockPos blockPos, World level, ItemStack itemStack, BlockState blockState) {
+    private BlockState updateBlockStateFromTag(BlockPos blockPos, Level level, ItemStack itemStack, BlockState blockState) {
         BlockState blockState2 = blockState;
-        NbtCompound compoundTag = itemStack.getNbt();
+        CompoundTag compoundTag = itemStack.getTag();
         if (compoundTag != null) {
-            NbtCompound compoundTag2 = compoundTag.getCompound(BLOCK_STATE_TAG_KEY);
-            StateManager<Block, BlockState> stateDefinition = blockState2.getBlock().getStateManager();
-            for (String string : compoundTag2.getKeys()) {
+            CompoundTag compoundTag2 = compoundTag.getCompound(BLOCK_STATE_TAG);
+            StateDefinition<Block, BlockState> stateDefinition = blockState2.getBlock().getStateDefinition();
+            for (String string : compoundTag2.getAllKeys()) {
                 Property<?> property = stateDefinition.getProperty(string);
                 if (property == null) continue;
-                String string2 = compoundTag2.get(string).asString();
-                blockState2 = with(blockState2, property, string2);
+                String string2 = compoundTag2.get(string).getAsString();
+                blockState2 = updateState(blockState2, property, string2);
             }
         }
         if (blockState2 != blockState) {
-            level.setBlockState(blockPos, blockState2, 2);
+            level.setBlock(blockPos, blockState2, 2);
         }
         return blockState2;
     }
-    private static <T extends Comparable<T>> BlockState with(BlockState blockState, Property<T> property, String string) {
-        return property.parse(string).map(comparable -> blockState.with(property, comparable)).orElse(blockState);
+    private static <T extends Comparable<T>> BlockState updateState(BlockState blockState, Property<T> property, String string) {
+        return property.getValue(string).map(comparable -> blockState.setValue(property, comparable)).orElse(blockState);
     }
 }

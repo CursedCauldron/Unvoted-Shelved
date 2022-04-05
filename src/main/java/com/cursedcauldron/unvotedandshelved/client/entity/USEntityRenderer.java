@@ -8,14 +8,14 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.minecraft.client.render.entity.model.EntityModelLayer;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.resources.ResourceLocation;
 
 //<>
 
 @Environment(EnvType.CLIENT)
 public class USEntityRenderer {
-    public static final EntityModelLayer GLARE = new EntityModelLayer(new Identifier(UnvotedAndShelved.MODID, "glare"), "main");
+    public static final ModelLayerLocation GLARE = new ModelLayerLocation(new ResourceLocation(UnvotedAndShelved.MODID, "glare"), "main");
 
     public static void registerRenderers() {
         EntityRendererRegistry.register(USEntities.GLARE, GlareRenderer::new);

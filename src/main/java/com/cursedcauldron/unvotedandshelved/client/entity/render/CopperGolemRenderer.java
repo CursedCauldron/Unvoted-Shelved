@@ -2,24 +2,34 @@ package com.cursedcauldron.unvotedandshelved.client.entity.render;
 
 import com.cursedcauldron.unvotedandshelved.client.entity.CopperGolemModel;
 import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
+import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
+import com.google.common.collect.Maps;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.Util;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.resources.ResourceLocation;
 
-public class CopperGolemRenderer extends GeoEntityRenderer<CopperGolemEntity> {
-    public CopperGolemRenderer(EntityRendererFactory.Context ctx) {
-        super(ctx, new CopperGolemModel());
+import java.util.Map;
+
+
+@Environment(EnvType.CLIENT)
+public class CopperGolemRenderer extends MobRenderer<CopperGolemEntity, CopperGolemModel<CopperGolemEntity>> {
+    public static final ModelLayerLocation COPPER_GOLEM = new ModelLayerLocation(new ResourceLocation(UnvotedAndShelved.MODID, "copper_golem"), "main");
+    private static final Map<CopperGolemEntity.Stage, ResourceLocation> TEXTURES = Util.make(Maps.newHashMap(), states -> {
+        for (CopperGolemEntity.Stage stage : CopperGolemEntity.Stage.BY_ID) {
+            states.put(stage, new ResourceLocation(UnvotedAndShelved.MODID, String.format("textures/entity/copper_golem/%s_copper_golem.png", stage.getName())));
+        }
+    });
+
+    public CopperGolemRenderer(EntityRendererProvider.Context context) {
+        super(context, new CopperGolemModel<>(context.bakeLayer(COPPER_GOLEM)), 0.5F);
     }
 
     @Override
-    public RenderLayer getRenderType(CopperGolemEntity animatable, float partialTicks, MatrixStack stack,
-                                     @Nullable VertexConsumerProvider renderTypeBuffer, @Nullable VertexConsumer vertexBuilder,
-                                     int packedLightIn, Identifier textureLocation) {
-        return RenderLayer.getEntityTranslucent(this.getTextureLocation(animatable));
+    public ResourceLocation getTextureLocation(CopperGolemEntity entity) {
+        return TEXTURES.get(entity.getStage());
     }
 }

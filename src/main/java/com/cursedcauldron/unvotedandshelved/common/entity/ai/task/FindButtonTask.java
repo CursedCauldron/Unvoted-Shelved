@@ -2,48 +2,40 @@ package com.cursedcauldron.unvotedandshelved.common.entity.ai.task;
 
 import com.cursedcauldron.unvotedandshelved.common.blocks.CopperButtonBlock;
 import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
-import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
-import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
-import com.cursedcauldron.unvotedandshelved.core.registries.RegistryHelper;
 import com.cursedcauldron.unvotedandshelved.core.registries.SoundRegistry;
 import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import net.minecraft.block.AbstractButtonBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.enums.WallMountLocation;
-import net.minecraft.entity.ai.brain.MemoryModuleState;
-import net.minecraft.entity.ai.brain.MemoryModuleType;
-import net.minecraft.entity.ai.brain.task.LookTargetUtil;
-import net.minecraft.entity.ai.brain.task.Task;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.ai.behavior.Behavior;
+import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.world.entity.ai.memory.MemoryStatus;
+import net.minecraft.world.level.block.ButtonBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.AttachFace;
 
 
-public class FindButtonTask extends Task<CopperGolemEntity> {
+public class FindButtonTask extends Behavior<CopperGolemEntity> {
 
     private final int range;
     private final float speed;
     private BlockPos buttonPos;
 
     public FindButtonTask(int range, float speed) {
-        super(ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryModuleState.VALUE_PRESENT));
+        super(ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_PRESENT));
         this.range = range;
         this.speed = speed;
     }
 
     @Override
-    protected boolean shouldKeepRunning(ServerWorld level, CopperGolemEntity golem, long time) {
-        return golem.getOxidationStage() != CopperGolemEntity.OxidationStage.OXIDIZED && (this.getNearbyCopperButtons(golem) != null);
+    protected boolean canStillUse(ServerLevel level, CopperGolemEntity golem, long time) {
+        return golem.getStage() != CopperGolemEntity.Stage.OXIDIZED && (this.getNearbyCopperButtons(golem) != null);
     }
 
     private BlockPos getNearbyCopperButtons(CopperGolemEntity golem) {
@@ -52,7 +44,7 @@ public class FindButtonTask extends Task<CopperGolemEntity> {
             for (int z = -range; z <= range; z++) {
                 for (int y = -range; y <= range; y++) {
                     BlockPos blockPos = new BlockPos(golem.getX() + x, golem.getY() + y, golem.getZ() + z);
-                    if (golem.world.getBlockState(blockPos).isOf(USBlocks.COPPER_BUTTON)) {
+                    if (golem.level.getBlockState(blockPos).is(USBlocks.COPPER_BUTTON)) {
                         list.add(blockPos);
                     }
                 }
@@ -68,37 +60,37 @@ public class FindButtonTask extends Task<CopperGolemEntity> {
     }
 
     private static BlockPos getNearbyPos(CopperGolemEntity mob, BlockPos blockPos) {
-        Random random = mob.world.random;
-        return blockPos.add(getRandomOffset(random), 0, getRandomOffset(random));
+        Random random = mob.level.random;
+        return blockPos.offset(getRandomOffset(random), 0, getRandomOffset(random));
     }
 
     private boolean pathfindDirectlyTowards(BlockPos blockPos, CopperGolemEntity entity) {
-        entity.getNavigation().startMovingTo(blockPos.getX(), blockPos.getY(), blockPos.getZ(), 1.0D);
-        return entity.getNavigation().getCurrentPath() != null && entity.getNavigation().getCurrentPath().reachesTarget();
+        entity.getNavigation().moveTo(blockPos.getX(), blockPos.getY(), blockPos.getZ(), 1.0D);
+        return entity.getNavigation().getPath() != null && entity.getNavigation().getPath().canReach();
     }
 
     @Override
-    public void run(ServerWorld world, CopperGolemEntity golem, long time) {
+    public void start(ServerLevel world, CopperGolemEntity golem, long time) {
         this.buttonPos = getNearbyCopperButtons(golem);
     }
 
     @Override
-    public void keepRunning(ServerWorld world, CopperGolemEntity golem, long time) {
+    public void tick(ServerLevel world, CopperGolemEntity golem, long time) {
         if (this.buttonPos != null) {
             if (golem.getCooldownTicks() == 0) {
                 boolean bl = pathfindDirectlyTowards(this.buttonPos, golem);
                 if (bl) {
-                    LookTargetUtil.walkTowards(golem, getNearbyPos(golem, this.buttonPos), this.speed, 2);
-                    BlockPos pos = Objects.requireNonNull(golem.getNavigation().getCurrentPath()).getTarget();
-                    if (Objects.requireNonNull(golem.getNavigation().getCurrentPath()).isFinished()) {
-                        BlockState state = golem.world.getBlockState(pos);
-                        if (state.isOf(USBlocks.COPPER_BUTTON)) {
-                            WallMountLocation direction = state.get(CopperButtonBlock.FACE);
-                            if (golem.getCooldownTicks() == 0) {
-                                ((AbstractButtonBlock) state.getBlock()).powerOn(state, golem.world, this.buttonPos);
-                                if (direction == WallMountLocation.FLOOR) {
+                    BehaviorUtils.setWalkAndLookTargetMemories(golem, getNearbyPos(golem, this.buttonPos), this.speed, 2);
+                    BlockPos pos = Objects.requireNonNull(golem.getNavigation().getPath()).getTarget();
+                    if (Objects.requireNonNull(golem.getNavigation().getPath()).isDone()) {
+                        BlockState state = golem.level.getBlockState(pos);
+                        if (state.is(USBlocks.COPPER_BUTTON)) {
+                            AttachFace direction = state.getValue(CopperButtonBlock.FACE);
+                            if (golem.getTicksFrozen() == 0) {
+                                ((ButtonBlock) state.getBlock()).press(state, golem.level, this.buttonPos);
+                                if (direction == AttachFace.FLOOR) {
                                     golem.setButtonDownTicks(30);
-                                } else if (direction == WallMountLocation.CEILING) {
+                                } else if (direction == AttachFace.CEILING) {
                                     golem.setButtonUpTicks(30);
                                 } else {
                                     golem.setButtonTicks(30);

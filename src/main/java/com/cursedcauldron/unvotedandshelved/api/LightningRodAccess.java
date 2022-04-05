@@ -1,10 +1,10 @@
 package com.cursedcauldron.unvotedandshelved.api;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.WorldView;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelReader;
 
 public interface LightningRodAccess {
 
-    boolean canDispense(WorldView worldView, BlockPos pos);
+    boolean canDispense(LevelReader worldView, BlockPos pos);
 
 }

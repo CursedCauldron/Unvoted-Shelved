@@ -1,28 +1,27 @@
 package com.cursedcauldron.unvotedandshelved.common.blocks;
 
 import com.cursedcauldron.unvotedandshelved.core.registries.SoundRegistry;
-import net.minecraft.block.AbstractButtonBlock;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.WorldAccess;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.ButtonBlock;
 import org.jetbrains.annotations.Nullable;
 
-public class CopperButtonBlock extends AbstractButtonBlock {
+public class CopperButtonBlock extends ButtonBlock {
 
-    public CopperButtonBlock(Settings settings) {
+    public CopperButtonBlock(Properties settings) {
         super(false, settings);
     }
 
     @Override
-    protected SoundEvent getClickSound(boolean powered) {
+    protected SoundEvent getSound(boolean powered) {
         return SoundRegistry.COPPER_CLICK;
     }
 
     @Override
-    protected void playClickSound(@Nullable PlayerEntity player, WorldAccess world, BlockPos pos, boolean powered) {
-        world.playSound(powered ? player : null, pos, this.getClickSound(powered), SoundCategory.BLOCKS, 0.3F, powered ? 1.0F : 0.9F);
+    protected void playSound(@Nullable Player player, LevelAccessor world, BlockPos pos, boolean powered) {
+        world.playSound(powered ? player : null, pos, this.getSound(powered), SoundSource.BLOCKS, 0.3F, powered ? 1.0F : 0.9F);
     }
 }

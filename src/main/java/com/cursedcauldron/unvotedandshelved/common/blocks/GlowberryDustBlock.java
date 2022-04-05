@@ -3,84 +3,84 @@ package com.cursedcauldron.unvotedandshelved.common.blocks;
 
 import java.util.Random;
 import java.util.function.ToIntFunction;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.block.Waterloggable;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.ItemStack;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.IntProperty;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import static com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved.GLOWBERRY_DUST;
 import static com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved.GLOWBERRY_DUST_PARTICLES;
-import static net.minecraft.item.Items.GLASS_BOTTLE;
+import static net.minecraft.world.item.Items.GLASS_BOTTLE;
 
 @SuppressWarnings("deprecation")
 public class GlowberryDustBlock extends Block
-        implements Waterloggable {
-    public static final IntProperty LEVEL = Properties.LEVEL_15;
-    public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
-    public static final ToIntFunction<BlockState> LIGHT_EMISSION = blockState -> blockState.get(LEVEL);
+        implements SimpleWaterloggedBlock {
+    public static final IntegerProperty LEVEL = BlockStateProperties.LEVEL;
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+    public static final ToIntFunction<BlockState> LIGHT_EMISSION = blockState -> blockState.getValue(LEVEL);
 
-    public GlowberryDustBlock(AbstractBlock.Settings properties) {
+    public GlowberryDustBlock(BlockBehaviour.Properties properties) {
         super(properties);
-        this.setDefaultState(this.stateManager.getDefaultState().with(LEVEL, 10).with(WATERLOGGED, false));
+        this.registerDefaultState(this.stateDefinition.any().setValue(LEVEL, 10).setValue(WATERLOGGED, false));
     }
 
     @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(LEVEL, WATERLOGGED);
     }
 
     @Override
-    public ActionResult onUse(BlockState blockState, World level, BlockPos blockPos, PlayerEntity player, Hand interactionHand, BlockHitResult blockHitResult) {
-        ItemStack item = player.getStackInHand(interactionHand);
-        if (!player.getAbilities().creativeMode) {
-            if (item.isOf(GLASS_BOTTLE)) {
-                item.decrement(1);
-                player.giveItemStack(GLOWBERRY_DUST.getPickStack(level, blockPos, blockState));
-                level.setBlockState(blockPos, Blocks.AIR.getDefaultState());
-                level.playSound(player, blockPos, SoundEvents.BLOCK_RESPAWN_ANCHOR_CHARGE, SoundCategory.BLOCKS, 1.0F, 1.5F);
-                return ActionResult.SUCCESS;
+    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+        ItemStack item = player.getItemInHand(interactionHand);
+        if (!player.getAbilities().instabuild) {
+            if (item.is(GLASS_BOTTLE)) {
+                item.shrink(1);
+                player.addItem(GLOWBERRY_DUST.getCloneItemStack(level, blockPos, blockState));
+                level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
+                level.playSound(player, blockPos, SoundEvents.RESPAWN_ANCHOR_CHARGE, SoundSource.BLOCKS, 1.0F, 1.5F);
+                return InteractionResult.SUCCESS;
             }
-        } else if (item.isOf(GLASS_BOTTLE)) {
-            level.setBlockState(blockPos, Blocks.AIR.getDefaultState());
-            level.playSound(player, blockPos, SoundEvents.BLOCK_RESPAWN_ANCHOR_CHARGE, SoundCategory.BLOCKS, 1.0F, 1.5F);
-            return ActionResult.SUCCESS;
+        } else if (item.is(GLASS_BOTTLE)) {
+            level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
+            level.playSound(player, blockPos, SoundEvents.RESPAWN_ANCHOR_CHARGE, SoundSource.BLOCKS, 1.0F, 1.5F);
+            return InteractionResult.SUCCESS;
         }
-        return ActionResult.CONSUME;
+        return InteractionResult.CONSUME;
     }
 
 
 
     @Override
-    public VoxelShape getOutlineShape(BlockState blockState, BlockView blockGetter, BlockPos blockPos, ShapeContext collisionContext) {
-        return collisionContext.isHolding(GLASS_BOTTLE) ? VoxelShapes.fullCube() : VoxelShapes.empty();
+    public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+        return collisionContext.isHoldingItem(GLASS_BOTTLE) ? Shapes.block() : Shapes.empty();
     }
 
     @Override
-    public void randomDisplayTick(BlockState blockState, World level, BlockPos blockPos, Random random) {
+    public void animateTick(BlockState blockState, Level level, BlockPos blockPos, Random random) {
         int i = blockPos.getX();
         int j = blockPos.getY();
         int k = blockPos.getZ();
@@ -88,42 +88,42 @@ public class GlowberryDustBlock extends Block
         double e = (double)j + random.nextDouble();
         double f = (double)k + random.nextDouble();
         level.addParticle(GLOWBERRY_DUST_PARTICLES, d, e, f, 0.0, 0.0, 0.0);
-        BlockPos.Mutable mutableBlockPos = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
         for (int l = 0; l < 1; ++l) {
-            mutableBlockPos.set(i + MathHelper.nextInt(random, 0, 0), j - random.nextInt(1), k + MathHelper.nextInt(random, 0, 0));
+            mutableBlockPos.set(i + Mth.nextInt(random, 0, 0), j - random.nextInt(1), k + Mth.nextInt(random, 0, 0));
             BlockState blockState2 = level.getBlockState(mutableBlockPos);
-            if (blockState2.isFullCube(level, mutableBlockPos)) continue;
+            if (blockState2.isCollisionShapeFullBlock(level, mutableBlockPos)) continue;
             level.addParticle(GLOWBERRY_DUST_PARTICLES, (double)mutableBlockPos.getX() + random.nextDouble(), (double)mutableBlockPos.getY() + random.nextDouble(), (double)mutableBlockPos.getZ() + random.nextDouble(), 0.0, 0.0, 0.0);
         }
     }
 
     @Override
-    public boolean isTranslucent(BlockState blockState, BlockView blockGetter, BlockPos blockPos) {
+    public boolean propagatesSkylightDown(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
         return true;
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState blockState) {
-        return BlockRenderType.INVISIBLE;
+    public RenderShape getRenderShape(BlockState blockState) {
+        return RenderShape.INVISIBLE;
     }
 
     @Override
-    public float getAmbientOcclusionLightLevel(BlockState blockState, BlockView blockGetter, BlockPos blockPos) {
+    public float getShadeBrightness(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
         return 1.0f;
     }
 
     @Override
-    public BlockState getStateForNeighborUpdate(BlockState blockState, Direction direction, BlockState blockState2, WorldAccess levelAccessor, BlockPos blockPos, BlockPos blockPos2) {
-        if (blockState.get(WATERLOGGED)) {
-            levelAccessor.createAndScheduleFluidTick(blockPos, Fluids.WATER, Fluids.WATER.getTickRate(levelAccessor));
+    public BlockState updateShape(BlockState blockState, Direction direction, BlockState blockState2, LevelAccessor levelAccessor, BlockPos blockPos, BlockPos blockPos2) {
+        if (blockState.getValue(WATERLOGGED)) {
+            levelAccessor.scheduleTick(blockPos, Fluids.WATER, Fluids.WATER.getTickDelay(levelAccessor));
         }
-        return super.getStateForNeighborUpdate(blockState, direction, blockState2, levelAccessor, blockPos, blockPos2);
+        return super.updateShape(blockState, direction, blockState2, levelAccessor, blockPos, blockPos2);
     }
 
     @Override
     public FluidState getFluidState(BlockState blockState) {
-        if (blockState.get(WATERLOGGED)) {
-            return Fluids.WATER.getStill(false);
+        if (blockState.getValue(WATERLOGGED)) {
+            return Fluids.WATER.getSource(false);
         }
         return super.getFluidState(blockState);
     }

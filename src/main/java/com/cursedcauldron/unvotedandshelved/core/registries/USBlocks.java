@@ -1,38 +1,43 @@
 package com.cursedcauldron.unvotedandshelved.core.registries;
 
 import com.cursedcauldron.unvotedandshelved.common.blocks.CopperButtonBlock;
+import com.cursedcauldron.unvotedandshelved.common.blocks.GlowberryDustBlock;
+import com.cursedcauldron.unvotedandshelved.common.blocks.WeatheringCopperButtonBlock;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.Material;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-
 import java.util.concurrent.ConcurrentHashMap;
 
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.WeatheringCopper;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
+
 public class USBlocks {
-    private static final ConcurrentHashMap<Identifier, Block> BLOCKS = new ConcurrentHashMap<>();
-    private static final ConcurrentHashMap<Identifier, Item> ITEMS = new ConcurrentHashMap<>();
 
-    public static final Block COPPER_BUTTON = registerBlock("copper_button", new CopperButtonBlock(AbstractBlock.Settings.of(Material.DECORATION).noCollision().strength(0.5F).sounds(BlockSoundGroup.COPPER)), ItemGroup.REDSTONE);
+    public static void init() {
 
-    public static <B extends Block> B registerBlock(String name, B block, ItemGroup group) {
-        BLOCKS.put(UnvotedAndShelved.ID(name), block);
-        ITEMS.put(UnvotedAndShelved.ID(name), new BlockItem(block, new Item.Settings().group(group)));
-        return block;
     }
 
-    public static void register() {
-        for (Identifier id : BLOCKS.keySet()) {
-            Registry.register(Registry.BLOCK, id, BLOCKS.get(id));
-        }
-        for (Identifier id : ITEMS.keySet()) {
-            Registry.register(Registry.ITEM, id, ITEMS.get(id));
-        }
-    }
 
+    public static final Block GLOWBERRY_DUST = register("glowberry_dust", new GlowberryDustBlock(BlockBehaviour.Properties.of(Material.AIR).strength(-1.0F, 3600000.8F).noCollission().noDrops().sound(SoundRegistry.USBlockSoundGroup.GLOW).lightLevel(state -> 10)));
+    public static final Block COPPER_BUTTON = register("copper_button", new WeatheringCopperButtonBlock(WeatheringCopper.WeatherState.UNAFFECTED, BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_ORANGE).noCollission().strength(0.5F).requiresCorrectToolForDrops().sound(SoundType.COPPER)));
+    public static final Block EXPOSED_COPPER_BUTTON = register("exposed_copper_button", new WeatheringCopperButtonBlock(WeatheringCopper.WeatherState.EXPOSED, BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_ORANGE).noCollission().strength(0.5F).requiresCorrectToolForDrops().sound(SoundType.COPPER)));
+    public static final Block WEATHERED_COPPER_BUTTON = register("weathered_copper_button", new WeatheringCopperButtonBlock(WeatheringCopper.WeatherState.WEATHERED, BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_ORANGE).noCollission().strength(0.5F).requiresCorrectToolForDrops().sound(SoundType.COPPER)));
+    public static final Block OXIDIZED_COPPER_BUTTON = register("oxidized_copper_button", new WeatheringCopperButtonBlock(WeatheringCopper.WeatherState.OXIDIZED, BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_ORANGE).noCollission().strength(0.5F).requiresCorrectToolForDrops().sound(SoundType.COPPER)));
+    public static final Block WAXED_COPPER_BUTTON = register("waxed_copper_button", new CopperButtonBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_ORANGE).noCollission().strength(0.5F).requiresCorrectToolForDrops().sound(SoundType.COPPER)));
+    public static final Block WAXED_EXPOSED_COPPER_BUTTON = register("waxed_exposed_copper_button", new CopperButtonBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_ORANGE).noCollission().strength(0.5F).requiresCorrectToolForDrops().sound(SoundType.COPPER)));
+    public static final Block WAXED_WEATHERED_COPPER_BUTTON = register("waxed_weathered_copper_button", new CopperButtonBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_ORANGE).noCollission().strength(0.5F).requiresCorrectToolForDrops().sound(SoundType.COPPER)));
+    public static final Block WAXED_OXIDIZED_COPPER_BUTTON = register("waxed_oxidized_copper_button", new CopperButtonBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_ORANGE).noCollission().strength(0.5F).requiresCorrectToolForDrops().sound(SoundType.COPPER)));
+
+    private static Block register(String id, Block block) {
+        return register(id, block);
+    }
 }
