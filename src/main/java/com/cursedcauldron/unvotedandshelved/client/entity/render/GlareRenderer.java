@@ -25,7 +25,7 @@ public class GlareRenderer extends MobRenderer<GlareEntity, GlareModel<GlareEnti
     }
 
     @Override
-    public ResourceLocation getTexture(GlareEntity entity) {
+    public ResourceLocation getTextureLocation(GlareEntity entity) {
         int d = entity.getGlowberries();
         if (d > 0) {
             return entity.isGrumpy() ? GRUMPY_LIT_TEXTURE : LIT_TEXTURE;
