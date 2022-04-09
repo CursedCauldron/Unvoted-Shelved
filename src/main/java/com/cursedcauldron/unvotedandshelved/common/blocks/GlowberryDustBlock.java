@@ -3,6 +3,8 @@ package com.cursedcauldron.unvotedandshelved.common.blocks;
 
 import java.util.Random;
 import java.util.function.ToIntFunction;
+
+import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -37,8 +39,7 @@ import static com.cursedcauldron.unvotedandshelved.core.registries.USBlocks.GLOW
 import static net.minecraft.world.item.Items.GLASS_BOTTLE;
 
 @SuppressWarnings("deprecation")
-public class GlowberryDustBlock extends Block
-        implements SimpleWaterloggedBlock {
+public class GlowberryDustBlock extends Block implements SimpleWaterloggedBlock {
     public static final IntegerProperty LEVEL = BlockStateProperties.LEVEL;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final ToIntFunction<BlockState> LIGHT_EMISSION = blockState -> blockState.getValue(LEVEL);
@@ -59,7 +60,7 @@ public class GlowberryDustBlock extends Block
         if (!player.getAbilities().instabuild) {
             if (item.is(GLASS_BOTTLE)) {
                 item.shrink(1);
-                player.addItem(GLOWBERRY_DUST.getCloneItemStack(level, blockPos, blockState));
+                player.addItem(USBlocks.GLOWBERRY_DUST.getCloneItemStack(level, blockPos, blockState));
                 level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
                 level.playSound(player, blockPos, SoundEvents.RESPAWN_ANCHOR_CHARGE, SoundSource.BLOCKS, 1.0F, 1.5F);
                 return InteractionResult.SUCCESS;

@@ -3,6 +3,7 @@ package com.cursedcauldron.unvotedandshelved.common.entity;
 import com.cursedcauldron.unvotedandshelved.common.entity.ai.GlareBrain;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.cursedcauldron.unvotedandshelved.core.registries.SoundRegistry;
+import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
 import net.minecraft.core.BlockPos;
@@ -46,7 +47,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 import static com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved.GIVEN_GLOWBERRY;
-import static com.cursedcauldron.unvotedandshelved.core.registries.USBlocks.GLOWBERRY_DUST;
 
 //<>
 
@@ -285,7 +285,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
     }
 
     public void setLightblock(BlockPos pos) {
-        BlockState blockState = GLOWBERRY_DUST.defaultBlockState();
+        BlockState blockState = USBlocks.GLOWBERRY_DUST.defaultBlockState();
         if (level.getBlockState(pos).isAir()) {
             level.setBlockAndUpdate(pos, blockState);
             this.playSound(SoundEvents.RESPAWN_ANCHOR_CHARGE, 1.0f, 1.5f);

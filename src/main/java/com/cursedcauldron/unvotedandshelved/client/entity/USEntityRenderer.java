@@ -1,6 +1,7 @@
 package com.cursedcauldron.unvotedandshelved.client.entity;
 
-//import com.cursedcauldron.unvotedandshelved.client.entity.render.CopperGolemRenderer;
+/* import com.cursedcauldron.unvotedandshelved.client.entity.render.CopperGolemRenderer; */
+import com.cursedcauldron.unvotedandshelved.client.entity.render.CopperGolemRenderer;
 import com.cursedcauldron.unvotedandshelved.client.entity.render.GlareRenderer;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
@@ -16,9 +17,12 @@ import net.minecraft.resources.ResourceLocation;
 @Environment(EnvType.CLIENT)
 public class USEntityRenderer {
     public static final ModelLayerLocation GLARE = new ModelLayerLocation(new ResourceLocation(UnvotedAndShelved.MODID, "glare"), "main");
+    public static final ModelLayerLocation COPPER_GOLEM = new ModelLayerLocation(new ResourceLocation(UnvotedAndShelved.MODID, "copper_golem"), "main");
 
     public static void registerRenderers() {
         EntityRendererRegistry.register(USEntities.GLARE, GlareRenderer::new);
         EntityModelLayerRegistry.registerModelLayer(GLARE, GlareModel::getTexturedModelData);
+        EntityRendererRegistry.register(USEntities.COPPER_GOLEM, CopperGolemRenderer::new);
+        EntityModelLayerRegistry.registerModelLayer(COPPER_GOLEM, CopperGolemModel::getLayerDefinition);
     }
 }

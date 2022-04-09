@@ -21,13 +21,10 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 
 public class USBlocks {
-
-    public static void init() {
-
-    }
+    public static void init() {}
 
 
-    public static final Block GLOWBERRY_DUST = register("glowberry_dust", new GlowberryDustBlock(BlockBehaviour.Properties.of(Material.AIR).strength(-1.0F, 3600000.8F).noCollission().noDrops().sound(SoundRegistry.USBlockSoundGroup.GLOW).lightLevel(state -> 10)));
+    public static final Block GLOWBERRY_DUST = register("glowberry_dust", new GlowberryDustBlock(BlockBehaviour.Properties.of(Material.AIR).strength(-1.0f, 3600000.8f).noDrops().sound(UnvotedAndShelved.GLOW).lightLevel(GlowberryDustBlock.LIGHT_EMISSION)));
     public static final Block COPPER_BUTTON = register("copper_button", new WeatheringCopperButtonBlock(WeatheringCopper.WeatherState.UNAFFECTED, BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_ORANGE).noCollission().strength(0.5F).requiresCorrectToolForDrops().sound(SoundType.COPPER)));
     public static final Block EXPOSED_COPPER_BUTTON = register("exposed_copper_button", new WeatheringCopperButtonBlock(WeatheringCopper.WeatherState.EXPOSED, BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_ORANGE).noCollission().strength(0.5F).requiresCorrectToolForDrops().sound(SoundType.COPPER)));
     public static final Block WEATHERED_COPPER_BUTTON = register("weathered_copper_button", new WeatheringCopperButtonBlock(WeatheringCopper.WeatherState.WEATHERED, BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_ORANGE).noCollission().strength(0.5F).requiresCorrectToolForDrops().sound(SoundType.COPPER)));

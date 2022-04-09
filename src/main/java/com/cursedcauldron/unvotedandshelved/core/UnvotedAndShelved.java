@@ -18,6 +18,7 @@ import com.mojang.serialization.Codec;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.core.BlockPos;
@@ -83,6 +84,8 @@ public class UnvotedAndShelved implements ModInitializer {
 
         Reflection.initialize(USEntities.class);
         Registry.register(Registry.ITEM, new ResourceLocation(MODID, "glare_spawn_egg"), GLARE_SPAWN_EGG);
+        Registry.register(Registry.ITEM, new ResourceLocation(MODID, "glowberry_dust_bottle"), new GlowberryDustBlockItem(USBlocks.GLOWBERRY_DUST, new FabricItemSettings().tab(CreativeModeTab.TAB_DECORATIONS)));
+//        GLOWBERRY_DUST = Registry.register(Registry.BLOCK, new ResourceLocation(MODID, "glowberry_dust"), GLOWBERRY_DUST);
         FabricDefaultAttributeRegistry.register(GLARE, GlareEntity.createGlareAttributes());
         FabricDefaultAttributeRegistry.register(COPPER_GOLEM, CopperGolemEntity.createAttributes());
         DispenserBlock.registerBehavior(Blocks.LIGHTNING_ROD, new OptionalDispenseItemBehavior() {

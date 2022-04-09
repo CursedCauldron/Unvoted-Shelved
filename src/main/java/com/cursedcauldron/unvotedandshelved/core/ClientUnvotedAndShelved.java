@@ -35,13 +35,11 @@ public class ClientUnvotedAndShelved implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-
-        ClientSidePacketRegistry.INSTANCE.register(ClientUnvotedAndShelved.EntityPacket.ID, (ctx, buf) -> {
-                ClientUnvotedAndShelved.EntityPacketOnClient.onPacket(ctx, buf);
-            });
+        USEntityRenderer.registerRenderers();
+        ClientSidePacketRegistry.INSTANCE.register(ClientUnvotedAndShelved.EntityPacket.ID, EntityPacketOnClient::onPacket);
     }
 
-    public class EntityPacketOnClient {
+    public static class EntityPacketOnClient {
         @Environment(EnvType.CLIENT)
         public static void onPacket(PacketContext context, FriendlyByteBuf byteBuf) {
             EntityType<?> type = Registry.ENTITY_TYPE.byId(byteBuf.readVarInt());
@@ -69,7 +67,7 @@ public class ClientUnvotedAndShelved implements ClientModInitializer {
         }
     }
 
-    public class EntityPacket {
+    public static class EntityPacket {
         public static final ResourceLocation ID = new ResourceLocation(UnvotedAndShelved.MODID, "spawn_entity");
 
         public static Packet<?> createPacket(Entity entity) {

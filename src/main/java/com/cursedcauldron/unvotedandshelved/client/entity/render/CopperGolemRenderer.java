@@ -1,6 +1,7 @@
 package com.cursedcauldron.unvotedandshelved.client.entity.render;
 
 import com.cursedcauldron.unvotedandshelved.client.entity.CopperGolemModel;
+import com.cursedcauldron.unvotedandshelved.client.entity.USEntityRenderer;
 import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.google.common.collect.Maps;
@@ -17,7 +18,6 @@ import java.util.Map;
 
 @Environment(EnvType.CLIENT)
 public class CopperGolemRenderer extends MobRenderer<CopperGolemEntity, CopperGolemModel<CopperGolemEntity>> {
-    public static final ModelLayerLocation COPPER_GOLEM = new ModelLayerLocation(new ResourceLocation(UnvotedAndShelved.MODID, "copper_golem"), "main");
     private static final Map<CopperGolemEntity.Stage, ResourceLocation> TEXTURES = Util.make(Maps.newHashMap(), states -> {
         for (CopperGolemEntity.Stage stage : CopperGolemEntity.Stage.BY_ID) {
             states.put(stage, new ResourceLocation(UnvotedAndShelved.MODID, String.format("textures/entity/copper_golem/%s_copper_golem.png", stage.getName())));
@@ -25,7 +25,7 @@ public class CopperGolemRenderer extends MobRenderer<CopperGolemEntity, CopperGo
     });
 
     public CopperGolemRenderer(EntityRendererProvider.Context context) {
-        super(context, new CopperGolemModel<>(context.bakeLayer(COPPER_GOLEM)), 0.5F);
+        super(context, new CopperGolemModel<>(context.bakeLayer(USEntityRenderer.COPPER_GOLEM)), 0.5F);
     }
 
     @Override
