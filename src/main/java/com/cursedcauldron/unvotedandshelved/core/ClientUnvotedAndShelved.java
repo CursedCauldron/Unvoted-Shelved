@@ -35,8 +35,6 @@ public class ClientUnvotedAndShelved implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        USEntityRenderer.registerRenderers();
-        EntityRendererRegistry.INSTANCE.register(USEntities.COPPER_GOLEM, (ctx) -> new CopperGolemRenderer(ctx));
 
         ClientSidePacketRegistry.INSTANCE.register(ClientUnvotedAndShelved.EntityPacket.ID, (ctx, buf) -> {
                 ClientUnvotedAndShelved.EntityPacketOnClient.onPacket(ctx, buf);
