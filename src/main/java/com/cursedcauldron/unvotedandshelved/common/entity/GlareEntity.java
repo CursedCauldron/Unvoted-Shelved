@@ -46,7 +46,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 import static com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved.GIVEN_GLOWBERRY;
-import static com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved.GLOWBERRY_DUST;
+import static com.cursedcauldron.unvotedandshelved.core.registries.USBlocks.GLOWBERRY_DUST;
 
 //<>
 

@@ -32,8 +32,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import static com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved.GLOWBERRY_DUST;
 import static com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved.GLOWBERRY_DUST_PARTICLES;
+import static com.cursedcauldron.unvotedandshelved.core.registries.USBlocks.GLOWBERRY_DUST;
 import static net.minecraft.world.item.Items.GLASS_BOTTLE;
 
 @SuppressWarnings("deprecation")

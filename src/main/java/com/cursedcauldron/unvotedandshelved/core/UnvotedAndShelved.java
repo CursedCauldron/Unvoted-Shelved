@@ -63,7 +63,6 @@ public class UnvotedAndShelved implements ModInitializer {
     public static MemoryModuleType<BlockPos> DARK_POS = LivingEntityMemoryInvoker.invokeRegister("dark_pos");
     public static final Item GLARE_SPAWN_EGG = new SpawnEggItem(GLARE, 7837492, 5204011, new Item.Properties().tab(CreativeModeTab.TAB_MISC));
     public static final SoundType GLOW = new SoundType(1.0f, 2.0f, SoundEvents.RESPAWN_ANCHOR_CHARGE, GLOWBERRY_DUST_STEP, SoundEvents.RESPAWN_ANCHOR_CHARGE , SoundEvents.RESPAWN_ANCHOR_CHARGE, SoundEvents.RESPAWN_ANCHOR_CHARGE);
-    public static GlowberryDustBlock GLOWBERRY_DUST = new GlowberryDustBlock(BlockBehaviour.Properties.of(Material.AIR).strength(-1.0f, 3600000.8f).noDrops().sound(GLOW).lightLevel(GlowberryDustBlock.LIGHT_EMISSION));
     public static final SimpleParticleType GLOWBERRY_DUST_PARTICLES = register("glowberry_dust", false);
 
 
@@ -84,8 +83,6 @@ public class UnvotedAndShelved implements ModInitializer {
 
         Reflection.initialize(USEntities.class);
         Registry.register(Registry.ITEM, new ResourceLocation(MODID, "glare_spawn_egg"), GLARE_SPAWN_EGG);
-        Registry.register(Registry.ITEM, new ResourceLocation(MODID, "glowberry_dust_bottle"), new GlowberryDustBlockItem(GLOWBERRY_DUST, new FabricItemSettings().tab(CreativeModeTab.TAB_DECORATIONS)));
-        GLOWBERRY_DUST = Registry.register(Registry.BLOCK, new ResourceLocation(MODID, "glowberry_dust"), GLOWBERRY_DUST);
         FabricDefaultAttributeRegistry.register(GLARE, GlareEntity.createGlareAttributes());
         FabricDefaultAttributeRegistry.register(COPPER_GOLEM, CopperGolemEntity.createAttributes());
         DispenserBlock.registerBehavior(Blocks.LIGHTNING_ROD, new OptionalDispenseItemBehavior() {

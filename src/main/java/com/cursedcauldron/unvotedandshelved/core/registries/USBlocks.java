@@ -38,6 +38,6 @@ public class USBlocks {
     public static final Block WAXED_OXIDIZED_COPPER_BUTTON = register("waxed_oxidized_copper_button", new CopperButtonBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_ORANGE).noCollission().strength(0.5F).requiresCorrectToolForDrops().sound(SoundType.COPPER)));
 
     private static Block register(String id, Block block) {
-        return Registry.register(Registry.BLOCK, id, block);
+        return Registry.register(Registry.BLOCK, new ResourceLocation(UnvotedAndShelved.MODID, id), block);
     }
 }
