@@ -59,6 +59,11 @@ public class CopperGolemEntity extends AbstractGolem {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(STAGE, 0);
+        this.entityData.define(BUTTON_TICKS, 0);
+        this.entityData.define(SPEED, 0);
+        this.entityData.define(BUTTON_TICKS_DOWN, 0);
+        this.entityData.define(BUTTON_TICKS_UP, 0);
+        this.entityData.define(WAXED, false);
     }
 
     @Override
