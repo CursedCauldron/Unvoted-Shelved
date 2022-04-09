@@ -1,6 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.mixin;
 
-import com.cursedcauldron.unvotedandshelved.client.entity.model.IModelAccess;
+import com.cursedcauldron.unvotedandshelved.client.entity.model.ModelModifier;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.PartDefinition;
@@ -19,7 +19,7 @@ public class PartDefinitionMixin {
 
     @Inject(method = "bake", at = @At(value = "RETURN"), cancellable = true)
     private void bakeDefaultPose(int p_171584_, int p_171585_, CallbackInfoReturnable<ModelPart> cir) {
-        ((IModelAccess)(Object)cir.getReturnValue()).setDefaultPose(this.partPose);
+        ((ModelModifier)(Object)cir.getReturnValue()).setDefaultPose(this.partPose);
         cir.setReturnValue(cir.getReturnValue());
     }
 }

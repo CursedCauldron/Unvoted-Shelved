@@ -1,6 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.mixin;
 
-import com.cursedcauldron.unvotedandshelved.client.entity.model.IModelAccess;
+import com.cursedcauldron.unvotedandshelved.client.entity.model.ModelModifier;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 //<>
 
 @Mixin(ModelPart.class)
-public class ModelPartMixin implements IModelAccess {
+public class ModelPartMixin implements ModelModifier {
     private float xScale = 1.0F;
     private float yScale = 1.0F;
     private float zScale = 1.0F;
@@ -37,9 +37,9 @@ public class ModelPartMixin implements IModelAccess {
 
     @Inject(method = "copyFrom", at = @At("TAIL"))
     private void copyScale(ModelPart part, CallbackInfo ci) {
-        this.setXScale(((IModelAccess)(Object)part).xScale());
-        this.setYScale(((IModelAccess)(Object)part).yScale());
-        this.setZScale(((IModelAccess)(Object)part).zScale());
+        this.setXScale(((ModelModifier)(Object)part).xScale());
+        this.setYScale(((ModelModifier)(Object)part).yScale());
+        this.setZScale(((ModelModifier)(Object)part).zScale());
     }
 
     @Inject(method = "translateAndRotate", at = @At("TAIL"))

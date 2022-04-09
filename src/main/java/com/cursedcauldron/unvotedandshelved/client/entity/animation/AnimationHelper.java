@@ -15,22 +15,22 @@ import java.util.Optional;
 //<>
 
 @Environment(EnvType.CLIENT)
-public class Animator {
-    public static void run(HierarchicalModel<?> model, Animation animation, long startTime, float speed, Vector3f vec) {
-        float timestamp = getTimestamp(animation, startTime);
+public class AnimationHelper {
+    public static void animate(HierarchicalModel<?> model, Animation animation, long runningTime, float speed, Vector3f animationProgress) {
+        float runningSeconds = getRunningSeconds(animation, runningTime);
         for (Map.Entry<String, List<Transformation>> entry : animation.boneAnimations().entrySet()) {
             Optional<ModelPart> optional = getModelParts(model, entry.getKey());
             List<Transformation> transformations = entry.getValue();
             optional.ifPresent(part -> transformations.forEach(transformation -> {
                 Keyframe[] keyframes = transformation.keyframes();
-                int start = Math.max(0, Mth.binarySearch(0, keyframes.length, index -> timestamp <= keyframes[index].timestamp()) - 1);
+                int start = Math.max(0, Mth.binarySearch(0, keyframes.length, index -> runningSeconds <= keyframes[index].timestamp()) - 1);
                 int end = Math.min(keyframes.length - 1, start + 1);
                 Keyframe startFrame = keyframes[start];
                 Keyframe endFrame = keyframes[end];
-                float current = timestamp - startFrame.timestamp();
+                float current = runningSeconds - startFrame.timestamp();
                 float delta = Mth.clamp(current / (endFrame.timestamp() - startFrame.timestamp()), 0.0F, 1.0F);
-                endFrame.interpolation().apply(vec, delta, keyframes, start, end, speed);
-                transformation.target().apply(part, vec);
+                endFrame.interpolation().apply(animationProgress, delta, keyframes, start, end, speed);
+                transformation.target().apply(part, animationProgress);
             }));
         }
     }
@@ -39,12 +39,12 @@ public class Animator {
         return model.root().getAllParts().filter(part -> ((ModelPartAccessor)(Object)part).getChildren().containsKey(key)).findFirst().map(part -> part.getChild(key));
     }
 
-    private static float getTimestamp(Animation animation, long startTime) {
-        float timeInMillis = (float)startTime / 1000.0F;
-        return animation.looping() ? timeInMillis % animation.lengthInSeconds() : timeInMillis;
+    private static float getRunningSeconds(Animation animation, long runningTime) {
+        float time = (float)runningTime / 1000.0F;
+        return animation.looping() ? time % animation.lengthInSeconds() : time;
     }
 
-    public static Vector3f position(float x, float y, float z) {
+    public static Vector3f translate(float x, float y, float z) {
         return new Vector3f(x, -y, z);
     }
 

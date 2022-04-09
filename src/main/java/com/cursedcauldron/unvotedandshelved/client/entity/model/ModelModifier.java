@@ -6,7 +6,7 @@ import net.minecraft.client.model.geom.PartPose;
 
 //<>
 
-public interface IModelAccess {
+public interface ModelModifier {
     static void translate(ModelPart part, Vector3f vec) {
         part.x += vec.x();
         part.y += vec.y();
@@ -20,9 +20,9 @@ public interface IModelAccess {
     }
 
     static void scale(ModelPart part, Vector3f vec) {
-        ((IModelAccess)(Object)part).increaseXScale(vec.x());
-        ((IModelAccess)(Object)part).increaseYScale(vec.y());
-        ((IModelAccess)(Object)part).increaseZScale(vec.z());
+        ((ModelModifier)(Object)part).increaseXScale(vec.x());
+        ((ModelModifier)(Object)part).increaseYScale(vec.y());
+        ((ModelModifier)(Object)part).increaseZScale(vec.z());
     }
 
     PartPose getDefaultPose();
@@ -30,7 +30,7 @@ public interface IModelAccess {
     void setDefaultPose(PartPose pose);
 
     static void resetPose(ModelPart part) {
-        part.loadPose(((IModelAccess)(Object)part).getDefaultPose());
+        part.loadPose(((ModelModifier)(Object)part).getDefaultPose());
     }
 
     float xScale();

@@ -1,6 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.client.entity.animation;
 
-import com.cursedcauldron.unvotedandshelved.client.entity.model.IModelAccess;
+import com.cursedcauldron.unvotedandshelved.client.entity.model.ModelModifier;
 import com.mojang.math.Vector3f;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -38,13 +38,13 @@ public record Transformation(Target target, Keyframe... keyframes) {
 
     @Environment(EnvType.CLIENT)
     public static class Targets {
-        public static final Target TRANSLATE    = IModelAccess::translate;
-        public static final Target ROTATE       = IModelAccess::rotate;
-        public static final Target SCALE        = IModelAccess::scale;
+        public static final Target TRANSLATE    = ModelModifier::translate;
+        public static final Target ROTATE       = ModelModifier::rotate;
+        public static final Target SCALE        = ModelModifier::scale;
     }
 
     @Environment(EnvType.CLIENT)
     public interface Interpolation {
-        void apply(Vector3f vec, float delta, Keyframe[] keyframes, int start, int end, float speed);
+        void apply(Vector3f animationProgress, float delta, Keyframe[] keyframes, int start, int end, float speed);
     }
 }
