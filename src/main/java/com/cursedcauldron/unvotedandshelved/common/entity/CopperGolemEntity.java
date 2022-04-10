@@ -1,5 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.common.entity;
 
+import com.cursedcauldron.unvotedandshelved.client.entity.animation.AnimationState;
 import com.cursedcauldron.unvotedandshelved.common.entity.ai.CopperGolemBrain;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
@@ -31,10 +32,9 @@ public class CopperGolemEntity extends AbstractGolem {
     private static final EntityDataAccessor<Integer> SPEED = SynchedEntityData.defineId(CopperGolemEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> BUTTON_TICKS_DOWN = SynchedEntityData.defineId(CopperGolemEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> BUTTON_TICKS_UP = SynchedEntityData.defineId(CopperGolemEntity.class, EntityDataSerializers.INT);
-
     private static final EntityDataAccessor<Boolean> WAXED = SynchedEntityData.defineId(CopperGolemEntity.class, EntityDataSerializers.BOOLEAN);
-
     private int cooldownTicks;
+    public final AnimationState walkingAnimation = new AnimationState();
 
     public CopperGolemEntity(EntityType<? extends AbstractGolem> type, Level world) {
         super(type, world);
@@ -102,6 +102,21 @@ public class CopperGolemEntity extends AbstractGolem {
         System.out.println("b = " + (b));
     }
 
+    private boolean shouldWalk() {
+        return this.onGround && this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6 && !this.isInWaterOrBubble();
+    }
+
+    @Override
+    public void tick() {
+        if (this.level.isClientSide()) {
+            if (this.shouldWalk()) {
+                this.walkingAnimation.startIfNotRunning();
+            } else {
+                this.walkingAnimation.stop();
+            }
+        }
+        super.tick();
+    }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
@@ -199,7 +214,5 @@ public class CopperGolemEntity extends AbstractGolem {
         public String getName() {
             return this.name;
         }
-
     }
-
 }

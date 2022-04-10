@@ -1,6 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.client.entity.render.feature;
 
-import com.cursedcauldron.unvotedandshelved.client.entity.GlareModel;
+import com.cursedcauldron.unvotedandshelved.client.entity.model.GlareModel;
 import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.mojang.blaze3d.vertex.PoseStack;

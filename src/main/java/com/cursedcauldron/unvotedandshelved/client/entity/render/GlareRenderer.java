@@ -1,6 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.client.entity.render;
 
-import com.cursedcauldron.unvotedandshelved.client.entity.GlareModel;
+import com.cursedcauldron.unvotedandshelved.client.entity.model.GlareModel;
 import com.cursedcauldron.unvotedandshelved.client.entity.USEntityRenderer;
 import com.cursedcauldron.unvotedandshelved.client.entity.render.feature.GlareGlowberriesLayer;
 import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;

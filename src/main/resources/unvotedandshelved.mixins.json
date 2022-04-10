@@ -4,13 +4,14 @@
   "package": "com.cursedcauldron.unvotedandshelved.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-    "access.ActivityAccessor",
     "LightningEntityMixin",
     "LightningRodBlockMixin",
-    "access.MemoryModuleAccessor",
-    "access.ModelPartAccessor",
+    "MinecraftServerMixin",
     "ModelPartMixin",
     "PartDefinitionMixin",
+    "access.ActivityAccessor",
+    "access.MemoryModuleAccessor",
+    "access.ModelPartAccessor",
     "access.SimpleParticleTypeAccessor"
   ],
   "client": [

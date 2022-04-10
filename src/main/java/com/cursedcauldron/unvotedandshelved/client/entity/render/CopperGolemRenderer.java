@@ -1,6 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.client.entity.render;
 
-import com.cursedcauldron.unvotedandshelved.client.entity.CopperGolemModel;
+import com.cursedcauldron.unvotedandshelved.client.entity.model.CopperGolemModel;
 import com.cursedcauldron.unvotedandshelved.client.entity.USEntityRenderer;
 import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
@@ -8,7 +8,6 @@ import com.google.common.collect.Maps;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.Util;
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;

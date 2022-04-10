@@ -1,6 +1,8 @@
 package com.cursedcauldron.unvotedandshelved.client.entity;
 
 /* import com.cursedcauldron.unvotedandshelved.client.entity.render.CopperGolemRenderer; */
+import com.cursedcauldron.unvotedandshelved.client.entity.model.CopperGolemModel;
+import com.cursedcauldron.unvotedandshelved.client.entity.model.GlareModel;
 import com.cursedcauldron.unvotedandshelved.client.entity.render.CopperGolemRenderer;
 import com.cursedcauldron.unvotedandshelved.client.entity.render.GlareRenderer;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;

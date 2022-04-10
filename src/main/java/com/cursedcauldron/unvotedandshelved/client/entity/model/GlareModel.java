@@ -1,4 +1,4 @@
-package com.cursedcauldron.unvotedandshelved.client.entity;
+package com.cursedcauldron.unvotedandshelved.client.entity.model;
 
 import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
 import net.minecraft.client.model.HierarchicalModel;

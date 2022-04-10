@@ -23,7 +23,7 @@ public record Transformation(Target target, Keyframe... keyframes) {
             Vector3f endTarget = keyframes[end].target();
             animationProgress.set(Mth.lerp(delta, startTarget.x(), endTarget.x()) * speed, Mth.lerp(delta, startTarget.y(), endTarget.y()) * speed, Mth.lerp(delta, startTarget.z(), endTarget.z()) * speed);
         };
-        public static final Interpolation SPLINE = (animationProgress, delta, keyframes, start, end, speed) -> {
+        public static final Interpolation CATMULLROM = (animationProgress, delta, keyframes, start, end, speed) -> {
             Vector3f firstTarget = keyframes[Math.max(0, start - 1)].target();
             Vector3f secondTarget = keyframes[start].target();
             Vector3f thirdTarget = keyframes[end].target();
