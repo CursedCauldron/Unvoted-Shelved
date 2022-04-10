@@ -18,22 +18,22 @@ public record Transformation(Target target, Keyframe... keyframes) {
 
     @Environment(EnvType.CLIENT)
     public static class Interpolations {
-        public static final Interpolation LINEAL = (vec, delta, keyframes, start, end, speed) -> {
+        public static final Interpolation LINEAL = (animationProgress, delta, keyframes, start, end, speed) -> {
             Vector3f startTarget = keyframes[start].target();
             Vector3f endTarget = keyframes[end].target();
-            vec.set(Mth.lerp(delta, startTarget.x(), endTarget.x()) * speed, Mth.lerp(delta, startTarget.y(), endTarget.y()) * speed, Mth.lerp(delta, startTarget.z(), endTarget.z()) * speed);
+            animationProgress.set(Mth.lerp(delta, startTarget.x(), endTarget.x()) * speed, Mth.lerp(delta, startTarget.y(), endTarget.y()) * speed, Mth.lerp(delta, startTarget.z(), endTarget.z()) * speed);
         };
-        public static final Interpolation CATMULL = (vec, delta, keyframes, start, end, speed) -> {
+        public static final Interpolation SPLINE = (animationProgress, delta, keyframes, start, end, speed) -> {
             Vector3f firstTarget = keyframes[Math.max(0, start - 1)].target();
             Vector3f secondTarget = keyframes[start].target();
             Vector3f thirdTarget = keyframes[end].target();
             Vector3f fourthTarget = keyframes[Math.min(keyframes.length - 1, end + 1)].target();
-            vec.set(catmull(delta, firstTarget.x(), secondTarget.x(), thirdTarget.x(), fourthTarget.x()) * speed, catmull(delta, firstTarget.y(), secondTarget.y(), thirdTarget.y(), fourthTarget.y()) * speed,catmull(delta, firstTarget.z(), secondTarget.z(), thirdTarget.z(), fourthTarget.z()) * speed);
+            animationProgress.set(catmullrom(delta, firstTarget.x(), secondTarget.x(), thirdTarget.x(), fourthTarget.x()) * speed, catmullrom(delta, firstTarget.y(), secondTarget.y(), thirdTarget.y(), fourthTarget.y()) * speed, catmullrom(delta, firstTarget.z(), secondTarget.z(), thirdTarget.z(), fourthTarget.z()) * speed);
         };
     }
 
-    public static float catmull(float delta, float first, float second, float third, float fourth) {
-        return 0.5F * (2.0F * second + (third - first) * delta + (2.0F * first - 5.0F * second + 4.0F * third - fourth) * delta * delta + (3.0F * second - first - 3.0F * third + fourth) * delta * delta * delta);
+    public static float catmullrom(float delta, float p0, float p1, float p2, float p3) {
+        return 0.5F * (2.0F * p1 + (p2 - p0) * delta + (2.0F * p0 - 5.0F * p1 + 4.0F * p2 - p3) * delta * delta + (3.0F * p1 - p0 - 3.0F * p2 + p3) * delta * delta * delta);
     }
 
     @Environment(EnvType.CLIENT)
