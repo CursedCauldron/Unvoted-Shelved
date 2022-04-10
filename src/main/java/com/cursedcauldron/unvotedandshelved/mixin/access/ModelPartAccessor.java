@@ -1,4 +1,4 @@
-package com.cursedcauldron.unvotedandshelved.mixin;
+package com.cursedcauldron.unvotedandshelved.mixin.access;
 
 import net.minecraft.client.model.geom.ModelPart;
 import org.spongepowered.asm.mixin.Mixin;

@@ -1,9 +1,9 @@
 package com.cursedcauldron.unvotedandshelved.common.entity;
 
 import com.cursedcauldron.unvotedandshelved.common.entity.ai.GlareBrain;
-import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
-import com.cursedcauldron.unvotedandshelved.core.registries.SoundRegistry;
 import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
+import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
+import com.cursedcauldron.unvotedandshelved.core.registries.USSounds;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
 import net.minecraft.core.BlockPos;
@@ -21,7 +21,11 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -46,13 +50,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-import static com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved.GIVEN_GLOWBERRY;
-
 //<>
 
 public class GlareEntity extends AgeableMob implements FlyingAnimal {
     protected static final ImmutableList<SensorType<? extends Sensor<? super GlareEntity>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_PLAYERS);
-    protected static final ImmutableList<MemoryModuleType<?>> MEMORY_MODULES = ImmutableList.of(UnvotedAndShelved.GLOWBERRIES_GIVEN, UnvotedAndShelved.GRUMPY_TICKS, UnvotedAndShelved.DARK_TICKS_REMAINING, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.AVOID_TARGET);
+    protected static final ImmutableList<MemoryModuleType<?>> MEMORY_MODULES = ImmutableList.of(USMemoryModules.GLOWBERRIES_GIVEN, USMemoryModules.GRUMPY_TICKS, USMemoryModules.DARK_TICKS_REMAINING, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.AVOID_TARGET);
     private static final EntityDataAccessor<Boolean> GRUMPY = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> FINDING_DARKNESS = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> GRUMPY_TICKS;
@@ -98,7 +100,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
     }
 
     public boolean requiresCustomPersistence() {
-        return super.requiresCustomPersistence() || this.getBrain().hasMemoryValue(GIVEN_GLOWBERRY);
+        return super.requiresCustomPersistence() || this.getBrain().hasMemoryValue(USMemoryModules.GIVEN_GLOWBERRY);
     }
 
     @Override
@@ -106,11 +108,11 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         super.addAdditionalSaveData(nbt);
         nbt.putBoolean("IsGrumpy", this.isGrumpy());
         nbt.putInt("GrumpyTicks", this.getGrumpyTick());
-        if (this.brain.getMemory(UnvotedAndShelved.DARK_TICKS_REMAINING).isPresent()) {
-            nbt.putInt("FindDarknessTicks", this.brain.getMemory(UnvotedAndShelved.DARK_TICKS_REMAINING).get());
+        if (this.brain.getMemory(USMemoryModules.DARK_TICKS_REMAINING).isPresent()) {
+            nbt.putInt("FindDarknessTicks", this.brain.getMemory(USMemoryModules.DARK_TICKS_REMAINING).get());
         }
-        if (this.brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).isPresent()) {
-            nbt.putInt("GlowberriesGiven", this.brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get());
+        if (this.brain.getMemory(USMemoryModules.GLOWBERRIES_GIVEN).isPresent()) {
+            nbt.putInt("GlowberriesGiven", this.brain.getMemory(USMemoryModules.GLOWBERRIES_GIVEN).get());
         }
     }
 
@@ -132,7 +134,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         return world.getBlockState(pos).isAir() ? 10.0F : 0.0F;
     }
 
-    @Override
+    @Override @SuppressWarnings("all")
     public Brain<GlareEntity> getBrain() {
         return (Brain<GlareEntity>)super.getBrain();
     }
@@ -146,7 +148,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         GlareBrain.updateActivities(this);
         this.level.getProfiler().pop();
         if (!this.isNoAi()) {
-            Optional<Integer> ticksRemaining = this.getBrain().getMemory(UnvotedAndShelved.DARK_TICKS_REMAINING);
+            Optional<Integer> ticksRemaining = this.getBrain().getMemory(USMemoryModules.DARK_TICKS_REMAINING);
             this.setFindingDarkness(ticksRemaining.isPresent() && ticksRemaining.get() > 0);
         }
     }
@@ -260,7 +262,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return this.isGrumpy() ? SoundRegistry.GLARE_GRUMPY_IDLE : SoundRegistry.GLARE_IDLE;
+        return this.isGrumpy() ? USSounds.GLARE_GRUMPY_IDLE : USSounds.GLARE_IDLE;
     }
 
     protected SoundEvent getHurtSound(DamageSource source) {
@@ -293,7 +295,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
     }
 
     public void setGlowberries(int amount) {
-        this.brain.setMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN, amount);
+        this.brain.setMemory(USMemoryModules.GLOWBERRIES_GIVEN, amount);
         this.entityData.set(GLOWBERRIES_GIVEN, amount);
     }
 

@@ -1,14 +1,12 @@
 package com.cursedcauldron.unvotedandshelved.core;
 
 import com.cursedcauldron.unvotedandshelved.client.entity.USEntityRenderer;
-import com.cursedcauldron.unvotedandshelved.client.entity.render.CopperGolemRenderer;
-import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
+import com.cursedcauldron.unvotedandshelved.core.registries.USParticles;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
-import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.fabricmc.fabric.api.network.PacketContext;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -22,6 +20,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+
 import java.util.UUID;
 
 //<>
@@ -30,7 +29,7 @@ import java.util.UUID;
 public class ClientUnvotedAndShelved implements ClientModInitializer {
     static {
         ParticleFactoryRegistry registry = ParticleFactoryRegistry.getInstance();
-        registry.register(UnvotedAndShelved.GLOWBERRY_DUST_PARTICLES, FlameParticle.Provider::new);
+        registry.register(USParticles.GLOWBERRY_DUST_PARTICLES, FlameParticle.Provider::new);
     }
 
     @Override

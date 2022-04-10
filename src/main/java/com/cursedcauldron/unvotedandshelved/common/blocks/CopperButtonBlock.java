@@ -1,6 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.common.blocks;
 
-import com.cursedcauldron.unvotedandshelved.core.registries.SoundRegistry;
+import com.cursedcauldron.unvotedandshelved.core.registries.USSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -17,7 +17,7 @@ public class CopperButtonBlock extends ButtonBlock {
 
     @Override
     protected SoundEvent getSound(boolean powered) {
-        return SoundRegistry.COPPER_CLICK;
+        return USSounds.COPPER_CLICK;
     }
 
     @Override

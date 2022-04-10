@@ -2,6 +2,7 @@ package com.cursedcauldron.unvotedandshelved.common.entity.ai.task;
 
 import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
+import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
 import com.google.common.collect.ImmutableMap;
 import java.util.Random;
 import net.minecraft.core.BlockPos;
@@ -27,8 +28,6 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
     private final float speed;
     protected GroundPathNavigation groundNavigation;
 
-
-
     public GlowberryStrollTask(int range, float speed) {
         super(ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_PRESENT));
         this.range = range;
@@ -37,12 +36,12 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
 
     @Override
     protected boolean checkExtraStartConditions(ServerLevel worldIn, GlareEntity owner) {
-        return !owner.isInWaterOrBubble() && (owner.getBrain().getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get() >= 1);
+        return !owner.isInWaterOrBubble() && (owner.getBrain().getMemory(USMemoryModules.GLOWBERRIES_GIVEN).get() >= 1);
     }
 
     @Override
     protected boolean canStillUse(ServerLevel level, GlareEntity glare, long time) {
-        return (glare.getBrain().getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get() >= 1) && (this.darkPos != null);
+        return (glare.getBrain().getMemory(USMemoryModules.GLOWBERRIES_GIVEN).get() >= 1) && (this.darkPos != null);
     }
 
     private boolean pathfindDirectlyTowards(BlockPos blockPos, GlareEntity entity) {
@@ -67,7 +66,7 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
                                 ((level.getBrightness(LightLayer.BLOCK, blockPos2) == 0 && level.getBrightness(LightLayer.SKY, blockPos2) == 0) ||
                                         (level.getBrightness(LightLayer.BLOCK, blockPos2) == 0 && level.isNight()) ||
                                         (level.getBrightness(LightLayer.BLOCK, blockPos2) == 0 && level.isThundering())))) {
-                            glare.getBrain().setMemory(UnvotedAndShelved.DARK_POS, blockPos2);
+                            glare.getBrain().setMemory(USMemoryModules.DARK_POS, blockPos2);
                             this.darkPos = blockPos2;
                             return;
                         }
@@ -101,8 +100,8 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
                     ((level.getBrightness(LightLayer.BLOCK, darkPos) == 0 && level.getBrightness(LightLayer.SKY, darkPos) == 0) ||
                             (level.getBrightness(LightLayer.BLOCK, darkPos) == 0 && level.isNight()) ||
                             (level.getBrightness(LightLayer.BLOCK, darkPos) == 0 && level.isThundering())))) {
-                int i = brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get();
-                if (brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).isPresent()) {
+                int i = brain.getMemory(USMemoryModules.GLOWBERRIES_GIVEN).get();
+                if (brain.getMemory(USMemoryModules.GLOWBERRIES_GIVEN).isPresent()) {
                     boolean bl = this.pathfindDirectlyTowards(darkPos, entity);
                     if (bl) {
                         BlockPos blockPos = new BlockPos(this.darkPos.getX(), this.darkPos.getY(), this.darkPos.getZ());
@@ -132,8 +131,8 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
                     ((level.getBrightness(LightLayer.BLOCK, darkPos) == 0 && level.getBrightness(LightLayer.SKY, darkPos) == 0) ||
                             (level.getBrightness(LightLayer.BLOCK, darkPos) == 0 && level.isNight()) ||
                             (level.getBrightness(LightLayer.BLOCK, darkPos) == 0 && level.isThundering())))) {
-                int i = brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get();
-                if (brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).isPresent()) {
+                int i = brain.getMemory(USMemoryModules.GLOWBERRIES_GIVEN).get();
+                if (brain.getMemory(USMemoryModules.GLOWBERRIES_GIVEN).isPresent()) {
                     boolean bl = this.pathfindDirectlyTowards(darkPos, entity);
                     if (bl) {
                         BlockPos blockPos = new BlockPos(this.darkPos.getX(), this.darkPos.getY(), this.darkPos.getZ());
@@ -165,8 +164,8 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
                     ((level.getBrightness(LightLayer.BLOCK, darkPos) == 0 && level.getBrightness(LightLayer.SKY, darkPos) == 0) ||
                             (level.getBrightness(LightLayer.BLOCK, darkPos) == 0 && level.isNight()) ||
                             (level.getBrightness(LightLayer.BLOCK, darkPos) == 0 && level.isThundering())))) {
-                int i = brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).get();
-                if (brain.getMemory(UnvotedAndShelved.GLOWBERRIES_GIVEN).isPresent()) {
+                int i = brain.getMemory(USMemoryModules.GLOWBERRIES_GIVEN).get();
+                if (brain.getMemory(USMemoryModules.GLOWBERRIES_GIVEN).isPresent()) {
                     boolean bl = this.pathfindDirectlyTowards(darkPos, entity);
                     if (bl) {
                         BlockPos blockPos = new BlockPos(this.darkPos.getX(), this.darkPos.getY(), this.darkPos.getZ());

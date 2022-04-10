@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.function.ToIntFunction;
 
 import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
+import com.cursedcauldron.unvotedandshelved.core.registries.USParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -34,8 +35,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import static com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved.GLOWBERRY_DUST_PARTICLES;
-import static com.cursedcauldron.unvotedandshelved.core.registries.USBlocks.GLOWBERRY_DUST;
 import static net.minecraft.world.item.Items.GLASS_BOTTLE;
 
 @SuppressWarnings("deprecation")
@@ -88,13 +87,13 @@ public class GlowberryDustBlock extends Block implements SimpleWaterloggedBlock 
         double d = (double)i + random.nextDouble();
         double e = (double)j + random.nextDouble();
         double f = (double)k + random.nextDouble();
-        level.addParticle(GLOWBERRY_DUST_PARTICLES, d, e, f, 0.0, 0.0, 0.0);
+        level.addParticle(USParticles.GLOWBERRY_DUST_PARTICLES, d, e, f, 0.0, 0.0, 0.0);
         BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
         for (int l = 0; l < 1; ++l) {
             mutableBlockPos.set(i + Mth.nextInt(random, 0, 0), j - random.nextInt(1), k + Mth.nextInt(random, 0, 0));
             BlockState blockState2 = level.getBlockState(mutableBlockPos);
             if (blockState2.isCollisionShapeFullBlock(level, mutableBlockPos)) continue;
-            level.addParticle(GLOWBERRY_DUST_PARTICLES, (double)mutableBlockPos.getX() + random.nextDouble(), (double)mutableBlockPos.getY() + random.nextDouble(), (double)mutableBlockPos.getZ() + random.nextDouble(), 0.0, 0.0, 0.0);
+            level.addParticle(USParticles.GLOWBERRY_DUST_PARTICLES, (double)mutableBlockPos.getX() + random.nextDouble(), (double)mutableBlockPos.getY() + random.nextDouble(), (double)mutableBlockPos.getZ() + random.nextDouble(), 0.0, 0.0, 0.0);
         }
     }
 

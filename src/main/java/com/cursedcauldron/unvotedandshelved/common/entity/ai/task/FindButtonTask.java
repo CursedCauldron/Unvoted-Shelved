@@ -2,7 +2,7 @@ package com.cursedcauldron.unvotedandshelved.common.entity.ai.task;
 
 import com.cursedcauldron.unvotedandshelved.common.blocks.CopperButtonBlock;
 import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
-import com.cursedcauldron.unvotedandshelved.core.registries.SoundRegistry;
+import com.cursedcauldron.unvotedandshelved.core.registries.USSounds;
 import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -95,7 +95,7 @@ public class FindButtonTask extends Behavior<CopperGolemEntity> {
                                 } else {
                                     golem.setButtonTicks(30);
                                 }
-                                golem.playSound(SoundRegistry.COPPER_CLICK, 0.3f, 1.0f);
+                                golem.playSound(USSounds.COPPER_CLICK, 0.3f, 1.0f);
                                 golem.setCooldownTicks(golem.getCooldownState());
                             }
                         }

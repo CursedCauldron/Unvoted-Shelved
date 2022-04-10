@@ -4,6 +4,8 @@ import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
 import com.cursedcauldron.unvotedandshelved.common.entity.ai.task.AerialStrollTask;
 import com.cursedcauldron.unvotedandshelved.common.entity.ai.task.GlowberryStrollTask;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
+import com.cursedcauldron.unvotedandshelved.core.registries.USActivities;
+import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -31,9 +33,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 
-import static com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved.GLOWBERRIES_GIVEN;
-
-
 //<>
 
 public class  GlareBrain {
@@ -42,7 +41,7 @@ public class  GlareBrain {
         addCoreActivities(brain);
         addFindDarknessActivity(brain);
         addIdleActivities(brain);
-        brain.setMemory(GLOWBERRIES_GIVEN, 0);
+        brain.setMemory(USMemoryModules.GLOWBERRIES_GIVEN, 0);
         brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
         brain.setDefaultActivity(Activity.IDLE);
         brain.useDefaultActivity();
@@ -69,20 +68,20 @@ public class  GlareBrain {
     public static InteractionResult playerInteract(GlareEntity glare, Player player, InteractionHand hand) {
         Brain<?> brain = glare.getBrain();
         ItemStack itemStack = player.getItemInHand(hand);
-        if (brain.getMemory(GLOWBERRIES_GIVEN).isPresent()) {
-            int i = brain.getMemory(GLOWBERRIES_GIVEN).get();
+        if (brain.getMemory(USMemoryModules.GLOWBERRIES_GIVEN).isPresent()) {
+            int i = brain.getMemory(USMemoryModules.GLOWBERRIES_GIVEN).get();
             if (!(i >= 5)) {
                 if (isGlowBerry(glare, itemStack)) {
                     if (!player.getAbilities().instabuild) {
                         itemStack.shrink(1);
-                        brain.setMemory(UnvotedAndShelved.GIVEN_GLOWBERRY, glare);
+                        brain.setMemory(USMemoryModules.GIVEN_GLOWBERRY, glare);
                     }
-                    if (brain.getMemory(GLOWBERRIES_GIVEN).isPresent()) {
+                    if (brain.getMemory(USMemoryModules.GLOWBERRIES_GIVEN).isPresent()) {
                         glare.setGlowberries(i + 1);
                         glare.playSound(SoundEvents.CAVE_VINES_PLACE, 1.0f, 1.0f);
                         return InteractionResult.SUCCESS;
                     } else {
-                        if (brain.getMemory(GLOWBERRIES_GIVEN).isPresent()) {
+                        if (brain.getMemory(USMemoryModules.GLOWBERRIES_GIVEN).isPresent()) {
                             glare.setGlowberries(i + 1);
                             glare.playSound(SoundEvents.CAVE_VINES_PLACE, 1.0f, 1.0f);
                             return InteractionResult.SUCCESS;
@@ -96,10 +95,10 @@ public class  GlareBrain {
     }
 
     private static void addFindDarknessActivity(Brain<GlareEntity> brain) {
-        brain.addActivityAndRemoveMemoriesWhenStopped(UnvotedAndShelved.GOTO_DARKNESS,
+        brain.addActivityAndRemoveMemoriesWhenStopped(USActivities.GOTO_DARKNESS,
                 ImmutableList.of(Pair.of(0, new GlowberryStrollTask(20, 0.6F))),
-                ImmutableSet.of(Pair.of(UnvotedAndShelved.GIVEN_GLOWBERRY, MemoryStatus.VALUE_PRESENT)),
-                ImmutableSet.of(UnvotedAndShelved.GIVEN_GLOWBERRY));
+                ImmutableSet.of(Pair.of(USMemoryModules.GIVEN_GLOWBERRY, MemoryStatus.VALUE_PRESENT)),
+                ImmutableSet.of(USMemoryModules.GIVEN_GLOWBERRY));
     }
 
 
@@ -124,6 +123,6 @@ public class  GlareBrain {
 
     public static void updateActivities(GlareEntity glare) {
         Brain<GlareEntity> brain = glare.getBrain();
-        brain.setActiveActivityToFirstValid(ImmutableList.of(UnvotedAndShelved.GOTO_DARKNESS, Activity.IDLE));
+        brain.setActiveActivityToFirstValid(ImmutableList.of(USActivities.GOTO_DARKNESS, Activity.IDLE));
     }
 }
