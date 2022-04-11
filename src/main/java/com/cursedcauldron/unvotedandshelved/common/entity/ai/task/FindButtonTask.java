@@ -1,5 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.common.entity.ai.task;
 
+import com.cursedcauldron.unvotedandshelved.common.blocks.CopperButtonBlock;
 import com.cursedcauldron.unvotedandshelved.common.blocks.WeatheringCopperButtonBlock;
 import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.core.registries.USSounds;
@@ -36,7 +37,7 @@ public class FindButtonTask extends Behavior<CopperGolemEntity> {
 
     @Override
     protected boolean canStillUse(ServerLevel level, CopperGolemEntity golem, long time) {
-        return golem.getOxidationStage() != CopperGolemEntity.Stage.OXIDIZED && (this.getNearbyCopperButtons(golem) != null);
+        return golem.getOxidationStage() != CopperGolemEntity.Stage.OXIDIZED && (this.getNearbyCopperButtons(golem) != null) && golem.getCooldownTicks() == 0;
     }
 
     private BlockPos getNearbyCopperButtons(CopperGolemEntity golem) {
@@ -70,23 +71,35 @@ public class FindButtonTask extends Behavior<CopperGolemEntity> {
         return entity.getNavigation().getPath() != null && entity.getNavigation().getPath().canReach();
     }
 
+    private boolean pathfindDirectlyUnder(BlockPos blockPos, CopperGolemEntity entity) {
+        entity.getNavigation().moveTo(blockPos.getX(), blockPos.getY() - 1, blockPos.getZ(), 0.4D);
+        return entity.getNavigation().getPath() != null && entity.getNavigation().getPath().canReach();
+    }
+
     @Override
     public void start(ServerLevel world, CopperGolemEntity golem, long time) {
         this.buttonPos = getNearbyCopperButtons(golem);
     }
 
     @Override
+    public void stop(ServerLevel world, CopperGolemEntity golem, long time) {
+        this.buttonPos = null;
+    }
+
+
+    @Override
     public void tick(ServerLevel world, CopperGolemEntity golem, long time) {
         if (this.buttonPos != null) {
             if (golem.getCooldownTicks() == 0) {
                 boolean bl = pathfindDirectlyTowards(this.buttonPos, golem);
-                if (bl) {
+                boolean bl2 = pathfindDirectlyUnder(this.buttonPos, golem);
+                if (bl || bl2) {
                     BehaviorUtils.setWalkAndLookTargetMemories(golem, getNearbyPos(golem, this.buttonPos), this.speed, 2);
-                    if (Objects.requireNonNull(golem.getNavigation().getPath()).isDone()) {
+                    if (golem.blockPosition().distManhattan(this.buttonPos) <= 2) {
                         BlockState state = golem.level.getBlockState(this.buttonPos);
                         System.out.println(state);
-                        if (state.is(USBlocks.COPPER_BUTTON)) {
-                            AttachFace direction = state.getValue(WeatheringCopperButtonBlock.FACE);
+                        if (state.is(USTags.COPPER_BUTTONS)) {
+                            AttachFace direction = state.getValue(CopperButtonBlock.FACE);
                             if (golem.getCooldownTicks() == 0) {
                                 ((ButtonBlock) state.getBlock()).press(state, golem.level, this.buttonPos);
                                 if (direction == AttachFace.FLOOR) {

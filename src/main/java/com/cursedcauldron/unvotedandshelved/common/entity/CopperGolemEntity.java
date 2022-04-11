@@ -7,11 +7,16 @@ import com.mojang.serialization.Dynamic;
 
 import java.util.Arrays;
 import java.util.Comparator;
+
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.Pose;
@@ -23,6 +28,7 @@ import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 //<>
 
@@ -199,6 +205,23 @@ public class CopperGolemEntity extends AbstractGolem {
     public int getCooldownState() {
         return getEntityData().get(SPEED);
     }
+
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return SoundEvents.COPPER_FALL;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.COPPER_BREAK;
+    }
+
+    protected SoundEvent getStepSound() {
+        return SoundEvents.COPPER_STEP;
+    }
+
+    protected void playStepSound(BlockPos pos, BlockState state) {
+        this.playSound(this.getStepSound(), 0.5F, 1.0F);
+    }
+
 
 
     public enum Stage {

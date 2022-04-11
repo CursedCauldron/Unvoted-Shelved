@@ -16,7 +16,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -169,13 +169,6 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.FLYING_SPEED, 0.6000000238418579D).add(Attributes.MOVEMENT_SPEED, 0.30000001192092896D).add(Attributes.ATTACK_DAMAGE, 2.0D).add(Attributes.FOLLOW_RANGE, 48.0D);
     }
 
-    protected SoundEvent getStepSound() {
-        return SoundEvents.MOSS_STEP;
-    }
-
-    protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(this.getStepSound(), 0.5F, 1.0F);
-    }
 
     @Override
     protected void sendDebugPackets() {
@@ -238,7 +231,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
     protected void checkFallDamage(double heightDifference, boolean onGround, BlockState landedState, BlockPos landedPosition) {
     }
 
-    protected void swimUpward(Tag<Fluid> fluid) {
+    protected void jumpInLiquid(TagKey<Fluid> fluid) {
         this.setDeltaMovement(this.getDeltaMovement().add(0.0D, 0.01D, 0.0D));
     }
 
@@ -266,11 +259,19 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
     }
 
     protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.MOSS_STEP;
+        return SoundEvents.MOSS_FALL;
     }
 
     protected SoundEvent getDeathSound() {
         return SoundEvents.MOSS_BREAK;
+    }
+
+    protected SoundEvent getStepSound() {
+        return SoundEvents.MOSS_STEP;
+    }
+
+    protected void playStepSound(BlockPos pos, BlockState state) {
+        this.playSound(this.getStepSound(), 0.5F, 1.0F);
     }
 
     private void setGrumpyTick(int ticks) {
