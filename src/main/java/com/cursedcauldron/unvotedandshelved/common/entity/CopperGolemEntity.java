@@ -14,6 +14,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -36,6 +37,7 @@ public class CopperGolemEntity extends AbstractGolem {
     private static final EntityDataAccessor<Boolean> WAXED = SynchedEntityData.defineId(CopperGolemEntity.class, EntityDataSerializers.BOOLEAN);
     private int cooldownTicks;
     public final AnimationState walkingAnimation = new AnimationState();
+    public final AnimationState headSpinAnimation = new AnimationState();
 
     public CopperGolemEntity(EntityType<? extends AbstractGolem> type, Level world) {
         super(type, world);
@@ -51,7 +53,7 @@ public class CopperGolemEntity extends AbstractGolem {
         return CopperGolemBrain.create(this, this.brainProvider().makeBrain(dynamic));
     }
 
-    @Override
+    @Override @SuppressWarnings("all")
     public Brain<CopperGolemEntity> getBrain() {
         return (Brain<CopperGolemEntity>) super.getBrain();
     }
@@ -117,6 +119,19 @@ public class CopperGolemEntity extends AbstractGolem {
             }
         }
         super.tick();
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> data) {
+        if (DATA_POSE.equals(data)) {
+            Pose pose = this.getPose();
+            if (pose == EntityPoses.HEAD_SPIN) {
+                this.headSpinAnimation.start();
+            } else {
+                this.headSpinAnimation.stop();
+            }
+        }
+        super.onSyncedDataUpdated(data);
     }
 
     @Override
