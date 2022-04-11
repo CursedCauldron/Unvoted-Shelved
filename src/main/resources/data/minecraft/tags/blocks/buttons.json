@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "unvotedandshelved:copper_button",
+    "unvotedandshelved:exposed_copper_button",
+    "unvotedandshelved:weathered_copper_button",
+    "unvotedandshelved:oxidized_copper_button",
+    "unvotedandshelved:waxed_copper_button",
+    "unvotedandshelved:waxed_exposed_copper_button",
+    "unvotedandshelved:waxed_weathered_copper_button",
+    "unvotedandshelved:waxed_oxidized_copper_button"
+  ]
+}

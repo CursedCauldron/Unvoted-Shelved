@@ -9,13 +9,7 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.Brain;
-import net.minecraft.world.entity.ai.behavior.GateBehavior;
-import net.minecraft.world.entity.ai.behavior.LookAtTargetSink;
-import net.minecraft.world.entity.ai.behavior.MoveToTargetSink;
-import net.minecraft.world.entity.ai.behavior.RandomStroll;
-import net.minecraft.world.entity.ai.behavior.RunSometimes;
-import net.minecraft.world.entity.ai.behavior.SetEntityLookTarget;
-import net.minecraft.world.entity.ai.behavior.Swim;
+import net.minecraft.world.entity.ai.behavior.*;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.schedule.Activity;
 
@@ -51,8 +45,9 @@ public class CopperGolemBrain {
                                 GateBehavior.OrderPolicy.ORDERED,
                                 GateBehavior.RunningPolicy.TRY_ALL,
                                 ImmutableList.of(
-                                        Pair.of(new RandomStroll(0.6F), 2),
-                                        Pair.of(new FindButtonTask(16, 0.6F), 2)
+                                        Pair.of(new RandomStroll(0.45F), 1),
+                                        Pair.of(new FindButtonTask(16, 0.45F), 3),
+                                        Pair.of(new DoNothing(30, 60), 2)
                                 )))
                 ));
     }

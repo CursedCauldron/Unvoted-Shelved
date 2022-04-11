@@ -115,8 +115,8 @@ public class  GlareBrain {
                                         Pair.of(new AerialStrollTask(0.6F), 2),
                                         Pair.of(new RandomStroll(0.6F), 2),
                                         Pair.of(new GlowberryStrollTask(10, 0.6F), 2),
-                                        Pair.of(new RunIf<>(GlareEntity::isFlying, new DoNothing(10, 20)), 5),
-                                        Pair.of(new RunIf<>(GlareEntity::isOnGround, new DoNothing(10, 20)), 5)
+                                        Pair.of(new RunIf<>(GlareEntity::isFlying, new DoNothing(30, 60)), 5),
+                                        Pair.of(new RunIf<>(GlareEntity::isOnGround, new DoNothing(30, 60)), 5)
                 )))
         ));
     }
