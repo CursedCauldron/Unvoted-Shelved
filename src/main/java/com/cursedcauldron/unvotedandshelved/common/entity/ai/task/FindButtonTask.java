@@ -4,6 +4,7 @@ import com.cursedcauldron.unvotedandshelved.common.blocks.CopperButtonBlock;
 import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.core.registries.USSounds;
 import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
+import com.cursedcauldron.unvotedandshelved.core.registries.USTags;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 
@@ -84,7 +85,7 @@ public class FindButtonTask extends Behavior<CopperGolemEntity> {
                     BlockPos pos = Objects.requireNonNull(golem.getNavigation().getPath()).getTarget();
                     if (Objects.requireNonNull(golem.getNavigation().getPath()).isDone()) {
                         BlockState state = golem.level.getBlockState(pos);
-                        if (state.is(USBlocks.COPPER_BUTTON)) {
+                        if (state.is(USTags.COPPER_BUTTONS)) {
                             AttachFace direction = state.getValue(CopperButtonBlock.FACE);
                             if (golem.getTicksFrozen() == 0) {
                                 ((ButtonBlock) state.getBlock()).press(state, golem.level, this.buttonPos);

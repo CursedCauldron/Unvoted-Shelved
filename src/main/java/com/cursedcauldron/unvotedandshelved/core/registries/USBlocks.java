@@ -19,6 +19,7 @@ import net.minecraft.world.level.material.MaterialColor;
 //<>
 
 public class USBlocks {
+
     public static final CoreRegistry<Block> BLOCKS = CoreRegistry.create(Registry.BLOCK_REGISTRY, UnvotedAndShelved.MODID);
 
     public static final Block GLOWBERRY_DUST                = register("glowberry_dust", new GlowberryDustBlock(BlockBehaviour.Properties.of(Material.AIR).strength(-1.0f, 3600000.8f).noDrops().sound(USSounds.GLOW).lightLevel(GlowberryDustBlock.LIGHT_EMISSION)));
