@@ -7,6 +7,9 @@ import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.behavior.RandomStroll;
 import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
 import net.minecraft.world.entity.ai.util.HoverRandomPos;
+import net.minecraft.world.entity.ai.util.RandomPos;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,13 +25,14 @@ public class AerialStrollTask extends RandomStroll {
 		return livingEntity.getNavigation().isDone() && livingEntity.getRandom().nextInt(10) == 0;
 	}
 
-	protected boolean shouldKeepRunning(ServerLevel serverLevel, PathfinderMob livingEntity, long l) {
+	protected boolean canStillUse(ServerLevel serverLevel, PathfinderMob livingEntity, long l) {
 		return livingEntity.getNavigation().isInProgress();
 	}
 
 	protected void start(ServerLevel serverLevel, PathfinderMob pathfinderMob, long l) {
 		Vec3 vec3 = this.findPos(pathfinderMob);
 		if (vec3 != null) {
+			if (serverLevel.getBlockState(new BlockPos(vec3.x, vec3.y, vec3.z).below()).isPathfindable(serverLevel, pathfinderMob.getOnPos(), PathComputationType.LAND))
 			BehaviorUtils.setWalkAndLookTargetMemories(pathfinderMob, new BlockPos(vec3), 0.6F, 3 );
 		}
 	}

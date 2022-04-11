@@ -1,14 +1,7 @@
 package com.cursedcauldron.unvotedandshelved.core;
 
 import com.cursedcauldron.unvotedandshelved.api.LightningRodAccess;
-import com.cursedcauldron.unvotedandshelved.core.registries.USActivities;
-import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
-import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
-import com.cursedcauldron.unvotedandshelved.core.registries.USItems;
-import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
-import com.cursedcauldron.unvotedandshelved.core.registries.USParticles;
-import com.cursedcauldron.unvotedandshelved.core.registries.USSounds;
-import com.cursedcauldron.unvotedandshelved.core.registries.USStructureProcessors;
+import com.cursedcauldron.unvotedandshelved.core.registries.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
@@ -42,6 +35,7 @@ public class UnvotedAndShelved implements ModInitializer {
         USParticles.PARTICLES.register();
         USSounds.SOUNDS.register();
         USStructureProcessors.PROCESSORS.register();
+        USTags.init();
 
         BiomeModifications.addSpawn(BiomeSelectors.includeByKey(LUSH_CAVES), MobCategory.UNDERGROUND_WATER_CREATURE, GLARE, 10, 1, 1);
 

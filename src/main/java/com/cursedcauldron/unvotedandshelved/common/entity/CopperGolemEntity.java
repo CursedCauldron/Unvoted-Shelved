@@ -34,8 +34,8 @@ public class CopperGolemEntity extends AbstractGolem {
     private static final EntityDataAccessor<Integer> SPEED = SynchedEntityData.defineId(CopperGolemEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> BUTTON_TICKS_DOWN = SynchedEntityData.defineId(CopperGolemEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> BUTTON_TICKS_UP = SynchedEntityData.defineId(CopperGolemEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> COOLDOWN_TICKS = SynchedEntityData.defineId(CopperGolemEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> WAXED = SynchedEntityData.defineId(CopperGolemEntity.class, EntityDataSerializers.BOOLEAN);
-    private int cooldownTicks;
     public final AnimationState walkingAnimation = new AnimationState();
     public final AnimationState headSpinAnimation = new AnimationState();
 
@@ -61,9 +61,10 @@ public class CopperGolemEntity extends AbstractGolem {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
+        this.entityData.define(COOLDOWN_TICKS, 0);
         this.entityData.define(STAGE, 0);
         this.entityData.define(BUTTON_TICKS, 0);
-        this.entityData.define(SPEED, 0);
+        this.entityData.define(SPEED, 120);
         this.entityData.define(BUTTON_TICKS_DOWN, 0);
         this.entityData.define(BUTTON_TICKS_UP, 0);
         this.entityData.define(WAXED, false);
@@ -72,8 +73,19 @@ public class CopperGolemEntity extends AbstractGolem {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        this.setStage(CopperGolemEntity.Stage.BY_ID[tag.getInt("Stage")]);
+        this.setCooldownTicks(tag.getInt("CooldownTicks"));
+        this.setWaxed(tag.getBoolean("Waxed"));
+        this.setOxidationStage(CopperGolemEntity.Stage.BY_ID[tag.getInt("OxidationStage")]);
     }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putInt("CooldownTicks", this.getCooldownTicks());
+        tag.putInt("OxidationStage", this.getOxidationStage().getId());
+        tag.putBoolean("Waxed", this.isWaxed());
+    }
+
 
     @Override
     public void customServerAiStep() {
@@ -103,6 +115,7 @@ public class CopperGolemEntity extends AbstractGolem {
             this.setButtonUpTicks(d - 1);
         }
         System.out.println("b = " + (b));
+        System.out.println("i = " + (i));
     }
 
     private boolean shouldWalk() {
@@ -134,22 +147,7 @@ public class CopperGolemEntity extends AbstractGolem {
         super.onSyncedDataUpdated(data);
     }
 
-    @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putInt("Stage", this.getStage().getId());
-        tag.putInt("CooldownTicks", this.getCooldownTicks());
-        tag.putInt("OxidationStage", this.getOxidationStage().getId());
-        tag.putBoolean("Waxed", this.isWaxed());
-    }
 
-    public CopperGolemEntity.Stage getStage() {
-        return CopperGolemEntity.Stage.BY_ID[this.entityData.get(STAGE)];
-    }
-
-    private void setStage(CopperGolemEntity.Stage stage) {
-        this.entityData.set(STAGE, stage.getId());
-    }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.MOVEMENT_SPEED, 0.5D).add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
@@ -172,33 +170,28 @@ public class CopperGolemEntity extends AbstractGolem {
     }
 
     public int getCooldownTicks() {
-        return this.cooldownTicks;
+        return this.entityData.get(COOLDOWN_TICKS);
     }
 
     public void setCooldownTicks(int cooldownTicks) {
-        this.cooldownTicks = cooldownTicks;
+        this.entityData.set(COOLDOWN_TICKS, cooldownTicks);
     }
 
     public void setButtonTicks(int ticks) {
         this.entityData.set(BUTTON_TICKS, ticks);
     }
-
     public int getButtonTicks() {
         return this.entityData.get(BUTTON_TICKS);
     }
-
     public void setButtonDownTicks(int ticks) {
         this.entityData.set(BUTTON_TICKS_DOWN, ticks);
     }
-
     public int getButtonDownTicks() {
         return this.entityData.get(BUTTON_TICKS_DOWN);
     }
-
     public void setButtonUpTicks(int ticks) {
         this.entityData.set(BUTTON_TICKS_UP, ticks);
     }
-
     public int getButtonUpTicks() {
         return this.entityData.get(BUTTON_TICKS_UP);
     }

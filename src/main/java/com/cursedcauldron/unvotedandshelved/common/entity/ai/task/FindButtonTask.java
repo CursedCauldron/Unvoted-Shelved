@@ -1,6 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.common.entity.ai.task;
 
-import com.cursedcauldron.unvotedandshelved.common.blocks.CopperButtonBlock;
+import com.cursedcauldron.unvotedandshelved.common.blocks.WeatheringCopperButtonBlock;
 import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.core.registries.USSounds;
 import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
@@ -36,7 +36,7 @@ public class FindButtonTask extends Behavior<CopperGolemEntity> {
 
     @Override
     protected boolean canStillUse(ServerLevel level, CopperGolemEntity golem, long time) {
-        return golem.getStage() != CopperGolemEntity.Stage.OXIDIZED && (this.getNearbyCopperButtons(golem) != null);
+        return golem.getOxidationStage() != CopperGolemEntity.Stage.OXIDIZED && (this.getNearbyCopperButtons(golem) != null);
     }
 
     private BlockPos getNearbyCopperButtons(CopperGolemEntity golem) {
@@ -45,7 +45,7 @@ public class FindButtonTask extends Behavior<CopperGolemEntity> {
             for (int z = -range; z <= range; z++) {
                 for (int y = -range; y <= range; y++) {
                     BlockPos blockPos = new BlockPos(golem.getX() + x, golem.getY() + y, golem.getZ() + z);
-                    if (golem.level.getBlockState(blockPos).is(USBlocks.COPPER_BUTTON)) {
+                    if (golem.level.getBlockState(blockPos).is(USTags.COPPER_BUTTONS)) {
                         list.add(blockPos);
                     }
                 }
@@ -66,7 +66,7 @@ public class FindButtonTask extends Behavior<CopperGolemEntity> {
     }
 
     private boolean pathfindDirectlyTowards(BlockPos blockPos, CopperGolemEntity entity) {
-        entity.getNavigation().moveTo(blockPos.getX(), blockPos.getY(), blockPos.getZ(), 1.0D);
+        entity.getNavigation().moveTo(blockPos.getX(), blockPos.getY(), blockPos.getZ(), 0.4D);
         return entity.getNavigation().getPath() != null && entity.getNavigation().getPath().canReach();
     }
 
@@ -82,12 +82,12 @@ public class FindButtonTask extends Behavior<CopperGolemEntity> {
                 boolean bl = pathfindDirectlyTowards(this.buttonPos, golem);
                 if (bl) {
                     BehaviorUtils.setWalkAndLookTargetMemories(golem, getNearbyPos(golem, this.buttonPos), this.speed, 2);
-                    BlockPos pos = Objects.requireNonNull(golem.getNavigation().getPath()).getTarget();
                     if (Objects.requireNonNull(golem.getNavigation().getPath()).isDone()) {
-                        BlockState state = golem.level.getBlockState(pos);
-                        if (state.is(USTags.COPPER_BUTTONS)) {
-                            AttachFace direction = state.getValue(CopperButtonBlock.FACE);
-                            if (golem.getTicksFrozen() == 0) {
+                        BlockState state = golem.level.getBlockState(this.buttonPos);
+                        System.out.println(state);
+                        if (state.is(USBlocks.COPPER_BUTTON)) {
+                            AttachFace direction = state.getValue(WeatheringCopperButtonBlock.FACE);
+                            if (golem.getCooldownTicks() == 0) {
                                 ((ButtonBlock) state.getBlock()).press(state, golem.level, this.buttonPos);
                                 if (direction == AttachFace.FLOOR) {
                                     golem.setButtonDownTicks(30);
