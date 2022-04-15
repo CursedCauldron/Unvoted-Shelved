@@ -17,17 +17,22 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.util.Mth;
 
 //<>
 
 @Environment(EnvType.CLIENT)
 public class CopperGolemModel<T extends CopperGolemEntity> extends HierarchicalModel<T> {
     private static final Vector3f ANIMATION_PROGRESS = new Vector3f();
-    private final ModelPart root;
+    private final ModelPart head;
+    private final ModelPart body;
 
-    public CopperGolemModel(ModelPart part) {
-        this.root = part;
+    public CopperGolemModel(ModelPart root) {
+        this.body = root.getChild("body");
+        this.head = this.body.getChild("head");
     }
+
+
 
     public static LayerDefinition getLayerDefinition() {
         MeshDefinition mesh = new MeshDefinition();
@@ -48,6 +53,8 @@ public class CopperGolemModel<T extends CopperGolemEntity> extends HierarchicalM
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float tickDelta, float netHeadYaw, float headPitch) {
         this.root().getAllParts().forEach(ModelModifier::resetPose);
         long time = Util.getMillis();
+        this.head.xRot = headPitch;
+        this.head.yRot = netHeadYaw;
         this.runAnimation(entity.walkingAnimation, CopperGolemAnimations.WALKING, time);
         this.runAnimation(entity.headSpinAnimation, CopperGolemAnimations.HEAD_SPIN, time);
     }
@@ -58,6 +65,8 @@ public class CopperGolemModel<T extends CopperGolemEntity> extends HierarchicalM
 
     @Override
     public ModelPart root() {
-        return this.root;
+        return this.body;
     }
+
+
 }
