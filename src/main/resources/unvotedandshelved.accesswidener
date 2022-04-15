@@ -1,2 +1,2 @@
 accessWidener	v1	named
-accessible    method    net/minecraft/entity/LightningEntity    getAffectedBlockPos    ()Lnet/minecraft/util/math/BlockPos;
+accessible method net/minecraft/world/entity/decoration/ArmorStand brokenByAnything (Lnet/minecraft/world/damagesource/DamageSource;)V
