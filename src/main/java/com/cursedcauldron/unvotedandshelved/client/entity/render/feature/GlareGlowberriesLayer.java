@@ -17,7 +17,15 @@ import net.minecraft.resources.ResourceLocation;
 @Environment(EnvType.CLIENT)
 public class GlareGlowberriesLayer<T extends GlareEntity, M extends GlareModel<T>> extends RenderLayer<T, M> {
     private static final RenderType GLARE_BERRIES = RenderType.eyes(new ResourceLocation(UnvotedAndShelved.MODID, "textures/entity/glare/glare_lit_e.png"));
+    private static final RenderType GLARE_BERRIES_1 = RenderType.eyes(new ResourceLocation(UnvotedAndShelved.MODID, "textures/entity/glare/glare_lit_1_e.png"));
+    private static final RenderType GLARE_BERRIES_2 = RenderType.eyes(new ResourceLocation(UnvotedAndShelved.MODID, "textures/entity/glare/glare_lit_2_e.png"));
+    private static final RenderType GLARE_BERRIES_3 = RenderType.eyes(new ResourceLocation(UnvotedAndShelved.MODID, "textures/entity/glare/glare_lit_3_e.png"));
+    private static final RenderType GLARE_BERRIES_4 = RenderType.eyes(new ResourceLocation(UnvotedAndShelved.MODID, "textures/entity/glare/glare_lit_4_e.png"));
     private static final RenderType GLARE_GRUMPY_BERRIES = RenderType.eyes(new ResourceLocation(UnvotedAndShelved.MODID, "textures/entity/glare/glare_grumpy_lit_e.png"));
+    private static final RenderType GLARE_GRUMPY_BERRIES_1 = RenderType.eyes(new ResourceLocation(UnvotedAndShelved.MODID, "textures/entity/glare/glare_grumpy_lit_1_e.png"));
+    private static final RenderType GLARE_GRUMPY_BERRIES_2 = RenderType.eyes(new ResourceLocation(UnvotedAndShelved.MODID, "textures/entity/glare/glare_grumpy_lit_2_e.png"));
+    private static final RenderType GLARE_GRUMPY_BERRIES_3 = RenderType.eyes(new ResourceLocation(UnvotedAndShelved.MODID, "textures/entity/glare/glare_grumpy_lit_3_e.png"));
+    private static final RenderType GLARE_GRUMPY_BERRIES_4 = RenderType.eyes(new ResourceLocation(UnvotedAndShelved.MODID, "textures/entity/glare/glare_grumpy_lit_4_e.png"));
 
     public GlareGlowberriesLayer(RenderLayerParent<T, M> renderLayerParent) {
         super(renderLayerParent);
@@ -33,8 +41,16 @@ public class GlareGlowberriesLayer<T extends GlareEntity, M extends GlareModel<T
     }
 
     public RenderType renderType(GlareEntity glare){
-        if (glare.getGlowberries() > 0) {
+        if (glare.getGlowberries() == 1) {
             return glare.isGrumpy() ? GLARE_GRUMPY_BERRIES : GLARE_BERRIES;
+        } else if (glare.getGlowberries() == 2) {
+            return glare.isGrumpy() ? GLARE_GRUMPY_BERRIES_1 : GLARE_BERRIES_1;
+        } else if (glare.getGlowberries() == 3) {
+            return glare.isGrumpy() ? GLARE_GRUMPY_BERRIES_2 : GLARE_BERRIES_2;
+        } else if (glare.getGlowberries() == 4) {
+            return glare.isGrumpy() ? GLARE_GRUMPY_BERRIES_3 : GLARE_BERRIES_3;
+        } else if (glare.getGlowberries() == 5) {
+            return glare.isGrumpy() ? GLARE_GRUMPY_BERRIES_4 : GLARE_BERRIES_4;
         } else return null;
     };
 }
