@@ -29,7 +29,7 @@ public class PressCopperButtonTask extends Behavior<CopperGolemEntity> {
 
     @Override
     protected boolean checkExtraStartConditions(ServerLevel world, CopperGolemEntity entity) {
-        return entity.getStage() != CopperGolemEntity.Stage.OXIDIZED && entity.getBrain().getMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS).isEmpty();
+        return entity.getBrain().getMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS).isEmpty();
     }
 
     @Override
@@ -72,7 +72,7 @@ public class PressCopperButtonTask extends Behavior<CopperGolemEntity> {
         if (this.pressingTicks >= 1) {
             this.pressingTicks = 0;
             entity.getBrain().eraseMemory(USMemoryModules.COPPER_BUTTON);
-            entity.getBrain().setMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS, UniformInt.of(300, 600).sample(world.getRandom()));
+            entity.setCooldown();
             entity.setPose(Pose.STANDING);
         }
     }

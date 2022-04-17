@@ -78,6 +78,7 @@ public class CopperGolemBrain {
         );
     }
 
+
     public static void updateActivity(CopperGolemEntity entity) {
         entity.getBrain().setActiveActivityToFirstValid(
                 ImmutableList.of(

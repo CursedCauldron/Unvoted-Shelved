@@ -16,6 +16,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -261,8 +262,6 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
     @Override
     public void aiStep() {
         super.aiStep();
-        Optional<Integer> memory = this.getBrain().getMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS);
-        memory.ifPresent(integer -> System.out.println("The copper button cooldown is " + integer));
         if (!this.level.isClientSide()) {
             if (this.getStage() == Stage.OXIDIZED) {
                 this.getBrain().removeAllBehaviors();
@@ -277,6 +276,17 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
                     this.setStage(Stage.values()[this.getStage().getId() + 1]);
                 }
             }
+
+        }
+    }
+
+    public void setCooldown() {
+        if (this.getStage() == Stage.UNAFFECTED) {
+            this.getBrain().setMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS, UniformInt.of(30, 60).sample(level.getRandom()));
+        } else if (this.getStage() == Stage.EXPOSED) {
+            this.getBrain().setMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS, UniformInt.of(90, 120).sample(level.getRandom()));
+        } else if (this.getStage() == Stage.WEATHERED) {
+            this.getBrain().setMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS, UniformInt.of(150, 180).sample(level.getRandom()));
         }
     }
 
