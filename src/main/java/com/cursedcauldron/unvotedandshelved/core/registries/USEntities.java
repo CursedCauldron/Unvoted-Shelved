@@ -27,7 +27,7 @@ public class USEntities {
 
     public static void registerAttributes() {
         FabricDefaultAttributeRegistry.register(GLARE, GlareEntity.createGlareAttributes());
-        FabricDefaultAttributeRegistry.register(FROZEN_COPPER_GOLEM, FrozenCopperGolemEntity.createLivingAttributes());
+        FabricDefaultAttributeRegistry.register(FROZEN_COPPER_GOLEM, FrozenCopperGolemEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(COPPER_GOLEM, CopperGolemEntity.createAttributes());
     }
 }

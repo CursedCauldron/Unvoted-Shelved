@@ -1,6 +1,8 @@
 package com.cursedcauldron.unvotedandshelved.common.entity;
 
+import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import com.cursedcauldron.unvotedandshelved.core.registries.USItems;
+import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -12,14 +14,19 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -32,10 +39,12 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class FrozenCopperGolemEntity extends LivingEntity {
+public class FrozenCopperGolemEntity extends AbstractGolem {
     private static final EntityDimensions MARKER_DIMENSIONS = new EntityDimensions(0.0f, 0.0f, true);
     private static final EntityDimensions BABY_DIMENSIONS = EntityType.ARMOR_STAND.getDimensions().scale(0.5f);
     public static final EntityDataAccessor<Byte> DATA_CLIENT_FLAGS = SynchedEntityData.defineId(ArmorStand.class, EntityDataSerializers.BYTE);
@@ -72,21 +81,23 @@ public class FrozenCopperGolemEntity extends LivingEntity {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(DATA_CLIENT_FLAGS, (byte)0);
     }
-
 
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compoundTag) {
-        super.addAdditionalSaveData(compoundTag);
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compoundTag) {
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
     }
 
-
+    @Override
+    public boolean isCustomNameVisible() {
+        return this.hasCustomName();
+    }
 
     @Override
     public boolean isPushable() {
@@ -108,11 +119,55 @@ public class FrozenCopperGolemEntity extends LivingEntity {
     }
 
     @Override
-    public InteractionResult interactAt(Player player, Vec3 vec3, InteractionHand interactionHand) {
-        return InteractionResult.PASS;
+    public InteractionResult interactAt(Player player, Vec3 vec3, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (stack.getItem() instanceof AxeItem) {
+            this.convertBack(USEntities.COPPER_GOLEM, true);
+            this.level.playSound(player, this.blockPosition(), SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
+            this.level.levelEvent(player, 3004, this.blockPosition(), 0);
+            return InteractionResult.SUCCESS;
+        } else return InteractionResult.PASS;
     }
 
-
+    @Nullable
+    public <T extends Mob> T convertBack(EntityType<T> entityType, boolean bl) {
+        if (this.isRemoved()) {
+            return null;
+        }
+        CopperGolemEntity mob = (CopperGolemEntity)entityType.create(this.level);
+        assert mob != null;
+        mob.copyPosition(this);
+        mob.lookAt(EntityAnchorArgument.Anchor.EYES, this.getLookAngle());
+        mob.setBaby(this.isBaby());
+        mob.setNoAi(this.isNoAi());
+        mob.setStage(CopperGolemEntity.Stage.WEATHERED);
+        if (this.hasCustomName()) {
+            mob.setCustomName(this.getCustomName());
+            mob.setCustomNameVisible(this.isCustomNameVisible());
+        }
+        if (this.isPersistenceRequired()) {
+            mob.setPersistenceRequired();
+        }
+        mob.setInvulnerable(this.isInvulnerable());
+        if (bl) {
+            mob.setCanPickUpLoot(this.canPickUpLoot());
+            for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
+                ItemStack itemStack = this.getItemBySlot(equipmentSlot);
+                if (itemStack.isEmpty()) continue;
+                mob.setItemSlot(equipmentSlot, itemStack.copy());
+                mob.setDropChance(equipmentSlot, this.getEquipmentDropChance(equipmentSlot));
+                itemStack.setCount(0);
+            }
+        }
+        this.level.addFreshEntity(mob);
+        if (this.isPassenger()) {
+            Entity entity = this.getVehicle();
+            this.stopRiding();
+            mob.startRiding(entity, true);
+        }
+        this.discard();
+        return (T)mob;
+    }
 
     @Override
     public boolean hurt(DamageSource damageSource, float f) {
@@ -183,47 +238,9 @@ public class FrozenCopperGolemEntity extends LivingEntity {
         }
     }
 
-    @Override
-    public Iterable<ItemStack> getHandSlots() {
-        return this.handItems;
-    }
-
-    @Override
-    public Iterable<ItemStack> getArmorSlots() {
-        return this.armorItems;
-    }
-
-
-    @Override
-    public ItemStack getItemBySlot(EquipmentSlot equipmentSlot) {
-        switch (equipmentSlot.getType()) {
-            case HAND: {
-                return this.handItems.get(equipmentSlot.getIndex());
-            }
-            case ARMOR: {
-                return this.armorItems.get(equipmentSlot.getIndex());
-            }
-        }
-        return ItemStack.EMPTY;
-    }
 
 
 
-    @Override
-    public void setItemSlot(EquipmentSlot equipmentSlot, ItemStack itemStack) {
-        this.verifyEquippedItem(itemStack);
-        switch (equipmentSlot.getType()) {
-            case HAND: {
-                this.equipEventAndSound(itemStack);
-                this.handItems.set(equipmentSlot.getIndex(), itemStack);
-                break;
-            }
-            case ARMOR: {
-                this.equipEventAndSound(itemStack);
-                this.armorItems.set(equipmentSlot.getIndex(), itemStack);
-            }
-        }
-    }
 
     @Override
     public boolean shouldRenderAtSqrDistance(double d) {
@@ -279,6 +296,8 @@ public class FrozenCopperGolemEntity extends LivingEntity {
         this.level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.COPPER_BREAK, this.getSoundSource(), 1.0f, 1.0f);
     }
 
+
+
     @Override
     protected float tickHeadTurn(float f, float g) {
         this.yBodyRotO = this.yRotO;
@@ -302,6 +321,14 @@ public class FrozenCopperGolemEntity extends LivingEntity {
             return;
         }
         super.travel(vec3);
+    }
+
+    @Override
+    public void thunderHit(ServerLevel serverLevel, LightningBolt lightningBolt) {
+        super.thunderHit(serverLevel, lightningBolt);
+        this.convertBack(USEntities.COPPER_GOLEM, true);
+        this.level.playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 2.0f, 0.5f + this.random.nextFloat() * 0.2f, false);
+        this.level.levelEvent(3004, this.blockPosition(), 0);
     }
 
     @Override
@@ -363,7 +390,9 @@ public class FrozenCopperGolemEntity extends LivingEntity {
         return (this.entityData.get(DATA_CLIENT_FLAGS) & 0x10) != 0;
     }
 
-
+    public static AttributeSupplier.Builder createAttributes() {
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.MOVEMENT_SPEED, 0.0D).add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
+    }
 
     @Override
     public boolean isPickable() {
@@ -382,24 +411,22 @@ public class FrozenCopperGolemEntity extends LivingEntity {
 
     @Override
     public LivingEntity.Fallsounds getFallSounds() {
-        return new LivingEntity.Fallsounds(SoundEvents.ARMOR_STAND_FALL, SoundEvents.ARMOR_STAND_FALL);
+        return new LivingEntity.Fallsounds(SoundEvents.COPPER_FALL, SoundEvents.COPPER_FALL);
     }
 
     @Override
     @Nullable
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return SoundEvents.ARMOR_STAND_HIT;
+        return SoundEvents.COPPER_HIT;
     }
 
     @Override
     @Nullable
     protected SoundEvent getDeathSound() {
-        return SoundEvents.ARMOR_STAND_BREAK;
+        return SoundEvents.COPPER_BREAK;
     }
 
-    @Override
-    public void thunderHit(ServerLevel serverLevel, LightningBolt lightningBolt) {
-    }
+
 
     @Override
     public boolean isAffectedByPotions() {
@@ -454,7 +481,7 @@ public class FrozenCopperGolemEntity extends LivingEntity {
 
     @Override
     public ItemStack getPickResult() {
-        return new ItemStack(Items.ARMOR_STAND);
+        return new ItemStack(USItems.FROZEN_COPPER_GOLEM_ITEM);
     }
 
     @Override

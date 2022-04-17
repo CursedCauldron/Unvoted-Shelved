@@ -2,9 +2,11 @@ package com.cursedcauldron.unvotedandshelved.common.entity;
 
 import com.cursedcauldron.unvotedandshelved.client.entity.animation.AnimationState;
 import com.cursedcauldron.unvotedandshelved.common.entity.ai.copper_golem.CopperGolemBrain;
+import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
+import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -32,6 +34,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -45,6 +48,9 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
     private static final EntityDataAccessor<Boolean> POWERED = SynchedEntityData.defineId(CopperGolemEntity.class, EntityDataSerializers.BOOLEAN);
     public final AnimationState walkingAnimation = new AnimationState();
     public final AnimationState headSpinAnimation = new AnimationState();
+    public final AnimationState buttonAnimation = new AnimationState();
+    public final AnimationState buttonUpAnimation = new AnimationState();
+    public final AnimationState buttonDownAnimation = new AnimationState();
 
     public CopperGolemEntity(EntityType<? extends AbstractGolem> type, Level world) {
         super(type, world);
@@ -106,11 +112,31 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
     public void onSyncedDataUpdated(EntityDataAccessor<?> data) {
         if (DATA_POSE.equals(data)) {
             Pose pose = this.getPose();
+
             if (pose == EntityPoses.HEAD_SPIN) {
                 this.headSpinAnimation.start();
             } else {
                 this.headSpinAnimation.stop();
             }
+
+            if (pose == EntityPoses.PRESS_BUTTON) {
+                this.buttonAnimation.start();
+            } else {
+                this.buttonAnimation.stop();
+            }
+
+            if (pose == EntityPoses.PRESS_BUTTON_UP) {
+                this.buttonUpAnimation.start();
+            } else {
+                this.buttonUpAnimation.stop();
+            }
+
+            if (pose == EntityPoses.PRESS_BUTTON_DOWN) {
+                this.buttonDownAnimation.start();
+            } else {
+                this.buttonDownAnimation.stop();
+            }
+
         }
         super.onSyncedDataUpdated(data);
     }
@@ -120,7 +146,7 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
         return CopperGolemEntity.Stage.BY_ID[this.entityData.get(STAGE)];
     }
 
-    private void setStage(CopperGolemEntity.Stage stage) {
+    void setStage(CopperGolemEntity.Stage stage) {
         this.entityData.set(STAGE, stage.getId());
     }
 
@@ -146,6 +172,7 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
         if (this.level.isClientSide()) {
             if (this.shouldWalk()) {
                 this.walkingAnimation.startIfNotRunning();
+
             } else {
                 this.walkingAnimation.stop();
             }
@@ -171,6 +198,8 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
                     this.setStage(Stage.values()[this.getStage().getId() - 1]);
                     this.level.playSound(player, this.blockPosition(), SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
                     this.level.levelEvent(player, 3005, this.blockPosition(), 0);
+                } else {
+                    return InteractionResult.PASS;
                 }
             }
             return InteractionResult.SUCCESS;
@@ -188,6 +217,47 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
         return super.mobInteract(player, hand);
     }
 
+    @Nullable
+    public <T extends Mob> T convertToFrozen(EntityType<T> entityType, boolean bl) {
+        if (this.isRemoved()) {
+            return null;
+        }
+        FrozenCopperGolemEntity mob = (FrozenCopperGolemEntity)entityType.create(this.level);
+        assert mob != null;
+        mob.copyPosition(this);
+        mob.lookAt(EntityAnchorArgument.Anchor.EYES, this.getLookAngle());
+        mob.setYBodyRot(this.getYRot());
+        mob.setYHeadRot(this.getYHeadRot());
+        mob.setBaby(this.isBaby());
+        mob.setNoAi(this.isNoAi());
+        if (this.hasCustomName()) {
+            mob.setCustomName(this.getCustomName());
+            mob.setCustomNameVisible(this.isCustomNameVisible());
+        }
+        if (this.isPersistenceRequired()) {
+            mob.setPersistenceRequired();
+        }
+        mob.setInvulnerable(this.isInvulnerable());
+        if (bl) {
+            mob.setCanPickUpLoot(this.canPickUpLoot());
+            for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
+                ItemStack itemStack = this.getItemBySlot(equipmentSlot);
+                if (itemStack.isEmpty()) continue;
+                mob.setItemSlot(equipmentSlot, itemStack.copy());
+                mob.setDropChance(equipmentSlot, this.getEquipmentDropChance(equipmentSlot));
+                itemStack.setCount(0);
+            }
+        }
+        this.level.addFreshEntity(mob);
+        if (this.isPassenger()) {
+            Entity entity = this.getVehicle();
+            this.stopRiding();
+            mob.startRiding(entity, true);
+        }
+        this.discard();
+        return (T)mob;
+    }
+
     @Override
     public void aiStep() {
         super.aiStep();
@@ -196,18 +266,21 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
         if (!this.level.isClientSide()) {
             if (this.getStage() == Stage.OXIDIZED) {
                 this.getBrain().removeAllBehaviors();
+                this.convertToFrozen(USEntities.FROZEN_COPPER_GOLEM,true);
             } else {
                 CopperGolemBrain.updateActivity(this);
             }
             if (!this.isWaxed() || this.getStage() != Stage.OXIDIZED) {
                 float randomChance = this.random.nextFloat();
-                if (randomChance < 3.4290552E-12F) {
+                if (randomChance < 3.4290552E-8F) {
                     System.out.println("The random chance is " + randomChance);
                     this.setStage(Stage.values()[this.getStage().getId() + 1]);
                 }
             }
         }
     }
+
+
 
 
     protected SoundEvent getHurtSound(DamageSource source) {

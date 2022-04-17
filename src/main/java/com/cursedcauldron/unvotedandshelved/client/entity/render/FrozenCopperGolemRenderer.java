@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.decoration.ArmorStand;
 
 import java.util.Map;
 
@@ -26,6 +27,17 @@ public class FrozenCopperGolemRenderer extends LivingEntityRenderer<FrozenCopper
 
     public FrozenCopperGolemRenderer(EntityRendererProvider.Context context) {
         super(context, new FrozenCopperGolemModel<>(context.bakeLayer(USEntityRenderer.COPPER_GOLEM)), 0.5F);
+    }
+
+    @Override
+    protected boolean shouldShowName(FrozenCopperGolemEntity golem) {
+        float f;
+        double d = this.entityRenderDispatcher.distanceToSqr(golem);
+        float f2 = f = golem.isCrouching() ? 32.0f : 64.0f;
+        if (d >= (double)(f * f)) {
+            return false;
+        }
+        return golem.isCustomNameVisible();
     }
 
     @Override

@@ -44,7 +44,7 @@ public class CopperGolemBrain {
                 Activity.CORE,
                 0,
                 ImmutableList.of(
-                        new AnimalPanic(0.6f),
+                        new AnimalPanic(0.45f),
                         new LookAtTargetSink(45, 90),
                         new MoveToTargetSink(),
                         new CountDownCooldownTicks(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS)));
@@ -57,8 +57,8 @@ public class CopperGolemBrain {
                         Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(30, 60))),
                         Pair.of(1, new RunOne<>(
                                 ImmutableList.of(
-                                        Pair.of(new RandomStroll(0.5F), 2),
-                                        Pair.of(new SetWalkTargetFromLookTarget(0.5F, 3), 2),
+                                        Pair.of(new RandomStroll(0.4F), 2),
+                                        Pair.of(new SetWalkTargetFromLookTarget(0.4F, 3), 2),
                                         Pair.of(new DoNothing(30, 60), 1))
                         ))),
                 ImmutableSet.of(

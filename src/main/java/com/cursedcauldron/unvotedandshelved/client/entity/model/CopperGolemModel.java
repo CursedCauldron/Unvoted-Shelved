@@ -26,9 +26,12 @@ public class CopperGolemModel<T extends CopperGolemEntity> extends HierarchicalM
     private static final Vector3f ANIMATION_PROGRESS = new Vector3f();
     private final ModelPart head;
     private final ModelPart body;
+    private final ModelPart root;
+
 
     public CopperGolemModel(ModelPart root) {
         this.body = root.getChild("body");
+        this.root = root;
         this.head = this.body.getChild("head");
     }
 
@@ -56,7 +59,11 @@ public class CopperGolemModel<T extends CopperGolemEntity> extends HierarchicalM
         this.head.yRot = netHeadYaw * 0.017453292F;
         this.runAnimation(entity.walkingAnimation, CopperGolemAnimations.WALKING, time);
         this.runAnimation(entity.headSpinAnimation, CopperGolemAnimations.HEAD_SPIN, time);
+        this.runAnimation(entity.buttonAnimation, CopperGolemAnimations.BUTTON_PRESS, time);
+        this.runAnimation(entity.buttonUpAnimation, CopperGolemAnimations.BUTTON_PRESS_UP, time);
+        this.runAnimation(entity.buttonDownAnimation, CopperGolemAnimations.BUTTON_PRESS_DOWN, time);
     }
+
 
     private void runAnimation(AnimationState animationState, Animation animation, long time) {
         animationState.run(state -> AnimationHelper.animate(this, animation, time - state.getStartTime(), 1.0F, ANIMATION_PROGRESS));
@@ -64,7 +71,7 @@ public class CopperGolemModel<T extends CopperGolemEntity> extends HierarchicalM
 
     @Override
     public ModelPart root() {
-        return this.body;
+        return this.root;
     }
 
 

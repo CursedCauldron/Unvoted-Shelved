@@ -2,16 +2,21 @@ package com.cursedcauldron.unvotedandshelved.common.entity.ai.copper_golem.task;
 
 import com.cursedcauldron.unvotedandshelved.common.blocks.CopperButtonBlock;
 import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
+import com.cursedcauldron.unvotedandshelved.common.entity.EntityPoses;
 import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
 import com.cursedcauldron.unvotedandshelved.core.registries.USSounds;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
+import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.AttachFace;
 
 import java.util.Optional;
 
@@ -40,8 +45,14 @@ public class PressCopperButtonTask extends Behavior<CopperGolemEntity> {
             boolean flag = entity.blockPosition().closerThan(blockPos, 2);
             if (this.pressingTicks < 200 && flag && state.getBlock() instanceof CopperButtonBlock buttonBlock) {
                 buttonBlock.press(state, world, blockPos);
+                AttachFace direction = state.getValue(CopperButtonBlock.FACE);
                 entity.getLookControl().setLookAt(blockPos.getX(), blockPos.getY(), blockPos.getZ());
                 entity.playSound(USSounds.COPPER_CLICK, 1.0F, 1.0F);
+                if (direction == AttachFace.FLOOR) {
+                    entity.setPose(EntityPoses.PRESS_BUTTON_DOWN);
+                } else if (direction == AttachFace.CEILING) {
+                    entity.setPose(EntityPoses.PRESS_BUTTON_UP);
+                } else entity.setPose(EntityPoses.PRESS_BUTTON);
             }
         });
     }
@@ -62,6 +73,7 @@ public class PressCopperButtonTask extends Behavior<CopperGolemEntity> {
             this.pressingTicks = 0;
             entity.getBrain().eraseMemory(USMemoryModules.COPPER_BUTTON);
             entity.getBrain().setMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS, UniformInt.of(300, 600).sample(world.getRandom()));
+            entity.setPose(Pose.STANDING);
         }
     }
 }
