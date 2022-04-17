@@ -29,6 +29,6 @@ public class CopperGolemRenderer extends MobRenderer<CopperGolemEntity, CopperGo
 
     @Override
     public ResourceLocation getTextureLocation(CopperGolemEntity entity) {
-        return TEXTURES.get(entity.getOxidationStage());
+        return TEXTURES.get(entity.getStage());
     }
 }
