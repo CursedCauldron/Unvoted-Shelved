@@ -42,7 +42,7 @@ public class SpinHead extends Behavior<CopperGolemEntity> {
         } else {
             entity.getBrain().setMemory(USMemoryModules.COPPER_GOLEM_HEADSPIN_TICKS, UniformInt.of(120, 200).sample(world.getRandom()));
         }
-        if (this.spinningTicks >= 20) {
+        if (this.spinningTicks == 20) {
             entity.playSound(USSounds.HEAD_SPIN, 1, 1);
             entity.setPose(EntityPoses.HEAD_SPIN);
         }
