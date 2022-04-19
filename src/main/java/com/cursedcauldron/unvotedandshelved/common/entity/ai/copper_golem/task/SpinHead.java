@@ -43,7 +43,7 @@ public class SpinHead extends Behavior<CopperGolemEntity> {
             entity.getBrain().setMemory(USMemoryModules.COPPER_GOLEM_HEADSPIN_TICKS, UniformInt.of(120, 200).sample(world.getRandom()));
         }
 
-        System.out.println("The pressing ticks are " + this.spinningTicks);
+        System.out.println("The spinning ticks are " + this.spinningTicks);
     }
     @Override
     protected void start(ServerLevel level, CopperGolemEntity entity, long p_22542_) {
