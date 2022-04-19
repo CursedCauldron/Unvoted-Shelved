@@ -185,6 +185,9 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (stack.is(Items.HONEYCOMB) && !this.isWaxed()) {
+            if (!player.getAbilities().instabuild) {
+                stack.shrink(1);
+            }
             this.setWaxed(true);
             this.level.levelEvent(player, 3003, this.blockPosition(), 0);
             return InteractionResult.SUCCESS;
@@ -196,6 +199,7 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
                 this.level.levelEvent(player, 3004, this.blockPosition(), 0);
             } else {
                 if (this.getStage() != Stage.UNAFFECTED) {
+                    stack.hurtAndBreak(1, player, e -> e.broadcastBreakEvent(hand));
                     this.setStage(Stage.values()[this.getStage().getId() - 1]);
                     this.level.playSound(player, this.blockPosition(), SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
                     this.level.levelEvent(player, 3005, this.blockPosition(), 0);
