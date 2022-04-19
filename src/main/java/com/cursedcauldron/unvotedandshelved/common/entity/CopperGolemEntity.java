@@ -286,11 +286,11 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
 
     public void setCooldown() {
         if (this.getStage() == Stage.UNAFFECTED) {
-            this.getBrain().setMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS, UniformInt.of(30, 60).sample(level.getRandom()));
+            this.getBrain().setMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS, UniformInt.of(120, 240).sample(level.getRandom()));
         } else if (this.getStage() == Stage.EXPOSED) {
-            this.getBrain().setMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS, UniformInt.of(90, 120).sample(level.getRandom()));
+            this.getBrain().setMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS, UniformInt.of(240, 480).sample(level.getRandom()));
         } else if (this.getStage() == Stage.WEATHERED) {
-            this.getBrain().setMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS, UniformInt.of(150, 180).sample(level.getRandom()));
+            this.getBrain().setMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS, UniformInt.of(480, 960).sample(level.getRandom()));
         }
     }
 

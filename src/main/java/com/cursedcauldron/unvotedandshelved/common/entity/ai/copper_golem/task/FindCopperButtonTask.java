@@ -18,20 +18,22 @@ import java.util.List;
 import java.util.Objects;
 
 public class FindCopperButtonTask extends Behavior<CopperGolemEntity> {
+    private BlockPos copperPosPublic;
+    private BlockPos copperPosBelowPublic;
+
 
     public FindCopperButtonTask() {
-        super(ImmutableMap.of(MemoryModuleType.LOOK_TARGET, MemoryStatus.REGISTERED, MemoryModuleType.WALK_TARGET, MemoryStatus.REGISTERED, MemoryModuleType.HURT_BY, MemoryStatus.VALUE_ABSENT, USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS, MemoryStatus.VALUE_ABSENT));
+        super(ImmutableMap.of(MemoryModuleType.LOOK_TARGET, MemoryStatus.REGISTERED, MemoryModuleType.WALK_TARGET, MemoryStatus.REGISTERED, MemoryModuleType.HURT_BY, MemoryStatus.VALUE_ABSENT, USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS, MemoryStatus.VALUE_ABSENT, USMemoryModules.COPPER_BUTTON, MemoryStatus.VALUE_ABSENT));
     }
 
     @Override
     protected boolean checkExtraStartConditions(ServerLevel world, CopperGolemEntity entity) {
-        return this.getCopperPos(entity) != null && entity.getBrain().getMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS).isEmpty();
+        return entity.getBrain().getMemory(USMemoryModules.COPPER_BUTTON).isEmpty() && entity.getBrain().getMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS).isEmpty();
     }
 
     @Override
     protected boolean canStillUse(ServerLevel world, CopperGolemEntity entity, long p_22547_) {
-        boolean flag = entity.getBrain().getMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS).isEmpty();
-        return this.getCopperPos(entity) != null && flag;
+        return entity.getBrain().getMemory(USMemoryModules.COPPER_BUTTON).isEmpty() && entity.getBrain().getMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS).isEmpty();
     }
 
 
@@ -40,18 +42,38 @@ public class FindCopperButtonTask extends Behavior<CopperGolemEntity> {
     protected void start(ServerLevel level, CopperGolemEntity entity, long p_22542_) {
         BlockPos copperPos = this.getCopperPos(entity);
         BlockPos copperPosBelow = this.getCopperPos(entity).below();
-        if (copperPos != null) {
+        this.copperPosPublic = copperPos;
+        this.copperPosBelowPublic = copperPosBelow;
+
+    }
+
+    @Override
+    protected void tick(ServerLevel level, CopperGolemEntity entity, long l) {
+        if (this.copperPosPublic != null && this.copperPosBelowPublic != null) {
+            BlockPos copperPos = this.copperPosPublic;
+            BlockPos copperPosBelow = this.copperPosBelowPublic;
             BehaviorUtils.setWalkAndLookTargetMemories(entity, copperPos, 0.4F, 1);
             Path button = entity.getNavigation().createPath(copperPos, 1);
             Path buttonBelow = entity.getNavigation().createPath(copperPosBelow, 1);
-            entity.getNavigation().moveTo(button, 0.4);
-            if (entity.getNavigation().getPath() != null) {
-                if ((entity.getNavigation().getPath().canReach()) || (buttonBelow.canReach())) {
+            if (button != null) {
+                if (button.canReach()) {
+                    entity.getNavigation().moveTo(button, 0.4);
                     if (entity.blockPosition().closerThan(copperPos, 2) && entity.level.getBlockState(copperPos).getBlock() instanceof CopperButtonBlock) {
                         entity.getBrain().setMemory(USMemoryModules.COPPER_BUTTON, copperPos);
+                        this.copperPosPublic = copperPos;
+                        System.out.println("nice button");
+                    }
+                } else if (buttonBelow != null) {
+                    if (buttonBelow.canReach()) {
+                        entity.getNavigation().moveTo(button, 0.4);
+                        if (entity.blockPosition().closerThan(copperPos, 2) && entity.level.getBlockState(copperPos).getBlock() instanceof CopperButtonBlock) {
+                            entity.getBrain().setMemory(USMemoryModules.COPPER_BUTTON, copperPos);
+                            this.copperPosPublic = copperPos;
+                            System.out.println("nice button");
+                        }
                     }
                 }
-            } else entity.setCooldown();
+            }
         }
     }
 
