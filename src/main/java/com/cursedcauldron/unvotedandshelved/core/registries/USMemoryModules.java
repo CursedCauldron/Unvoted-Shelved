@@ -22,6 +22,7 @@ public class USMemoryModules {
     public static final MemoryModuleType<LivingEntity> GIVEN_GLOWBERRY  = register("given_glowberry");
     public static final MemoryModuleType<BlockPos> DARK_POS             = register("dark_pos");
     public static final MemoryModuleType<Integer> COPPER_BUTTON_COOLDOWN_TICKS = register("copper_button_cooldown_ticks", Codec.INT);
+    public static final MemoryModuleType<Integer> COPPER_GOLEM_HEADSPIN_TICKS = register("copper_golem_headspin_ticks", Codec.INT);
 
     public static final MemoryModuleType<BlockPos> COPPER_BUTTON = register("copper_button");
     public static <U> MemoryModuleType<U> register(String id, Codec<U> codec) {

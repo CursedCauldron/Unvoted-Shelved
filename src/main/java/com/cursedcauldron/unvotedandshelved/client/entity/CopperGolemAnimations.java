@@ -179,7 +179,7 @@ public class CopperGolemAnimations {
                     new Keyframe(0.75F, AnimationHelper.rotation(0.0F, 359.0F, 0.0F), Transformation.Interpolations.LINEAL),
                     new Keyframe(0.8333F, AnimationHelper.rotation(0.0F, 360.0F, 0.0F), Transformation.Interpolations.CATMULLROM)
                     ))
-            .addBoneAnimation("left_arm", new Transformation(Transformation.Targets.ROTATE,
+            .addBoneAnimation("leftArm", new Transformation(Transformation.Targets.ROTATE,
                     new Keyframe(0.0F, AnimationHelper.rotation(0.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
                     new Keyframe(0.0833F, AnimationHelper.rotation(-35.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
                     new Keyframe(0.1667F, AnimationHelper.rotation(-35.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
@@ -193,7 +193,7 @@ public class CopperGolemAnimations {
                     new Keyframe(0.7292F, AnimationHelper.rotation(0.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
                     new Keyframe(0.8333F, AnimationHelper.rotation(0.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL)
                     ))
-            .addBoneAnimation("right_arm", new Transformation(Transformation.Targets.ROTATE,
+            .addBoneAnimation("rightArm", new Transformation(Transformation.Targets.ROTATE,
                     new Keyframe(0.0F, AnimationHelper.rotation(0.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
                     new Keyframe(0.0833F, AnimationHelper.rotation(35.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
                     new Keyframe(0.1667F, AnimationHelper.rotation(35.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),

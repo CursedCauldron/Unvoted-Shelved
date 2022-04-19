@@ -3,6 +3,7 @@ package com.cursedcauldron.unvotedandshelved.common.entity.ai.copper_golem;
 import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.common.entity.ai.copper_golem.task.FindCopperButtonTask;
 import com.cursedcauldron.unvotedandshelved.common.entity.ai.copper_golem.task.PressCopperButtonTask;
+import com.cursedcauldron.unvotedandshelved.common.entity.ai.copper_golem.task.SpinHead;
 import com.cursedcauldron.unvotedandshelved.core.registries.USActivities;
 import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
 import com.google.common.collect.ImmutableList;
@@ -32,6 +33,7 @@ public class CopperGolemBrain {
     public static Brain<?> create(CopperGolemEntity copperGolemEntity, Brain<CopperGolemEntity> brain) {
         addCoreActivities(brain);
         addIdleActivities(brain);
+        addHeadSpinActivity(brain);
         addCopperButtonActivities(brain);
         brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
         brain.setDefaultActivity(Activity.IDLE);
@@ -47,7 +49,8 @@ public class CopperGolemBrain {
                         new AnimalPanic(0.45f),
                         new LookAtTargetSink(45, 90),
                         new MoveToTargetSink(),
-                        new CountDownCooldownTicks(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS)));
+                        new CountDownCooldownTicks(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS),
+                        new CountDownCooldownTicks(USMemoryModules.COPPER_GOLEM_HEADSPIN_TICKS)));
     }
 
     private static void addIdleActivities(Brain<CopperGolemEntity> brain) {
@@ -78,11 +81,23 @@ public class CopperGolemBrain {
         );
     }
 
+    private static void addHeadSpinActivity(Brain<CopperGolemEntity> brain) {
+        brain.addActivityWithConditions(
+                USActivities.HEAD_SPIN,
+                ImmutableList.of(
+                        Pair.of(0, new SpinHead())
+                ),
+                ImmutableSet.of(
+                        Pair.of(USMemoryModules.COPPER_GOLEM_HEADSPIN_TICKS, MemoryStatus.VALUE_ABSENT
+                        ))
+        );
+    }
+
 
     public static void updateActivity(CopperGolemEntity entity) {
         entity.getBrain().setActiveActivityToFirstValid(
                 ImmutableList.of(
-                        USActivities.PRESS_COPPER_BUTTON, Activity.IDLE
+                        USActivities.PRESS_COPPER_BUTTON, USActivities.HEAD_SPIN, Activity.IDLE
                 )
         );
     }
