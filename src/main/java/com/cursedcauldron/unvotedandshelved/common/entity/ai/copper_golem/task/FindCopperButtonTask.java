@@ -39,12 +39,14 @@ public class FindCopperButtonTask extends Behavior<CopperGolemEntity> {
     @Override
     protected void start(ServerLevel level, CopperGolemEntity entity, long p_22542_) {
         BlockPos copperPos = this.getCopperPos(entity);
+        BlockPos copperPosBelow = this.getCopperPos(entity).below();
         if (copperPos != null) {
             BehaviorUtils.setWalkAndLookTargetMemories(entity, copperPos, 0.4F, 1);
             Path button = entity.getNavigation().createPath(copperPos, 1);
+            Path buttonBelow = entity.getNavigation().createPath(copperPosBelow, 1);
             entity.getNavigation().moveTo(button, 0.4);
             if (entity.getNavigation().getPath() != null) {
-                if (entity.getNavigation().getPath().canReach()) {
+                if ((entity.getNavigation().getPath().canReach()) || (buttonBelow.canReach())) {
                     if (entity.blockPosition().closerThan(copperPos, 2) && entity.level.getBlockState(copperPos).getBlock() instanceof CopperButtonBlock) {
                         entity.getBrain().setMemory(USMemoryModules.COPPER_BUTTON, copperPos);
                     }

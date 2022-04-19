@@ -48,6 +48,7 @@ public class SpinHead extends Behavior<CopperGolemEntity> {
         }
         System.out.println("The spinning ticks are " + this.spinningTicks);
     }
+
     @Override
     protected void start(ServerLevel level, CopperGolemEntity entity, long p_22542_) {
         entity.getNavigation().stop();

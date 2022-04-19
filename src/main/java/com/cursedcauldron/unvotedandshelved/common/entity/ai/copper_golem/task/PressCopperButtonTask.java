@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.behavior.Behavior;
@@ -44,15 +45,19 @@ public class PressCopperButtonTask extends Behavior<CopperGolemEntity> {
             BlockState state = entity.level.getBlockState(blockPos);
             boolean flag = entity.blockPosition().closerThan(blockPos, 2);
             if (this.pressingTicks < 200 && flag && state.getBlock() instanceof CopperButtonBlock buttonBlock) {
-                buttonBlock.press(state, world, blockPos);
                 AttachFace direction = state.getValue(CopperButtonBlock.FACE);
                 entity.getLookControl().setLookAt(blockPos.getX(), blockPos.getY(), blockPos.getZ());
-                entity.playSound(USSounds.COPPER_CLICK, 1.0F, 1.0F);
                 if (direction == AttachFace.FLOOR) {
                     entity.setPose(EntityPoses.PRESS_BUTTON_DOWN);
+                    buttonBlock.press(state, world, blockPos);
                 } else if (direction == AttachFace.CEILING) {
                     entity.setPose(EntityPoses.PRESS_BUTTON_UP);
-                } else entity.setPose(EntityPoses.PRESS_BUTTON);
+                    buttonBlock.press(state, world, blockPos);
+                } else {
+                    entity.setPose(EntityPoses.PRESS_BUTTON);
+                    buttonBlock.press(state, world, blockPos);
+                }
+                world.playSound(null, blockPos.getX(), blockPos.getY(), blockPos.getZ(), USSounds.COPPER_CLICK, SoundSource.BLOCKS, 1, 1);
             }
         });
     }

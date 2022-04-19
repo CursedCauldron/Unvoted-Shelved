@@ -356,7 +356,7 @@ public class CopperGolemAnimations {
                     new Keyframe(1.125F, AnimationHelper.rotation(-20, 0, 0.0F), Transformation.Interpolations.LINEAL),
                     new Keyframe(1.375F, AnimationHelper.rotation(0.0F, 0, 0.0F), Transformation.Interpolations.LINEAL)
                     ))
-            .addBoneAnimation("body", new Transformation(Transformation.Targets.ROTATE,
+            .addBoneAnimation("body", new Transformation(Transformation.Targets.TRANSLATE,
                     new Keyframe(0.0F, AnimationHelper.translate(0.0F, 0, 0.0F), Transformation.Interpolations.LINEAL),
                     new Keyframe(0.1667F, AnimationHelper.translate(0.0F, 0, 0.0F), Transformation.Interpolations.LINEAL),
                     new Keyframe(0.2083F, AnimationHelper.translate(0.0F, 0.005F, 0.35F), Transformation.Interpolations.LINEAL),
