@@ -37,7 +37,7 @@ public class SpinHead extends Behavior<CopperGolemEntity> {
 
     @Override
     protected void tick(ServerLevel world, CopperGolemEntity entity, long p_22553_) {
-        if (this.spinningTicks < 20) {
+        if (this.spinningTicks < 40) {
             this.spinningTicks++;
         } else {
             entity.getBrain().setMemory(USMemoryModules.COPPER_GOLEM_HEADSPIN_TICKS, UniformInt.of(120, 200).sample(world.getRandom()));
@@ -50,7 +50,7 @@ public class SpinHead extends Behavior<CopperGolemEntity> {
         entity.getNavigation().stop();
         entity.getBrain().eraseMemory(MemoryModuleType.WALK_TARGET);
         entity.getBrain().eraseMemory(MemoryModuleType.LOOK_TARGET);
-        if (this.spinningTicks <= 18) {
+        if (this.spinningTicks <= 20) {
             entity.playSound(USSounds.HEAD_SPIN, 1, 1);
             entity.setPose(EntityPoses.HEAD_SPIN);
         }
