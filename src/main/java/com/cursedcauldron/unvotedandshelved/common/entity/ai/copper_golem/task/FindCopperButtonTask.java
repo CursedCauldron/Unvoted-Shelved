@@ -43,7 +43,7 @@ public class FindCopperButtonTask extends Behavior<CopperGolemEntity> {
         BlockPos copperPos = this.getCopperPos(entity);
         if (copperPos != null) {
             this.copperPosPublic = copperPos;
-            BlockPos copperPosBelow = this.getCopperPos(entity).below();
+            BlockPos copperPosBelow = this.getCopperPos(entity).below(); 
             if (copperPosBelow != null) {
                 this.copperPosBelowPublic = copperPosBelow;
             }
