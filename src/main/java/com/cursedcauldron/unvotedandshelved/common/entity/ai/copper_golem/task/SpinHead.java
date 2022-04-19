@@ -50,7 +50,7 @@ public class SpinHead extends Behavior<CopperGolemEntity> {
         entity.getNavigation().stop();
         entity.getBrain().eraseMemory(MemoryModuleType.WALK_TARGET);
         entity.getBrain().eraseMemory(MemoryModuleType.LOOK_TARGET);
-        if (this.spinningTicks <= 20) {
+        if (this.spinningTicks >= 20) {
             entity.playSound(USSounds.HEAD_SPIN, 1, 1);
             entity.setPose(EntityPoses.HEAD_SPIN);
         }
