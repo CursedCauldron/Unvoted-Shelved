@@ -46,7 +46,6 @@ public class SpinHead extends Behavior<CopperGolemEntity> {
             entity.playSound(USSounds.HEAD_SPIN, 1, 1);
             entity.setPose(EntityPoses.HEAD_SPIN);
         }
-        System.out.println("The spinning ticks are " + this.spinningTicks);
     }
 
     @Override
