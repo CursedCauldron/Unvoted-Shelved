@@ -1,2 +1,3 @@
 accessWidener	v1	named
 accessible method net/minecraft/world/entity/decoration/ArmorStand brokenByAnything (Lnet/minecraft/world/damagesource/DamageSource;)V
+accessible method net/minecraft/world/level/block/ButtonBlock updateNeighbours (Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)V

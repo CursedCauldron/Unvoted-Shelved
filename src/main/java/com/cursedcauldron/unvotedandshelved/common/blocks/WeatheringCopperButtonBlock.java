@@ -6,6 +6,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,6 +32,24 @@ public class WeatheringCopperButtonBlock extends CopperButtonBlock implements We
         super(properties);
         this.weatherState = state;
     }
+
+    private int getPressDuration() {
+        if (this.weatherState == WeatherState.UNAFFECTED) {
+            return 20;
+        } else if (this.weatherState == WeatherState.EXPOSED) {
+            return 30;
+        } else if (this.weatherState == WeatherState.WEATHERED) {
+            return 40;
+        } else return 50;
+    }
+
+    @Override
+    public void press(BlockState blockState, Level level, BlockPos blockPos) {
+        level.setBlock(blockPos, blockState.setValue(POWERED, true), 3);
+        this.updateNeighbours(blockState, level, blockPos);
+        level.scheduleTick(blockPos, this, this.getPressDuration());
+    }
+
 
     @Override
     public void randomTick(BlockState state, ServerLevel world, BlockPos blockPos, Random random) {

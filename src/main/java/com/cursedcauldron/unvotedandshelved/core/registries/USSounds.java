@@ -16,6 +16,8 @@ public class USSounds {
     public static final SoundEvent GLOWBERRY_DUST_STEP  = register("glowberry_dust_step");
     public static final SoundEvent COPPER_CLICK         = register("copper_button_click");
     public static final SoundEvent HEAD_SPIN         = register("copper_golem_headspin");
+    public static final SoundEvent HEAD_SPIN_SLOWER        = register("copper_golem_headspin_slower");
+    public static final SoundEvent HEAD_SPIN_SLOWEST         = register("copper_golem_headspin_slowest");
 
 
     public static final SoundType GLOW                  = new SoundType(1.0F, 2.0F, SoundEvents.RESPAWN_ANCHOR_CHARGE, GLOWBERRY_DUST_STEP, SoundEvents.RESPAWN_ANCHOR_CHARGE , SoundEvents.RESPAWN_ANCHOR_CHARGE, SoundEvents.RESPAWN_ANCHOR_CHARGE);

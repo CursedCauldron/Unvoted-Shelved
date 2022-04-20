@@ -58,10 +58,22 @@ public class CopperGolemModel<T extends CopperGolemEntity> extends HierarchicalM
         long time = Util.getMillis();
         this.head.yRot = netHeadYaw * 0.017453292F;
         this.runAnimation(entity.walkingAnimation, CopperGolemAnimations.WALKING, time);
+
         this.runAnimation(entity.headSpinAnimation, CopperGolemAnimations.HEAD_SPIN, time);
+        this.runAnimation(entity.headSpinSlowerAnimation, CopperGolemAnimations.HEAD_SPIN_SLOWER, time);
+        this.runAnimation(entity.headSpinSlowestAnimation, CopperGolemAnimations.HEAD_SPIN_SLOWEST, time);
+
         this.runAnimation(entity.buttonAnimation, CopperGolemAnimations.BUTTON_PRESS, time);
+        this.runSlowerAnimation(entity.buttonSlowerAnimation, CopperGolemAnimations.BUTTON_PRESS, time);
+        this.runSlowestAnimation(entity.buttonSlowestAnimation, CopperGolemAnimations.BUTTON_PRESS, time);
+
         this.runAnimation(entity.buttonUpAnimation, CopperGolemAnimations.BUTTON_PRESS_UP, time);
+        this.runSlowerAnimation(entity.buttonUpSlowerAnimation, CopperGolemAnimations.BUTTON_PRESS_UP, time);
+        this.runSlowestAnimation(entity.buttonUpSlowestAnimation, CopperGolemAnimations.BUTTON_PRESS_UP, time);
+
         this.runAnimation(entity.buttonDownAnimation, CopperGolemAnimations.BUTTON_PRESS_DOWN, time);
+        this.runSlowerAnimation(entity.buttonDownSlowerAnimation, CopperGolemAnimations.BUTTON_PRESS_DOWN, time);
+        this.runSlowestAnimation(entity.buttonDownSlowestAnimation, CopperGolemAnimations.BUTTON_PRESS_DOWN, time);
     }
 
 
@@ -69,10 +81,17 @@ public class CopperGolemModel<T extends CopperGolemEntity> extends HierarchicalM
         animationState.run(state -> AnimationHelper.animate(this, animation, time - state.getStartTime(), 1.0F, ANIMATION_PROGRESS));
     }
 
+    private void runSlowerAnimation(AnimationState animationState, Animation animation, long time) {
+        animationState.run(state -> AnimationHelper.animate(this, animation, time - state.getStartTime(), 0.75F, ANIMATION_PROGRESS));
+    }
+
+    private void runSlowestAnimation(AnimationState animationState, Animation animation, long time) {
+        animationState.run(state -> AnimationHelper.animate(this, animation, time - state.getStartTime(), 0.5F, ANIMATION_PROGRESS));
+    }
+
     @Override
     public ModelPart root() {
         return this.root;
     }
-
 
 }

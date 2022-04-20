@@ -33,5 +33,15 @@
     "sounds": [
       "unvotedandshelved:mob/copper_golem/copper_golem_headspin"
     ]
+  },
+  "copper_golem_headspin_slower": {
+    "sounds": [
+      "unvotedandshelved:mob/copper_golem/copper_golem_headspin_slower"
+    ]
+  },
+  "copper_golem_headspin_slowest": {
+    "sounds": [
+      "unvotedandshelved:mob/copper_golem/copper_golem_headspin_slowest"
+    ]
   }
 }

@@ -234,6 +234,142 @@ public class CopperGolemAnimations {
                     ))
             .build();
 
+    public static final Animation HEAD_SPIN_SLOWER = Animation.Builder.create(1.106775F)
+            .addBoneAnimation("head", new Transformation(Transformation.Targets.ROTATE,
+                    new Keyframe(0.0F, AnimationHelper.rotation(0.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.104125F, AnimationHelper.rotation(0.0F, 88.3F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.260375F, AnimationHelper.rotation(0.0F, 90.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.364625F, AnimationHelper.rotation(0.0F, 175.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.520875F, AnimationHelper.rotation(0.0F, 180.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.625F, AnimationHelper.rotation(0.0F, 277.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.78125F, AnimationHelper.rotation(0.0F, 270.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.9375F, AnimationHelper.rotation(0.0F, 359.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(1.041625F, AnimationHelper.rotation(0.0F, 360.0F, 0.0F), Transformation.Interpolations.CATMULLROM)
+            ))
+
+            .addBoneAnimation("leftArm", new Transformation(Transformation.Targets.ROTATE,
+                    new Keyframe(0.0F, AnimationHelper.rotation(0.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.104125F, AnimationHelper.rotation(-35.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.208375F, AnimationHelper.rotation(-35.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.260375F, AnimationHelper.rotation(-35.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.364625F, AnimationHelper.rotation(38.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.46875F, AnimationHelper.rotation(37.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.520875F, AnimationHelper.rotation(28.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.625F, AnimationHelper.rotation(-39.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.729125F, AnimationHelper.rotation(-35.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.78125F, AnimationHelper.rotation(-35.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.9115F, AnimationHelper.rotation(0.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(1.041625F, AnimationHelper.rotation(0.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL)
+            ))
+            .addBoneAnimation("rightArm", new Transformation(Transformation.Targets.ROTATE,
+                    new Keyframe(0.0F, AnimationHelper.rotation(0.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.104125F, AnimationHelper.rotation(35.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.208375F, AnimationHelper.rotation(35.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.260375F, AnimationHelper.rotation(35.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.364625F, AnimationHelper.rotation(-38.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.46875F, AnimationHelper.rotation(-37.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.520875F, AnimationHelper.rotation(-28.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.625F, AnimationHelper.rotation(39.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.729125F, AnimationHelper.rotation(35.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.78125F, AnimationHelper.rotation(35.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.9115F, AnimationHelper.rotation(0.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(1.041625F, AnimationHelper.rotation(0.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL)
+            ))
+            .addBoneAnimation("antenna", new Transformation(Transformation.Targets.ROTATE,
+                    new Keyframe(0.0F, AnimationHelper.rotation(0.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.260375F, AnimationHelper.rotation(0.0F, -45.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.78125F, AnimationHelper.rotation(0.0F, 360.0F, 0.0F), Transformation.Interpolations.LINEAL)
+            ))
+            .addBoneAnimation("antenna", new Transformation(Transformation.Targets.TRANSLATE,
+                    new Keyframe(0.0F, AnimationHelper.translate(0.0F, 0, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.039125F, AnimationHelper.translate(0.0F, -0.5F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.078125F, AnimationHelper.translate(0.0F, -2.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.11725F, AnimationHelper.translate(0.0F, -1.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.15625F, AnimationHelper.translate(0.0F, -2.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.18225F, AnimationHelper.translate(0.0F, -1.5F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.208375F, AnimationHelper.translate(0.0F, -2.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.234375F, AnimationHelper.translate(0.0F, -1.5F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.260375F, AnimationHelper.translate(0.0F, -2.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.78125F, AnimationHelper.translate(0.0F, -2.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.833375F, AnimationHelper.translate(0.0F, -1.4F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.872375F, AnimationHelper.translate(0.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.9245F, AnimationHelper.translate(0.0F, -1.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.9635F, AnimationHelper.translate(0.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.989625F, AnimationHelper.translate(0.0F, -0.5F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(1.015625F, AnimationHelper.translate(0.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.98748F, AnimationHelper.translate(0.0F, -0.2F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(1.041625F, AnimationHelper.translate(0.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM)
+            ))
+            .build();
+
+    public static final Animation HEAD_SPIN_SLOWEST = Animation.Builder.create(0.88542F)
+            .addBoneAnimation("head", new Transformation(Transformation.Targets.ROTATE,
+                    new Keyframe(0.0F, AnimationHelper.rotation(0.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.12495F,  AnimationHelper.rotation(0.0F, 88.3F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.31245F,  AnimationHelper.rotation(0.0F, 90.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.43755F,  AnimationHelper.rotation(0.0F, 175.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.62505F,  AnimationHelper.rotation(0.0F, 180.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.75F, AnimationHelper.rotation(0.0F, 277.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.9375F, AnimationHelper.rotation(0.0F, 270.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(1.125F, AnimationHelper.rotation(0.0F, 359.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(1.24995F,  AnimationHelper.rotation(0.0F, 360.0F, 0.0F), Transformation.Interpolations.CATMULLROM)
+            ))
+            .addBoneAnimation("leftArm", new Transformation(Transformation.Targets.ROTATE,
+                    new Keyframe(0.0F, AnimationHelper.rotation(0.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.12495F,  AnimationHelper.rotation(-35.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.25005F,  AnimationHelper.rotation(-35.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.31245F,  AnimationHelper.rotation(-35.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.43755F,  AnimationHelper.rotation(38.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.5625F, AnimationHelper.rotation(37.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.62505F,  AnimationHelper.rotation(28.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.75F, AnimationHelper.rotation(-39.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.87495F,  AnimationHelper.rotation(-35.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.9375F, AnimationHelper.rotation(-35.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(1.0938F,  AnimationHelper.rotation(0.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(1.24995F,  AnimationHelper.rotation(0.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL)
+            ))
+            .addBoneAnimation("rightArm", new Transformation(Transformation.Targets.ROTATE,
+                    new Keyframe(0.0F, AnimationHelper.rotation(0.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.12495F, AnimationHelper.rotation(35.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.25005F, AnimationHelper.rotation(35.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.31245F, AnimationHelper.rotation(35.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.43755F, AnimationHelper.rotation(-38.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.5625F, AnimationHelper.rotation(-37.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.62505F, AnimationHelper.rotation(-28.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.75F, AnimationHelper.rotation(39.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.87495F, AnimationHelper.rotation(35.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.9375F, AnimationHelper.rotation(35.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(1.0938F,  AnimationHelper.rotation(0.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(1.24995F, AnimationHelper.rotation(0.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL)
+            ))
+            .addBoneAnimation("antenna", new Transformation(Transformation.Targets.ROTATE,
+                    new Keyframe(0.0F, AnimationHelper.rotation(0.0F, 0.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.31245F, AnimationHelper.rotation(0.0F, -45.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.9375F, AnimationHelper.rotation(0.0F, 360.0F, 0.0F), Transformation.Interpolations.LINEAL)
+            ))
+            .addBoneAnimation("antenna", new Transformation(Transformation.Targets.TRANSLATE,
+                    new Keyframe(0.0F, AnimationHelper.translate(0.0F, 0, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.04695F, AnimationHelper.translate(0.0F, -0.5F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.09375F, AnimationHelper.translate(0.0F, -2.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.1407F, AnimationHelper.translate(0.0F, -1.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.1875F,AnimationHelper.translate(0.0F, -2.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.2187F, AnimationHelper.translate(0.0F, -1.5F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.25005F, AnimationHelper.translate(0.0F, -2.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.28125F, AnimationHelper.translate(0.0F, -1.5F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(0.31245F, AnimationHelper.translate(0.0F, -2.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(0.9375F, AnimationHelper.translate(0.0F, -2.0F, 0.0F), Transformation.Interpolations.LINEAL),
+                    new Keyframe(1.00005F, AnimationHelper.translate(0.0F, -1.4F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(1.04685F, AnimationHelper.translate(0.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(1.1094F, AnimationHelper.translate(0.0F, -1.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(1.1562F, AnimationHelper.translate(0.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(1.18755F, AnimationHelper.translate(0.0F, -0.5F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(1.21875F, AnimationHelper.translate(0.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(1.23435F, AnimationHelper.translate(0.0F, -0.2F, 0.0F), Transformation.Interpolations.CATMULLROM),
+                    new Keyframe(1.24995F, AnimationHelper.translate(0.0F, 0.0F, 0.0F), Transformation.Interpolations.CATMULLROM)
+            ))
+            .build();
+
+
     public static final Animation BUTTON_PRESS = Animation.Builder.create(2.53125F)
             .addBoneAnimation("body", new Transformation(Transformation.Targets.ROTATE,
                     new Keyframe(0.0F, AnimationHelper.rotation(0.0F, 0, 0.0F), Transformation.Interpolations.LINEAL),

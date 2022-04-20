@@ -37,14 +37,36 @@ public class SpinHead extends Behavior<CopperGolemEntity> {
 
     @Override
     protected void tick(ServerLevel world, CopperGolemEntity entity, long p_22553_) {
-        if (this.spinningTicks < 40) {
-            this.spinningTicks++;
+        if (entity.getStage() == CopperGolemEntity.Stage.UNAFFECTED) {
+            if (this.spinningTicks < 40) {
+                this.spinningTicks++;
+            } else {
+                entity.getBrain().setMemory(USMemoryModules.COPPER_GOLEM_HEADSPIN_TICKS, UniformInt.of(120, 200).sample(world.getRandom()));
+            }
+            if (this.spinningTicks == 20) {
+                entity.playSound(USSounds.HEAD_SPIN, 1, 1);
+                entity.setPose(EntityPoses.HEAD_SPIN);
+            }
+        } else if (entity.getStage() == CopperGolemEntity.Stage.EXPOSED) {
+            if (this.spinningTicks < 50) {
+                this.spinningTicks++;
+            } else {
+                entity.getBrain().setMemory(USMemoryModules.COPPER_GOLEM_HEADSPIN_TICKS, UniformInt.of(120, 200).sample(world.getRandom()));
+            }
+            if (this.spinningTicks == 25) {
+                entity.playSound(USSounds.HEAD_SPIN_SLOWER, 1, 1);
+                entity.setPose(EntityPoses.HEAD_SPIN);
+            }
         } else {
-            entity.getBrain().setMemory(USMemoryModules.COPPER_GOLEM_HEADSPIN_TICKS, UniformInt.of(120, 200).sample(world.getRandom()));
-        }
-        if (this.spinningTicks == 20) {
-            entity.playSound(USSounds.HEAD_SPIN, 1, 1);
-            entity.setPose(EntityPoses.HEAD_SPIN);
+            if (this.spinningTicks < 60) {
+                this.spinningTicks++;
+            } else {
+                entity.getBrain().setMemory(USMemoryModules.COPPER_GOLEM_HEADSPIN_TICKS, UniformInt.of(120, 200).sample(world.getRandom()));
+            }
+            if (this.spinningTicks == 30) {
+                entity.playSound(USSounds.HEAD_SPIN_SLOWEST, 1, 1);
+                entity.setPose(EntityPoses.HEAD_SPIN);
+            }
         }
     }
 

@@ -49,9 +49,20 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
     private static final EntityDataAccessor<Boolean> POWERED = SynchedEntityData.defineId(CopperGolemEntity.class, EntityDataSerializers.BOOLEAN);
     public final AnimationState walkingAnimation = new AnimationState();
     public final AnimationState headSpinAnimation = new AnimationState();
+    public final AnimationState headSpinSlowerAnimation = new AnimationState();
+    public final AnimationState headSpinSlowestAnimation = new AnimationState();
+
     public final AnimationState buttonAnimation = new AnimationState();
+    public final AnimationState buttonSlowerAnimation = new AnimationState();
+    public final AnimationState buttonSlowestAnimation = new AnimationState();
+
     public final AnimationState buttonUpAnimation = new AnimationState();
+    public final AnimationState buttonUpSlowerAnimation = new AnimationState();
+    public final AnimationState buttonUpSlowestAnimation = new AnimationState();
+
     public final AnimationState buttonDownAnimation = new AnimationState();
+    public final AnimationState buttonDownSlowerAnimation = new AnimationState();
+    public final AnimationState buttonDownSlowestAnimation = new AnimationState();
 
     public CopperGolemEntity(EntityType<? extends AbstractGolem> type, Level world) {
         super(type, world);
@@ -113,31 +124,94 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
     public void onSyncedDataUpdated(EntityDataAccessor<?> data) {
         if (DATA_POSE.equals(data)) {
             Pose pose = this.getPose();
-
-            if (pose == EntityPoses.HEAD_SPIN) {
-                this.headSpinAnimation.start();
+            if (this.getStage() == Stage.UNAFFECTED) {
+                if (pose == EntityPoses.HEAD_SPIN) {
+                    this.headSpinAnimation.start();
+                } else {
+                    this.headSpinAnimation.stop();
+                    this.headSpinSlowerAnimation.stop();
+                    this.headSpinSlowestAnimation.stop();
+                }
+                if (pose == EntityPoses.PRESS_BUTTON) {
+                    this.buttonAnimation.start();
+                } else {
+                    this.buttonAnimation.stop();
+                    this.buttonSlowerAnimation.stop();
+                    this.buttonSlowestAnimation.stop();
+                }
+                if (pose == EntityPoses.PRESS_BUTTON_UP) {
+                    this.buttonUpAnimation.start();
+                } else {
+                    this.buttonUpAnimation.stop();
+                    this.buttonUpSlowerAnimation.stop();
+                    this.buttonUpSlowestAnimation.stop();
+                }
+                if (pose == EntityPoses.PRESS_BUTTON_DOWN) {
+                    this.buttonDownAnimation.start();
+                } else {
+                    this.buttonDownAnimation.stop();
+                    this.buttonDownSlowerAnimation.stop();
+                    this.buttonDownSlowestAnimation.stop();
+                }
+            } else if (this.getStage() == Stage.EXPOSED) {
+                if (pose == EntityPoses.HEAD_SPIN) {
+                    this.headSpinSlowerAnimation.start();
+                } else {
+                    this.headSpinAnimation.stop();
+                    this.headSpinSlowerAnimation.stop();
+                    this.headSpinSlowestAnimation.stop();
+                }
+                if (pose == EntityPoses.PRESS_BUTTON) {
+                    this.buttonSlowerAnimation.start();
+                } else {
+                    this.buttonAnimation.stop();
+                    this.buttonSlowerAnimation.stop();
+                    this.buttonSlowestAnimation.stop();
+                }
+                if (pose == EntityPoses.PRESS_BUTTON_UP) {
+                    this.buttonUpSlowerAnimation.start();
+                } else {
+                    this.buttonUpAnimation.stop();
+                    this.buttonUpSlowerAnimation.stop();
+                    this.buttonUpSlowestAnimation.stop();
+                }
+                if (pose == EntityPoses.PRESS_BUTTON_DOWN) {
+                    this.buttonDownSlowerAnimation.start();
+                } else {
+                    this.buttonDownAnimation.stop();
+                    this.buttonDownSlowerAnimation.stop();
+                    this.buttonDownSlowestAnimation.stop();
+                }
             } else {
-                this.headSpinAnimation.stop();
+                if (pose == EntityPoses.HEAD_SPIN) {
+                    this.headSpinSlowestAnimation.start();
+                } else {
+                    this.headSpinAnimation.stop();
+                    this.headSpinSlowerAnimation.stop();
+                    this.headSpinSlowestAnimation.stop();
+                }
+                if (pose == EntityPoses.PRESS_BUTTON) {
+                    this.buttonSlowestAnimation.start();
+                } else {
+                    this.buttonAnimation.stop();
+                    this.buttonSlowerAnimation.stop();
+                    this.buttonSlowestAnimation.stop();
+                }
+                if (pose == EntityPoses.PRESS_BUTTON_UP) {
+                    this.buttonUpSlowestAnimation.start();
+                } else {
+                    this.buttonUpAnimation.stop();
+                    this.buttonUpSlowerAnimation.stop();
+                    this.buttonUpSlowestAnimation.stop();
+                }
+                if (pose == EntityPoses.PRESS_BUTTON_DOWN) {
+                    this.buttonDownSlowestAnimation.start();
+                } else {
+                    this.buttonDownAnimation.stop();
+                    this.buttonDownSlowerAnimation.stop();
+                    this.buttonDownSlowestAnimation.stop();
+                }
             }
-
-            if (pose == EntityPoses.PRESS_BUTTON) {
-                this.buttonAnimation.start();
-            } else {
-                this.buttonAnimation.stop();
-            }
-
-            if (pose == EntityPoses.PRESS_BUTTON_UP) {
-                this.buttonUpAnimation.start();
-            } else {
-                this.buttonUpAnimation.stop();
-            }
-
-            if (pose == EntityPoses.PRESS_BUTTON_DOWN) {
-                this.buttonDownAnimation.start();
-            } else {
-                this.buttonDownAnimation.stop();
-            }
-
         }
         super.onSyncedDataUpdated(data);
     }
