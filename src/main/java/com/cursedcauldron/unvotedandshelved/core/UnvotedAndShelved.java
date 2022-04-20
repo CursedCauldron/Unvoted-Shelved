@@ -16,24 +16,27 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.LightningRodBlock;
 import net.minecraft.world.level.gameevent.GameEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import static com.cursedcauldron.unvotedandshelved.core.registries.USEntities.GLARE;
 import static net.minecraft.world.level.biome.Biomes.LUSH_CAVES;
 
-//<>
-
 public class UnvotedAndShelved implements ModInitializer {
     public static final String MODID = "unvotedandshelved";
+    public static final Logger LOGGER = LogManager.getLogger(MODID);
 
     @Override
     public void onInitialize() {
         USActivities.ACTIVITIES.register();
         USBlocks.BLOCKS.register();
         USEntities.ENTITIES.register();
+        USFeatures.init();
         USItems.ITEMS.register();
         USMemoryModules.MEMORY_MODULES.register();
         USParticles.PARTICLES.register();
         USSounds.SOUNDS.register();
+        USStructures.init();
         USStructureProcessors.PROCESSORS.register();
         USTags.init();
 

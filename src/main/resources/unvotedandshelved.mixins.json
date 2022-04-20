@@ -9,6 +9,7 @@
     "MinecraftServerMixin",
     "ModelPartMixin",
     "PartDefinitionMixin",
+    "StructureFeatureAccessor",
     "access.ActivityAccessor",
     "access.MemoryModuleAccessor",
     "access.ModelPartAccessor",

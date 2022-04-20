@@ -5,6 +5,9 @@
     },
     {
       "processor_type": "unvotedandshelved:stone_wall_processor"
+    },
+    {
+      "processor_type": "unvotedandshelved:waterlogged_processor"
     }
   ]
 }

@@ -2,7 +2,6 @@ package com.cursedcauldron.unvotedandshelved.common.entity;
 
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import com.cursedcauldron.unvotedandshelved.core.registries.USItems;
-import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -28,7 +27,6 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Block;
@@ -39,8 +37,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -122,52 +118,60 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
     public InteractionResult interactAt(Player player, Vec3 vec3, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (stack.getItem() instanceof AxeItem) {
-            this.convertBack(USEntities.COPPER_GOLEM, true);
+            convertToWeathered();
+//            this.convertBack(USEntities.COPPER_GOLEM, true);
             this.level.playSound(player, this.blockPosition(), SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
             this.level.levelEvent(player, 3004, this.blockPosition(), 0);
             return InteractionResult.SUCCESS;
         } else return InteractionResult.PASS;
     }
 
-    @Nullable
-    public <T extends Mob> T convertBack(EntityType<T> entityType, boolean bl) {
-        if (this.isRemoved()) {
-            return null;
+    private void convertToWeathered() {
+        CopperGolemEntity copperGolem = this.convertTo(USEntities.COPPER_GOLEM, true);
+        if (copperGolem != null) {
+            copperGolem.setStage(CopperGolemEntity.Stage.WEATHERED);
         }
-        CopperGolemEntity mob = (CopperGolemEntity)entityType.create(this.level);
-        assert mob != null;
-        mob.copyPosition(this);
-        mob.lookAt(EntityAnchorArgument.Anchor.EYES, this.getLookAngle());
-        mob.setBaby(this.isBaby());
-        mob.setNoAi(this.isNoAi());
-        mob.setStage(CopperGolemEntity.Stage.WEATHERED);
-        if (this.hasCustomName()) {
-            mob.setCustomName(this.getCustomName());
-            mob.setCustomNameVisible(this.isCustomNameVisible());
-        }
-        if (this.isPersistenceRequired()) {
-            mob.setPersistenceRequired();
-        }
-        mob.setInvulnerable(this.isInvulnerable());
-        if (bl) {
-            mob.setCanPickUpLoot(this.canPickUpLoot());
-            for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
-                ItemStack itemStack = this.getItemBySlot(equipmentSlot);
-                if (itemStack.isEmpty()) continue;
-                mob.setItemSlot(equipmentSlot, itemStack.copy());
-                mob.setDropChance(equipmentSlot, this.getEquipmentDropChance(equipmentSlot));
-                itemStack.setCount(0);
-            }
-        }
-        this.level.addFreshEntity(mob);
-        if (this.isPassenger()) {
-            Entity entity = this.getVehicle();
-            this.stopRiding();
-            mob.startRiding(entity, true);
-        }
-        this.discard();
-        return (T)mob;
     }
+
+//    @Nullable
+//    public <T extends Mob> T convertBack(EntityType<T> entityType, boolean bl) {
+//        if (this.isRemoved()) {
+//            return null;
+//        }
+//        CopperGolemEntity mob = (CopperGolemEntity)entityType.create(this.level);
+//        assert mob != null;
+//        mob.copyPosition(this);
+//        mob.lookAt(EntityAnchorArgument.Anchor.EYES, this.getLookAngle());
+//        mob.setBaby(this.isBaby());
+//        mob.setNoAi(this.isNoAi());
+//        mob.setStage(CopperGolemEntity.Stage.WEATHERED);
+//        if (this.hasCustomName()) {
+//            mob.setCustomName(this.getCustomName());
+//            mob.setCustomNameVisible(this.isCustomNameVisible());
+//        }
+//        if (this.isPersistenceRequired()) {
+//            mob.setPersistenceRequired();
+//        }
+//        mob.setInvulnerable(this.isInvulnerable());
+//        if (bl) {
+//            mob.setCanPickUpLoot(this.canPickUpLoot());
+//            for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
+//                ItemStack itemStack = this.getItemBySlot(equipmentSlot);
+//                if (itemStack.isEmpty()) continue;
+//                mob.setItemSlot(equipmentSlot, itemStack.copy());
+//                mob.setDropChance(equipmentSlot, this.getEquipmentDropChance(equipmentSlot));
+//                itemStack.setCount(0);
+//            }
+//        }
+//        this.level.addFreshEntity(mob);
+//        if (this.isPassenger()) {
+//            Entity entity = this.getVehicle();
+//            this.stopRiding();
+//            mob.startRiding(entity, true);
+//        }
+//        this.discard();
+//        return (T)mob;
+//    }
 
     @Override
     public boolean hurt(DamageSource damageSource, float f) {
@@ -326,7 +330,8 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
     @Override
     public void thunderHit(ServerLevel serverLevel, LightningBolt lightningBolt) {
         super.thunderHit(serverLevel, lightningBolt);
-        this.convertBack(USEntities.COPPER_GOLEM, true);
+        this.convertToWeathered();
+//        this.convertBack(USEntities.COPPER_GOLEM, true);
         this.level.playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 2.0f, 0.5f + this.random.nextFloat() * 0.2f, false);
         this.level.levelEvent(3004, this.blockPosition(), 0);
     }

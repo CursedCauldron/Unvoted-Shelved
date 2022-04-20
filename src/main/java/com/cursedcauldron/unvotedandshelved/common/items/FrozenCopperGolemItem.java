@@ -55,7 +55,7 @@ public class FrozenCopperGolemItem extends Item {
                     float f = (float) Mth.floor((Mth.wrapDegrees(useOnContext.getRotation() - 180.0F) + 22.5F) / 45.0F) * 45.0F;
                     armorStand.moveTo(armorStand.getX(), armorStand.getY(), armorStand.getZ(), f, 0.0F);
                     serverLevel.addFreshEntityWithPassengers(armorStand);
-                    level.playSound((Player)null, armorStand.getX(), armorStand.getY(), armorStand.getZ(), SoundEvents.COPPER_PLACE, SoundSource.BLOCKS, 0.75F, 0.8F);
+                    level.playSound(null, armorStand.getX(), armorStand.getY(), armorStand.getZ(), SoundEvents.COPPER_PLACE, SoundSource.BLOCKS, 0.75F, 0.8F);
                     level.gameEvent(useOnContext.getPlayer(), GameEvent.ENTITY_PLACE, armorStand);
                 }
 
