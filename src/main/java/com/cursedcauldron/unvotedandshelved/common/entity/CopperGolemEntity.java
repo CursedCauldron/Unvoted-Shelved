@@ -275,12 +275,12 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
             }
             if (!this.isWaxed() || this.getStage() != Stage.OXIDIZED) {
                 float randomChance = this.random.nextFloat();
-                if (randomChance < 3.4290552E-8F) {
+                System.out.println(randomChance);
+                if (randomChance < 3.4290552e-5F) {
                     System.out.println("The random chance is " + randomChance);
                     this.setStage(Stage.values()[this.getStage().getId() + 1]);
                 }
             }
-
         }
     }
 
