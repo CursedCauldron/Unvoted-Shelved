@@ -57,7 +57,8 @@ public class CopperGolemModel<T extends CopperGolemEntity> extends HierarchicalM
         this.root().getAllParts().forEach(ModelModifier::resetPose);
         long time = Util.getMillis();
         this.head.yRot = netHeadYaw * 0.017453292F;
-        this.runAnimation(entity.walkingAnimation, CopperGolemAnimations.WALKING, time);
+        this.runAnimation(entity.walkingAnimation, CopperGolemAnimations.walkingAnimation(entity.getStage()), time);
+//        this.runAnimation(entity.walkingAnimation, CopperGolemAnimations.WALKING, time);
 
         this.runAnimation(entity.headSpinAnimation, CopperGolemAnimations.HEAD_SPIN, time);
         this.runAnimation(entity.headSpinSlowerAnimation, CopperGolemAnimations.HEAD_SPIN_SLOWER, time);
