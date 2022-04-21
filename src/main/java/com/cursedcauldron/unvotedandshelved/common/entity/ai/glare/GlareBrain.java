@@ -1,8 +1,8 @@
-package com.cursedcauldron.unvotedandshelved.common.entity.ai;
+package com.cursedcauldron.unvotedandshelved.common.entity.ai.glare;
 
 import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
-import com.cursedcauldron.unvotedandshelved.common.entity.ai.task.AerialStrollTask;
-import com.cursedcauldron.unvotedandshelved.common.entity.ai.task.GlowberryStrollTask;
+import com.cursedcauldron.unvotedandshelved.common.entity.ai.glare.task.AerialStrollTask;
+import com.cursedcauldron.unvotedandshelved.common.entity.ai.glare.task.GlowberryStrollTask;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.cursedcauldron.unvotedandshelved.core.registries.USActivities;
 import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;

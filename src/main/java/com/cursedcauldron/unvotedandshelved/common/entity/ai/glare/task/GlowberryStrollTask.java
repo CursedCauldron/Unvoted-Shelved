@@ -1,4 +1,4 @@
-package com.cursedcauldron.unvotedandshelved.common.entity.ai.task;
+package com.cursedcauldron.unvotedandshelved.common.entity.ai.glare.task;
 
 import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;

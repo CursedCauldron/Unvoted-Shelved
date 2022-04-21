@@ -1,6 +1,7 @@
-package com.cursedcauldron.unvotedandshelved.common.entity.ai.task;
+package com.cursedcauldron.unvotedandshelved.common.entity.ai.glare.task;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
@@ -41,6 +42,11 @@ public class AerialStrollTask extends RandomStroll {
 		Vec3 vec32;
 		vec32 = pathfinderMob.getViewVector(0.0F);
 		Vec3 vec33 = HoverRandomPos.getPos(pathfinderMob, 8, 7, vec32.x, vec32.z, 1.5707964F, 3, 1);
-		return vec33 != null ? vec33 : AirAndWaterRandomPos.getPos(pathfinderMob, 8, 4, -2, vec32.x, vec32.z, 1.5707963705062866D);
+		if (vec33 != null) {
+			BlockPos foundPos = new BlockPos(vec33);
+			if (pathfinderMob.level.getBlockState(foundPos).isPathfindable(pathfinderMob.level, pathfinderMob.getOnPos(), PathComputationType.LAND)) {
+				return vec33;
+			} else return null;
+		} else return null;
 	}
 }

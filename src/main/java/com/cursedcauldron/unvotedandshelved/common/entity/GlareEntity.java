@@ -1,6 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.common.entity;
 
-import com.cursedcauldron.unvotedandshelved.common.entity.ai.GlareBrain;
+import com.cursedcauldron.unvotedandshelved.common.entity.ai.glare.GlareBrain;
 import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
 import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
 import com.cursedcauldron.unvotedandshelved.core.registries.USSounds;
@@ -42,6 +42,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
