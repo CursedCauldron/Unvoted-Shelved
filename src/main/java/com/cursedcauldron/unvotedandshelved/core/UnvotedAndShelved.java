@@ -48,23 +48,23 @@ public class UnvotedAndShelved implements ModInitializer {
         USStructureProcessors.PROCESSORS.register();
         USTags.init();
 
-        Util.make(Maps.newLinkedHashMap(),map -> {
-            map.put(USBlocks.COPPER_BUTTON, USBlocks.WAXED_COPPER_BUTTON);
-            map.put(USBlocks.EXPOSED_COPPER_BUTTON, USBlocks.WAXED_EXPOSED_COPPER_BUTTON);
-            map.put(USBlocks.WEATHERED_COPPER_BUTTON, USBlocks.WAXED_WEATHERED_COPPER_BUTTON);
-            map.put(USBlocks.OXIDIZED_COPPER_BUTTON, USBlocks.WAXED_OXIDIZED_COPPER_BUTTON);
-        }).forEach((unwaxed, waxed) -> OxidizableBlocksRegistry.registerWaxableBlockPair((Block) unwaxed, (Block) waxed));
-
-        List<Block> list = Lists.newLinkedList();
-
-        list.add(USBlocks.COPPER_BUTTON);
-        list.add(USBlocks.EXPOSED_COPPER_BUTTON);
-        list.add(USBlocks.WEATHERED_COPPER_BUTTON);
-        list.add(USBlocks.OXIDIZED_COPPER_BUTTON);
-
-        for (int i = 0; i < list.size() - 1; i++) {
-            OxidizableBlocksRegistry.registerOxidizableBlockPair(list.get(i), list.get(i + 1));
-        }
+//        Util.make(Maps.newLinkedHashMap(),map -> {
+//            map.put(USBlocks.COPPER_BUTTON, USBlocks.WAXED_COPPER_BUTTON);
+//            map.put(USBlocks.EXPOSED_COPPER_BUTTON, USBlocks.WAXED_EXPOSED_COPPER_BUTTON);
+//            map.put(USBlocks.WEATHERED_COPPER_BUTTON, USBlocks.WAXED_WEATHERED_COPPER_BUTTON);
+//            map.put(USBlocks.OXIDIZED_COPPER_BUTTON, USBlocks.WAXED_OXIDIZED_COPPER_BUTTON);
+//        }).forEach((unwaxed, waxed) -> OxidizableBlocksRegistry.registerWaxableBlockPair((Block) unwaxed, (Block) waxed));
+//
+//        List<Block> list = Lists.newLinkedList();
+//
+//        list.add(USBlocks.COPPER_BUTTON);
+//        list.add(USBlocks.EXPOSED_COPPER_BUTTON);
+//        list.add(USBlocks.WEATHERED_COPPER_BUTTON);
+//        list.add(USBlocks.OXIDIZED_COPPER_BUTTON);
+//
+//        for (int i = 0; i < list.size() - 1; i++) {
+//            OxidizableBlocksRegistry.registerOxidizableBlockPair(list.get(i), list.get(i + 1));
+//        }
 
         BiomeModifications.addSpawn(BiomeSelectors.includeByKey(LUSH_CAVES), MobCategory.UNDERGROUND_WATER_CREATURE, GLARE, 10, 1, 1);
 
