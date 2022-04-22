@@ -166,7 +166,7 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
             if (this.isPassenger()) {
                 Entity entity = this.getVehicle();
                 this.stopRiding();
-                mob.startRiding(entity, true);
+                if (entity != null) mob.startRiding(entity, true);
             }
             this.discard();
         }
