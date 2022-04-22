@@ -64,7 +64,6 @@ public class FindCopperButtonTask extends Behavior<CopperGolemEntity> {
                     if (entity.blockPosition().closerThan(copperPos, 2) && entity.level.getBlockState(copperPos).getBlock() instanceof CopperButtonBlock) {
                         entity.getBrain().setMemory(USMemoryModules.COPPER_BUTTON, copperPos);
                         this.copperPosPublic = copperPos;
-                        System.out.println("nice button");
                     }
                 } else if (buttonBelow != null) {
                     if (buttonBelow.canReach()) {
@@ -72,7 +71,6 @@ public class FindCopperButtonTask extends Behavior<CopperGolemEntity> {
                         if (entity.blockPosition().closerThan(copperPos, 2) && entity.level.getBlockState(copperPos).getBlock() instanceof CopperButtonBlock) {
                             entity.getBrain().setMemory(USMemoryModules.COPPER_BUTTON, copperPos);
                             this.copperPosPublic = copperPos;
-                            System.out.println("nice button");
                         }
                     }
                 }

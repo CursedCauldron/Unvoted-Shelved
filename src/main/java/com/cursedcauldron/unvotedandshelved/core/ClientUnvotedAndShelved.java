@@ -1,6 +1,7 @@
 package com.cursedcauldron.unvotedandshelved.core;
 
 import com.cursedcauldron.unvotedandshelved.client.entity.USEntityRenderer;
+import com.cursedcauldron.unvotedandshelved.config.UnvotedConfigManager;
 import com.cursedcauldron.unvotedandshelved.core.registries.USParticles;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.api.ClientModInitializer;
