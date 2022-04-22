@@ -24,6 +24,4 @@ public class CopperButtonBlock extends ButtonBlock {
     protected void playSound(@Nullable Player player, LevelAccessor world, BlockPos pos, boolean powered) {
         world.playSound(powered ? player : null, pos, this.getSound(powered), SoundSource.BLOCKS, 0.3F, powered ? 1.0F : 0.9F);
     }
-
-
 }

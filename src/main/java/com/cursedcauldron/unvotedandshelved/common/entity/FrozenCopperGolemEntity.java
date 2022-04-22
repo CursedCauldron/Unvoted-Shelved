@@ -2,7 +2,6 @@ package com.cursedcauldron.unvotedandshelved.common.entity;
 
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import com.cursedcauldron.unvotedandshelved.core.registries.USItems;
-import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -18,11 +17,18 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.AbstractGolem;
-import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -44,7 +50,7 @@ import java.util.function.Predicate;
 public class FrozenCopperGolemEntity extends AbstractGolem {
     private static final EntityDimensions MARKER_DIMENSIONS = new EntityDimensions(0.0f, 0.0f, true);
     private static final EntityDimensions BABY_DIMENSIONS = EntityType.ARMOR_STAND.getDimensions().scale(0.5f);
-    public static final EntityDataAccessor<Byte> DATA_CLIENT_FLAGS = SynchedEntityData.defineId(ArmorStand.class, EntityDataSerializers.BYTE);
+    public static final EntityDataAccessor<Byte> DATA_CLIENT_FLAGS = SynchedEntityData.defineId(FrozenCopperGolemEntity.class, EntityDataSerializers.BYTE);
     private static final Predicate<Entity> RIDABLE_MINECARTS = entity -> entity instanceof AbstractMinecart && ((AbstractMinecart)entity).getMinecartType() == AbstractMinecart.Type.RIDEABLE;
     private final NonNullList<ItemStack> handItems = NonNullList.withSize(2, ItemStack.EMPTY);
     private final NonNullList<ItemStack> armorItems = NonNullList.withSize(4, ItemStack.EMPTY);
@@ -56,14 +62,13 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         this.maxUpStep = 0.0f;
     }
 
-
     @Override
     public void refreshDimensions() {
-        double d = this.getX();
-        double e = this.getY();
-        double f = this.getZ();
+        double x = this.getX();
+        double y = this.getY();
+        double z = this.getZ();
         super.refreshDimensions();
-        this.setPos(d, e, f);
+        this.setPos(x, y, z);
     }
 
     private boolean hasPhysics() {
@@ -108,10 +113,10 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
     @Override
     protected void pushEntities() {
         List<Entity> list = this.level.getEntities(this, this.getBoundingBox(), RIDABLE_MINECARTS);
-        for (int i = 0; i < list.size(); ++i) {
-            Entity entity = list.get(i);
-            if (!(this.distanceToSqr(entity) <= 0.2)) continue;
-            entity.push(this);
+        for (Entity entity : list) {
+            if (this.distanceToSqr(entity) <= 0.2) {
+                entity.push(this);
+            }
         }
     }
 
@@ -127,47 +132,44 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
     }
 
 
-    @Nullable
-    public <T extends Mob> T convertBack(EntityType<T> entityType, boolean bl) {
+    public <T extends Mob> void convertBack(EntityType<T> entityType, boolean bl) {
         if (this.isRemoved()) {
-            return null;
-        }
-        CopperGolemEntity mob = (CopperGolemEntity)entityType.create(this.level);
-        assert mob != null;
-        mob.copyPosition(this);
-        mob.setXRot(this.xRotO);
-        mob.setYRot(this.yRotO);
-        mob.setYBodyRot(this.yBodyRotO);
-        mob.setYHeadRot(this.getYHeadRot());
-        mob.setBaby(this.isBaby());
-        mob.setNoAi(this.isNoAi());
-        mob.setStage(CopperGolemEntity.Stage.WEATHERED);
-        if (this.hasCustomName()) {
-            mob.setCustomName(this.getCustomName());
-            mob.setCustomNameVisible(this.isCustomNameVisible());
-        }
-        if (this.isPersistenceRequired()) {
-            mob.setPersistenceRequired();
-        }
-        mob.setInvulnerable(this.isInvulnerable());
-        if (bl) {
-            mob.setCanPickUpLoot(this.canPickUpLoot());
-            for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
-                ItemStack itemStack = this.getItemBySlot(equipmentSlot);
-                if (itemStack.isEmpty()) continue;
-                mob.setItemSlot(equipmentSlot, itemStack.copy());
-                mob.setDropChance(equipmentSlot, this.getEquipmentDropChance(equipmentSlot));
-                itemStack.setCount(0);
+            CopperGolemEntity mob = (CopperGolemEntity)entityType.create(this.level);
+            assert mob != null;
+            mob.copyPosition(this);
+            mob.setXRot(this.xRotO);
+            mob.setYRot(this.yRotO);
+            mob.setYBodyRot(this.yBodyRotO);
+            mob.setYHeadRot(this.getYHeadRot());
+            mob.setBaby(this.isBaby());
+            mob.setNoAi(this.isNoAi());
+            mob.setStage(CopperGolemEntity.Stage.WEATHERED);
+            if (this.hasCustomName()) {
+                mob.setCustomName(this.getCustomName());
+                mob.setCustomNameVisible(this.isCustomNameVisible());
             }
+            if (this.isPersistenceRequired()) {
+                mob.setPersistenceRequired();
+            }
+            mob.setInvulnerable(this.isInvulnerable());
+            if (bl) {
+                mob.setCanPickUpLoot(this.canPickUpLoot());
+                for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
+                    ItemStack itemStack = this.getItemBySlot(equipmentSlot);
+                    if (itemStack.isEmpty()) continue;
+                    mob.setItemSlot(equipmentSlot, itemStack.copy());
+                    mob.setDropChance(equipmentSlot, this.getEquipmentDropChance(equipmentSlot));
+                    itemStack.setCount(0);
+                }
+            }
+            this.level.addFreshEntity(mob);
+            if (this.isPassenger()) {
+                Entity entity = this.getVehicle();
+                this.stopRiding();
+                mob.startRiding(entity, true);
+            }
+            this.discard();
         }
-        this.level.addFreshEntity(mob);
-        if (this.isPassenger()) {
-            Entity entity = this.getVehicle();
-            this.stopRiding();
-            mob.startRiding(entity, true);
-        }
-        this.discard();
-        return (T)mob;
     }
 
     @Override
@@ -238,10 +240,6 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
             super.handleEntityEvent(b);
         }
     }
-
-
-
-
 
     @Override
     public boolean shouldRenderAtSqrDistance(double d) {

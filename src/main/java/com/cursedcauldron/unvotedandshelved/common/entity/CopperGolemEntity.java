@@ -231,8 +231,8 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
 
         switch (stage) {
             case UNAFFECTED -> this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.5D);
-            case EXPOSED -> this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35D);
-            case WEATHERED -> this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2D);
+            case EXPOSED -> this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.375D);
+            case WEATHERED -> this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25D);
         }
     }
 

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "unvotedandshelved:block/weathered_copper_pillar_top",
+    "side": "unvotedandshelved:block/weathered_copper_pillar_side"
+  }
+}
