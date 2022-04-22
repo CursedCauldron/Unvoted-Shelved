@@ -11,6 +11,7 @@
     "PartDefinitionMixin",
     "StructureFeatureAccessor",
     "access.ActivityAccessor",
+    "access.ItemAccessor",
     "access.MemoryModuleAccessor",
     "access.ModelPartAccessor",
     "access.SimpleParticleTypeAccessor"
