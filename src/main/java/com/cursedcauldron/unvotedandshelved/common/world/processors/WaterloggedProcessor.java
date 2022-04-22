@@ -25,7 +25,7 @@ public class WaterloggedProcessor extends StructureProcessor {
         if(structureBlockInfo2.state.hasProperty(BlockStateProperties.WATERLOGGED) && !chunk.getFluidState(structureBlockInfo2.pos).isEmpty()) {
             boolean waterlog = (structureBlockInfo.state.hasProperty(BlockStateProperties.WATERLOGGED) && structureBlockInfo.state.getValue(BlockStateProperties.WATERLOGGED));
 
-            chunk.setBlockState(structureBlockInfo2.pos, structureBlockInfo2.state.rotate(structurePlaceSettings.getRotation()).setValue(BlockStateProperties.WATERLOGGED, waterlog), false);
+            chunk.setBlockState(structureBlockInfo2.pos, structureBlockInfo2.state.setValue(BlockStateProperties.WATERLOGGED, waterlog), false);
         }
 
         return structureBlockInfo2;
