@@ -1,5 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.core.registries;
 
+import com.cursedcauldron.unvotedandshelved.common.world.gen.structures.RuinedCapitalStructure;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.cursedcauldron.unvotedandshelved.mixin.StructureFeatureAccessor;
 import net.minecraft.resources.ResourceLocation;

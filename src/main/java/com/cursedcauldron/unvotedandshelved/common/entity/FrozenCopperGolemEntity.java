@@ -83,6 +83,7 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
+        this.entityData.define(DATA_CLIENT_FLAGS, (byte)0);
     }
 
 
@@ -125,51 +126,53 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         ItemStack stack = player.getItemInHand(hand);
         if (stack.getItem() instanceof AxeItem) {
             this.convertBack(USEntities.COPPER_GOLEM, true);
-                 this.level.playSound(player, this.blockPosition(), SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
-                 this.level.levelEvent(player, 3005, this.blockPosition(), 0);
+            this.level.playSound(player, this.blockPosition(), SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
+            this.level.levelEvent(player, 3005, this.blockPosition(), 0);
             return InteractionResult.SUCCESS;
         } else return InteractionResult.PASS;
     }
 
 
-    public <T extends Mob> void convertBack(EntityType<T> entityType, boolean bl) {
+    public <T extends Mob> T convertBack(EntityType<T> entityType, boolean bl) {
         if (this.isRemoved()) {
-            CopperGolemEntity mob = (CopperGolemEntity)entityType.create(this.level);
-            assert mob != null;
-            mob.copyPosition(this);
-            mob.setXRot(this.xRotO);
-            mob.setYRot(this.yRotO);
-            mob.setYBodyRot(this.yBodyRotO);
-            mob.setYHeadRot(this.getYHeadRot());
-            mob.setBaby(this.isBaby());
-            mob.setNoAi(this.isNoAi());
-            mob.setStage(CopperGolemEntity.Stage.WEATHERED);
-            if (this.hasCustomName()) {
-                mob.setCustomName(this.getCustomName());
-                mob.setCustomNameVisible(this.isCustomNameVisible());
-            }
-            if (this.isPersistenceRequired()) {
-                mob.setPersistenceRequired();
-            }
-            mob.setInvulnerable(this.isInvulnerable());
-            if (bl) {
-                mob.setCanPickUpLoot(this.canPickUpLoot());
-                for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
-                    ItemStack itemStack = this.getItemBySlot(equipmentSlot);
-                    if (itemStack.isEmpty()) continue;
-                    mob.setItemSlot(equipmentSlot, itemStack.copy());
-                    mob.setDropChance(equipmentSlot, this.getEquipmentDropChance(equipmentSlot));
-                    itemStack.setCount(0);
-                }
-            }
-            this.level.addFreshEntity(mob);
-            if (this.isPassenger()) {
-                Entity entity = this.getVehicle();
-                this.stopRiding();
-                if (entity != null) mob.startRiding(entity, true);
-            }
-            this.discard();
+            return null;
         }
+        CopperGolemEntity mob = (CopperGolemEntity)entityType.create(this.level);
+        assert mob != null;
+        mob.copyPosition(this);
+        mob.setXRot(this.xRotO);
+        mob.setYRot(this.yRotO);
+        mob.setYBodyRot(this.yBodyRotO);
+        mob.setYHeadRot(this.getYHeadRot());
+        mob.setBaby(this.isBaby());
+        mob.setNoAi(this.isNoAi());
+        mob.setStage(CopperGolemEntity.Stage.WEATHERED);
+        if (this.hasCustomName()) {
+            mob.setCustomName(this.getCustomName());
+            mob.setCustomNameVisible(this.isCustomNameVisible());
+        }
+        if (this.isPersistenceRequired()) {
+            mob.setPersistenceRequired();
+        }
+        mob.setInvulnerable(this.isInvulnerable());
+        if (bl) {
+            mob.setCanPickUpLoot(this.canPickUpLoot());
+            for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
+                ItemStack itemStack = this.getItemBySlot(equipmentSlot);
+                if (itemStack.isEmpty()) continue;
+                mob.setItemSlot(equipmentSlot, itemStack.copy());
+                mob.setDropChance(equipmentSlot, this.getEquipmentDropChance(equipmentSlot));
+                itemStack.setCount(0);
+            }
+        }
+        this.level.addFreshEntity(mob);
+        if (this.isPassenger()) {
+            Entity entity = this.getVehicle();
+            this.stopRiding();
+            mob.startRiding(entity, true);
+        }
+        this.discard();
+        return (T)mob;
     }
 
     @Override

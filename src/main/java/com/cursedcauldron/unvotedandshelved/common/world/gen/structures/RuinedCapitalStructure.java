@@ -1,11 +1,9 @@
-package com.cursedcauldron.unvotedandshelved.core.registries;
+package com.cursedcauldron.unvotedandshelved.common.world.gen.structures;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
-import net.minecraft.world.level.levelgen.VerticalAnchor;
-import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.JigsawConfiguration;
@@ -16,7 +14,6 @@ import net.minecraft.world.level.levelgen.structure.pieces.PieceGeneratorSupplie
 import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
 
 import java.util.Optional;
-import java.util.Random;
 
 public class RuinedCapitalStructure extends StructureFeature<JigsawConfiguration> {
 
@@ -31,7 +28,8 @@ public class RuinedCapitalStructure extends StructureFeature<JigsawConfiguration
 
     public static Optional<PieceGenerator<JigsawConfiguration>> createPiecesGenerator(PieceGeneratorSupplier.Context<JigsawConfiguration> context) {
         ChunkPos chunkPos = context.chunkPos();
-        Random random = new Random(context.seed());
+        WorldgenRandom random = new WorldgenRandom(new LegacyRandomSource(0L));
+        random.setLargeFeatureSeed(context.seed(), context.chunkPos().x, context.chunkPos().z);
         int bound = 30;
         int yLevel = -(random.nextInt(bound)) + random.nextInt(bound);
         BlockPos blockPos = new BlockPos(chunkPos.getMinBlockX(), yLevel, chunkPos.getMinBlockZ());
