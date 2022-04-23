@@ -36,6 +36,7 @@ public class ClientUnvotedAndShelved implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         USEntityRenderer.registerRenderers();
+        UnvotedConfigManager.initializeConfig();
         ClientSidePacketRegistry.INSTANCE.register(ClientUnvotedAndShelved.EntityPacket.ID, EntityPacketOnClient::onPacket);
     }
 

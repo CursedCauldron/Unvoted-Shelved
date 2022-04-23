@@ -2,6 +2,7 @@ package com.cursedcauldron.unvotedandshelved.common.entity;
 
 import com.cursedcauldron.unvotedandshelved.client.entity.animation.AnimationState;
 import com.cursedcauldron.unvotedandshelved.common.entity.ai.copper_golem.CopperGolemBrain;
+import com.cursedcauldron.unvotedandshelved.config.FeatureScreen;
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
 import com.google.common.collect.ImmutableList;
@@ -261,6 +262,9 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
             } else {
                 this.walkingAnimation.stop();
             }
+        }
+        if (!FeatureScreen.COPPER_GOLEM.getValue()) {
+            this.remove(RemovalReason.DISCARDED);
         }
         super.tick();
     }

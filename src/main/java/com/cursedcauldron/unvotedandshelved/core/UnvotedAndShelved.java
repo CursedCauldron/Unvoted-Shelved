@@ -34,7 +34,6 @@ public class UnvotedAndShelved implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        UnvotedConfigManager.initializeConfig();
         USActivities.ACTIVITIES.register();
         USBlocks.BLOCKS.register();
         USEntities.ENTITIES.register();
@@ -46,6 +45,7 @@ public class UnvotedAndShelved implements ModInitializer {
         USStructures.init();
         USStructureProcessors.PROCESSORS.register();
         USTags.init();
+        UnvotedConfigManager.updateItemCategory();
 //        Util.make(Maps.newLinkedHashMap(),map -> {
 //            map.put(USBlocks.COPPER_BUTTON, USBlocks.WAXED_COPPER_BUTTON);
 //            map.put(USBlocks.EXPOSED_COPPER_BUTTON, USBlocks.WAXED_EXPOSED_COPPER_BUTTON);

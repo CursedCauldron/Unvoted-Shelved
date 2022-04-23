@@ -19,11 +19,34 @@ import java.util.List;
 
 public class FeatureScreen extends OptionsSubScreen {
     private static final String SITE_LINK = "https://www.curseforge.com/minecraft/mc-mods/unvoted-shelved";
+
     public static final UnvotedBooleanConfigOption COPPER_GOLEM = new UnvotedBooleanConfigOption("copperGolem", true);
-    private static final Option[] OPTIONS = new Option[]{COPPER_GOLEM.asOption().setTooltip(minecraft1 -> {
-        List<FormattedCharSequence> list = minecraft1.font.split(new TranslatableComponent("options.unvotedandshelved.copperGolem.tooltip"), 200);
-        return boolean_ -> list;
-    })};
+    public static final UnvotedBooleanConfigOption GLARE = new UnvotedBooleanConfigOption("glare", true);
+    public static final UnvotedBooleanConfigOption RUINED_CAPITALS = new UnvotedBooleanConfigOption("ruinedCapitals", true);
+    public static final UnvotedBooleanConfigOption COPPER_BUTTONS = new UnvotedBooleanConfigOption("copperButtons", true);
+    public static final UnvotedBooleanConfigOption COPPER_PILLARS = new UnvotedBooleanConfigOption("copperPillars", true);
+
+    private static final Option[] OPTIONS = new Option[]{
+            GLARE.asOption().setTooltip(minecraft1 -> {
+                List<FormattedCharSequence> list = minecraft1.font.split(new TranslatableComponent("options.unvotedandshelved.glare.tooltip"), 200);
+                return boolean_ -> list;
+            }), COPPER_GOLEM.asOption().setTooltip(minecraft1 -> {
+                List<FormattedCharSequence> list = minecraft1.font.split(new TranslatableComponent("options.unvotedandshelved.copperGolem.tooltip"), 200);
+                return boolean_ -> list;
+            }),
+            RUINED_CAPITALS.asOption().setTooltip(minecraft1 -> {
+                List<FormattedCharSequence> list = minecraft1.font.split(new TranslatableComponent("options.unvotedandshelved.ruinedCapitals.tooltip"), 200);
+                return boolean_ -> list;
+            }),
+            COPPER_BUTTONS.asOption().setTooltip(minecraft1 -> {
+                List<FormattedCharSequence> list = minecraft1.font.split(new TranslatableComponent("options.unvotedandshelved.copperButtons.tooltip"), 200);
+                return boolean_ -> list;
+            }),
+            COPPER_PILLARS.asOption().setTooltip(minecraft1 -> {
+                List<FormattedCharSequence> list = minecraft1.font.split(new TranslatableComponent("options.unvotedandshelved.copperPillars.tooltip"), 200);
+                return boolean_ -> list;
+            })
+    };
     private Screen previous;
     private OptionsList list;
 

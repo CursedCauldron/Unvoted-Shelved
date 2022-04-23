@@ -2,12 +2,16 @@ package com.cursedcauldron.unvotedandshelved.config;
 
 import com.cursedcauldron.unvotedandshelved.config.options.UnvotedBooleanConfigOption;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
+import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
+import com.cursedcauldron.unvotedandshelved.core.registries.USItems;
+import com.cursedcauldron.unvotedandshelved.mixin.access.ItemAccessor;
 import com.google.common.collect.Sets;
 import com.google.gson.*;
 import com.terraformersmc.modmenu.config.option.ConfigOptionStorage;
 import com.terraformersmc.modmenu.config.option.EnumConfigOption;
 import com.terraformersmc.modmenu.config.option.StringSetConfigOption;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.world.item.CreativeModeTab;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -28,6 +32,61 @@ public class UnvotedConfigManager {
         file = new File(FabricLoader.getInstance().getConfigDir().toFile(), UnvotedAndShelved.MODID + ".json");
     }
 
+    public static void updateItemCategory() {
+        if (FeatureScreen.COPPER_GOLEM.getValue()) {
+            ((ItemAccessor)USItems.FROZEN_COPPER_GOLEM_ITEM).setCategory(CreativeModeTab.TAB_REDSTONE);
+        } else ((ItemAccessor)USItems.FROZEN_COPPER_GOLEM_ITEM).setCategory(null);
+        if (FeatureScreen.GLARE.getValue()) {
+            ((ItemAccessor)USItems.GLARE_SPAWN_EGG).setCategory(CreativeModeTab.TAB_MISC);
+            ((ItemAccessor)USItems.GLOWBERRY_DUST_BOTTLE).setCategory(CreativeModeTab.TAB_DECORATIONS);
+        } else {
+            ((ItemAccessor) USItems.GLARE_SPAWN_EGG).setCategory(null);
+            ((ItemAccessor) USItems.GLOWBERRY_DUST_BOTTLE).setCategory(null);
+        }
+        if (FeatureScreen.COPPER_BUTTONS.getValue()) {
+            ((ItemAccessor) USBlocks.COPPER_BUTTON.asItem()).setCategory(CreativeModeTab.TAB_REDSTONE);
+            ((ItemAccessor) USBlocks.EXPOSED_COPPER_BUTTON.asItem()).setCategory(CreativeModeTab.TAB_REDSTONE);
+            ((ItemAccessor) USBlocks.WEATHERED_COPPER_BUTTON.asItem()).setCategory(CreativeModeTab.TAB_REDSTONE);
+            ((ItemAccessor) USBlocks.OXIDIZED_COPPER_BUTTON.asItem()).setCategory(CreativeModeTab.TAB_REDSTONE);
+
+            ((ItemAccessor) USBlocks.WAXED_COPPER_BUTTON.asItem()).setCategory(CreativeModeTab.TAB_REDSTONE);
+            ((ItemAccessor) USBlocks.WAXED_EXPOSED_COPPER_BUTTON.asItem()).setCategory(CreativeModeTab.TAB_REDSTONE);
+            ((ItemAccessor) USBlocks.WAXED_WEATHERED_COPPER_BUTTON.asItem()).setCategory(CreativeModeTab.TAB_REDSTONE);
+            ((ItemAccessor) USBlocks.WAXED_OXIDIZED_COPPER_BUTTON.asItem()).setCategory(CreativeModeTab.TAB_REDSTONE);
+        } else {
+            ((ItemAccessor) USBlocks.COPPER_BUTTON.asItem()).setCategory(null);
+            ((ItemAccessor) USBlocks.EXPOSED_COPPER_BUTTON.asItem()).setCategory(null);
+            ((ItemAccessor) USBlocks.WEATHERED_COPPER_BUTTON.asItem()).setCategory(null);
+            ((ItemAccessor) USBlocks.OXIDIZED_COPPER_BUTTON.asItem()).setCategory(null);
+
+            ((ItemAccessor) USBlocks.WAXED_COPPER_BUTTON.asItem()).setCategory(null);
+            ((ItemAccessor) USBlocks.WAXED_EXPOSED_COPPER_BUTTON.asItem()).setCategory(null);
+            ((ItemAccessor) USBlocks.WAXED_WEATHERED_COPPER_BUTTON.asItem()).setCategory(null);
+            ((ItemAccessor) USBlocks.WAXED_OXIDIZED_COPPER_BUTTON.asItem()).setCategory(null);
+        }
+        if (FeatureScreen.COPPER_PILLARS.getValue()) {
+            ((ItemAccessor) USBlocks.COPPER_PILLAR.asItem()).setCategory(CreativeModeTab.TAB_BUILDING_BLOCKS);
+            ((ItemAccessor) USBlocks.EXPOSED_COPPER_PILLAR.asItem()).setCategory(CreativeModeTab.TAB_BUILDING_BLOCKS);
+            ((ItemAccessor) USBlocks.WEATHERED_COPPER_PILLAR.asItem()).setCategory(CreativeModeTab.TAB_BUILDING_BLOCKS);
+            ((ItemAccessor) USBlocks.OXIDIZED_COPPER_PILLAR.asItem()).setCategory(CreativeModeTab.TAB_BUILDING_BLOCKS);
+
+            ((ItemAccessor) USBlocks.WAXED_COPPER_PILLAR.asItem()).setCategory(CreativeModeTab.TAB_BUILDING_BLOCKS);
+            ((ItemAccessor) USBlocks.WAXED_EXPOSED_COPPER_PILLAR.asItem()).setCategory(CreativeModeTab.TAB_BUILDING_BLOCKS);
+            ((ItemAccessor) USBlocks.WAXED_WEATHERED_COPPER_PILLAR.asItem()).setCategory(CreativeModeTab.TAB_BUILDING_BLOCKS);
+            ((ItemAccessor) USBlocks.WAXED_OXIDIZED_COPPER_PILLAR.asItem()).setCategory(CreativeModeTab.TAB_BUILDING_BLOCKS);
+        } else {
+            ((ItemAccessor) USBlocks.COPPER_PILLAR.asItem()).setCategory(null);
+            ((ItemAccessor) USBlocks.EXPOSED_COPPER_PILLAR.asItem()).setCategory(null);
+            ((ItemAccessor) USBlocks.WEATHERED_COPPER_PILLAR.asItem()).setCategory(null);
+            ((ItemAccessor) USBlocks.OXIDIZED_COPPER_PILLAR.asItem()).setCategory(null);
+
+            ((ItemAccessor) USBlocks.WAXED_COPPER_PILLAR.asItem()).setCategory(null);
+            ((ItemAccessor) USBlocks.WAXED_EXPOSED_COPPER_PILLAR.asItem()).setCategory(null);
+            ((ItemAccessor) USBlocks.WAXED_WEATHERED_COPPER_PILLAR.asItem()).setCategory(null);
+            ((ItemAccessor) USBlocks.WAXED_OXIDIZED_COPPER_PILLAR.asItem()).setCategory(null);
+        }
+    }
+
     public static void initializeConfig() {
         load();
     }
@@ -35,6 +94,7 @@ public class UnvotedConfigManager {
     @SuppressWarnings("unchecked")
     private static void load() {
         prepareConfigFile();
+        updateItemCategory();
 
         try {
             if (!file.exists()) {
@@ -89,6 +149,7 @@ public class UnvotedConfigManager {
     @SuppressWarnings("unchecked")
     public static void save() {
         prepareConfigFile();
+        updateItemCategory();
 
         JsonObject config = new JsonObject();
 

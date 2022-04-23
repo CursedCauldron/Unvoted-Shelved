@@ -1,5 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.common.entity;
 
+import com.cursedcauldron.unvotedandshelved.config.FeatureScreen;
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import com.cursedcauldron.unvotedandshelved.core.registries.USItems;
 import net.minecraft.core.BlockPos;
@@ -173,6 +174,15 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         }
         this.discard();
         return (T)mob;
+    }
+
+
+    @Override
+    public void tick() {
+        if (!FeatureScreen.COPPER_GOLEM.getValue()) {
+            this.remove(RemovalReason.DISCARDED);
+        }
+        super.tick();
     }
 
     @Override
