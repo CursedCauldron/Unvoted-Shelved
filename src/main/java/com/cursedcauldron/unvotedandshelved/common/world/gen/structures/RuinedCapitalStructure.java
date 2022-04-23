@@ -28,39 +28,21 @@ public class RuinedCapitalStructure extends StructureFeature<JigsawConfiguration
     }
 
     public static Optional<PieceGenerator<JigsawConfiguration>> createPiecesGenerator(PieceGeneratorSupplier.Context<JigsawConfiguration> context) {
-        if (FeatureScreen.RUINED_CAPITALS.getValue()) {
-            ChunkPos chunkPos = context.chunkPos();
-            WorldgenRandom random = new WorldgenRandom(new LegacyRandomSource(0L));
-            random.setLargeFeatureSeed(context.seed(), context.chunkPos().x, context.chunkPos().z);
-            int bound = 30;
-            int yLevel = -(random.nextInt(bound)) + random.nextInt(bound);
-            BlockPos blockPos = new BlockPos(chunkPos.getMinBlockX(), yLevel, chunkPos.getMinBlockZ());
-            Optional<PieceGenerator<JigsawConfiguration>> structurePiecesGenerator =
-                    JigsawPlacement.addPieces(
-                            context,
-                            PoolElementStructurePiece::new,
-                            blockPos,
-                            false,
-                            false
-                    );
+        ChunkPos chunkPos = context.chunkPos();
+        WorldgenRandom random = new WorldgenRandom(new LegacyRandomSource(0L));
+        random.setLargeFeatureSeed(context.seed(), context.chunkPos().x, context.chunkPos().z);
+        int bound = 30;
+        int yLevel = FeatureScreen.RUINED_CAPITALS.getValue() ? -(random.nextInt(bound)) + random.nextInt(bound) : -9999;
+        BlockPos blockPos = new BlockPos(chunkPos.getMinBlockX(), yLevel, chunkPos.getMinBlockZ());
+        Optional<PieceGenerator<JigsawConfiguration>> structurePiecesGenerator =
+                JigsawPlacement.addPieces(
+                        context,
+                        PoolElementStructurePiece::new,
+                        blockPos,
+                        false,
+                        false
+                );
 
-            return structurePiecesGenerator;
-        } else {
-            ChunkPos chunkPos = context.chunkPos();
-            WorldgenRandom random = new WorldgenRandom(new LegacyRandomSource(0L));
-            random.setLargeFeatureSeed(context.seed(), context.chunkPos().x, context.chunkPos().z);
-            int yLevel = -9999;
-            BlockPos blockPos = new BlockPos(chunkPos.getMinBlockX(), yLevel, chunkPos.getMinBlockZ());
-            Optional<PieceGenerator<JigsawConfiguration>> structurePiecesGenerator =
-                    JigsawPlacement.addPieces(
-                            context,
-                            PoolElementStructurePiece::new,
-                            blockPos,
-                            false,
-                            false
-                    );
-
-            return structurePiecesGenerator;
-        }
+        return structurePiecesGenerator;
     }
 }

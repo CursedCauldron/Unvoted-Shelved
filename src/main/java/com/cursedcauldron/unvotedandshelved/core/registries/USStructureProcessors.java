@@ -1,6 +1,7 @@
 package com.cursedcauldron.unvotedandshelved.core.registries;
 
 import com.cursedcauldron.unvotedandshelved.api.CoreRegistry;
+import com.cursedcauldron.unvotedandshelved.api.CoreRegistry;
 import com.cursedcauldron.unvotedandshelved.common.world.processors.RandomOxidationWallProcessor;
 import com.cursedcauldron.unvotedandshelved.common.world.processors.RandomStoneReplacementProcessor;
 import com.cursedcauldron.unvotedandshelved.common.world.processors.WaterloggedProcessor;
