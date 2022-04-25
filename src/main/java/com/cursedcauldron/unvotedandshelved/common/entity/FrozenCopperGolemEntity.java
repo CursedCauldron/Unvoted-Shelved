@@ -3,6 +3,7 @@ package com.cursedcauldron.unvotedandshelved.common.entity;
 import com.cursedcauldron.unvotedandshelved.config.FeatureScreen;
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import com.cursedcauldron.unvotedandshelved.core.registries.USItems;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -179,8 +180,10 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
 
     @Override
     public void tick() {
-        if (!FeatureScreen.COPPER_GOLEM.getValue()) {
-            this.remove(RemovalReason.DISCARDED);
+        if (FabricLoader.getInstance().isModLoaded("modmenu")) {
+            if (!FeatureScreen.COPPER_GOLEM.getValue()) {
+                this.remove(RemovalReason.DISCARDED);
+            }
         }
         super.tick();
     }

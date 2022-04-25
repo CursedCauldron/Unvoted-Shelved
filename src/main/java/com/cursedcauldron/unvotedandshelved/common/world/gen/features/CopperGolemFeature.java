@@ -4,6 +4,7 @@ import com.cursedcauldron.unvotedandshelved.common.entity.FrozenCopperGolemEntit
 import com.cursedcauldron.unvotedandshelved.config.FeatureScreen;
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import com.mojang.serialization.Codec;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -26,7 +27,19 @@ public class CopperGolemFeature extends Feature<NoneFeatureConfiguration> {
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
         BlockPos pos = context.origin();
         WorldGenLevel world = context.level();
-        if (FeatureScreen.COPPER_GOLEM.getValue()) {
+        if (FabricLoader.getInstance().isModLoaded("modmenu")) {
+            if (FeatureScreen.COPPER_GOLEM.getValue()) {
+                FrozenCopperGolemEntity copperGolem = USEntities.FROZEN_COPPER_GOLEM.create(world.getLevel());
+                copperGolem.setPersistenceRequired();
+                copperGolem.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D);
+                copperGolem.setYBodyRot(0);
+                copperGolem.setYHeadRot(0);
+                copperGolem.setXRot(0);
+                copperGolem.finalizeSpawn(world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null, null);
+                world.addFreshEntityWithPassengers(copperGolem);
+            }
+            return true;
+        } else {
             FrozenCopperGolemEntity copperGolem = USEntities.FROZEN_COPPER_GOLEM.create(world.getLevel());
             copperGolem.setPersistenceRequired();
             copperGolem.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D);
@@ -35,8 +48,7 @@ public class CopperGolemFeature extends Feature<NoneFeatureConfiguration> {
             copperGolem.setXRot(0);
             copperGolem.finalizeSpawn(world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null, null);
             world.addFreshEntityWithPassengers(copperGolem);
+            return true;
         }
-        return true;
     }
-
 }

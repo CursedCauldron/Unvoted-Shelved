@@ -94,4 +94,4 @@ public class FeatureScreen extends OptionsSubScreen {
         public void removed() {
             UnvotedConfigManager.save();
         }
-    }
+}

@@ -9,6 +9,7 @@ import com.google.gson.GsonBuilder;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
@@ -45,7 +46,9 @@ public class UnvotedAndShelved implements ModInitializer {
         USStructures.init();
         USStructureProcessors.PROCESSORS.register();
         USTags.init();
-        UnvotedConfigManager.updateItemCategory();
+        if (FabricLoader.getInstance().isModLoaded("modmenu")) {
+            UnvotedConfigManager.updateItemCategory();
+        }
 //        Util.make(Maps.newLinkedHashMap(),map -> {
 //            map.put(USBlocks.COPPER_BUTTON, USBlocks.WAXED_COPPER_BUTTON);
 //            map.put(USBlocks.EXPOSED_COPPER_BUTTON, USBlocks.WAXED_EXPOSED_COPPER_BUTTON);

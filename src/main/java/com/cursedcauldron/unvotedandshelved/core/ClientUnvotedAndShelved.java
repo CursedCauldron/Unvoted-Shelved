@@ -11,6 +11,7 @@ import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.fabricmc.fabric.api.network.PacketContext;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.FlameParticle;
@@ -36,7 +37,9 @@ public class ClientUnvotedAndShelved implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         USEntityRenderer.registerRenderers();
-        UnvotedConfigManager.initializeConfig();
+        if (FabricLoader.getInstance().isModLoaded("modmenu")) {
+            UnvotedConfigManager.initializeConfig();
+        }
         ClientSidePacketRegistry.INSTANCE.register(ClientUnvotedAndShelved.EntityPacket.ID, EntityPacketOnClient::onPacket);
     }
 

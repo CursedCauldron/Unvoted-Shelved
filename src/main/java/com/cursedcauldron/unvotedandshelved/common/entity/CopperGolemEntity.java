@@ -7,6 +7,7 @@ import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -263,8 +264,10 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
                 this.walkingAnimation.stop();
             }
         }
-        if (!FeatureScreen.COPPER_GOLEM.getValue()) {
-            this.remove(RemovalReason.DISCARDED);
+        if (FabricLoader.getInstance().isModLoaded("modmenu")) {
+            if (!FeatureScreen.COPPER_GOLEM.getValue()) {
+                this.remove(RemovalReason.DISCARDED);
+            }
         }
         super.tick();
     }
