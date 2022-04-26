@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "unvotedandshelved:block/exposed_copper_pillar_connected_weathered",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "unvotedandshelved:block/exposed_copper_pillar_connected_weathered"
+    },
+    "axis=z": {
+      "model": "unvotedandshelved:block/exposed_copper_pillar_connected_weathered",
+      "x": 90
+    }
+  }
+}

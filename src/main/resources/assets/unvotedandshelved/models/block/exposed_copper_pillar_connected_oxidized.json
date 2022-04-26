@@ -2,6 +2,6 @@
   "parent": "minecraft:block/cube_column",
   "textures": {
     "end": "unvotedandshelved:block/copper_pillar/oxidized/copper_pillar_top",
-    "side": "unvotedandshelved:block/copper_pillar/oxidized/oxidized_copper_pillar_side"
+    "side": "unvotedandshelved:block/copper_pillar/oxidized/exposed_copper_pillar_side"
   }
 }

@@ -37,6 +37,7 @@ public class UnvotedAndShelved implements ModInitializer {
     public void onInitialize() {
         USActivities.ACTIVITIES.register();
         USBlocks.BLOCKS.register();
+        USConnectedPillars.BLOCKS.register();
         USEntities.ENTITIES.register();
         USFeatures.init();
         USItems.ITEMS.register();

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "unvotedandshelved:block/copper_pillar/unaffected/copper_pillar_top",
+    "side": "unvotedandshelved:block/copper_pillar/unaffected/exposed_copper_pillar_side"
+  }
+}

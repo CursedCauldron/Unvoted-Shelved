@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "unvotedandshelved:copper_pillar",
+    "unvotedandshelved:exposed_copper_pillar_connected_unaffected",
+    "unvotedandshelved:weathered_copper_pillar_connected_unaffected",
+    "unvotedandshelved:oxidized_copper_pillar_connected_unaffected"
+  ]
+}
