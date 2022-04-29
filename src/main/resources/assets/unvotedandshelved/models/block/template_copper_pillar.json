@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "end": "#end",
+    "side": "#side",
+    "joint": "#joint"
+  },
+  "elements": [
+    {
+      "__comment": "Base Block",
+      "from": [ 0, 0, 0 ],
+      "to": [ 16, 16, 16 ],
+      "faces": {
+        "down":  { "texture": "#end", "cullface": "down" },
+        "up":    { "texture": "#end", "cullface": "up" },
+        "north": { "texture": "#side", "cullface": "north" },
+        "south": { "texture": "#side", "cullface": "south" },
+        "west":  { "texture": "#side", "cullface": "west" },
+        "east":  { "texture": "#side", "cullface": "east" }
+      }
+    },
+    {
+      "__comment": "Joint",
+      "from": [-0.0025, 16, -0.0025],
+      "to": [16.0025, 32, 16.0025],
+      "faces": {
+        "north": {"uv": [0, 0, 16, 16], "texture": "#joint"},
+        "east": {"uv": [0, 0, 16, 16], "texture": "#joint"},
+        "south": {"uv": [0, 0, 16, 16], "texture": "#joint"},
+        "west": {"uv": [0, 0, 16, 16], "texture": "#joint"}
+      }
+    }
+  ]
+}
