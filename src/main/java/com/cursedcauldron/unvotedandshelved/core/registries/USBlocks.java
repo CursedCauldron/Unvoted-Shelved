@@ -1,10 +1,7 @@
 package com.cursedcauldron.unvotedandshelved.core.registries;
 
 import com.cursedcauldron.unvotedandshelved.api.CoreRegistry;
-import com.cursedcauldron.unvotedandshelved.common.blocks.CopperButtonBlock;
-import com.cursedcauldron.unvotedandshelved.common.blocks.GlowberryDustBlock;
-import com.cursedcauldron.unvotedandshelved.common.blocks.WeatheringCopperButtonBlock;
-import com.cursedcauldron.unvotedandshelved.common.blocks.WeatheringRotatedPillarBlock;
+import com.cursedcauldron.unvotedandshelved.common.blocks.*;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.loader.api.FabricLoader;
@@ -40,10 +37,10 @@ public class USBlocks {
     public static final Block EXPOSED_COPPER_PILLAR         = register("exposed_copper_pillar", new WeatheringRotatedPillarBlock(WeatheringCopper.WeatherState.EXPOSED, BlockBehaviour.Properties.copy(Blocks.EXPOSED_COPPER)), FabricLoader.getInstance().isModLoaded("modmenu") ? null : CreativeModeTab.TAB_BUILDING_BLOCKS);
     public static final Block WEATHERED_COPPER_PILLAR       = register("weathered_copper_pillar", new WeatheringRotatedPillarBlock(WeatheringCopper.WeatherState.WEATHERED, BlockBehaviour.Properties.copy(Blocks.WEATHERED_COPPER)), FabricLoader.getInstance().isModLoaded("modmenu") ? null : CreativeModeTab.TAB_BUILDING_BLOCKS);
     public static final Block OXIDIZED_COPPER_PILLAR        = register("oxidized_copper_pillar", new WeatheringRotatedPillarBlock(WeatheringCopper.WeatherState.OXIDIZED, BlockBehaviour.Properties.copy(Blocks.OXIDIZED_COPPER)), FabricLoader.getInstance().isModLoaded("modmenu") ? null : CreativeModeTab.TAB_BUILDING_BLOCKS);
-    public static final Block WAXED_COPPER_PILLAR           = register("waxed_copper_pillar", new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)), FabricLoader.getInstance().isModLoaded("modmenu") ? null : CreativeModeTab.TAB_BUILDING_BLOCKS);
-    public static final Block WAXED_EXPOSED_COPPER_PILLAR   = register("waxed_exposed_copper_pillar", new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.EXPOSED_COPPER)), FabricLoader.getInstance().isModLoaded("modmenu") ? null : CreativeModeTab.TAB_BUILDING_BLOCKS);
-    public static final Block WAXED_WEATHERED_COPPER_PILLAR = register("waxed_weathered_copper_pillar", new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.WEATHERED_COPPER)), FabricLoader.getInstance().isModLoaded("modmenu") ? null : CreativeModeTab.TAB_BUILDING_BLOCKS);
-    public static final Block WAXED_OXIDIZED_COPPER_PILLAR  = register("waxed_oxidized_copper_pillar", new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OXIDIZED_COPPER)), FabricLoader.getInstance().isModLoaded("modmenu") ? null : CreativeModeTab.TAB_BUILDING_BLOCKS);
+    public static final Block WAXED_COPPER_PILLAR           = register("waxed_copper_pillar", new ConnectedRotatedPillarBlock(WeatheringCopper.WeatherState.UNAFFECTED, BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)), FabricLoader.getInstance().isModLoaded("modmenu") ? null : CreativeModeTab.TAB_BUILDING_BLOCKS);
+    public static final Block WAXED_EXPOSED_COPPER_PILLAR   = register("waxed_exposed_copper_pillar", new ConnectedRotatedPillarBlock(WeatheringCopper.WeatherState.EXPOSED, BlockBehaviour.Properties.copy(Blocks.EXPOSED_COPPER)), FabricLoader.getInstance().isModLoaded("modmenu") ? null : CreativeModeTab.TAB_BUILDING_BLOCKS);
+    public static final Block WAXED_WEATHERED_COPPER_PILLAR = register("waxed_weathered_copper_pillar", new ConnectedRotatedPillarBlock(WeatheringCopper.WeatherState.WEATHERED, BlockBehaviour.Properties.copy(Blocks.WEATHERED_COPPER)), FabricLoader.getInstance().isModLoaded("modmenu") ? null : CreativeModeTab.TAB_BUILDING_BLOCKS);
+    public static final Block WAXED_OXIDIZED_COPPER_PILLAR  = register("waxed_oxidized_copper_pillar", new ConnectedRotatedPillarBlock(WeatheringCopper.WeatherState.OXIDIZED, BlockBehaviour.Properties.copy(Blocks.OXIDIZED_COPPER)), FabricLoader.getInstance().isModLoaded("modmenu") ? null : CreativeModeTab.TAB_BUILDING_BLOCKS);
 
     public static Block register(String id, Block block) {
         return BLOCKS.register(id, block);
