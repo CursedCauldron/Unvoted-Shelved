@@ -3,7 +3,8 @@
   "textures": {
     "end": "#end",
     "side": "#side",
-    "joint": "#joint"
+    "joint": "#joint",
+    "particle": "#side"
   },
   "elements": [
     {

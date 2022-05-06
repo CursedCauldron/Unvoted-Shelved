@@ -41,6 +41,13 @@ public class ClientUnvotedAndShelved implements ClientModInitializer {
     public void onInitializeClient() {
         USEntityRenderer.registerRenderers();
         BlockRenderLayerMap.INSTANCE.putBlock(USBlocks.COPPER_PILLAR, RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(USBlocks.EXPOSED_COPPER_PILLAR, RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(USBlocks.WEATHERED_COPPER_PILLAR, RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(USBlocks.OXIDIZED_COPPER_PILLAR, RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(USBlocks.WAXED_COPPER_PILLAR, RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(USBlocks.WAXED_EXPOSED_COPPER_PILLAR, RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(USBlocks.WAXED_WEATHERED_COPPER_PILLAR, RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(USBlocks.WAXED_OXIDIZED_COPPER_PILLAR, RenderType.cutout());
         if (FabricLoader.getInstance().isModLoaded("modmenu")) {
             UnvotedConfigManager.initializeConfig();
         }

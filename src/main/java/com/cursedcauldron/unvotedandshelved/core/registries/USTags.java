@@ -13,9 +13,6 @@ public class USTags {
 
     public static final TagKey<Block> COPPER_BUTTONS = create("copper_buttons");
     public static final TagKey<Block> COPPER_PILLARS = create("copper_pillars");
-    public static final TagKey<Block> EXPOSED_COPPER_PILLARS = create("exposed_copper_pillars");
-    public static final TagKey<Block> WEATHERED_COPPER_PILLARS = create("weathered_copper_pillars");
-    public static final TagKey<Block> OXIDIZED_COPPER_PILLARS = create("oxidized_copper_pillars");
 
     private USTags() {
     }

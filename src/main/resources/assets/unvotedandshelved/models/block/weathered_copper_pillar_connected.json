@@ -3,6 +3,6 @@
   "textures": {
     "end": "unvotedandshelved:block/copper_pillar/weathered/copper_pillar_top",
     "side": "unvotedandshelved:block/copper_pillar/weathered/copper_pillar_side",
-    "joint": "unvotedandshelved:block/empty"
+    "joint": "unvotedandshelved:block/copper_pillar/weathered/joint"
   }
 }

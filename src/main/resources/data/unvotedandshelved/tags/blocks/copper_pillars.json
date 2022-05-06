@@ -2,8 +2,12 @@
   "replace": false,
   "values": [
     "unvotedandshelved:copper_pillar",
-    "unvotedandshelved:exposed_copper_pillar_connected_unaffected",
-    "unvotedandshelved:weathered_copper_pillar_connected_unaffected",
-    "unvotedandshelved:oxidized_copper_pillar_connected_unaffected"
+    "unvotedandshelved:exposed_copper_pillar",
+    "unvotedandshelved:weathered_copper_pillar",
+    "unvotedandshelved:oxidized_copper_pillar",
+    "unvotedandshelved:waxed_copper_pillar",
+    "unvotedandshelved:waxed_exposed_copper_pillar",
+    "unvotedandshelved:waxed_weathered_copper_pillar",
+    "unvotedandshelved:waxed_oxidized_copper_pillar"
   ]
 }
