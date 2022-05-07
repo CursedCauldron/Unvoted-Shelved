@@ -63,6 +63,7 @@ public class UnvotedAndShelved implements ModInitializer {
             map.put(USBlocks.EXPOSED_COPPER_BUTTON, USBlocks.WAXED_EXPOSED_COPPER_BUTTON);
             map.put(USBlocks.WEATHERED_COPPER_BUTTON, USBlocks.WAXED_WEATHERED_COPPER_BUTTON);
             map.put(USBlocks.OXIDIZED_COPPER_BUTTON, USBlocks.WAXED_OXIDIZED_COPPER_BUTTON);
+
             map.put(USBlocks.COPPER_PILLAR, USBlocks.WAXED_COPPER_PILLAR);
             map.put(USBlocks.EXPOSED_COPPER_PILLAR, USBlocks.WAXED_EXPOSED_COPPER_PILLAR);
             map.put(USBlocks.WEATHERED_COPPER_PILLAR, USBlocks.WAXED_WEATHERED_COPPER_PILLAR);
@@ -72,13 +73,24 @@ public class UnvotedAndShelved implements ModInitializer {
 
         List<Block> list = Lists.newLinkedList();
 
-        list.add(USBlocks.COPPER_BUTTON);
-        list.add(USBlocks.EXPOSED_COPPER_BUTTON);
-        list.add(USBlocks.WEATHERED_COPPER_BUTTON);
-        list.add(USBlocks.OXIDIZED_COPPER_BUTTON);
+        list.add(USBlocks.COPPER_PILLAR);
+        list.add(USBlocks.EXPOSED_COPPER_PILLAR);
+        list.add(USBlocks.WEATHERED_COPPER_PILLAR);
+        list.add(USBlocks.OXIDIZED_COPPER_PILLAR);
 
         for (int i = 0; i < list.size() - 1; i++) {
             OxidizableBlocksRegistry.registerOxidizableBlockPair(list.get(i), list.get(i + 1));
+        }
+
+        List<Block> list2 = Lists.newLinkedList();
+
+        list2.add(USBlocks.COPPER_BUTTON);
+        list2.add(USBlocks.EXPOSED_COPPER_BUTTON);
+        list2.add(USBlocks.WEATHERED_COPPER_BUTTON);
+        list2.add(USBlocks.OXIDIZED_COPPER_BUTTON);
+
+        for (int i = 0; i < list.size() - 1; i++) {
+            OxidizableBlocksRegistry.registerOxidizableBlockPair(list2.get(i), list2.get(i + 1));
         }
 
         BiomeModifications.addSpawn(BiomeSelectors.includeByKey(LUSH_CAVES), MobCategory.UNDERGROUND_WATER_CREATURE, GLARE, 10, 1, 1);
