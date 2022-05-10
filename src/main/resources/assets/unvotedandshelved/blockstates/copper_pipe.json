@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "axis=x,corner=false": {
+      "model": "unvotedandshelved:block/copper_pipe",
+      "x": 90,
+      "y": 90
+    },
+    "axis=x,corner=true": {
+      "model": "unvotedandshelved:block/copper_pipe_corner",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y,corner=false": {
+      "model": "unvotedandshelved:block/copper_pipe"
+    },
+    "axis=y,corner=true": {
+      "model": "unvotedandshelved:block/copper_pipe_corner"
+    },
+    "axis=z,corner=false": {
+      "model": "unvotedandshelved:block/copper_pipe",
+      "x": 90
+    },
+    "axis=z,corner=true": {
+      "model": "unvotedandshelved:block/copper_pipe_corner",
+      "x": 90
+    }
+  }
+}
