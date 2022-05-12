@@ -18,6 +18,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -47,12 +48,11 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import java.util.Arrays;
 import java.util.Comparator;
 
-public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
+public class CopperGolemEntity extends AbstractGolem {
     protected static final ImmutableList<SensorType<? extends Sensor<? super CopperGolemEntity>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.HURT_BY);
     protected static final ImmutableList<MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(MemoryModuleType.LOOK_TARGET, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS,  USMemoryModules.COPPER_GOLEM_HEADSPIN_TICKS, USMemoryModules.COPPER_BUTTON);
     private static final EntityDataAccessor<Integer> STAGE = SynchedEntityData.defineId(CopperGolemEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> WAXED = SynchedEntityData.defineId(CopperGolemEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> POWERED = SynchedEntityData.defineId(CopperGolemEntity.class, EntityDataSerializers.BOOLEAN);
     public final AnimationState walkingAnimation = new AnimationState();
     public final AnimationState headSpinAnimation = new AnimationState();
     public final AnimationState headSpinSlowerAnimation = new AnimationState();
@@ -72,6 +72,7 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
 
     public CopperGolemEntity(EntityType<? extends AbstractGolem> type, Level world) {
         super(type, world);
+        this.maxUpStep = 1.0F;
     }
 
     @Override
@@ -94,7 +95,6 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
         super.defineSynchedData();
         this.entityData.define(STAGE, 0);
         this.entityData.define(WAXED, false);
-        this.entityData.define(POWERED, false);
     }
 
     @Override
@@ -102,7 +102,6 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
         super.readAdditionalSaveData(tag);
         this.setStage(CopperGolemEntity.Stage.BY_ID[tag.getInt("Stage")]);
         this.setWaxed(tag.getBoolean("Waxed"));
-        this.entityData.set(POWERED, tag.getBoolean("Powered"));
     }
 
     @Override
@@ -110,9 +109,6 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
         super.addAdditionalSaveData(tag);
         tag.putInt("Stage", this.getStage().getId());
         tag.putBoolean("Waxed", this.isWaxed());
-        if (this.entityData.get(POWERED)) {
-            tag.putBoolean("Powered", true);
-        }
     }
 
     @Override
@@ -366,8 +362,7 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
 
             if (!this.isWaxed() || this.getStage() != Stage.OXIDIZED) {
                 float randomChance = this.random.nextFloat();
-                if (randomChance < 3.4290552e-5F) {
-                    System.out.println("The random chance is " + randomChance);
+                if (randomChance < 3.4290552E-5F) {
                     this.setStage(Stage.values()[this.getStage().getId() + 1]);
                 }
             }
@@ -375,17 +370,12 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
     }
 
     public void setCooldown() {
-        if (this.getStage() == Stage.UNAFFECTED) {
-            this.getBrain().setMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS, UniformInt.of(120, 240).sample(level.getRandom()));
-        } else if (this.getStage() == Stage.EXPOSED) {
-            this.getBrain().setMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS, UniformInt.of(240, 480).sample(level.getRandom()));
-        } else if (this.getStage() == Stage.WEATHERED) {
-            this.getBrain().setMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS, UniformInt.of(480, 960).sample(level.getRandom()));
-        }
+        double bound = Math.pow(2, this.getStage().getId() - 1);
+        int min = (int) (120 * bound);
+        int max = (int) (240 * bound);
+        int duration = UniformInt.of(min, max).sample(level.getRandom());
+        this.getBrain().setMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS, duration);
     }
-
-
-
 
     protected SoundEvent getHurtSound(DamageSource source) {
         return SoundEvents.COPPER_FALL;
@@ -403,17 +393,14 @@ public class CopperGolemEntity extends AbstractGolem implements PowerableMob {
         this.playSound(this.getStepSound(), 0.5F, 1.0F);
     }
 
-
     @Override
-    public boolean isPowered() {
-        return this.entityData.get(POWERED);
-    }
-
-    @Override
-    public void thunderHit(ServerLevel p_19927_, LightningBolt p_19928_) {
-        super.thunderHit(p_19927_, p_19928_);
-        if (this.getStage() == Stage.UNAFFECTED) {
-            this.entityData.set(POWERED, true);
+    public void thunderHit(ServerLevel world, LightningBolt bolt) {
+        Stage stage = this.getStage();
+        Stage stage1 = null;
+        if (stage == Stage.WEATHERED) stage1 = Stage.EXPOSED;
+        if (stage == Stage.EXPOSED) stage1 = Stage.UNAFFECTED;
+        if (stage1 != null) {
+            this.setStage(stage1);
         }
     }
 

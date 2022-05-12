@@ -25,6 +25,7 @@ import net.minecraft.world.entity.ai.behavior.RunIf;
 import net.minecraft.world.entity.ai.behavior.RunSometimes;
 import net.minecraft.world.entity.ai.behavior.SetEntityLookTarget;
 import net.minecraft.world.entity.ai.behavior.Swim;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.player.Player;
@@ -54,11 +55,6 @@ public class  GlareBrain {
                 new LookAtTargetSink(45, 90),
                 new MoveToTargetSink()
         ));
-    }
-
-    private static Vec3 getRandomNearbyPos(GlareEntity glare) {
-        Vec3 vec3 = LandRandomPos.getPos(glare, 4, 2);
-        return vec3 == null ? glare.position() : vec3;
     }
 
     public static boolean isGlowBerry(GlareEntity glare, ItemStack stack) {
@@ -107,7 +103,7 @@ public class  GlareBrain {
                 ImmutableList.of(
                         Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(5, 10))),
                         Pair.of(2, new GateBehavior<>(
-                                ImmutableMap.of(net.minecraft.world.entity.ai.memory.MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT),
+                                ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT),
                                 ImmutableSet.of(),
                                 GateBehavior.OrderPolicy.ORDERED,
                                 GateBehavior.RunningPolicy.TRY_ALL,

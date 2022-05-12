@@ -340,7 +340,6 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
 
     @Override
     public void thunderHit(ServerLevel serverLevel, LightningBolt lightningBolt) {
-        super.thunderHit(serverLevel, lightningBolt);
         this.convertBack(USEntities.COPPER_GOLEM, true);
         this.level.playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 2.0f, 0.5f + this.random.nextFloat() * 0.2f, false);
         this.level.levelEvent(3004, this.blockPosition(), 0);
