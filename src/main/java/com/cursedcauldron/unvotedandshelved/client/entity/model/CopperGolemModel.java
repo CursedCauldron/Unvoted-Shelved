@@ -10,6 +10,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -21,7 +22,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 //<>
 
 @Environment(EnvType.CLIENT)
-public class CopperGolemModel<T extends CopperGolemEntity> extends AnimatedModel<T> {
+public class CopperGolemModel<T extends CopperGolemEntity> extends HierarchicalModel<T> {
     private static final Vector3f ANIMATION_PROGRESS = new Vector3f();
     private final ModelPart head;
     private final ModelPart body;
@@ -72,17 +73,14 @@ public class CopperGolemModel<T extends CopperGolemEntity> extends AnimatedModel
 
 
     private void runAnimation(AnimationState animationState, Animation animation, long time) {
-        animationState.run(Minecraft.getInstance().isPaused(), time);
         animationState.run(state -> AnimationHelper.animate(this, animation, time - state.getStartTime(), 1.0F, ANIMATION_PROGRESS));
     }
 
     private void runSlowerAnimation(AnimationState animationState, Animation animation, long time) {
-        animationState.run(Minecraft.getInstance().isPaused(), time);
         animationState.run(state -> AnimationHelper.animate(this, animation, time - state.getStartTime(), 0.75F, ANIMATION_PROGRESS));
     }
 
     private void runSlowestAnimation(AnimationState animationState, Animation animation, long time) {
-        animationState.run(Minecraft.getInstance().isPaused(), time);
         animationState.run(state -> AnimationHelper.animate(this, animation, time - state.getStartTime(), 0.5F, ANIMATION_PROGRESS));
     }
 
