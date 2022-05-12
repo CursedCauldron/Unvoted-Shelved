@@ -51,8 +51,7 @@ public class CopperGolemModel<T extends CopperGolemEntity> extends AnimatedModel
         this.root().getAllParts().forEach(ModelModifier::resetPose);
         long time = Util.getMillis();
         this.head.yRot = yaw * 0.017453292F;
-        float walkTime = Math.min((float)entity.getDeltaMovement().lengthSqr() * 200.0F, 8.0F);
-        this.runAnimation(entity.walkingAnimation, CopperGolemAnimations.walkingAnimation(entity.getStage()), walkTime);
+        this.runAnimation(entity.walkingAnimation, CopperGolemAnimations.walkingAnimation(entity.getStage()), time);
 
         this.runAnimation(entity.headSpinAnimation, CopperGolemAnimations.HEAD_SPIN, time);
         this.runAnimation(entity.headSpinSlowerAnimation, CopperGolemAnimations.HEAD_SPIN_SLOWER, time);
