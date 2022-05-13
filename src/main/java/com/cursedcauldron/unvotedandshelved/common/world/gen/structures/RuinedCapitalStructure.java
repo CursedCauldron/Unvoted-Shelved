@@ -9,7 +9,6 @@ import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.JigsawConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.PoolElementStructurePiece;
 import net.minecraft.world.level.levelgen.structure.PostPlacementProcessor;
 import net.minecraft.world.level.levelgen.structure.pieces.PieceGenerator;
@@ -29,26 +28,15 @@ public class RuinedCapitalStructure extends StructureFeature<JigsawConfiguration
         return GenerationStep.Decoration.UNDERGROUND_STRUCTURES;
     }
 
-    private static boolean checkLocation(PieceGeneratorSupplier.Context<JigsawConfiguration> context) {
-        return true;
-    }
-
     public static Optional<PieceGenerator<JigsawConfiguration>> createPiecesGenerator(PieceGeneratorSupplier.Context<JigsawConfiguration> context) {
         ChunkPos chunkPos = context.chunkPos();
-        WorldgenRandom random = new WorldgenRandom(new LegacyRandomSource(0L));
-        random.setLargeFeatureSeed(context.seed(), context.chunkPos().x, context.chunkPos().z);
         int bound = 30;
-        int yLevel = FabricLoader.getInstance().isModLoaded("modmenu") && FeatureScreen.RUINED_CAPITALS.getValue() ? -(random.nextInt(bound)) + random.nextInt(bound) : -9999;
+        WorldgenRandom random = new WorldgenRandom(new LegacyRandomSource(0L));
+        random.setLargeFeatureSeed(context.seed(), chunkPos.x, chunkPos.z);
+        int yLevel = -(random.nextInt(bound)) + random.nextInt(bound);
+        if (FabricLoader.getInstance().isModLoaded("modmenu") && !FeatureScreen.RUINED_CAPITALS.getValue()) yLevel = -9999;
         BlockPos blockPos = new BlockPos(chunkPos.getMinBlockX(), yLevel, chunkPos.getMinBlockZ());
-        Optional<PieceGenerator<JigsawConfiguration>> structurePiecesGenerator =
-                JigsawPlacement.addPieces(
-                        context,
-                        PoolElementStructurePiece::new,
-                        blockPos,
-                        false,
-                        false
-                );
-
-        return structurePiecesGenerator;
+        return JigsawPlacement.addPieces(context, PoolElementStructurePiece::new, blockPos, false, false);
     }
+
 }
