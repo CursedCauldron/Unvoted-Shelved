@@ -1,6 +1,5 @@
 package com.cursedcauldron.unvotedandshelved.mixin;
 
-
 import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.config.FeatureScreen;
 import net.fabricmc.loader.api.FabricLoader;
