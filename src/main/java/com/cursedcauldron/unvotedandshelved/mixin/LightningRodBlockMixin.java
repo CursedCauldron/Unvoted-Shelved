@@ -45,63 +45,33 @@ public class LightningRodBlockMixin extends Block implements LightningRodAccess 
     }
 
     public void trySpawnEntity(Level world, BlockPos pos) {
-        if (FabricLoader.getInstance().isModLoaded("modmenu")) {
-            if (FeatureScreen.COPPER_GOLEM.getValue()) {
-                BlockPattern.BlockPatternMatch result = this.getCopperGolemPattern().find(world, pos);
-                int i;
-                ServerPlayer serverPlayerEntity;
-                int j;
-                if (result != null) {
-                    for (i = 0; i < this.getCopperGolemPattern().getHeight(); ++i) {
-                        BlockInWorld cachedBlockPosition = result.getBlock(0, i, 0);
-                        world.setBlock(cachedBlockPosition.getPos(), Blocks.AIR.defaultBlockState(), 2);
-                        world.levelEvent(2001, cachedBlockPosition.getPos(), Block.getId(cachedBlockPosition.getState()));
-                    }
+        if (FabricLoader.getInstance().isModLoaded("modmenu") && !FeatureScreen.COPPER_GOLEM.getValue()) return;
 
-                    CopperGolemEntity e = USEntities.COPPER_GOLEM.create(world);
-                    BlockPos cachedBlockPosition = result.getBlock(0, 2, 0).getPos();
-                    e.moveTo((double) cachedBlockPosition.getX() + 0.5D, (double) cachedBlockPosition.getY() + 0.05D, (double) cachedBlockPosition.getZ() + 0.5D, 0.0F, 0.0F);
-                    world.addFreshEntity(e);
-                    Iterator<ServerPlayer> var6 = world.getEntitiesOfClass(ServerPlayer.class, e.getBoundingBox().inflate(5.0D)).iterator();
-
-                    while (var6.hasNext()) {
-                        serverPlayerEntity = var6.next();
-                        CriteriaTriggers.SUMMONED_ENTITY.trigger(serverPlayerEntity, e);
-                    }
-
-                    for (j = 0; j < this.getCopperGolemPattern().getHeight(); ++j) {
-                        BlockInWorld position = result.getBlock(0, j, 0);
-                        world.blockUpdated(position.getPos(), Blocks.AIR);
-                    }
-                }
+        BlockPattern.BlockPatternMatch result = this.getCopperGolemPattern().find(world, pos);
+        int i;
+        ServerPlayer serverPlayerEntity;
+        int j;
+        if (result != null) {
+            for (i = 0; i < this.getCopperGolemPattern().getHeight(); ++i) {
+                BlockInWorld cachedBlockPosition = result.getBlock(0, i, 0);
+                world.setBlock(cachedBlockPosition.getPos(), Blocks.AIR.defaultBlockState(), 2);
+                world.levelEvent(2001, cachedBlockPosition.getPos(), Block.getId(cachedBlockPosition.getState()));
             }
-        } else {
-            BlockPattern.BlockPatternMatch result = this.getCopperGolemPattern().find(world, pos);
-            int i;
-            ServerPlayer serverPlayerEntity;
-            int j;
-            if (result != null) {
-                for (i = 0; i < this.getCopperGolemPattern().getHeight(); ++i) {
-                    BlockInWorld cachedBlockPosition = result.getBlock(0, i, 0);
-                    world.setBlock(cachedBlockPosition.getPos(), Blocks.AIR.defaultBlockState(), 2);
-                    world.levelEvent(2001, cachedBlockPosition.getPos(), Block.getId(cachedBlockPosition.getState()));
-                }
 
-                CopperGolemEntity e = USEntities.COPPER_GOLEM.create(world);
-                BlockPos cachedBlockPosition = result.getBlock(0, 2, 0).getPos();
-                e.moveTo((double) cachedBlockPosition.getX() + 0.5D, (double) cachedBlockPosition.getY() + 0.05D, (double) cachedBlockPosition.getZ() + 0.5D, 0.0F, 0.0F);
-                world.addFreshEntity(e);
-                Iterator<ServerPlayer> var6 = world.getEntitiesOfClass(ServerPlayer.class, e.getBoundingBox().inflate(5.0D)).iterator();
+            CopperGolemEntity e = USEntities.COPPER_GOLEM.create(world);
+            BlockPos cachedBlockPosition = result.getBlock(0, 2, 0).getPos();
+            e.moveTo((double) cachedBlockPosition.getX() + 0.5D, (double) cachedBlockPosition.getY() + 0.05D, (double) cachedBlockPosition.getZ() + 0.5D, 0.0F, 0.0F);
+            world.addFreshEntity(e);
+            Iterator<ServerPlayer> var6 = world.getEntitiesOfClass(ServerPlayer.class, e.getBoundingBox().inflate(5.0D)).iterator();
 
-                while (var6.hasNext()) {
-                    serverPlayerEntity = var6.next();
-                    CriteriaTriggers.SUMMONED_ENTITY.trigger(serverPlayerEntity, e);
-                }
+            while (var6.hasNext()) {
+                serverPlayerEntity = var6.next();
+                CriteriaTriggers.SUMMONED_ENTITY.trigger(serverPlayerEntity, e);
+            }
 
-                for (j = 0; j < this.getCopperGolemPattern().getHeight(); ++j) {
-                    BlockInWorld position = result.getBlock(0, j, 0);
-                    world.blockUpdated(position.getPos(), Blocks.AIR);
-                }
+            for (j = 0; j < this.getCopperGolemPattern().getHeight(); ++j) {
+                BlockInWorld position = result.getBlock(0, j, 0);
+                world.blockUpdated(position.getPos(), Blocks.AIR);
             }
         }
     }

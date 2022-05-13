@@ -45,16 +45,14 @@ public class PressCopperButtonTask extends Behavior<CopperGolemEntity> {
             if (flag && state.getBlock() instanceof CopperButtonBlock buttonBlock) {
                 AttachFace direction = state.getValue(CopperButtonBlock.FACE);
                 entity.getLookControl().setLookAt(blockPos.getX(), blockPos.getY(), blockPos.getZ());
-                if (direction == AttachFace.FLOOR) {
-                    entity.setPose(EntityPoses.PRESS_BUTTON_DOWN);
-                    buttonBlock.press(state, world, blockPos);
-                } else if (direction == AttachFace.CEILING) {
-                    entity.setPose(EntityPoses.PRESS_BUTTON_UP);
-                    buttonBlock.press(state, world, blockPos);
-                } else {
-                    entity.setPose(EntityPoses.PRESS_BUTTON);
-                    buttonBlock.press(state, world, blockPos);
+                Pose poses;
+                switch (direction) {
+                    case FLOOR -> poses = EntityPoses.PRESS_BUTTON_DOWN;
+                    case CEILING -> poses = EntityPoses.PRESS_BUTTON_UP;
+                    default -> poses = EntityPoses.PRESS_BUTTON;
                 }
+                entity.setPose(poses);
+                buttonBlock.press(state, world, blockPos);
                 world.playSound(null, blockPos.getX(), blockPos.getY(), blockPos.getZ(), USSounds.COPPER_CLICK, SoundSource.BLOCKS, 1, 1);
             }
         });
@@ -69,13 +67,11 @@ public class PressCopperButtonTask extends Behavior<CopperGolemEntity> {
             entity.setCooldown();
             entity.setPose(Pose.STANDING);
         }
-        System.out.println("The button ticks are " + this.buttonTicks);
     }
 
 
     @Override
     protected void stop(ServerLevel world, CopperGolemEntity entity, long p_22550_) {
-        System.out.println("Task is stopping...");
         if (this.buttonTicks >= 1) {
             this.buttonTicks = 0;
             entity.setPose(Pose.STANDING);

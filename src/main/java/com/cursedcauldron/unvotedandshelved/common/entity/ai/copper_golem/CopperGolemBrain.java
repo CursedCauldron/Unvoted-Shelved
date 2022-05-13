@@ -3,7 +3,7 @@ package com.cursedcauldron.unvotedandshelved.common.entity.ai.copper_golem;
 import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.common.entity.ai.copper_golem.task.FindCopperButtonTask;
 import com.cursedcauldron.unvotedandshelved.common.entity.ai.copper_golem.task.PressCopperButtonTask;
-import com.cursedcauldron.unvotedandshelved.common.entity.ai.copper_golem.task.SpinHead;
+import com.cursedcauldron.unvotedandshelved.common.entity.ai.copper_golem.task.SpinHeadTask;
 import com.cursedcauldron.unvotedandshelved.core.registries.USActivities;
 import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
 import com.google.common.collect.ImmutableList;
@@ -85,7 +85,7 @@ public class CopperGolemBrain {
         brain.addActivityWithConditions(
                 USActivities.HEAD_SPIN,
                 ImmutableList.of(
-                        Pair.of(0, new SpinHead())
+                        Pair.of(0, new SpinHeadTask())
                 ),
                 ImmutableSet.of(
                         Pair.of(USMemoryModules.COPPER_GOLEM_HEADSPIN_TICKS, MemoryStatus.VALUE_ABSENT

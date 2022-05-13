@@ -1,10 +1,9 @@
 package com.cursedcauldron.unvotedandshelved.common.world.processors;
 
+import com.cursedcauldron.unvotedandshelved.common.blocks.WeatheringRotatedPillarBlock;
+import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
 import com.cursedcauldron.unvotedandshelved.core.registries.USStructureProcessors;
 import com.mojang.serialization.Codec;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
@@ -15,6 +14,9 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Random;
 
 public class RandomOxidationWallProcessor extends StructureProcessor {
     public static final RandomOxidationWallProcessor INSTANCE = new RandomOxidationWallProcessor();
@@ -37,6 +39,9 @@ public class RandomOxidationWallProcessor extends StructureProcessor {
         }
         else if (state.is(Blocks.OXIDIZED_CUT_COPPER_SLAB)) {
             structureBlockInfo2 = this.setBlock(structureBlockInfo2, f, Blocks.WEATHERED_CUT_COPPER_SLAB.defaultBlockState().setValue(SlabBlock.TYPE, state.getValue(SlabBlock.TYPE)));
+        }
+        else if (state.is(USBlocks.OXIDIZED_COPPER_PILLAR)) {
+            structureBlockInfo2 = this.setBlock(structureBlockInfo2, f, USBlocks.WEATHERED_COPPER_PILLAR.defaultBlockState().setValue(WeatheringRotatedPillarBlock.AXIS, state.getValue(WeatheringRotatedPillarBlock.AXIS)).setValue(WeatheringRotatedPillarBlock.CONNECTED, state.getValue(WeatheringRotatedPillarBlock.CONNECTED)));
         }
         return structureBlockInfo2;
     }

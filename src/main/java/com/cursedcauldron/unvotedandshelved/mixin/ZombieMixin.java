@@ -4,7 +4,6 @@ import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.config.FeatureScreen;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Zombie;
@@ -23,12 +22,7 @@ public class ZombieMixin extends Monster {
 
     @Inject(method = "addBehaviourGoals()V", at = @At("TAIL"))
     protected void addBehaviourGoals(CallbackInfo ci) {
-        if (FabricLoader.getInstance().isModLoaded("modmenu")) {
-            if (FeatureScreen.COPPER_GOLEM.getValue()) {
-                this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<CopperGolemEntity>((Mob) this, CopperGolemEntity.class, true));
-            }
-        } else {
-            this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<CopperGolemEntity>((Mob) this, CopperGolemEntity.class, true));
-        }
+        if (FabricLoader.getInstance().isModLoaded("modmenu") && !FeatureScreen.COPPER_GOLEM.getValue()) return;
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, CopperGolemEntity.class, true));
     }
 }

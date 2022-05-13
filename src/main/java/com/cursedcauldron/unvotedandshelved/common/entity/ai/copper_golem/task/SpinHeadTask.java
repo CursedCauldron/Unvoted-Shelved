@@ -1,27 +1,23 @@
 package com.cursedcauldron.unvotedandshelved.common.entity.ai.copper_golem.task;
 
-import com.cursedcauldron.unvotedandshelved.common.blocks.CopperButtonBlock;
 import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.common.entity.EntityPoses;
 import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
 import com.cursedcauldron.unvotedandshelved.core.registries.USSounds;
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.core.BlockPos;
+import com.mojang.blaze3d.shaders.Uniform;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.behavior.Behavior;
-import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
-import net.minecraft.world.level.pathfinder.Path;
 
-import java.util.Map;
-
-public class SpinHead extends Behavior<CopperGolemEntity> {
+public class SpinHeadTask extends Behavior<CopperGolemEntity> {
     private int spinningTicks;
 
-    public SpinHead() {
+    public SpinHeadTask() {
         super(ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT, USMemoryModules.COPPER_GOLEM_HEADSPIN_TICKS, MemoryStatus.VALUE_ABSENT));
     }
 
@@ -37,36 +33,22 @@ public class SpinHead extends Behavior<CopperGolemEntity> {
 
     @Override
     protected void tick(ServerLevel world, CopperGolemEntity entity, long p_22553_) {
-        if (entity.getStage() == CopperGolemEntity.Stage.UNAFFECTED) {
-            if (this.spinningTicks < 40) {
-                this.spinningTicks++;
-            } else {
-                entity.getBrain().setMemory(USMemoryModules.COPPER_GOLEM_HEADSPIN_TICKS, UniformInt.of(120, 200).sample(world.getRandom()));
-            }
-            if (this.spinningTicks == 20) {
-                entity.playSound(USSounds.HEAD_SPIN, 1, 1);
-                entity.setPose(EntityPoses.HEAD_SPIN);
-            }
-        } else if (entity.getStage() == CopperGolemEntity.Stage.EXPOSED) {
-            if (this.spinningTicks < 50) {
-                this.spinningTicks++;
-            } else {
-                entity.getBrain().setMemory(USMemoryModules.COPPER_GOLEM_HEADSPIN_TICKS, UniformInt.of(120, 200).sample(world.getRandom()));
-            }
-            if (this.spinningTicks == 25) {
-                entity.playSound(USSounds.HEAD_SPIN_SLOWER, 1, 1);
-                entity.setPose(EntityPoses.HEAD_SPIN);
-            }
+        int timeLimit = 40 + (entity.getStage().getId() * 10);
+        int playSoundFrame = 20 + (entity.getStage().getId() * 5);
+        if (this.spinningTicks < timeLimit) {
+            this.spinningTicks++;
         } else {
-            if (this.spinningTicks < 60) {
-                this.spinningTicks++;
-            } else {
-                entity.getBrain().setMemory(USMemoryModules.COPPER_GOLEM_HEADSPIN_TICKS, UniformInt.of(120, 200).sample(world.getRandom()));
+            entity.getBrain().setMemory(USMemoryModules.COPPER_GOLEM_HEADSPIN_TICKS, UniformInt.of(120, 200).sample(world.getRandom()));
+        }
+        if (this.spinningTicks == playSoundFrame) {
+            SoundEvent soundEvent;
+            switch (entity.getStage()) {
+                case UNAFFECTED -> soundEvent = USSounds.HEAD_SPIN;
+                case EXPOSED -> soundEvent = USSounds.HEAD_SPIN_SLOWER;
+                default -> soundEvent = USSounds.HEAD_SPIN_SLOWEST;
             }
-            if (this.spinningTicks == 30) {
-                entity.playSound(USSounds.HEAD_SPIN_SLOWEST, 1, 1);
-                entity.setPose(EntityPoses.HEAD_SPIN);
-            }
+            entity.playSound(soundEvent, 1.0F, 1.0F);
+            entity.setPose(EntityPoses.HEAD_SPIN);
         }
     }
 
