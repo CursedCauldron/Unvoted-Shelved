@@ -50,7 +50,8 @@ public class CloseOffFluidSourcesProcessor extends StructureProcessor {
             for (Direction direction : Direction.values()) {
 
                 mutable.set(infoIn2.pos).move(direction);
-                if (mutable.getY() < currentChunk.getMinBuildHeight() || mutable.getY() >= currentChunk.getMaxBuildHeight()) {
+                if
+                (mutable.getY() < currentChunk.getMinBuildHeight() || mutable.getY() >= currentChunk.getMaxBuildHeight()) {
                     continue;
                 }
 

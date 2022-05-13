@@ -6,7 +6,16 @@
       "weight": 1,
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "unvotedandshelved:ruined_capitals",
+        "location": "unvotedandshelved:ruined_capital",
+        "projection": "rigid",
+        "processors": "unvotedandshelved:ruined_capital_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "unvotedandshelved:ruined_capital_2",
         "projection": "rigid",
         "processors": "unvotedandshelved:ruined_capital_processors"
       }
