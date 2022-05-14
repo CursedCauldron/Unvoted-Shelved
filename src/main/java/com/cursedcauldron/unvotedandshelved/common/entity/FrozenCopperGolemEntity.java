@@ -88,7 +88,6 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         this.entityData.define(DATA_CLIENT_FLAGS, (byte)0);
     }
 
-
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
@@ -311,8 +310,6 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         this.level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.COPPER_BREAK, this.getSoundSource(), 1.0f, 1.0f);
     }
 
-
-
     @Override
     protected float tickHeadTurn(float f, float g) {
         this.yBodyRotO = this.yRotO;
@@ -356,8 +353,6 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         this.yBodyRotO = this.yRotO = f;
         this.yHeadRotO = this.yHeadRot = f;
     }
-
-
 
     @Override
     protected void updateInvisibilityStatus() {

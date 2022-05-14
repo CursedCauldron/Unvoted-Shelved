@@ -5,6 +5,8 @@ import com.cursedcauldron.unvotedandshelved.common.entity.ai.copper_golem.Copper
 import com.cursedcauldron.unvotedandshelved.config.FeatureScreen;
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
+import com.cursedcauldron.unvotedandshelved.core.registries.USPoses;
+import com.cursedcauldron.unvotedandshelved.core.util.PoseUtil;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
 import net.fabricmc.loader.api.FabricLoader;
@@ -18,7 +20,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -29,7 +30,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.PowerableMob;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -127,28 +127,28 @@ public class CopperGolemEntity extends AbstractGolem {
         if (DATA_POSE.equals(data)) {
             Pose pose = this.getPose();
             if (this.getStage() == Stage.UNAFFECTED) {
-                if (pose == EntityPoses.HEAD_SPIN) {
+                if (PoseUtil.isInPose(this, USPoses.HEAD_SPIN)) {
                     this.headSpinAnimation.start();
                 } else {
                     this.headSpinAnimation.stop();
                     this.headSpinSlowerAnimation.stop();
                     this.headSpinSlowestAnimation.stop();
                 }
-                if (pose == EntityPoses.PRESS_BUTTON) {
+                if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON)) {
                     this.buttonAnimation.start();
                 } else {
                     this.buttonAnimation.stop();
                     this.buttonSlowerAnimation.stop();
                     this.buttonSlowestAnimation.stop();
                 }
-                if (pose == EntityPoses.PRESS_BUTTON_UP) {
+                if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON_UP)) {
                     this.buttonUpAnimation.start();
                 } else {
                     this.buttonUpAnimation.stop();
                     this.buttonUpSlowerAnimation.stop();
                     this.buttonUpSlowestAnimation.stop();
                 }
-                if (pose == EntityPoses.PRESS_BUTTON_DOWN) {
+                if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON_DOWN)) {
                     this.buttonDownAnimation.start();
                 } else {
                     this.buttonDownAnimation.stop();
@@ -156,28 +156,28 @@ public class CopperGolemEntity extends AbstractGolem {
                     this.buttonDownSlowestAnimation.stop();
                 }
             } else if (this.getStage() == Stage.EXPOSED) {
-                if (pose == EntityPoses.HEAD_SPIN) {
+                if (PoseUtil.isInPose(this, USPoses.HEAD_SPIN)) {
                     this.headSpinSlowerAnimation.start();
                 } else {
                     this.headSpinAnimation.stop();
                     this.headSpinSlowerAnimation.stop();
                     this.headSpinSlowestAnimation.stop();
                 }
-                if (pose == EntityPoses.PRESS_BUTTON) {
+                if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON)) {
                     this.buttonSlowerAnimation.start();
                 } else {
                     this.buttonAnimation.stop();
                     this.buttonSlowerAnimation.stop();
                     this.buttonSlowestAnimation.stop();
                 }
-                if (pose == EntityPoses.PRESS_BUTTON_UP) {
+                if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON_UP)) {
                     this.buttonUpSlowerAnimation.start();
                 } else {
                     this.buttonUpAnimation.stop();
                     this.buttonUpSlowerAnimation.stop();
                     this.buttonUpSlowestAnimation.stop();
                 }
-                if (pose == EntityPoses.PRESS_BUTTON_DOWN) {
+                if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON_DOWN)) {
                     this.buttonDownSlowerAnimation.start();
                 } else {
                     this.buttonDownAnimation.stop();
@@ -185,28 +185,28 @@ public class CopperGolemEntity extends AbstractGolem {
                     this.buttonDownSlowestAnimation.stop();
                 }
             } else {
-                if (pose == EntityPoses.HEAD_SPIN) {
+                if (PoseUtil.isInPose(this, USPoses.HEAD_SPIN)) {
                     this.headSpinSlowestAnimation.start();
                 } else {
                     this.headSpinAnimation.stop();
                     this.headSpinSlowerAnimation.stop();
                     this.headSpinSlowestAnimation.stop();
                 }
-                if (pose == EntityPoses.PRESS_BUTTON) {
+                if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON)) {
                     this.buttonSlowestAnimation.start();
                 } else {
                     this.buttonAnimation.stop();
                     this.buttonSlowerAnimation.stop();
                     this.buttonSlowestAnimation.stop();
                 }
-                if (pose == EntityPoses.PRESS_BUTTON_UP) {
+                if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON_UP)) {
                     this.buttonUpSlowestAnimation.start();
                 } else {
                     this.buttonUpAnimation.stop();
                     this.buttonUpSlowerAnimation.stop();
                     this.buttonUpSlowestAnimation.stop();
                 }
-                if (pose == EntityPoses.PRESS_BUTTON_DOWN) {
+                if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON_DOWN)) {
                     this.buttonDownSlowestAnimation.start();
                 } else {
                     this.buttonDownAnimation.stop();

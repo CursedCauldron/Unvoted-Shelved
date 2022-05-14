@@ -2,14 +2,14 @@ package com.cursedcauldron.unvotedandshelved.common.entity.ai.copper_golem.task;
 
 import com.cursedcauldron.unvotedandshelved.common.blocks.CopperButtonBlock;
 import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
-import com.cursedcauldron.unvotedandshelved.common.entity.EntityPoses;
+import com.cursedcauldron.unvotedandshelved.core.registries.USPoses;
 import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
 import com.cursedcauldron.unvotedandshelved.core.registries.USSounds;
+import com.cursedcauldron.unvotedandshelved.core.util.PoseUtil;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
@@ -45,13 +45,13 @@ public class PressCopperButtonTask extends Behavior<CopperGolemEntity> {
             if (flag && state.getBlock() instanceof CopperButtonBlock buttonBlock) {
                 AttachFace direction = state.getValue(CopperButtonBlock.FACE);
                 entity.getLookControl().setLookAt(blockPos.getX(), blockPos.getY(), blockPos.getZ());
-                Pose poses;
+                USPoses poses;
                 switch (direction) {
-                    case FLOOR -> poses = EntityPoses.PRESS_BUTTON_DOWN;
-                    case CEILING -> poses = EntityPoses.PRESS_BUTTON_UP;
-                    default -> poses = EntityPoses.PRESS_BUTTON;
+                    case FLOOR -> poses = USPoses.PRESS_BUTTON_DOWN;
+                    case CEILING -> poses = USPoses.PRESS_BUTTON_UP;
+                    default -> poses = USPoses.PRESS_BUTTON;
                 }
-                entity.setPose(poses);
+                PoseUtil.setModPose(poses.name(), entity);
                 buttonBlock.press(state, world, blockPos);
                 world.playSound(null, blockPos.getX(), blockPos.getY(), blockPos.getZ(), USSounds.COPPER_CLICK, SoundSource.BLOCKS, 1, 1);
             }
