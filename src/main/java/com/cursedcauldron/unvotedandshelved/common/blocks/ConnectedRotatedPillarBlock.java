@@ -64,13 +64,13 @@ public class ConnectedRotatedPillarBlock extends RotatedPillarBlock implements W
        BlockState belowState = level.getBlockState(belowPos);
 
        if (aboveState.is(USTags.COPPER_PILLARS) && aboveState.getValue(AXIS) == state.getValue(AXIS)) {
-               level.setBlock(pos, state.setValue(CONNECTED, true), 3);
-           } else {
-               level.setBlock(pos, state.setValue(CONNECTED, false), 3);
-           }
-           if (belowState.is(USTags.COPPER_PILLARS) && belowState.getValue(AXIS) == state.getValue(AXIS)) {
-               level.setBlock(belowPos, belowState.setValue(CONNECTED, true), 3);
-           }
+           level.setBlock(pos, state.setValue(CONNECTED, true), 3);
+       } else {
+           level.setBlock(pos, state.setValue(CONNECTED, false), 3);
+       }
+       if (belowState.is(USTags.COPPER_PILLARS) && belowState.getValue(AXIS) == state.getValue(AXIS)) {
+           level.setBlock(belowPos, belowState.setValue(CONNECTED, true), 3);
+       }
 
        super.neighborChanged(state, level, pos, block, blockPos2, bl);
    }
