@@ -1,6 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.client.entity.animation;
 
-import com.cursedcauldron.unvotedandshelved.mixin.ModelPartAccessor;
+import com.cursedcauldron.unvotedandshelved.mixin.access.ModelPartAccessor;
 import com.mojang.math.Vector3f;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

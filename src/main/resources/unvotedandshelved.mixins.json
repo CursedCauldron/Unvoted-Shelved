@@ -4,14 +4,21 @@
   "package": "com.cursedcauldron.unvotedandshelved.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-    "ActivityInvoker",
+    "AxeItemMixin",
+    "HoneycombItemMixin",
     "LightningEntityMixin",
     "LightningRodBlockMixin",
-    "LivingEntityMemoryInvoker",
-    "MemoryInvoker",
-    "ModelPartAccessor",
+    "MinecraftServerMixin",
     "ModelPartMixin",
-    "PartDefinitionMixin"
+    "PartDefinitionMixin",
+    "PoseMixin",
+    "StructureFeatureAccessor",
+    "ZombieMixin",
+    "access.ActivityAccessor",
+    "access.ItemAccessor",
+    "access.MemoryModuleAccessor",
+    "access.ModelPartAccessor",
+    "access.SimpleParticleTypeAccessor"
   ],
   "client": [
   ],

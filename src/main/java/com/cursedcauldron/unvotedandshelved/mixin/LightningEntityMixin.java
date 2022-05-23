@@ -1,5 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.mixin;
 
+import com.cursedcauldron.unvotedandshelved.common.blocks.WeatheringRotatedPillarBlock;
 import com.cursedcauldron.unvotedandshelved.common.blocks.WeatheringCopperButtonBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -21,10 +22,13 @@ public class LightningEntityMixin {
         for(BlockPos blockpos : BlockPos.randomInCube(world.random, 10, pos, 1)) {
             BlockState blockstate = world.getBlockState(blockpos);
             if (blockstate.getBlock() instanceof WeatheringCopperButtonBlock || blockstate.getBlock() instanceof WeatheringCopper) {
-                WeatheringCopper.getPrevious(blockstate).ifPresent((state) -> {
+                WeatheringCopper.getPrevious(blockstate).ifPresent(state -> {
                     world.setBlockAndUpdate(blockpos, state);
                 });
                 WeatheringCopperButtonBlock.getPreviousState(blockstate).ifPresent(state -> {
+                    world.setBlockAndUpdate(blockpos, state);
+                });
+                WeatheringRotatedPillarBlock.getPreviousState(blockstate).ifPresent(state -> {
                     world.setBlockAndUpdate(blockpos, state);
                 });
                 world.levelEvent(3002, blockpos, -1);

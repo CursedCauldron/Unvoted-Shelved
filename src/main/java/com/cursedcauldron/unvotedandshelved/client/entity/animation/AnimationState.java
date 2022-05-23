@@ -8,9 +8,11 @@ import java.util.function.Consumer;
 
 public class AnimationState {
     private long startedAt = Long.MAX_VALUE;
+    private long runningTime;
 
     public void start() {
         this.startedAt = Util.getMillis();
+        this.runningTime = 0L;
     }
 
     public void startIfNotRunning() {
@@ -31,6 +33,20 @@ public class AnimationState {
         if (this.isRunning()) {
             consumer.accept(this);
         }
+    }
+
+    public void run(boolean isPaused, float time) {
+        if (this.isRunning()) {
+            long millis = Util.getMillis();
+            if (!isPaused) {
+                this.runningTime += (long)((float)(millis - this.startedAt) * time);
+            }
+            this.startedAt = millis;
+        }
+    }
+
+    public long runningTime() {
+        return this.runningTime;
     }
 
     private boolean isRunning() {

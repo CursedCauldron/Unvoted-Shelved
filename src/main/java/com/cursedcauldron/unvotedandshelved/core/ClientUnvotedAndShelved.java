@@ -1,20 +1,23 @@
 package com.cursedcauldron.unvotedandshelved.core;
 
 import com.cursedcauldron.unvotedandshelved.client.entity.USEntityRenderer;
-import com.cursedcauldron.unvotedandshelved.client.entity.render.CopperGolemRenderer;
-import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
+import com.cursedcauldron.unvotedandshelved.config.UnvotedConfigManager;
+import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
+import com.cursedcauldron.unvotedandshelved.core.registries.USParticles;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
-import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.fabricmc.fabric.api.network.PacketContext;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.FlameParticle;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
@@ -22,6 +25,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+
 import java.util.UUID;
 
 //<>
@@ -30,12 +34,23 @@ import java.util.UUID;
 public class ClientUnvotedAndShelved implements ClientModInitializer {
     static {
         ParticleFactoryRegistry registry = ParticleFactoryRegistry.getInstance();
-        registry.register(UnvotedAndShelved.GLOWBERRY_DUST_PARTICLES, FlameParticle.Provider::new);
+        registry.register(USParticles.GLOWBERRY_DUST_PARTICLES, FlameParticle.Provider::new);
     }
 
     @Override
     public void onInitializeClient() {
         USEntityRenderer.registerRenderers();
+        BlockRenderLayerMap.INSTANCE.putBlock(USBlocks.COPPER_PILLAR, RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(USBlocks.EXPOSED_COPPER_PILLAR, RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(USBlocks.WEATHERED_COPPER_PILLAR, RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(USBlocks.OXIDIZED_COPPER_PILLAR, RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(USBlocks.WAXED_COPPER_PILLAR, RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(USBlocks.WAXED_EXPOSED_COPPER_PILLAR, RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(USBlocks.WAXED_WEATHERED_COPPER_PILLAR, RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(USBlocks.WAXED_OXIDIZED_COPPER_PILLAR, RenderType.cutout());
+        if (FabricLoader.getInstance().isModLoaded("modmenu")) {
+            UnvotedConfigManager.initializeConfig();
+        }
         ClientSidePacketRegistry.INSTANCE.register(ClientUnvotedAndShelved.EntityPacket.ID, EntityPacketOnClient::onPacket);
     }
 

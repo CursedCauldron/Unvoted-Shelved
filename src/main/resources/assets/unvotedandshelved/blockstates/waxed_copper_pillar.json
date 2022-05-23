@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "axis=x,connected=false": {
+      "model": "unvotedandshelved:block/copper_pillar",
+      "x": 90,
+      "y": 90
+    },
+    "axis=x,connected=true": {
+      "model": "unvotedandshelved:block/copper_pillar_connected",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y,connected=false": {
+      "model": "unvotedandshelved:block/copper_pillar"
+    },
+    "axis=y,connected=true": {
+      "model": "unvotedandshelved:block/copper_pillar_connected"
+    },
+    "axis=z,connected=false": {
+      "model": "unvotedandshelved:block/copper_pillar",
+      "x": 90
+    },
+    "axis=z,connected=true": {
+      "model": "unvotedandshelved:block/copper_pillar_connected",
+      "x": 90
+    }
+  }
+}

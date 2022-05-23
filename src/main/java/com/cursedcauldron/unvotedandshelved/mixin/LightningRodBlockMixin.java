@@ -2,7 +2,9 @@ package com.cursedcauldron.unvotedandshelved.mixin;
 
 import com.cursedcauldron.unvotedandshelved.api.LightningRodAccess;
 import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
+import com.cursedcauldron.unvotedandshelved.config.FeatureScreen;
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
+import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 
@@ -43,6 +45,8 @@ public class LightningRodBlockMixin extends Block implements LightningRodAccess 
     }
 
     public void trySpawnEntity(Level world, BlockPos pos) {
+        if (FabricLoader.getInstance().isModLoaded("modmenu") && !FeatureScreen.COPPER_GOLEM.getValue()) return;
+
         BlockPattern.BlockPatternMatch result = this.getCopperGolemPattern().find(world, pos);
         int i;
         ServerPlayer serverPlayerEntity;
