@@ -75,6 +75,8 @@ public class CopperGolemEntity extends AbstractGolem {
         this.maxUpStep = 1.0F;
     }
 
+    // ඞ
+
     @Override
     protected Brain.Provider<CopperGolemEntity> brainProvider() {
         return Brain.provider(MEMORY_TYPES, SENSOR_TYPES);
