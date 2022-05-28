@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "unvotedandshelved:copper_button"
+      "unvotedandshelved:weathered_copper_button"
     ]
   },
   "criteria": {
-    "has_copper_block": {
+    "has_copper_button": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:copper_block"
+              "unvotedandshelved:weathered_copper_block"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "unvotedandshelved:copper_button"
+        "recipe": "unvotedandshelved:weathered_copper_button"
       }
     }
   },
   "requirements": [
     [
-      "has_copper_block",
+      "has_copper_button",
       "has_the_recipe"
     ]
   ]
