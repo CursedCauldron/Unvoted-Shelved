@@ -226,7 +226,7 @@ public class CopperGolemEntity extends AbstractGolem {
     }
 
     @SuppressWarnings("all")
-    void setStage(CopperGolemEntity.Stage stage) {
+    public void setStage(CopperGolemEntity.Stage stage) {
         this.entityData.set(STAGE, stage.getId());
 
         switch (stage) {
@@ -393,17 +393,6 @@ public class CopperGolemEntity extends AbstractGolem {
 
     protected void playStepSound(BlockPos pos, BlockState state) {
         this.playSound(this.getStepSound(), 0.5F, 1.0F);
-    }
-
-    @Override
-    public void thunderHit(ServerLevel world, LightningBolt bolt) {
-        Stage stage = this.getStage();
-        Stage stage1 = null;
-        if (stage == Stage.WEATHERED) stage1 = Stage.EXPOSED;
-        if (stage == Stage.EXPOSED) stage1 = Stage.UNAFFECTED;
-        if (stage1 != null) {
-            this.setStage(stage1);
-        }
     }
 
     public enum Stage {
