@@ -127,6 +127,7 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         ItemStack stack = player.getItemInHand(hand);
         if (stack.getItem() instanceof AxeItem) {
             this.convertBack(USEntities.COPPER_GOLEM, true);
+            this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
             this.level.playSound(player, this.blockPosition(), SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
             this.level.levelEvent(player, 3005, this.blockPosition(), 0);
             return InteractionResult.SUCCESS;

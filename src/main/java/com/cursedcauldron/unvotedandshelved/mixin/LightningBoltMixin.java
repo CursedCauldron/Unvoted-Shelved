@@ -4,6 +4,8 @@ import com.cursedcauldron.unvotedandshelved.common.blocks.WeatheringRotatedPilla
 import com.cursedcauldron.unvotedandshelved.common.blocks.WeatheringCopperButtonBlock;
 import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,6 +31,8 @@ public class LightningBoltMixin {
         for (CopperGolemEntity copperGolem : golems) {
             if (copperGolem.isAlive()) {
                 copperGolem.setStage(CopperGolemEntity.Stage.values()[copperGolem.getStage().getId() - 1]);
+                copperGolem.level.playLocalSound(copperGolem.getX(), copperGolem.getY(), copperGolem.getZ(), SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 2.0f, 0.5f + copperGolem.getRandom().nextFloat() * 0.2f, false);
+                copperGolem.level.levelEvent(3004, copperGolem.blockPosition(), 0);
             }
         }
     }
