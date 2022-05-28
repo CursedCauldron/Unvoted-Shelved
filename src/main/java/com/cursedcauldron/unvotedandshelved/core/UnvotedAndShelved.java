@@ -2,7 +2,17 @@ package com.cursedcauldron.unvotedandshelved.core;
 
 import com.cursedcauldron.unvotedandshelved.api.LightningRodAccess;
 import com.cursedcauldron.unvotedandshelved.config.UnvotedConfigManager;
-import com.cursedcauldron.unvotedandshelved.core.registries.*;
+import com.cursedcauldron.unvotedandshelved.core.registries.USActivities;
+import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
+import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
+import com.cursedcauldron.unvotedandshelved.core.registries.USFeatures;
+import com.cursedcauldron.unvotedandshelved.core.registries.USItems;
+import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
+import com.cursedcauldron.unvotedandshelved.core.registries.USParticles;
+import com.cursedcauldron.unvotedandshelved.core.registries.USSounds;
+import com.cursedcauldron.unvotedandshelved.core.registries.USStructureProcessors;
+import com.cursedcauldron.unvotedandshelved.core.registries.USStructures;
+import com.cursedcauldron.unvotedandshelved.core.registries.USTags;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.FieldNamingPolicy;
@@ -21,6 +31,7 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
@@ -29,11 +40,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-
 import java.util.List;
-
-import static com.cursedcauldron.unvotedandshelved.core.registries.USEntities.GLARE;
-import static net.minecraft.world.level.biome.Biomes.LUSH_CAVES;
 
 public class UnvotedAndShelved implements ModInitializer {
     public static final String MODID = "unvotedandshelved";
@@ -93,11 +100,12 @@ public class UnvotedAndShelved implements ModInitializer {
             OxidizableBlocksRegistry.registerOxidizableBlockPair(list2.get(i), list2.get(i + 1));
         }
 
-        BiomeModifications.addSpawn(BiomeSelectors.includeByKey(LUSH_CAVES), MobCategory.UNDERGROUND_WATER_CREATURE, GLARE, 10, 1, 1);
+        BiomeModifications.addSpawn(BiomeSelectors.includeByKey(Biomes.LUSH_CAVES), MobCategory.UNDERGROUND_WATER_CREATURE, USEntities.GLARE, 10, 1, 1);
 
         USEntities.registerAttributes();
 
         DispenserBlock.registerBehavior(Blocks.LIGHTNING_ROD, new OptionalDispenseItemBehavior() {
+            @Override
             protected ItemStack execute(BlockSource pointer, ItemStack stack) {
                 Level world = pointer.getLevel();
                 BlockPos blockPos = pointer.getPos().relative(pointer.getBlockState().getValue(DispenserBlock.FACING));
