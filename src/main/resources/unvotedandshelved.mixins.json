@@ -8,7 +8,6 @@
     "HoneycombItemMixin",
     "LightningEntityMixin",
     "LightningRodBlockMixin",
-    "MinecraftServerMixin",
     "ModelPartMixin",
     "PartDefinitionMixin",
     "PoseMixin",
