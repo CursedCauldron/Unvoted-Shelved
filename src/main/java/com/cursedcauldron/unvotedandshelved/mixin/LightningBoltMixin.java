@@ -3,12 +3,7 @@ package com.cursedcauldron.unvotedandshelved.mixin;
 import com.cursedcauldron.unvotedandshelved.common.blocks.WeatheringRotatedPillarBlock;
 import com.cursedcauldron.unvotedandshelved.common.blocks.WeatheringCopperButtonBlock;
 import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
-import com.cursedcauldron.unvotedandshelved.common.entity.FrozenCopperGolemEntity;
-import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import net.minecraft.core.BlockPos;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
@@ -25,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LightningBolt.class)
-public class LightningEntityMixin {
+public class LightningBoltMixin {
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LightningBolt;gameEvent(Lnet/minecraft/world/level/gameevent/GameEvent;)V"), method = "tick")
     private void US$tick(CallbackInfo ci) {

@@ -7,7 +7,7 @@
     "access.AxeItemAccessor",
     "AxeItemMixin",
     "HoneycombItemMixin",
-    "LightningEntityMixin",
+    "LightningBoltMixin",
     "LightningRodBlockMixin",
     "ModelPartMixin",
     "PartDefinitionMixin",
