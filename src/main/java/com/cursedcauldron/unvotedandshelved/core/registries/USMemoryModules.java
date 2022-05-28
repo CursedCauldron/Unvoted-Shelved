@@ -16,11 +16,11 @@ import java.util.Optional;
 public class USMemoryModules {
     public static final CoreRegistry<MemoryModuleType<?>> MEMORY_MODULES = CoreRegistry.create(Registry.MEMORY_MODULE_TYPE_REGISTRY, UnvotedAndShelved.MODID);
 
-    public static final MemoryModuleType<Integer> GRUMPY_TICKS          = register("grumpy_ticks", Codec.INT);
-    public static final MemoryModuleType<Integer> DARK_TICKS_REMAINING  = register("darkness_ticks", Codec.INT);
-    public static final MemoryModuleType<Integer> GLOWBERRIES_GIVEN     = register("glowberries_given", Codec.INT);
-    public static final MemoryModuleType<LivingEntity> GIVEN_GLOWBERRY  = register("given_glowberry");
-    public static final MemoryModuleType<BlockPos> DARK_POS             = register("dark_pos");
+    public static final MemoryModuleType<Integer> GRUMPY_TICKS = register("grumpy_ticks", Codec.INT);
+    public static final MemoryModuleType<Integer> DARK_TICKS_REMAINING = register("darkness_ticks", Codec.INT);
+    public static final MemoryModuleType<Integer> GLOWBERRIES_GIVEN = register("glowberries_given", Codec.INT);
+    public static final MemoryModuleType<LivingEntity> GIVEN_GLOWBERRY = register("given_glowberry");
+    public static final MemoryModuleType<BlockPos> DARK_POS = register("dark_pos");
     public static final MemoryModuleType<Integer> COPPER_BUTTON_COOLDOWN_TICKS = register("copper_button_cooldown_ticks", Codec.INT);
     public static final MemoryModuleType<Integer> COPPER_GOLEM_HEADSPIN_TICKS = register("copper_golem_headspin_ticks", Codec.INT);
 
