@@ -29,21 +29,21 @@ public class ModelPartMixin implements ModelModifier {
     }
 
     @Inject(method = "loadPose", at = @At("TAIL"))
-    private void loadScale(PartPose pose, CallbackInfo ci) {
+    private void US$loadScale(PartPose pose, CallbackInfo ci) {
         this.xScale = 1.0F;
         this.yScale = 1.0F;
         this.zScale = 1.0F;
     }
 
     @Inject(method = "copyFrom", at = @At("TAIL"))
-    private void copyScale(ModelPart part, CallbackInfo ci) {
+    private void US$copyScale(ModelPart part, CallbackInfo ci) {
         this.setXScale(((ModelModifier)(Object)part).xScale());
         this.setYScale(((ModelModifier)(Object)part).yScale());
         this.setZScale(((ModelModifier)(Object)part).zScale());
     }
 
     @Inject(method = "translateAndRotate", at = @At("TAIL"))
-    private void rotateScale(PoseStack stack, CallbackInfo ci) {
+    private void US$rotateScale(PoseStack stack, CallbackInfo ci) {
         if (this.xScale != 1.0F || this.yScale != 1.0F || this.zScale != 1.0F) {
             stack.scale(this.xScale, this.yScale, this.zScale);
         }

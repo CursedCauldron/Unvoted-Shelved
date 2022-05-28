@@ -21,7 +21,7 @@ public class ZombieMixin extends Monster {
     }
 
     @Inject(method = "addBehaviourGoals()V", at = @At("TAIL"))
-    protected void addBehaviourGoals(CallbackInfo ci) {
+    protected void US$addBehaviourGoals(CallbackInfo ci) {
         if (FabricLoader.getInstance().isModLoaded("modmenu") && !FeatureScreen.COPPER_GOLEM.getValue()) return;
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, CopperGolemEntity.class, true));
     }

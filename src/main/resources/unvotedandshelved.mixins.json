@@ -4,6 +4,7 @@
   "package": "com.cursedcauldron.unvotedandshelved.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
+    "access.AxeItemAccessor",
     "AxeItemMixin",
     "HoneycombItemMixin",
     "LightningEntityMixin",
@@ -11,7 +12,7 @@
     "ModelPartMixin",
     "PartDefinitionMixin",
     "PoseMixin",
-    "StructureFeatureAccessor",
+    "access.StructureFeatureAccessor",
     "ZombieMixin",
     "access.ActivityAccessor",
     "access.ItemAccessor",

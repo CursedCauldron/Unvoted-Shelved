@@ -22,7 +22,7 @@ public class HoneycombItemMixin {
     @Shadow @Final public static Supplier<BiMap<Block, Block>> WAXABLES;
 
     @Inject(at = @At("HEAD"), method = "getWaxed(Lnet/minecraft/world/level/block/state/BlockState;)Ljava/util/Optional;", cancellable = true)
-    private static void getWaxed(BlockState blockState, CallbackInfoReturnable<Optional<BlockState>> cir) {
+    private static void US$getWaxed(BlockState blockState, CallbackInfoReturnable<Optional<BlockState>> cir) {
         cir.setReturnValue(Optional.ofNullable((Block)((BiMap<?, ?>)WAXABLES.get()).get(blockState.getBlock())).map((block) -> {
             if (block.withPropertiesOf(blockState).hasProperty(POWERED)) {
                 return block.withPropertiesOf(blockState).setValue(POWERED, false);

@@ -1,4 +1,4 @@
-package com.cursedcauldron.unvotedandshelved.mixin;
+package com.cursedcauldron.unvotedandshelved.mixin.access;
 
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;

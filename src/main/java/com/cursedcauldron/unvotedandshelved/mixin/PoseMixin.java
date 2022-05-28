@@ -29,7 +29,7 @@ public class PoseMixin {
     private static Pose[] $VALUES;
 
     @Inject(method = "<clinit>", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/Pose;$VALUES:[Lnet/minecraft/world/entity/Pose;", shift = At.Shift.AFTER))
-    private static void addCustomPose(CallbackInfo ci) {
+    private static void US$addCustomPose(CallbackInfo ci) {
         List<Pose> poses = new ArrayList<>(Arrays.asList($VALUES));
         Pose last = poses.get(poses.size() - 1);
         int i = 1;

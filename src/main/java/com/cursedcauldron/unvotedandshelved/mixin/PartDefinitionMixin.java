@@ -18,7 +18,7 @@ public class PartDefinitionMixin {
     @Shadow @Final private PartPose partPose;
 
     @Inject(method = "bake", at = @At(value = "RETURN"), cancellable = true)
-    private void bakeDefaultPose(int p_171584_, int p_171585_, CallbackInfoReturnable<ModelPart> cir) {
+    private void US$bakeDefaultPose(int p_171584_, int p_171585_, CallbackInfoReturnable<ModelPart> cir) {
         ((ModelModifier)(Object)cir.getReturnValue()).setDefaultPose(this.partPose);
         cir.setReturnValue(cir.getReturnValue());
     }

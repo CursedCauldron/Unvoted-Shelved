@@ -2,7 +2,7 @@ package com.cursedcauldron.unvotedandshelved.core.registries;
 
 import com.cursedcauldron.unvotedandshelved.common.world.gen.structures.RuinedCapitalStructure;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
-import com.cursedcauldron.unvotedandshelved.mixin.StructureFeatureAccessor;
+import com.cursedcauldron.unvotedandshelved.mixin.access.StructureFeatureAccessor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;

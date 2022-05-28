@@ -28,7 +28,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class LightningEntityMixin {
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LightningBolt;gameEvent(Lnet/minecraft/world/level/gameevent/GameEvent;)V"), method = "tick")
-    private void tick(CallbackInfo ci) {
+    private void US$tick(CallbackInfo ci) {
         LightningBolt $this = (LightningBolt) (Object) this;
         List<CopperGolemEntity> golems = $this.getLevel().getEntitiesOfClass(CopperGolemEntity.class, new AABB($this.getX() - 15.0, $this.getY() - 15.0, $this.getZ() - 15.0, $this.getX() + 15.0, $this.getY() + 6.0 + 15.0, $this.getZ() + 15.0));
         for (CopperGolemEntity copperGolem : golems) {
@@ -39,7 +39,7 @@ public class LightningEntityMixin {
     }
 
     @Inject(at = @At("HEAD"), method = "randomStepCleaningCopper", cancellable = true)
-    private static void randomStepCleaningCopper(Level world, BlockPos pos, CallbackInfoReturnable<Optional<BlockPos>> cir) {
+    private static void US$randomStepCleaningCopper(Level world, BlockPos pos, CallbackInfoReturnable<Optional<BlockPos>> cir) {
         for(BlockPos blockpos : BlockPos.randomInCube(world.random, 10, pos, 1)) {
             BlockState blockstate = world.getBlockState(blockpos);
             if (blockstate.getBlock() instanceof WeatheringCopperButtonBlock || blockstate.getBlock() instanceof WeatheringCopper) {
