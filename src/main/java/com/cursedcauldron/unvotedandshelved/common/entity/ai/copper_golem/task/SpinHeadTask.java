@@ -1,6 +1,7 @@
 package com.cursedcauldron.unvotedandshelved.common.entity.ai.copper_golem.task;
 
 import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
+import com.cursedcauldron.unvotedandshelved.core.registries.USGameEvents;
 import com.cursedcauldron.unvotedandshelved.core.registries.USPoses;
 import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
 import com.cursedcauldron.unvotedandshelved.core.registries.USSounds;
@@ -13,6 +14,7 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
+import net.minecraft.world.level.gameevent.GameEvent;
 
 public class SpinHeadTask extends Behavior<CopperGolemEntity> {
     private int spinningTicks;
@@ -48,6 +50,7 @@ public class SpinHeadTask extends Behavior<CopperGolemEntity> {
                 default -> soundEvent = USSounds.HEAD_SPIN_SLOWEST;
             }
             entity.playSound(soundEvent, 1.0F, 1.0F);
+            entity.gameEvent(USGameEvents.SPIN_HEAD, entity.eyeBlockPosition());
             PoseUtil.setModPose(USPoses.HEAD_SPIN, entity);
         }
     }

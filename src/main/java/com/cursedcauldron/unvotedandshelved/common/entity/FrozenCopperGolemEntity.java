@@ -3,6 +3,7 @@ package com.cursedcauldron.unvotedandshelved.common.entity;
 import com.cursedcauldron.unvotedandshelved.config.FeatureScreen;
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import com.cursedcauldron.unvotedandshelved.core.registries.USItems;
+import com.cursedcauldron.unvotedandshelved.mixin.ThrownTridentAccessor;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -13,6 +14,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -33,9 +35,11 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.ThrownTrident;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Block;
@@ -217,11 +221,18 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
             this.causeDamage(damageSource, 4.0f);
             return false;
         }
-        boolean bl = damageSource.getDirectEntity() instanceof AbstractArrow;
+        boolean bl = damageSource.getDirectEntity() instanceof AbstractArrow && !(damageSource.getDirectEntity() instanceof ThrownTrident);
         boolean bl2 = bl && ((AbstractArrow)damageSource.getDirectEntity()).getPierceLevel() > 0;
         boolean bl3 = "player".equals(damageSource.getMsgId());
         if (!bl3 && !bl) {
             return false;
+        }
+        if (damageSource.getDirectEntity() instanceof ThrownTrident trident && EnchantmentHelper.hasChanneling(((ThrownTridentAccessor)trident).getTridentItem()) && this.level.canSeeSky(this.blockPosition())) {
+            LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create(this.level);
+            lightningBolt.moveTo(Vec3.atBottomCenterOf(this.blockPosition()));
+            lightningBolt.setCause(damageSource.getEntity() instanceof ServerPlayer ? (ServerPlayer)damageSource.getEntity() : null);
+            this.level.addFreshEntity(lightningBolt);
+            this.playSound(SoundEvents.TRIDENT_THUNDER, 5.0F, 1.0f);
         }
         if (damageSource.getEntity() instanceof Player && !((Player)damageSource.getEntity()).getAbilities().mayBuild) {
             return false;
