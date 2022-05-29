@@ -6,6 +6,7 @@ import com.cursedcauldron.unvotedandshelved.config.FeatureScreen;
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
 import com.cursedcauldron.unvotedandshelved.core.registries.USPoses;
+import com.cursedcauldron.unvotedandshelved.core.registries.USSounds;
 import com.cursedcauldron.unvotedandshelved.core.util.PoseUtil;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
@@ -358,6 +359,10 @@ public class CopperGolemEntity extends AbstractGolem {
     public void aiStep() {
         super.aiStep();
         if (!this.level.isClientSide()) {
+            float chance = this.random.nextFloat();
+            if (chance < 0.0001F) {
+                this.playSound(USSounds.CHINESE_RIP_OFF_WINNIE_THE_POOH, 1.0F, 1.0F);
+            }
             if (this.getStage() == Stage.OXIDIZED) {
                 this.getBrain().removeAllBehaviors();
                 this.convertToFrozen(USEntities.FROZEN_COPPER_GOLEM,true);

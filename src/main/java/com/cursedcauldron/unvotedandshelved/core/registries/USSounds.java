@@ -18,7 +18,7 @@ public class USSounds {
     public static final SoundEvent HEAD_SPIN = register("copper_golem_headspin");
     public static final SoundEvent HEAD_SPIN_SLOWER = register("copper_golem_headspin_slower");
     public static final SoundEvent HEAD_SPIN_SLOWEST = register("copper_golem_headspin_slowest");
-
+    public static final SoundEvent CHINESE_RIP_OFF_WINNIE_THE_POOH = register("chinese_rip_off_winnie_the_pooh");
 
     public static final SoundType GLOW                  = new SoundType(1.0F, 2.0F, SoundEvents.RESPAWN_ANCHOR_CHARGE, GLOWBERRY_DUST_STEP, SoundEvents.RESPAWN_ANCHOR_CHARGE , SoundEvents.RESPAWN_ANCHOR_CHARGE, SoundEvents.RESPAWN_ANCHOR_CHARGE);
 

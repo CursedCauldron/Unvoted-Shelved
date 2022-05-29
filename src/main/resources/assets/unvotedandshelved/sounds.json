@@ -43,5 +43,11 @@
     "sounds": [
       "unvotedandshelved:mob/copper_golem/copper_golem_headspin_slowest"
     ]
+  },
+  "chinese_rip_off_winnie_the_pooh": {
+    "sounds": [
+      "unvotedandshelved:mob/copper_golem/chinese_rip_off_winnie_the_pooh"
+    ],
+    "subtitle": "subtitles.unvotedandshelved.chinese_rip_off_winnie_the_pooh"
   }
 }
