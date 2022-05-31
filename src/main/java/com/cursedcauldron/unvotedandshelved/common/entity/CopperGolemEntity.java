@@ -372,7 +372,7 @@ public class CopperGolemEntity extends AbstractGolem {
 
             if (!this.isWaxed() || this.getStage() != Stage.OXIDIZED) {
                 float randomChance = this.random.nextFloat();
-                if (randomChance < 3.4290552E-5F) {
+                if (randomChance < 3.4290552E-5F && this.getStage() != Stage.OXIDIZED) {
                     this.setStage(Stage.values()[this.getStage().getId() + 1]);
                 }
             }
