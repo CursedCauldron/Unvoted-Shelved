@@ -1,15 +1,14 @@
 modLoader="javafml"
-loaderVersion="[32,)"
+loaderVersion="[39,)"
 license="All rights reserved"
 [[mods]]
 modId="unvotedandshelved"
-version="1.0.0"
+version="1.18.2-2.0.0-forge"
 displayName="Unvoted and Shelved"
 logoFile="unvotedandshelved.png"
-credits="You the player!"
-authors="Dopadream, Orcinus, Blackgear, Ninni"
+authors="Dopadream, Orcinus, Ninni, Blackgear"
 description='''
-Introducing outvoted Mobs from previous mob votes.
+Introduces the outvoted Mobs from previous mob votes.
 '''
 [[dependencies.unvotedandshelved]]
     modId="forge"
@@ -20,6 +19,6 @@ Introducing outvoted Mobs from previous mob votes.
 [[dependencies.unvotedandshelved]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.18.1,)"
+    versionRange="[1.18.1,1.19)"
     ordering="NONE"
     side="BOTH"

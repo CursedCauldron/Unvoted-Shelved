@@ -22,8 +22,9 @@ public class USMemoryModules {
     public static final RegistryObject<MemoryModuleType<Integer>> DARK_TICKS_REMAINING = register("darkness_ticks", Codec.INT);
     public static final RegistryObject<MemoryModuleType<Integer>> GLOWBERRIES_GIVEN = register("glowberries_given", Codec.INT);
     public static final RegistryObject<MemoryModuleType<BlockPos>> DARK_POS = register("dark_pos");
-    public static final RegistryObject<MemoryModuleType<Integer>> COPPER_BUTTON_COOLDOWN_TICKS = register("copper_button_cooldown_ticks", Codec.INT);
     public static final RegistryObject<MemoryModuleType<BlockPos>> COPPER_BUTTON = register("copper_button");
+    public static final RegistryObject<MemoryModuleType<Integer>> COPPER_BUTTON_COOLDOWN_TICKS = register("copper_button_cooldown_ticks", Codec.INT);
+    public static final RegistryObject<MemoryModuleType<Integer>> COPPER_GOLEM_HEADSPIN_TICKS = register("copper_golem_headspin_ticks", Codec.INT);
 
     public static <U> RegistryObject<MemoryModuleType<U>> register(String key, Codec<U> codec) {
         return MEMORY_MODULES.register(key, () -> new MemoryModuleType<>(Optional.of(codec)));

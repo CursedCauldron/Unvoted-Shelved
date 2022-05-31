@@ -1,0 +1,14 @@
+{
+  "name": "unvotedandshelved:copper_golem_pool",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "feature": "unvotedandshelved:mobs/copper_golem",
+        "projection": "rigid",
+        "element_type": "minecraft:feature_pool_element"
+      }
+    }
+  ]
+}

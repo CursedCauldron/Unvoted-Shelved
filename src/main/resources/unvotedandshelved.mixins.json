@@ -1,13 +1,19 @@
 {
   "required": true,
-  "minVersion": "0.8",
   "package": "com.cursedcauldron.unvotedandshelved.mixin",
   "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "refmap": "unvotedandshelved.refmap.json",
   "mixins": [
     "LightningBoltMixin",
-    "LightningRodBlockMixin"
+    "LightningRodBlockMixin",
+    "PoseMixin",
+    "access.ThrownTridentAccessor"
   ],
   "client": [
+    "ModelPartMixin",
+    "PartDefinitionMixin",
+    "access.ModelPartAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

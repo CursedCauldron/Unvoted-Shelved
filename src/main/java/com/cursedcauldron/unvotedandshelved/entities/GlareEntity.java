@@ -17,6 +17,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -50,11 +51,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-//<>
 public class GlareEntity extends AgeableMob implements FlyingAnimal {
     protected static final ImmutableList<SensorType<? extends Sensor<? super GlareEntity>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_PLAYERS);
     protected static final ImmutableList<MemoryModuleType<?>> MEMORY_MODULES = ImmutableList.of(USMemoryModules.GLOWBERRIES_GIVEN.get(), USMemoryModules.GRUMPY_TICKS.get(), USMemoryModules.DARK_TICKS_REMAINING.get(), MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.AVOID_TARGET);
     private static final EntityDataAccessor<Boolean> GRUMPY = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> SHINY = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> FINDING_DARKNESS = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> GRUMPY_TICKS;
     private static final EntityDataAccessor<Integer> GLOWBERRIES_GIVEN;
@@ -76,6 +77,8 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
             spawnGroupData = new AgeableMobGroupData(false);
         }
 
+        this.setShiny(this.getRandom().nextInt(100) == 1);
+
         return spawnGroupData;
     }
 
@@ -94,6 +97,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         super.defineSynchedData();
         this.entityData.define(GRUMPY, false);
         this.entityData.define(FINDING_DARKNESS, false);
+        this.entityData.define(SHINY, false);
         this.entityData.define(GRUMPY_TICKS, 0);
         this.entityData.define(GLOWBERRIES_GIVEN, 0);
     }
@@ -108,6 +112,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("IsGrumpy", this.isGrumpy());
         tag.putInt("GrumpyTicks", this.getGrumpyTick());
+        tag.putBoolean("IsShiny", this.isShiny());
         if (this.brain.getMemory(USMemoryModules.DARK_TICKS_REMAINING.get()).isPresent()) {
             tag.putInt("FindDarknessTicks", this.brain.getMemory(USMemoryModules.DARK_TICKS_REMAINING.get()).get());
         }
@@ -120,6 +125,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         this.setGrumpy(tag.getBoolean("IsGrumpy"));
+        this.setShiny(tag.getBoolean("IsShiny"));
         this.setGrumpyTick(tag.getInt("GrumpyTicks"));
         this.setGlowberries(tag.getInt("GlowberriesGiven"));
     }
@@ -152,8 +158,16 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         this.entityData.set(GRUMPY, isGrumpy);
     }
 
+    public void setShiny(boolean isShiny) {
+        this.entityData.set(SHINY, isShiny);
+    }
+
     public boolean isGrumpy() {
         return this.entityData.get(GRUMPY);
+    }
+
+    public boolean isShiny() {
+        return this.entityData.get(SHINY);
     }
 
     public void setFindingDarkness(boolean findingDarkness) {
@@ -232,7 +246,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
     }
 
     @Override
-    protected void jumpInLiquid(Tag<Fluid> fluid) {
+    protected void jumpInLiquid(TagKey<Fluid> p_204045_) {
         this.setDeltaMovement(this.getDeltaMovement().add(0.0D, 0.01D, 0.0D));
     }
 

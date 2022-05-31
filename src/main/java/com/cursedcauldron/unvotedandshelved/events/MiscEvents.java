@@ -1,7 +1,9 @@
 package com.cursedcauldron.unvotedandshelved.events;
 
 import com.cursedcauldron.unvotedandshelved.UnvotedAndShelved;
+import com.cursedcauldron.unvotedandshelved.block.CopperButtonBlock;
 import com.cursedcauldron.unvotedandshelved.block.WeatheringCopperButtonBlock;
+import com.cursedcauldron.unvotedandshelved.block.WeatheringRotatedPillarBlock;
 import com.cursedcauldron.unvotedandshelved.init.USBlocks;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.BiMap;
@@ -30,7 +32,9 @@ import java.util.function.Supplier;
 @Mod.EventBusSubscriber(modid = UnvotedAndShelved.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class MiscEvents {
     public static final Supplier<BiMap<Block, Block>> WAXABLES = Suppliers.memoize(() -> ImmutableBiMap.<Block, Block>builder().put(USBlocks.COPPER_BUTTON.get(), USBlocks.WAXED_COPPER_BUTTON.get()).put(USBlocks.EXPOSED_COPPER_BUTTON.get(), USBlocks.WAXED_EXPOSED_COPPER_BUTTON.get()).put(USBlocks.WEATHERED_COPPER_BUTTON.get(), USBlocks.WAXED_WEATHERED_COPPER_BUTTON.get()).put(USBlocks.OXIDIZED_COPPER_BUTTON.get(), USBlocks.WAXED_OXIDIZED_COPPER_BUTTON.get()).build());
+    public static final Supplier<BiMap<Block, Block>> WAXABLES_PILLAR = Suppliers.memoize(() -> ImmutableBiMap.<Block, Block>builder().put(USBlocks.COPPER_PILLAR.get(), USBlocks.WAXED_COPPER_BUTTON.get()).put(USBlocks.EXPOSED_COPPER_PILLAR.get(), USBlocks.WAXED_EXPOSED_COPPER_PILLAR.get()).put(USBlocks.WEATHERED_COPPER_PILLAR.get(), USBlocks.WAXED_WEATHERED_COPPER_PILLAR.get()).put(USBlocks.OXIDIZED_COPPER_PILLAR.get(), USBlocks.WAXED_OXIDIZED_COPPER_PILLAR.get()).build());
     public static final Supplier<BiMap<Block, Block>> WAX_OFF_BY_BLOCK = Suppliers.memoize(() -> WAXABLES.get().inverse());
+    public static final Supplier<BiMap<Block, Block>> WAX_OFF_BY_PILLAR = Suppliers.memoize(() -> WAXABLES_PILLAR.get().inverse());
 
     @SubscribeEvent
     public void onRightClick(PlayerInteractEvent.RightClickBlock event) {
@@ -41,7 +45,8 @@ public class MiscEvents {
         ItemStack stack = event.getItemStack();
         InteractionHand hand = event.getHand();
         if (stack.getItem() == Items.HONEYCOMB) {
-            Optional<BlockState> waxables = Optional.ofNullable(WAXABLES.get().get(state.getBlock())).map((blockState) -> blockState.withPropertiesOf(state));
+            BiMap<Block, Block> blockBlockBiMap = state.getBlock() instanceof CopperButtonBlock ? WAXABLES.get() : WAXABLES_PILLAR.get();
+            Optional<BlockState> waxables = Optional.ofNullable(blockBlockBiMap.get(state.getBlock())).map((blockState) -> blockState.withPropertiesOf(state));
             if (waxables.isPresent()) {
                 event.setCanceled(true);
                 if (player instanceof ServerPlayer) {
@@ -50,23 +55,27 @@ public class MiscEvents {
                 if (!player.getAbilities().instabuild) {
                     stack.shrink(1);
                 }
-                world.setBlock(blockPos, waxables.get(), 1);
+                BlockState waxedState = waxables.get();
+                if (waxables.get().getBlock() instanceof CopperButtonBlock) {
+                    waxedState = waxedState.setValue(CopperButtonBlock.POWERED, false);
+                }
+                world.setBlock(blockPos, waxedState, 1);
                 world.levelEvent(player, 3003, blockPos, 0);
-//                player.swing(hand);
                 event.setCancellationResult(InteractionResult.SUCCESS);
             }
         }
         if (stack.getItem() instanceof AxeItem) {
             Optional<BlockState> finalState = Optional.empty();
-            if (state.getBlock() instanceof WeatheringCopperButtonBlock) {
-                Optional<BlockState> previous = WeatheringCopperButtonBlock.getPreviousState(state);
+            if (state.getBlock() instanceof WeatheringCopperButtonBlock || state.getBlock() instanceof WeatheringRotatedPillarBlock) {
+                Optional<BlockState> previous = state.getBlock() instanceof WeatheringRotatedPillarBlock ? WeatheringRotatedPillarBlock.getPreviousState(state) : WeatheringCopperButtonBlock.getPreviousState(state);
                 if (previous.isPresent()) {
                     world.playSound(player, blockPos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
                     world.levelEvent(player, 3005, blockPos, 0);
                     finalState = previous;
                 }
             }
-            Optional<BlockState> previousWaxed = Optional.ofNullable(WAX_OFF_BY_BLOCK.get().get(state.getBlock())).map((blockState) -> blockState.withPropertiesOf(state));
+            BiMap<Block, Block> blockBlockBiMap = state.getBlock() instanceof CopperButtonBlock ? WAX_OFF_BY_BLOCK.get() : WAX_OFF_BY_PILLAR.get();
+            Optional<BlockState> previousWaxed = Optional.ofNullable(blockBlockBiMap.get(state.getBlock())).map((blockState) -> blockState.withPropertiesOf(state));
             if (previousWaxed.isPresent()) {
                 world.playSound(player, blockPos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
                 world.levelEvent(player, 3004, blockPos, 0);
@@ -74,7 +83,11 @@ public class MiscEvents {
             }
             if (finalState.isPresent()) {
                 event.setCanceled(true);
-                world.setBlock(blockPos, finalState.get(), 11);
+                BlockState scrapedState = finalState.get();
+                if (scrapedState.getBlock() instanceof CopperButtonBlock) {
+                    scrapedState = scrapedState.setValue(CopperButtonBlock.POWERED, false);
+                }
+                world.setBlock(blockPos, scrapedState, 11);
                 stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
                 player.swing(hand);
                 event.setCancellationResult(InteractionResult.SUCCESS);

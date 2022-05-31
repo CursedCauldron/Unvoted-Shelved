@@ -15,7 +15,6 @@ import java.util.Random;
 import java.util.function.Supplier;
 
 public class WeatheringCopperButtonBlock extends CopperButtonBlock implements WeatheringCopper {
-    private final WeatheringCopper.WeatherState weatherState;
     public static Supplier<BiMap<Block, Block>> NEXT_BY_BLOCK = Suppliers.memoize(() -> {
         return ImmutableBiMap.<Block, Block>builder()
                 .put(USBlocks.COPPER_BUTTON.get(), USBlocks.EXPOSED_COPPER_BUTTON.get())
@@ -26,10 +25,17 @@ public class WeatheringCopperButtonBlock extends CopperButtonBlock implements We
     public static final Supplier<BiMap<Block, Block>> PREVIOUS_BY_BLOCK = Suppliers.memoize(() -> {
         return NEXT_BY_BLOCK.get().inverse();
     });
+    private final WeatheringCopper.WeatherState weatherState;
 
-    public WeatheringCopperButtonBlock(WeatherState state, Properties properties) {
-        super(properties);
-        this.weatherState = state;
+    public WeatheringCopperButtonBlock(WeatheringCopper.WeatherState weatherState, Properties settings) {
+        super(weatherState, settings);
+        this.weatherState = weatherState;
+        this.registerDefaultState(this.stateDefinition.any().setValue(POWERED, false));
+
+    }
+
+    public static Optional<BlockState> getPreviousState(BlockState state) {
+        return Optional.ofNullable(PREVIOUS_BY_BLOCK.get().get(state.getBlock())).map((block) -> block.withPropertiesOf(state).setValue(POWERED, false));
     }
 
     @Override
@@ -44,11 +50,7 @@ public class WeatheringCopperButtonBlock extends CopperButtonBlock implements We
 
     @Override
     public Optional<BlockState> getNext(BlockState state) {
-        return Optional.ofNullable(NEXT_BY_BLOCK.get().get(state.getBlock())).map((block) -> block.withPropertiesOf(state));
-    }
-
-    public static Optional<BlockState> getPreviousState(BlockState state) {
-        return Optional.ofNullable(PREVIOUS_BY_BLOCK.get().get(state.getBlock())).map((block) -> block.withPropertiesOf(state));
+        return Optional.of(NEXT_BY_BLOCK.get().get(state.getBlock())).map((block) -> block.withPropertiesOf(state).setValue(POWERED, false));
     }
 
     @Override

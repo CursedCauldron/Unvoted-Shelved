@@ -2,8 +2,10 @@ package com.cursedcauldron.unvotedandshelved.events;
 
 import com.cursedcauldron.unvotedandshelved.UnvotedAndShelved;
 import com.cursedcauldron.unvotedandshelved.client.entity.models.CopperGolemModel;
+import com.cursedcauldron.unvotedandshelved.client.entity.models.FrozenCopperGolemModel;
 import com.cursedcauldron.unvotedandshelved.client.entity.models.GlareModel;
 import com.cursedcauldron.unvotedandshelved.client.entity.render.CopperGolemRenderer;
+import com.cursedcauldron.unvotedandshelved.client.entity.render.FrozenCopperGolemRenderer;
 import com.cursedcauldron.unvotedandshelved.client.entity.render.GlareRenderer;
 import com.cursedcauldron.unvotedandshelved.init.USBlocks;
 import com.cursedcauldron.unvotedandshelved.init.USEntityTypes;
@@ -27,19 +29,28 @@ public class ClientEvents {
     @SubscribeEvent
     public static void onClientSetup(final FMLClientSetupEvent event) {
         ItemBlockRenderTypes.setRenderLayer(USBlocks.GLOWBERRY_DUST.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(USBlocks.COPPER_PALLET.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(USBlocks.COPPER_PILLAR.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(USBlocks.EXPOSED_COPPER_PILLAR.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(USBlocks.WEATHERED_COPPER_PILLAR.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(USBlocks.OXIDIZED_COPPER_PILLAR.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(USBlocks.WAXED_COPPER_PILLAR.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(USBlocks.WAXED_EXPOSED_COPPER_PILLAR.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(USBlocks.WAXED_WEATHERED_COPPER_PILLAR.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(USBlocks.WAXED_OXIDIZED_COPPER_PILLAR.get(), RenderType.cutout());
     }
 
     @SubscribeEvent
     public static void registerEntityRenderer(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(USEntityTypes.GLARE.get(), GlareRenderer::new);
         event.registerEntityRenderer(USEntityTypes.COPPER_GOLEM.get(), CopperGolemRenderer::new);
+        event.registerEntityRenderer(USEntityTypes.FROZEN_COPPER_GOLEM.get(), FrozenCopperGolemRenderer::new);
     }
 
     @SubscribeEvent
     public static void registerEntityLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(USModelLayers.GLARE, GlareModel::getLayerDefinition);
         event.registerLayerDefinition(USModelLayers.COPPER_GOLEM, CopperGolemModel::getLayerDefinition);
+        event.registerLayerDefinition(USModelLayers.FROZEN_COPPER_GOLEM, FrozenCopperGolemModel::getLayerDefinition);
     }
 
     @SubscribeEvent

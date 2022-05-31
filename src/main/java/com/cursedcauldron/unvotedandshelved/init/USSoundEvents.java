@@ -20,6 +20,10 @@ public class USSoundEvents {
     public static final RegistryObject<SoundEvent> GLARE_IDLE = register("glare_idle");
     public static final RegistryObject<SoundEvent> GLOWBERRY_DUST_STEP = register("glowberry_dust_step");
     public static final RegistryObject<SoundEvent> COPPER_CLICK = register("copper_button_click");
+    public static final RegistryObject<SoundEvent> HEAD_SPIN = register("copper_golem_headspin");
+    public static final RegistryObject<SoundEvent> HEAD_SPIN_SLOWER = register("copper_golem_headspin_slower");
+    public static final RegistryObject<SoundEvent> HEAD_SPIN_SLOWEST = register("copper_golem_headspin_slowest");
+    public static final RegistryObject<SoundEvent> CHINESE_RIP_OFF_WINNIE_THE_POOH = register("chinese_rip_off_winnie_the_pooh");
 
     public static class USBlockSoundGroup {
         public static final SoundType GLOW = new ForgeSoundType(1.0f, 2.0f, () -> SoundEvents.RESPAWN_ANCHOR_CHARGE, GLOWBERRY_DUST_STEP, () -> SoundEvents.RESPAWN_ANCHOR_CHARGE , () -> SoundEvents.RESPAWN_ANCHOR_CHARGE, () -> SoundEvents.RESPAWN_ANCHOR_CHARGE);

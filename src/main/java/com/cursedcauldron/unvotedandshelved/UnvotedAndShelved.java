@@ -6,10 +6,14 @@ import com.cursedcauldron.unvotedandshelved.events.WorldEvents;
 import com.cursedcauldron.unvotedandshelved.init.USActivities;
 import com.cursedcauldron.unvotedandshelved.init.USBlocks;
 import com.cursedcauldron.unvotedandshelved.init.USEntityTypes;
+import com.cursedcauldron.unvotedandshelved.init.USFeatures;
+import com.cursedcauldron.unvotedandshelved.init.USGameEvents;
 import com.cursedcauldron.unvotedandshelved.init.USItems;
 import com.cursedcauldron.unvotedandshelved.init.USMemoryModules;
 import com.cursedcauldron.unvotedandshelved.init.USParticleTypes;
 import com.cursedcauldron.unvotedandshelved.init.USSoundEvents;
+import com.cursedcauldron.unvotedandshelved.init.USStructureProcessors;
+import com.cursedcauldron.unvotedandshelved.init.USStructures;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -29,9 +33,11 @@ public class UnvotedAndShelved {
         USActivities.ACTIVITIES.register(modEventBus);
         USBlocks.BLOCKS.register(modEventBus);
         USEntityTypes.ENTITY_TYPES.register(modEventBus);
+        USFeatures.FEATURES.register(modEventBus);
         USItems.ITEMS.register(modEventBus);
         USMemoryModules.MEMORY_MODULES.register(modEventBus);
         USParticleTypes.PARTICLE_TYPES.register(modEventBus);
+        USStructures.STRUCTURES.register(modEventBus);
         USSoundEvents.SOUND_EVENTS.register(modEventBus);
 
         eventBus.register(this);
@@ -41,6 +47,10 @@ public class UnvotedAndShelved {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> {
+            USStructureProcessors.init();
+            USGameEvents.init();
+        });
     }
 
 }

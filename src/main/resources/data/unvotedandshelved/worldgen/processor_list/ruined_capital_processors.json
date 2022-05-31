@@ -1,0 +1,16 @@
+{
+  "processors": [
+    {
+      "processor_type": "unvotedandshelved:close_off_fluid_sources_processor"
+    },
+    {
+      "processor_type": "unvotedandshelved:oxidation_wall_processor"
+    },
+    {
+      "processor_type": "unvotedandshelved:stone_wall_processor"
+    },
+    {
+      "processor_type": "unvotedandshelved:waterlogged_processor"
+    }
+  ]
+}

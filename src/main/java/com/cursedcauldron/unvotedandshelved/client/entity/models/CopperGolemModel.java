@@ -1,6 +1,12 @@
 package com.cursedcauldron.unvotedandshelved.client.entity.models;
 
+import com.cursedcauldron.unvotedandshelved.client.entity.CopperGolemAnimations;
 import com.cursedcauldron.unvotedandshelved.entities.CopperGolemEntity;
+import com.cursedcauldron.unvotedandshelved.util.Animation;
+import com.cursedcauldron.unvotedandshelved.util.AnimationHelper;
+import com.cursedcauldron.unvotedandshelved.util.AnimationState;
+import com.mojang.math.Vector3f;
+import net.minecraft.Util;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -9,74 +15,74 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-//<>
 @OnlyIn(Dist.CLIENT)
 public class CopperGolemModel<T extends CopperGolemEntity> extends HierarchicalModel<T> {
-    private final ModelPart body;
+    private static final Vector3f ANIMATION_PROGRESS = new Vector3f();
     private final ModelPart head;
-    private final ModelPart rod;
-    private final ModelPart rightArm;
-    private final ModelPart leftArm;
-    private final ModelPart rightLeg;
-    private final ModelPart leftLeg;
+    private final ModelPart body;
+    private final ModelPart root;
 
     public CopperGolemModel(ModelPart root) {
+        this.root = root;
         this.body = root.getChild("body");
         this.head = this.body.getChild("head");
-        this.rod = this.head.getChild("rod");
-        this.rightArm = this.body.getChild("rightArm");
-        this.leftArm = this.body.getChild("leftArm");
-        this.rightLeg = this.body.getChild("rightLeg");
-        this.leftLeg = this.body.getChild("leftLeg");
     }
 
     public static LayerDefinition getLayerDefinition() {
-        MeshDefinition meshdefinition = new MeshDefinition();
-        PartDefinition partdefinition = meshdefinition.getRoot();
+        MeshDefinition mesh = new MeshDefinition();
+        PartDefinition part = mesh.getRoot();
+        PartDefinition body = part.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 21).addBox(-6.0F, -4.0F, -4.0F, 12.0F, 8.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 15.0F, 0.0F));
+        PartDefinition head = body.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 0).addBox(-7.0F, -9.0F, -6.0F, 14.0F, 9.0F, 12.0F, new CubeDeformation(0.0F)).texOffs(0, 0).addBox(-2.0F, -5.0F, -8.0F, 4.0F, 6.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -4.0F, 0.0F));
+        head.addOrReplaceChild("antenna", CubeListBuilder.create().texOffs(0, 21).addBox(-1.0F, -16.0F, -1.0F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)).texOffs(32, 21).addBox(-2.0F, -20.0F, -2.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 4.0F, 0.0F));
+        body.addOrReplaceChild("right_leg", CubeListBuilder.create().texOffs(36, 33).addBox(-2.0F, 0.0F, -2.0F, 5.0F, 5.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-3.5F, 4.0F, 0.0F));
+        body.addOrReplaceChild("left_leg", CubeListBuilder.create().texOffs(36, 33).mirror().addBox(-3.0F, 0.0F, -2.0F, 5.0F, 5.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(3.5F, 4.0F, 0.0F));
+        body.addOrReplaceChild("left_arm", CubeListBuilder.create().texOffs(0, 37).mirror().addBox(-1.5F, -1.0F, -1.5F, 4.0F, 14.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(7.5F, -4.0F, 0.0F));
+        body.addOrReplaceChild("right_arm", CubeListBuilder.create().texOffs(0, 37).addBox(-2.5F, -1.0F, -1.5F, 4.0F, 14.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-7.5F, -4.0F, 0.0F));
+        return LayerDefinition.create(mesh, 64, 64);
+    }
 
-        PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 21).addBox(-6.0F, -4.0F, -4.0F, 12.0F, 8.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 15.0F, 0.0F));
+    @Override
+    public void setupAnim(T entity, float angle, float distance, float animationProgress, float yaw, float pitch) {
+        this.root().getAllParts().forEach(ModelModifier::resetPose);
+        long time = Util.getMillis();
+        this.head.yRot = yaw * 0.017453292F;
+        this.runAnimation(entity.walkingAnimation, CopperGolemAnimations.walkingAnimation(entity.getStage()), time);
 
-        PartDefinition head = body.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 0).addBox(-7.0F, -9.0F, -6.0F, 14.0F, 9.0F, 12.0F, new CubeDeformation(0.0F))
-                .texOffs(0, 0).addBox(-2.0F, -5.0F, -8.0F, 4.0F, 6.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -4.0F, 0.0F));
+        this.runAnimation(entity.headSpinAnimation, CopperGolemAnimations.HEAD_SPIN, time);
+        this.runAnimation(entity.headSpinSlowerAnimation, CopperGolemAnimations.HEAD_SPIN_SLOWER, time);
+        this.runAnimation(entity.headSpinSlowestAnimation, CopperGolemAnimations.HEAD_SPIN_SLOWEST, time);
 
-        PartDefinition rod = head.addOrReplaceChild("rod", CubeListBuilder.create().texOffs(0, 21).addBox(-1.0F, -12.0F, -1.0F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F))
-                .texOffs(32, 21).addBox(-2.0F, -16.0F, -2.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+        this.runAnimation(entity.buttonAnimation, CopperGolemAnimations.BUTTON_PRESS, time);
+        this.runSlowerAnimation(entity.buttonSlowerAnimation, CopperGolemAnimations.BUTTON_PRESS, time);
+        this.runSlowestAnimation(entity.buttonSlowestAnimation, CopperGolemAnimations.BUTTON_PRESS, time);
 
-        PartDefinition rightLeg = body.addOrReplaceChild("rightLeg", CubeListBuilder.create().texOffs(36, 33).addBox(-2.0F, 0.0F, -2.0F, 5.0F, 5.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-3.5F, 4.0F, 0.0F));
+        this.runAnimation(entity.buttonUpAnimation, CopperGolemAnimations.BUTTON_PRESS_UP, time);
+        this.runSlowerAnimation(entity.buttonUpSlowerAnimation, CopperGolemAnimations.BUTTON_PRESS_UP, time);
+        this.runSlowestAnimation(entity.buttonUpSlowestAnimation, CopperGolemAnimations.BUTTON_PRESS_UP, time);
 
-        PartDefinition leftLeg = body.addOrReplaceChild("leftLeg", CubeListBuilder.create().texOffs(36, 33).mirror().addBox(-3.0F, 0.0F, -2.0F, 5.0F, 5.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(3.5F, 4.0F, 0.0F));
+        this.runAnimation(entity.buttonDownAnimation, CopperGolemAnimations.BUTTON_PRESS_DOWN, time);
+        this.runSlowerAnimation(entity.buttonDownSlowerAnimation, CopperGolemAnimations.BUTTON_PRESS_DOWN, time);
+        this.runSlowestAnimation(entity.buttonDownSlowestAnimation, CopperGolemAnimations.BUTTON_PRESS_DOWN, time);
+    }
 
-        PartDefinition leftArm = body.addOrReplaceChild("leftArm", CubeListBuilder.create().texOffs(0, 37).mirror().addBox(-1.5F, -1.0F, -1.5F, 4.0F, 14.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(7.5F, -4.0F, 0.0F));
 
-        PartDefinition rightArm = body.addOrReplaceChild("rightArm", CubeListBuilder.create().texOffs(0, 37).addBox(-2.5F, -1.0F, -1.5F, 4.0F, 14.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-7.5F, -4.0F, 0.0F));
+    private void runAnimation(AnimationState animationState, Animation animation, long time) {
+        animationState.run(state -> AnimationHelper.animate(this, animation, time - state.getStartTime(), 1.0F, ANIMATION_PROGRESS));
+    }
 
-        return LayerDefinition.create(meshdefinition, 64, 64);
+    private void runSlowerAnimation(AnimationState animationState, Animation animation, long time) {
+        animationState.run(state -> AnimationHelper.animate(this, animation, time - state.getStartTime(), 0.75F, ANIMATION_PROGRESS));
+    }
+
+    private void runSlowestAnimation(AnimationState animationState, Animation animation, long time) {
+        animationState.run(state -> AnimationHelper.animate(this, animation, time - state.getStartTime(), 0.5F, ANIMATION_PROGRESS));
     }
 
     @Override
     public ModelPart root() {
-        return this.body;
-    }
-
-    @Override
-    public void setupAnim(T entity, float limbAngle, float limbSwingAmount, float animationProgress, float netHeadYaw, float headPitch) {
-        this.head.yRot = netHeadYaw * ((float)Math.PI / 180F);
-        this.head.xRot = headPitch * ((float)Math.PI / 180F);
-        this.rightLeg.xRot = -1.5F * Mth.triangleWave(limbAngle, 13.0F) * limbSwingAmount;
-        this.leftLeg.xRot = 1.5F * Mth.triangleWave(limbAngle, 13.0F) * limbSwingAmount;
-        this.rightLeg.yRot = 0.0F;
-        this.leftLeg.yRot = 0.0F;
-        this.rod.y = Mth.cos(limbAngle) * 0.75F * limbSwingAmount + 0.75F;
-    }
-
-    @Override
-    public void prepareMobModel(T entity, float f, float g, float h) {
-        super.prepareMobModel(entity, f, g, h);
-        this.rightArm.xRot = (-0.2F + 1.5F * Mth.triangleWave(f, 13.0F)) * g;
-        this.leftArm.xRot = (-0.2F - 1.5F * Mth.triangleWave(f, 13.0F)) * g;
+        return this.root;
     }
 }
