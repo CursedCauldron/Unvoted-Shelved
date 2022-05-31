@@ -29,7 +29,7 @@ public class LightningBoltMixin {
         LightningBolt $this = (LightningBolt) (Object) this;
         List<CopperGolemEntity> golems = $this.getLevel().getEntitiesOfClass(CopperGolemEntity.class, new AABB($this.getX() - 15.0, $this.getY() - 15.0, $this.getZ() - 15.0, $this.getX() + 15.0, $this.getY() + 6.0 + 15.0, $this.getZ() + 15.0));
         for (CopperGolemEntity copperGolem : golems) {
-            if (copperGolem.isAlive()) {
+            if (copperGolem.isAlive() && copperGolem.getStage() != CopperGolemEntity.Stage.UNAFFECTED) {
                 copperGolem.setStage(CopperGolemEntity.Stage.values()[copperGolem.getStage().getId() - 1]);
                 copperGolem.level.playLocalSound(copperGolem.getX(), copperGolem.getY(), copperGolem.getZ(), SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 2.0f, 0.5f + copperGolem.getRandom().nextFloat() * 0.2f, false);
                 copperGolem.level.levelEvent(3004, copperGolem.blockPosition(), 0);
