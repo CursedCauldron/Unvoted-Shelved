@@ -44,6 +44,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
@@ -60,8 +61,8 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
     private static final EntityDataAccessor<Boolean> GRUMPY = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> SHINY = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> FINDING_DARKNESS = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> GRUMPY_TICKS = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> GLOWBERRIES_GIVEN = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> GRUMPY_TICKS;
+    private static final EntityDataAccessor<Integer> GLOWBERRIES_GIVEN;
 
     public GlareEntity(EntityType<? extends AgeableMob> entityType, Level world) {
         super(entityType, world);
@@ -80,8 +81,6 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
             spawnGroupData = new AgeableMobGroupData(false);
         }
 
-        this.setShiny(this.getRandom().nextInt(100) == 1);
-
         return spawnGroupData;
     }
 
@@ -99,10 +98,15 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(GRUMPY, false);
-        this.entityData.define(SHINY, false);
+        this.entityData.define(SHINY, randomShiny());
         this.entityData.define(FINDING_DARKNESS, false);
         this.entityData.define(GRUMPY_TICKS, 0);
         this.entityData.define(GLOWBERRIES_GIVEN, 0);
+    }
+
+    public boolean randomShiny() {
+        int randomInteger = random.nextInt(100);
+        return (randomInteger == 1);
     }
 
     public boolean requiresCustomPersistence() {
@@ -175,11 +179,11 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         this.entityData.set(SHINY, isShiny);
     }
 
-    public boolean isGrumpy() {
+    public boolean  isGrumpy() {
         return this.entityData.get(GRUMPY);
     }
 
-    public boolean isShiny() {
+    public boolean  isShiny() {
         return this.entityData.get(SHINY);
     }
 
@@ -302,6 +306,11 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
 
     public int getGrumpyTick() {
         return this.entityData.get(GRUMPY_TICKS);
+    }
+
+    static {
+        GRUMPY_TICKS = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.INT);
+        GLOWBERRIES_GIVEN = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.INT);
     }
 
     public void setLightblock(BlockPos pos) {
