@@ -5,6 +5,7 @@ import com.cursedcauldron.unvotedandshelved.client.entity.USEntityRenderer;
 import com.cursedcauldron.unvotedandshelved.client.entity.render.feature.GlareGlowberriesLayer;
 import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
+import com.mojang.datafixers.util.Pair;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -42,6 +43,16 @@ public class GlareRenderer extends MobRenderer<GlareEntity, GlareModel<GlareEnti
     private static final ResourceLocation FLOWERING_GRUMPY_LIT_TEXTURE_4 = new ResourceLocation(UnvotedAndShelved.MODID, "textures/entity/glare/flowering_glare_grumpy_lit_3.png");
     private static final ResourceLocation FLOWERING_GRUMPY_LIT_TEXTURE_5 = new ResourceLocation(UnvotedAndShelved.MODID, "textures/entity/glare/flowering_glare_grumpy_lit_4.png");
 
+    public static final Pair<ResourceLocation[], ResourceLocation[]> FLOWERING_GRUMPY = new Pair<>(
+            new ResourceLocation[]{FLOWERING_GRUMPY_TEXTURE, FLOWERING_GRUMPY_LIT_TEXTURE_1, FLOWERING_GRUMPY_LIT_TEXTURE_2, FLOWERING_GRUMPY_LIT_TEXTURE_3, FLOWERING_GRUMPY_LIT_TEXTURE_4, FLOWERING_GRUMPY_LIT_TEXTURE_5},
+            new ResourceLocation[]{FLOWERING_NORMAL_TEXTURE, FLOWERING_LIT_TEXTURE_1, FLOWERING_LIT_TEXTURE_2, FLOWERING_LIT_TEXTURE_3, FLOWERING_LIT_TEXTURE_4, FLOWERING_LIT_TEXTURE_5}
+    );
+
+    public static final Pair<ResourceLocation[], ResourceLocation[]> NORMAL_GRUMPY = new Pair<>(
+            new ResourceLocation[]{GRUMPY_TEXTURE, GRUMPY_LIT_TEXTURE_1, GRUMPY_LIT_TEXTURE_2, GRUMPY_LIT_TEXTURE_3, GRUMPY_LIT_TEXTURE_4, GRUMPY_LIT_TEXTURE_5},
+            new ResourceLocation[]{NORMAL_TEXTURE, LIT_TEXTURE_1, LIT_TEXTURE_2, LIT_TEXTURE_3, LIT_TEXTURE_4, LIT_TEXTURE_5}
+    );
+
     public GlareRenderer(EntityRendererProvider.Context context) {
         super(context, new GlareModel<>(context.bakeLayer(USEntityRenderer.GLARE)), 0.6F);
         this.addLayer(new GlareGlowberriesLayer<>(this));
@@ -49,30 +60,11 @@ public class GlareRenderer extends MobRenderer<GlareEntity, GlareModel<GlareEnti
 
     @Override
     public ResourceLocation getTextureLocation(GlareEntity entity) {
-        int d = entity.getGlowberries();
-        if (d == 1) {
-            if (entity.isShiny()) {
-                return entity.isGrumpy() ? FLOWERING_GRUMPY_LIT_TEXTURE_1 : FLOWERING_LIT_TEXTURE_1;
-            } else return entity.isGrumpy() ? GRUMPY_LIT_TEXTURE_1 : LIT_TEXTURE_1;
-        } else if (d == 2) {
-            if (entity.isShiny()) {
-                return entity.isGrumpy() ? FLOWERING_GRUMPY_LIT_TEXTURE_2 : FLOWERING_LIT_TEXTURE_2;
-            } else return entity.isGrumpy() ? GRUMPY_LIT_TEXTURE_2 : LIT_TEXTURE_2;
-        } else if (d == 3) {
-            if (entity.isShiny()) {
-                return entity.isGrumpy() ? FLOWERING_GRUMPY_LIT_TEXTURE_3 : FLOWERING_LIT_TEXTURE_3;
-            } else return entity.isGrumpy() ? GRUMPY_LIT_TEXTURE_3 : LIT_TEXTURE_3;
-        } else if (d == 4) {
-            if (entity.isShiny()) {
-                return entity.isGrumpy() ? FLOWERING_GRUMPY_LIT_TEXTURE_4 : FLOWERING_LIT_TEXTURE_4;
-            } else return entity.isGrumpy() ? GRUMPY_LIT_TEXTURE_4 : LIT_TEXTURE_4;
-        } else if (d == 5) {
-            if (entity.isShiny()) {
-                return entity.isGrumpy() ? FLOWERING_GRUMPY_LIT_TEXTURE_5 : FLOWERING_LIT_TEXTURE_5;
-            } else return entity.isGrumpy() ? GRUMPY_LIT_TEXTURE_5 : LIT_TEXTURE_5;
-        } else if (entity.isShiny()) {
-            return entity.isGrumpy() ? FLOWERING_GRUMPY_TEXTURE: FLOWERING_NORMAL_TEXTURE;
-        } else return entity.isGrumpy() ? GRUMPY_TEXTURE : NORMAL_TEXTURE;
+        if (entity.isShiny()) {
+            return entity.isGrumpy() ? FLOWERING_GRUMPY.getFirst()[entity.getGlowberries()] : FLOWERING_GRUMPY.getSecond()[entity.getGlowberries()];
+        } else {
+            return entity.isGrumpy() ? NORMAL_GRUMPY.getFirst()[entity.getGlowberries()] : NORMAL_GRUMPY.getSecond()[entity.getGlowberries()];
+        }
     }
 
     @Override
