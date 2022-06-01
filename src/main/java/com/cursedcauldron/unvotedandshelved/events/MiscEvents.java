@@ -1,6 +1,7 @@
 package com.cursedcauldron.unvotedandshelved.events;
 
 import com.cursedcauldron.unvotedandshelved.UnvotedAndShelved;
+import com.cursedcauldron.unvotedandshelved.api.LightningRodAccess;
 import com.cursedcauldron.unvotedandshelved.block.CopperButtonBlock;
 import com.cursedcauldron.unvotedandshelved.block.WeatheringCopperButtonBlock;
 import com.cursedcauldron.unvotedandshelved.block.WeatheringRotatedPillarBlock;
@@ -10,18 +11,26 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.BlockSource;
+import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DispenserBlock;
+import net.minecraft.world.level.block.LightningRodBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -35,6 +44,31 @@ public class MiscEvents {
     public static final Supplier<BiMap<Block, Block>> WAXABLES_PILLAR = Suppliers.memoize(() -> ImmutableBiMap.<Block, Block>builder().put(USBlocks.COPPER_PILLAR.get(), USBlocks.WAXED_COPPER_BUTTON.get()).put(USBlocks.EXPOSED_COPPER_PILLAR.get(), USBlocks.WAXED_EXPOSED_COPPER_PILLAR.get()).put(USBlocks.WEATHERED_COPPER_PILLAR.get(), USBlocks.WAXED_WEATHERED_COPPER_PILLAR.get()).put(USBlocks.OXIDIZED_COPPER_PILLAR.get(), USBlocks.WAXED_OXIDIZED_COPPER_PILLAR.get()).build());
     public static final Supplier<BiMap<Block, Block>> WAX_OFF_BY_BLOCK = Suppliers.memoize(() -> WAXABLES.get().inverse());
     public static final Supplier<BiMap<Block, Block>> WAX_OFF_BY_PILLAR = Suppliers.memoize(() -> WAXABLES_PILLAR.get().inverse());
+
+    @SubscribeEvent
+    public void onTagsUpdated(TagsUpdatedEvent event) {
+        DispenserBlock.registerBehavior(Blocks.LIGHTNING_ROD, new OptionalDispenseItemBehavior() {
+            @Override
+            protected ItemStack execute(BlockSource pointer, ItemStack stack) {
+                Level world = pointer.getLevel();
+                BlockPos blockPos = pointer.getPos().relative(pointer.getBlockState().getValue(DispenserBlock.FACING));
+                LightningRodBlock block = (LightningRodBlock) Blocks.LIGHTNING_ROD;
+                if (world.isEmptyBlock(blockPos) && ((LightningRodAccess)block).canDispense(world, blockPos)) {
+                    if (!world.isClientSide) {
+                        world.setBlock(blockPos, block.defaultBlockState(), 3);
+                        world.gameEvent(null, GameEvent.BLOCK_PLACE, blockPos);
+                    }
+
+                    stack.shrink(1);
+                    this.setSuccess(true);
+                } else {
+                    this.setSuccess(ArmorItem.dispenseArmor(pointer, stack));
+                }
+
+                return stack;
+            }
+        });
+    }
 
     @SubscribeEvent
     public void onRightClick(PlayerInteractEvent.RightClickBlock event) {

@@ -1,5 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.mixin;
 
+import com.cursedcauldron.unvotedandshelved.api.LightningRodAccess;
 import com.cursedcauldron.unvotedandshelved.entities.CopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.init.USEntityTypes;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -7,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LightningRodBlock;
@@ -22,7 +24,7 @@ import java.util.Iterator;
 import java.util.function.Predicate;
 
 @Mixin(LightningRodBlock.class)
-public class LightningRodBlockMixin extends Block {
+public class LightningRodBlockMixin extends Block implements LightningRodAccess {
     @Nullable
     private BlockPattern copperGolemPattern;
     @Nullable
@@ -30,11 +32,10 @@ public class LightningRodBlockMixin extends Block {
     private static final Predicate<BlockState> IS_GOLEM_HEAD_PREDICATE = (state) -> state != null && (state.is(Blocks.CARVED_PUMPKIN) || state.is(Blocks.JACK_O_LANTERN));
     private static final Predicate<BlockState> IS_GOLEM_HEAD_TIP_PREDICATE = (state) -> state != null && (state == Blocks.LIGHTNING_ROD.defaultBlockState().setValue(LightningRodBlock.FACING, Direction.UP));
 
-    public LightningRodBlockMixin(Properties properties) {
-        super(properties);
+    public LightningRodBlockMixin(Properties settings) {
+        super(settings);
     }
 
-    @Override
     public void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean notify) {
         if (!oldState.is(state.getBlock())) {
             this.trySpawnEntity(world, pos);
@@ -42,6 +43,7 @@ public class LightningRodBlockMixin extends Block {
     }
 
     public void trySpawnEntity(Level world, BlockPos pos) {
+
         BlockPattern.BlockPatternMatch result = this.getCopperGolemPattern().find(world, pos);
         int i;
         ServerPlayer serverPlayerEntity;
@@ -87,4 +89,8 @@ public class LightningRodBlockMixin extends Block {
         return this.copperGolemPattern;
     }
 
+    @Override
+    public boolean canDispense(LevelReader worldView, BlockPos pos) {
+        return this.getCopperGolemDispenserPattern().find(worldView, pos) != null;
+    }
 }
