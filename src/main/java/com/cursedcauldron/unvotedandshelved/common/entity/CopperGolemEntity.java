@@ -26,6 +26,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LightningBolt;
@@ -385,6 +386,11 @@ public class CopperGolemEntity extends AbstractGolem {
         int max = (int) (240 * bound);
         int duration = UniformInt.of(min, max).sample(level.getRandom());
         this.getBrain().setMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS, duration);
+    }
+
+    @Override
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions entityDimensions) {
+        return entityDimensions.height * 0.75F;
     }
 
     protected SoundEvent getHurtSound(DamageSource source) {

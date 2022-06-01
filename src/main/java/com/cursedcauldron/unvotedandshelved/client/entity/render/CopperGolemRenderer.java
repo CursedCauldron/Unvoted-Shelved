@@ -5,6 +5,7 @@ import com.cursedcauldron.unvotedandshelved.client.entity.USEntityRenderer;
 import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.google.common.collect.Maps;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.Util;
@@ -24,7 +25,12 @@ public class CopperGolemRenderer extends MobRenderer<CopperGolemEntity, CopperGo
     });
 
     public CopperGolemRenderer(EntityRendererProvider.Context context) {
-        super(context, new CopperGolemModel<>(context.bakeLayer(USEntityRenderer.COPPER_GOLEM)), 0.5F);
+        super(context, new CopperGolemModel<>(context.bakeLayer(USEntityRenderer.COPPER_GOLEM)), 0.25F);
+    }
+
+    @Override
+    protected void scale(CopperGolemEntity livingEntity, PoseStack poseStack, float f) {
+        poseStack.scale(0.85F, 0.85F, 0.85F);
     }
 
     @Override

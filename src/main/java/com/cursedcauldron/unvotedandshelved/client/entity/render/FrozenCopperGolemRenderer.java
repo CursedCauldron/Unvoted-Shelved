@@ -7,6 +7,7 @@ import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.common.entity.FrozenCopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.google.common.collect.Maps;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.Util;
@@ -38,6 +39,11 @@ public class FrozenCopperGolemRenderer extends LivingEntityRenderer<FrozenCopper
             return false;
         }
         return golem.isCustomNameVisible();
+    }
+
+    @Override
+    protected void scale(FrozenCopperGolemEntity livingEntity, PoseStack poseStack, float f) {
+        poseStack.scale(0.85F, 0.85F, 0.85F);
     }
 
     @Override
