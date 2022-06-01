@@ -288,12 +288,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         return SoundEvents.MOSS_BREAK;
     }
 
-    protected SoundEvent getStepSound() {
-        return SoundEvents.MOSS_STEP;
-    }
-
     protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(this.getStepSound(), 0.5F, 1.0F);
     }
 
     private void setGrumpyTick(int ticks) {
