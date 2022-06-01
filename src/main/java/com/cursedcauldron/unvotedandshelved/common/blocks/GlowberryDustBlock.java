@@ -87,7 +87,7 @@ public class GlowberryDustBlock extends Block implements SimpleWaterloggedBlock 
         double d = (double)i + random.nextDouble();
         double e = (double)j + random.nextDouble();
         double f = (double)k + random.nextDouble();
-        level.addParticle(USParticles.GLOWBERRY_DUST_PARTICLES, d, e, f, 0.0, 0.0, 0.0);
+        if (random.nextBoolean()) level.addParticle(USParticles.GLOWBERRY_DUST_PARTICLES, d, e, f, 0.0, 0.0, 0.0);
         BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
         for (int l = 0; l < 1; ++l) {
             mutableBlockPos.set(i + Mth.nextInt(random, 0, 0), j - random.nextInt(1), k + Mth.nextInt(random, 0, 0));
