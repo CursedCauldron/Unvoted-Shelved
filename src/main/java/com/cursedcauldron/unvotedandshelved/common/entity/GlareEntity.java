@@ -4,6 +4,7 @@ import com.cursedcauldron.unvotedandshelved.common.entity.ai.glare.GlareBrain;
 import com.cursedcauldron.unvotedandshelved.config.FeatureScreen;
 import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
 import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
+import com.cursedcauldron.unvotedandshelved.core.registries.USParticles;
 import com.cursedcauldron.unvotedandshelved.core.registries.USSounds;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
@@ -235,7 +236,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         if (berryAmount > 0) {
             this.setPersistenceRequired();
             this.setGlowberries(berryAmount);
-            this.level.addParticle(ParticleTypes.FALLING_SPORE_BLOSSOM, this.getRandomX(0.6D), this.getRandomY(), this.getRandomZ(0.6D), 0.0D, 0.0D, 0.0D);
+            this.level.addParticle(USParticles.GLOWBERRY_DUST_PARTICLES, this.getRandomX(0.6D), this.getRandomY(), this.getRandomZ(0.6D), 0.0D, 0.0D, 0.0D);
         }
         if (this.isLeashed()) {
             this.setPersistenceRequired();
