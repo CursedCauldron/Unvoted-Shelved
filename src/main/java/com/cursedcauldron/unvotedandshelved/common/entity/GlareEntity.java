@@ -155,11 +155,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         this.level.getProfiler().push("glareActivityUpdate");
         GlareBrain.updateActivities(this);
         this.level.getProfiler().pop();
-        if (FabricLoader.getInstance().isModLoaded("modmenu")) {
-            if (!FeatureScreen.GLARE.getValue()) {
-                this.remove(RemovalReason.DISCARDED);
-            }
-        }
+        if (FabricLoader.getInstance().isModLoaded("modmenu") && !FeatureScreen.GLARE.getValue()) this.remove(RemovalReason.DISCARDED);
         if (!this.isNoAi()) {
             Optional<Integer> ticksRemaining = this.getBrain().getMemory(USMemoryModules.DARK_TICKS_REMAINING);
             this.setFindingDarkness(ticksRemaining.isPresent() && ticksRemaining.get() > 0);
