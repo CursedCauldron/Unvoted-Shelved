@@ -43,13 +43,8 @@ public class SpinHeadTask extends Behavior<CopperGolemEntity> {
             entity.getBrain().setMemory(USMemoryModules.COPPER_GOLEM_HEADSPIN_TICKS, UniformInt.of(120, 200).sample(world.getRandom()));
         }
         if (this.spinningTicks == playSoundFrame) {
-            SoundEvent soundEvent;
-            switch (entity.getStage()) {
-                case UNAFFECTED -> soundEvent = USSounds.HEAD_SPIN;
-                case EXPOSED -> soundEvent = USSounds.HEAD_SPIN_SLOWER;
-                default -> soundEvent = USSounds.HEAD_SPIN_SLOWEST;
-            }
-            entity.playSound(soundEvent, 1.0F, 1.0F);
+            SoundEvent soundByStage = entity.getStage().getSoundEvent();
+            if (soundByStage != null) entity.playSound(soundByStage, 1.0F, 1.0F);
             entity.gameEvent(USGameEvents.SPIN_HEAD, entity.eyeBlockPosition());
             PoseUtil.setModPose(USPoses.HEAD_SPIN, entity);
         }

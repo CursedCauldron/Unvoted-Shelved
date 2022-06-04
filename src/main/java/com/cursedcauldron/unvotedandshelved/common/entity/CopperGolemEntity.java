@@ -404,18 +404,20 @@ public class CopperGolemEntity extends AbstractGolem {
     }
 
     public enum Stage {
-        UNAFFECTED(0, "unaffected"),
-        EXPOSED(1, "exposed"),
-        WEATHERED(2, "weathered"),
-        OXIDIZED(3, "oxidized");
+        UNAFFECTED(0, "unaffected", USSounds.HEAD_SPIN),
+        EXPOSED(1, "exposed", USSounds.HEAD_SPIN_SLOWER),
+        WEATHERED(2, "weathered", USSounds.HEAD_SPIN_SLOWEST),
+        OXIDIZED(3, "oxidized", null);
 
         public static final CopperGolemEntity.Stage[] BY_ID = Arrays.stream(values()).sorted(Comparator.comparingInt(CopperGolemEntity.Stage::getId)).toArray(Stage[]::new);
         private final int id;
         private final String name;
+        private final SoundEvent soundEvent;
 
-        Stage(int id, String name) {
+        Stage(int id, String name, SoundEvent soundEvent) {
             this.id = id;
             this.name = name;
+            this.soundEvent = soundEvent;
         }
 
         public int getId() {
@@ -426,6 +428,9 @@ public class CopperGolemEntity extends AbstractGolem {
             return this.name;
         }
 
+        public SoundEvent getSoundEvent() {
+            return this.soundEvent;
+        }
     }
 
 }
