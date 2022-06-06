@@ -24,11 +24,7 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -88,6 +84,11 @@ public class CopperGolemEntity extends AbstractGolem {
     @Override @SuppressWarnings("all")
     public Brain<CopperGolemEntity> getBrain() {
         return (Brain<CopperGolemEntity>)super.getBrain();
+    }
+
+    @Override
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions entityDimensions) {
+        return entityDimensions.height * (this.isBaby() ? 0.3f : 0.6f);
     }
 
     @Override

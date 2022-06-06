@@ -331,7 +331,7 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
 
     @Override
     protected float getStandingEyeHeight(Pose pose, EntityDimensions entityDimensions) {
-        return entityDimensions.height * (this.isBaby() ? 0.5f : 0.7f);
+        return entityDimensions.height * (this.isBaby() ? 0.3f : 0.6f);
     }
 
     @Override
