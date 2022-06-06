@@ -278,11 +278,11 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
     }
 
     protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.MOSS_FALL;
+        return USSounds.GLARE_HURT;
     }
 
     protected SoundEvent getDeathSound() {
-        return SoundEvents.MOSS_BREAK;
+        return USSounds.GLARE_DEATH;
     }
 
     protected SoundEvent getStepSound() {
@@ -305,7 +305,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         BlockState blockState = USBlocks.GLOWBERRY_DUST.defaultBlockState();
         if (level.getBlockState(pos).isAir()) {
             level.setBlockAndUpdate(pos, blockState);
-            this.playSound(SoundEvents.RESPAWN_ANCHOR_CHARGE, 1.0f, 1.5f);
+            this.playSound(USSounds.GLOWBERRY_DUST_PLACE, 1.0f, 1.0f);
         }
     }
 

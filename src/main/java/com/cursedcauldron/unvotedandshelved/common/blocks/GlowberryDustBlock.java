@@ -3,12 +3,11 @@ package com.cursedcauldron.unvotedandshelved.common.blocks;
 
 import java.util.Random;
 import java.util.function.ToIntFunction;
-
 import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
 import com.cursedcauldron.unvotedandshelved.core.registries.USParticles;
+import com.cursedcauldron.unvotedandshelved.core.registries.USSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -61,12 +60,12 @@ public class GlowberryDustBlock extends Block implements SimpleWaterloggedBlock 
                 item.shrink(1);
                 player.addItem(USBlocks.GLOWBERRY_DUST.getCloneItemStack(level, blockPos, blockState));
                 level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
-                level.playSound(player, blockPos, SoundEvents.RESPAWN_ANCHOR_CHARGE, SoundSource.BLOCKS, 1.0F, 1.5F);
+                level.playSound(player, blockPos, USSounds.GLOWBERRY_DUST_COLLECT, SoundSource.BLOCKS, 1.0F, 1.5F);
                 return InteractionResult.SUCCESS;
             }
         } else if (item.is(GLASS_BOTTLE)) {
             level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
-            level.playSound(player, blockPos, SoundEvents.RESPAWN_ANCHOR_CHARGE, SoundSource.BLOCKS, 1.0F, 1.5F);
+            level.playSound(player, blockPos, USSounds.GLOWBERRY_DUST_COLLECT, SoundSource.BLOCKS, 1.0F, 1.5F);
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.CONSUME;

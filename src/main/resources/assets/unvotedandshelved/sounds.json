@@ -19,10 +19,46 @@
     ],
     "subtitle": "subtitles.unvotedandshelved.glare_idle"
   },
+  "glare_hurt": {
+    "sounds": [
+      "unvotedandshelved:mob/glare/hurt1",
+      "unvotedandshelved:mob/glare/hurt2",
+      "unvotedandshelved:mob/glare/hurt3",
+      "unvotedandshelved:mob/glare/hurt4",
+      "unvotedandshelved:mob/glare/hurt5"
+    ],
+    "subtitle": "subtitles.unvotedandshelved.glare_hurt"
+  },
+  "glare_death": {
+    "sounds": [
+      "unvotedandshelved:mob/glare/hurt1",
+      "unvotedandshelved:mob/glare/hurt2",
+      "unvotedandshelved:mob/glare/hurt3",
+      "unvotedandshelved:mob/glare/hurt4",
+      "unvotedandshelved:mob/glare/hurt5"
+    ],
+    "subtitle": "subtitles.unvotedandshelved.glare_death"
+  },
   "glowberry_dust_step": {
     "sounds": [
       "unvotedandshelved:nothing"
     ]
+  },
+  "glowberry_dust_place": {
+    "sounds": [
+      "unvotedandshelved:block/glowberry_dust/place1",
+      "unvotedandshelved:block/glowberry_dust/place2",
+      "unvotedandshelved:block/glowberry_dust/place3"
+    ],
+    "subtitle": "subtitles.unvotedandshelved.glowberry_dust_place"
+  },
+  "glowberry_dust_collect": {
+    "sounds": [
+      "unvotedandshelved:block/glowberry_dust/place1",
+      "unvotedandshelved:block/glowberry_dust/place2",
+      "unvotedandshelved:block/glowberry_dust/place3"
+    ],
+    "subtitle": "subtitles.unvotedandshelved.glowberry_dust_collect"
   },
   "copper_button_click": {
     "sounds": [
