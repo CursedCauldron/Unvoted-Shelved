@@ -2,10 +2,9 @@ package com.cursedcauldron.unvotedandshelved.common.entity.ai.copper_golem.task;
 
 import com.cursedcauldron.unvotedandshelved.common.blocks.CopperButtonBlock;
 import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
-import com.cursedcauldron.unvotedandshelved.core.registries.USPoses;
 import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
+import com.cursedcauldron.unvotedandshelved.core.registries.USPoses;
 import com.cursedcauldron.unvotedandshelved.core.registries.USSounds;
-import com.cursedcauldron.unvotedandshelved.core.util.PoseUtil;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -45,13 +44,13 @@ public class PressCopperButtonTask extends Behavior<CopperGolemEntity> {
             if (flag && state.getBlock() instanceof CopperButtonBlock buttonBlock) {
                 AttachFace direction = state.getValue(CopperButtonBlock.FACE);
                 entity.getLookControl().setLookAt(blockPos.getX(), blockPos.getY(), blockPos.getZ());
-                USPoses poses;
+                Pose pose;
                 switch (direction) {
-                    case FLOOR -> poses = USPoses.PRESS_BUTTON_DOWN;
-                    case CEILING -> poses = USPoses.PRESS_BUTTON_UP;
-                    default -> poses = USPoses.PRESS_BUTTON;
+                    case FLOOR -> pose = USPoses.PRESS_BUTTON_DOWN.get();
+                    case CEILING -> pose = USPoses.PRESS_BUTTON_UP.get();
+                    default -> pose = USPoses.PRESS_BUTTON.get();
                 }
-                PoseUtil.setModPose(poses.name(), entity);
+                entity.setPose(pose);
                 buttonBlock.press(state, world, blockPos);
                 world.playSound(null, blockPos.getX(), blockPos.getY(), blockPos.getZ(), USSounds.COPPER_CLICK, SoundSource.BLOCKS, 1, 1);
             }

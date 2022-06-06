@@ -7,7 +7,6 @@ import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
 import com.cursedcauldron.unvotedandshelved.core.registries.USPoses;
 import com.cursedcauldron.unvotedandshelved.core.registries.USSounds;
-import com.cursedcauldron.unvotedandshelved.core.util.PoseUtil;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
 import net.fabricmc.loader.api.FabricLoader;
@@ -28,7 +27,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.Brain;
@@ -130,28 +128,28 @@ public class CopperGolemEntity extends AbstractGolem {
         if (DATA_POSE.equals(data)) {
             Pose pose = this.getPose();
             if (this.getStage() == Stage.UNAFFECTED) {
-                if (PoseUtil.isInPose(this, USPoses.HEAD_SPIN)) {
+                if (this.isInPose(USPoses.HEAD_SPIN.get())) {
                     this.headSpinAnimation.start();
                 } else {
                     this.headSpinAnimation.stop();
                     this.headSpinSlowerAnimation.stop();
                     this.headSpinSlowestAnimation.stop();
                 }
-                if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON)) {
+                if (this.isInPose(USPoses.PRESS_BUTTON.get())) {
                     this.buttonAnimation.start();
                 } else {
                     this.buttonAnimation.stop();
                     this.buttonSlowerAnimation.stop();
                     this.buttonSlowestAnimation.stop();
                 }
-                if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON_UP)) {
+                if (this.isInPose(USPoses.PRESS_BUTTON_UP.get())) {
                     this.buttonUpAnimation.start();
                 } else {
                     this.buttonUpAnimation.stop();
                     this.buttonUpSlowerAnimation.stop();
                     this.buttonUpSlowestAnimation.stop();
                 }
-                if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON_DOWN)) {
+                if (this.isInPose(USPoses.PRESS_BUTTON_DOWN.get())) {
                     this.buttonDownAnimation.start();
                 } else {
                     this.buttonDownAnimation.stop();
@@ -159,28 +157,28 @@ public class CopperGolemEntity extends AbstractGolem {
                     this.buttonDownSlowestAnimation.stop();
                 }
             } else if (this.getStage() == Stage.EXPOSED) {
-                if (PoseUtil.isInPose(this, USPoses.HEAD_SPIN)) {
+                if (this.isInPose(USPoses.HEAD_SPIN.get())) {
                     this.headSpinSlowerAnimation.start();
                 } else {
                     this.headSpinAnimation.stop();
                     this.headSpinSlowerAnimation.stop();
                     this.headSpinSlowestAnimation.stop();
                 }
-                if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON)) {
+                if (this.isInPose(USPoses.PRESS_BUTTON.get())) {
                     this.buttonSlowerAnimation.start();
                 } else {
                     this.buttonAnimation.stop();
                     this.buttonSlowerAnimation.stop();
                     this.buttonSlowestAnimation.stop();
                 }
-                if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON_UP)) {
+                if (this.isInPose(USPoses.PRESS_BUTTON_UP.get())) {
                     this.buttonUpSlowerAnimation.start();
                 } else {
                     this.buttonUpAnimation.stop();
                     this.buttonUpSlowerAnimation.stop();
                     this.buttonUpSlowestAnimation.stop();
                 }
-                if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON_DOWN)) {
+                if (this.isInPose(USPoses.PRESS_BUTTON_DOWN.get())) {
                     this.buttonDownSlowerAnimation.start();
                 } else {
                     this.buttonDownAnimation.stop();
@@ -188,28 +186,28 @@ public class CopperGolemEntity extends AbstractGolem {
                     this.buttonDownSlowestAnimation.stop();
                 }
             } else {
-                if (PoseUtil.isInPose(this, USPoses.HEAD_SPIN)) {
+                if (this.isInPose(USPoses.HEAD_SPIN.get())) {
                     this.headSpinSlowestAnimation.start();
                 } else {
                     this.headSpinAnimation.stop();
                     this.headSpinSlowerAnimation.stop();
                     this.headSpinSlowestAnimation.stop();
                 }
-                if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON)) {
+                if (this.isInPose(USPoses.PRESS_BUTTON.get())) {
                     this.buttonSlowestAnimation.start();
                 } else {
                     this.buttonAnimation.stop();
                     this.buttonSlowerAnimation.stop();
                     this.buttonSlowestAnimation.stop();
                 }
-                if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON_UP)) {
+                if (this.isInPose(USPoses.PRESS_BUTTON_UP.get())) {
                     this.buttonUpSlowestAnimation.start();
                 } else {
                     this.buttonUpAnimation.stop();
                     this.buttonUpSlowerAnimation.stop();
                     this.buttonUpSlowestAnimation.stop();
                 }
-                if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON_DOWN)) {
+                if (this.isInPose(USPoses.PRESS_BUTTON_DOWN.get())) {
                     this.buttonDownSlowestAnimation.start();
                 } else {
                     this.buttonDownAnimation.stop();
@@ -221,7 +219,10 @@ public class CopperGolemEntity extends AbstractGolem {
         super.onSyncedDataUpdated(data);
     }
 
-
+    private boolean isInPose(Pose pose) {
+        return this.getPose() == pose;
+    }
+    
     public CopperGolemEntity.Stage getStage() {
         return CopperGolemEntity.Stage.BY_ID[this.entityData.get(STAGE)];
     }

@@ -2,10 +2,8 @@ package com.cursedcauldron.unvotedandshelved.common.entity.ai.copper_golem.task;
 
 import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.core.registries.USGameEvents;
-import com.cursedcauldron.unvotedandshelved.core.registries.USPoses;
 import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
-import com.cursedcauldron.unvotedandshelved.core.registries.USSounds;
-import com.cursedcauldron.unvotedandshelved.core.util.PoseUtil;
+import com.cursedcauldron.unvotedandshelved.core.registries.USPoses;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -14,7 +12,6 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
-import net.minecraft.world.level.gameevent.GameEvent;
 
 public class SpinHeadTask extends Behavior<CopperGolemEntity> {
     private int spinningTicks;
@@ -46,7 +43,7 @@ public class SpinHeadTask extends Behavior<CopperGolemEntity> {
             SoundEvent soundByStage = entity.getStage().getSoundEvent();
             if (soundByStage != null) entity.playSound(soundByStage, 1.0F, 1.0F);
             entity.gameEvent(USGameEvents.SPIN_HEAD, entity.eyeBlockPosition());
-            PoseUtil.setModPose(USPoses.HEAD_SPIN, entity);
+            entity.setPose(USPoses.HEAD_SPIN.get());
         }
     }
 
