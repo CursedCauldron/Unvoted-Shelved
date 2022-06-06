@@ -305,7 +305,7 @@ public class CopperGolemEntity extends AbstractGolem {
         else if (this.getHealth() < this.getMaxHealth() && stack.is(Items.COPPER_INGOT)) {
             this.heal(5.0F);
             float f1 = 1.4F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F;
-            this.playSound(SoundEvents.IRON_GOLEM_REPAIR, 0.5F, f1);
+            this.playSound(USSounds.COPPER_GOLEM_REPAIR, 0.5F, f1);
             this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
             if (!player.getAbilities().instabuild) {
                 stack.shrink(1);
@@ -388,15 +388,15 @@ public class CopperGolemEntity extends AbstractGolem {
     }
 
     protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.COPPER_FALL;
+        return USSounds.COPPER_GOLEM_HIT;
     }
 
     protected SoundEvent getDeathSound() {
-        return SoundEvents.COPPER_BREAK;
+        return USSounds.COPPER_GOLEM_DEATH;
     }
 
     protected SoundEvent getStepSound() {
-        return SoundEvents.COPPER_STEP;
+        return USSounds.COPPER_GOLEM_WALK;
     }
 
     protected void playStepSound(BlockPos pos, BlockState state) {

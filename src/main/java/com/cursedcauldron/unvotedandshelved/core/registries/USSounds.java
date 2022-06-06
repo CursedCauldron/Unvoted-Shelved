@@ -18,9 +18,13 @@ public class USSounds {
     public static final SoundEvent HEAD_SPIN = register("copper_golem_headspin");
     public static final SoundEvent HEAD_SPIN_SLOWER = register("copper_golem_headspin_slower");
     public static final SoundEvent HEAD_SPIN_SLOWEST = register("copper_golem_headspin_slowest");
+    public static final SoundEvent COPPER_GOLEM_WALK = register("copper_golem_walk");
+    public static final SoundEvent COPPER_GOLEM_HIT = register("copper_golem_hit");
+    public static final SoundEvent COPPER_GOLEM_DEATH = register("copper_golem_death");
+    public static final SoundEvent COPPER_GOLEM_REPAIR = register("copper_golem_repair");
     public static final SoundEvent CHINESE_RIP_OFF_WINNIE_THE_POOH = register("chinese_rip_off_winnie_the_pooh");
 
-    public static final SoundType GLOW                  = new SoundType(1.0F, 2.0F, SoundEvents.RESPAWN_ANCHOR_CHARGE, GLOWBERRY_DUST_STEP, SoundEvents.RESPAWN_ANCHOR_CHARGE , SoundEvents.RESPAWN_ANCHOR_CHARGE, SoundEvents.RESPAWN_ANCHOR_CHARGE);
+    public static final SoundType GLOW = new SoundType(1.0F, 2.0F, SoundEvents.RESPAWN_ANCHOR_CHARGE, GLOWBERRY_DUST_STEP, SoundEvents.RESPAWN_ANCHOR_CHARGE , SoundEvents.RESPAWN_ANCHOR_CHARGE, SoundEvents.RESPAWN_ANCHOR_CHARGE);
 
     public static SoundEvent register(String key) {
         return SOUNDS.register(key, new SoundEvent(new ResourceLocation(UnvotedAndShelved.MODID, key)));

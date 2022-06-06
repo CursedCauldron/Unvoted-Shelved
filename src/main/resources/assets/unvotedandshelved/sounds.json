@@ -27,12 +27,14 @@
   "copper_button_click": {
     "sounds": [
       "unvotedandshelved:block/copper_button/click"
-    ]
+    ],
+    "subtitle": "subtitles.unvotedandshelved.copper_button_click"
   },
   "copper_golem_headspin": {
     "sounds": [
       "unvotedandshelved:mob/copper_golem/copper_golem_headspin"
-    ]
+    ],
+    "subtitle": "subtitles.unvotedandshelved.copper_golem_headspin"
   },
   "copper_golem_headspin_slower": {
     "sounds": [
@@ -49,5 +51,35 @@
       "unvotedandshelved:mob/copper_golem/chinese_rip_off_winnie_the_pooh"
     ],
     "subtitle": "subtitles.unvotedandshelved.chinese_rip_off_winnie_the_pooh"
+  },
+  "copper_golem_walk": {
+    "sounds": [
+      "unvotedandshelved:mob/copper_golem/walk1",
+      "unvotedandshelved:mob/copper_golem/walk2",
+      "unvotedandshelved:mob/copper_golem/walk3",
+      "unvotedandshelved:mob/copper_golem/walk4"
+    ],
+    "subtitle": "subtitles.unvotedandshelved.copper_golem_walk"
+  },
+  "copper_golem_hit": {
+    "sounds": [
+      "unvotedandshelved:mob/copper_golem/hit1",
+      "unvotedandshelved:mob/copper_golem/hit2",
+      "unvotedandshelved:mob/copper_golem/hit3",
+      "unvotedandshelved:mob/copper_golem/hit4"
+    ],
+    "subtitle": "subtitles.unvotedandshelved.copper_golem_hit"
+  },
+  "copper_golem_death": {
+    "sounds": [
+      "unvotedandshelved:mob/copper_golem/death"
+    ],
+    "subtitle": "subtitles.unvotedandshelved.copper_golem_death"
+  },
+  "copper_golem_repair": {
+    "sounds": [
+      "unvotedandshelved:mob/copper_golem/repair"
+    ],
+    "subtitle": "subtitles.unvotedandshelved.copper_golem_repair"
   }
 }
