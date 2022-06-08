@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "minecraft:oxidized_copper"
+  },
+  "result": "unvotedandshelved:oxidized_copper_pillar",
+  "count": 1
+}

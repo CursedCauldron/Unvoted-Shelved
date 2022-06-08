@@ -3,5 +3,6 @@
   "ingredient": {
     "item": "minecraft:copper_block"
   },
-  "result": "unvotedandshelved:copper_pillar"
+  "result": "unvotedandshelved:copper_pillar",
+  "count": 1
 }
