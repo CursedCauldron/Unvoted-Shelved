@@ -1,6 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "group": "waxed_copper_button",
+  "group": "waxed_copper_pillar",
   "ingredients": [
     {
       "item": "unvotedandshelved:weathered_copper_pillar"

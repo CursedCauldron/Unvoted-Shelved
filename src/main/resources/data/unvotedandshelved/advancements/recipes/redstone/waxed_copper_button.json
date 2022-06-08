@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "unvotedandshelved:exposed_copper_button"
+      "unvotedandshelved:waxed_copper_button"
     ]
   },
   "criteria": {
@@ -12,7 +12,7 @@
         "items": [
           {
             "items": [
-              "minecraft:exposed_copper"
+              "unvotedandshelved:copper_button"
             ]
           }
         ]
@@ -21,7 +21,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "unvotedandshelved:exposed_copper_button"
+        "recipe": "unvotedandshelved:waxed_copper_button"
       }
     }
   },
