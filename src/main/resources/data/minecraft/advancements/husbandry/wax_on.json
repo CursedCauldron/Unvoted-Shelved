@@ -40,6 +40,25 @@
         }
       },
       "trigger": "minecraft:item_used_on_block"
+    },
+    "wax_copper_golem": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "unvotedandshelved:copper_golem"
+              }
+            }
+        ],
+        "item": {
+          "items": [
+            "minecraft:honeycomb"
+          ]
+        }
+      },
+      "trigger": "minecraft:player_interacted_with_entity"
     }
   },
   "display": {
@@ -59,7 +78,8 @@
   },
   "requirements": [
     [
-      "wax_on"
+      "wax_on",
+      "wax_copper_golem"
     ]
   ]
 }
