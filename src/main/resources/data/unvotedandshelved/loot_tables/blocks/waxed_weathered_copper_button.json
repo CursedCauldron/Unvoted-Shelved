@@ -8,6 +8,7 @@
         {
           "type": "minecraft:item",
           "name": "unvotedandshelved:waxed_weathered_copper_button"
+          "name": "unvotedandshelved:weathered_copper_button"
         }
       ],
       "conditions": [
