@@ -1,14 +1,14 @@
 {
-  "parent": "unvotedandshelved:adventure/give_glare_glow_berries",
+  "parent": "minecraft:husbandry/root",
   "display": {
     "icon": {
       "item": "minecraft:oak_boat"
     },
     "title": {
-      "translate": "advancements.adventure.ride_a_boat_with_a_glare.title"
+      "translate": "advancements.husbandry.ride_a_boat_with_a_glare.title"
     },
     "description": {
-      "translate": "advancements.adventure.ride_a_boat_with_a_glare.description"
+      "translate": "advancements.husbandry.ride_a_boat_with_a_glare.description"
     },
     "frame": "task",
     "show_toast": true,
