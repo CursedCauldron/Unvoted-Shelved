@@ -1,7 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.common.entity;
 
 import com.cursedcauldron.unvotedandshelved.common.entity.ai.glare.GlareBrain;
-import com.cursedcauldron.unvotedandshelved.config.FeatureScreen;
 import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
 import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
 import com.cursedcauldron.unvotedandshelved.core.registries.USParticles;
@@ -10,7 +9,6 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.DebugPackets;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -156,7 +154,6 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         this.level.getProfiler().push("glareActivityUpdate");
         GlareBrain.updateActivities(this);
         this.level.getProfiler().pop();
-        if (FabricLoader.getInstance().isModLoaded("modmenu") && !FeatureScreen.GLARE.getValue()) this.remove(RemovalReason.DISCARDED);
         if (!this.isNoAi()) {
             Optional<Integer> ticksRemaining = this.getBrain().getMemory(USMemoryModules.DARK_TICKS_REMAINING);
             this.setFindingDarkness(ticksRemaining.isPresent() && ticksRemaining.get() > 0);

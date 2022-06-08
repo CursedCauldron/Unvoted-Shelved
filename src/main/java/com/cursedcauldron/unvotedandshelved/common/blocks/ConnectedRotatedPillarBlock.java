@@ -44,10 +44,7 @@ public class ConnectedRotatedPillarBlock extends RotatedPillarBlock implements W
         this.registerDefaultState(this.stateDefinition.any().setValue(CONNECTED, false));
     }
 
-    @Override
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
-        this.onRandomTick(state, level, pos, random);
-    }
+
 
     @Override
     public boolean isRandomlyTicking(BlockState state) {

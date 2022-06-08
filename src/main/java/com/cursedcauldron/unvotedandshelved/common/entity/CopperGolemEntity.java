@@ -1,8 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.common.entity;
 
-import com.cursedcauldron.unvotedandshelved.client.entity.animation.AnimationState;
 import com.cursedcauldron.unvotedandshelved.common.entity.ai.copper_golem.CopperGolemBrain;
-import com.cursedcauldron.unvotedandshelved.config.FeatureScreen;
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
 import com.cursedcauldron.unvotedandshelved.core.registries.USPoses;
@@ -136,28 +134,28 @@ public class CopperGolemEntity extends AbstractGolem {
             Pose pose = this.getPose();
             if (this.getStage() == Stage.UNAFFECTED) {
                 if (this.isInPose(USPoses.HEAD_SPIN.get())) {
-                    this.headSpinAnimation.start();
+                    this.headSpinAnimation.start(this.tickCount);
                 } else {
                     this.headSpinAnimation.stop();
                     this.headSpinSlowerAnimation.stop();
                     this.headSpinSlowestAnimation.stop();
                 }
                 if (this.isInPose(USPoses.PRESS_BUTTON.get())) {
-                    this.buttonAnimation.start();
+                    this.buttonAnimation.start(this.tickCount);
                 } else {
                     this.buttonAnimation.stop();
                     this.buttonSlowerAnimation.stop();
                     this.buttonSlowestAnimation.stop();
                 }
                 if (this.isInPose(USPoses.PRESS_BUTTON_UP.get())) {
-                    this.buttonUpAnimation.start();
+                    this.buttonUpAnimation.start(this.tickCount);
                 } else {
                     this.buttonUpAnimation.stop();
                     this.buttonUpSlowerAnimation.stop();
                     this.buttonUpSlowestAnimation.stop();
                 }
                 if (this.isInPose(USPoses.PRESS_BUTTON_DOWN.get())) {
-                    this.buttonDownAnimation.start();
+                    this.buttonDownAnimation.start(this.tickCount);
                 } else {
                     this.buttonDownAnimation.stop();
                     this.buttonDownSlowerAnimation.stop();
@@ -165,28 +163,28 @@ public class CopperGolemEntity extends AbstractGolem {
                 }
             } else if (this.getStage() == Stage.EXPOSED) {
                 if (this.isInPose(USPoses.HEAD_SPIN.get())) {
-                    this.headSpinSlowerAnimation.start();
+                    this.headSpinSlowerAnimation.start(this.tickCount);
                 } else {
                     this.headSpinAnimation.stop();
                     this.headSpinSlowerAnimation.stop();
                     this.headSpinSlowestAnimation.stop();
                 }
                 if (this.isInPose(USPoses.PRESS_BUTTON.get())) {
-                    this.buttonSlowerAnimation.start();
+                    this.buttonSlowerAnimation.start(this.tickCount);
                 } else {
                     this.buttonAnimation.stop();
                     this.buttonSlowerAnimation.stop();
                     this.buttonSlowestAnimation.stop();
                 }
                 if (this.isInPose(USPoses.PRESS_BUTTON_UP.get())) {
-                    this.buttonUpSlowerAnimation.start();
+                    this.buttonUpSlowerAnimation.start(this.tickCount);
                 } else {
                     this.buttonUpAnimation.stop();
                     this.buttonUpSlowerAnimation.stop();
                     this.buttonUpSlowestAnimation.stop();
                 }
                 if (this.isInPose(USPoses.PRESS_BUTTON_DOWN.get())) {
-                    this.buttonDownSlowerAnimation.start();
+                    this.buttonDownSlowerAnimation.start(this.tickCount);
                 } else {
                     this.buttonDownAnimation.stop();
                     this.buttonDownSlowerAnimation.stop();
@@ -194,28 +192,28 @@ public class CopperGolemEntity extends AbstractGolem {
                 }
             } else {
                 if (this.isInPose(USPoses.HEAD_SPIN.get())) {
-                    this.headSpinSlowestAnimation.start();
+                    this.headSpinSlowestAnimation.start(this.tickCount);
                 } else {
                     this.headSpinAnimation.stop();
                     this.headSpinSlowerAnimation.stop();
                     this.headSpinSlowestAnimation.stop();
                 }
                 if (this.isInPose(USPoses.PRESS_BUTTON.get())) {
-                    this.buttonSlowestAnimation.start();
+                    this.buttonSlowestAnimation.start(this.tickCount);
                 } else {
                     this.buttonAnimation.stop();
                     this.buttonSlowerAnimation.stop();
                     this.buttonSlowestAnimation.stop();
                 }
                 if (this.isInPose(USPoses.PRESS_BUTTON_UP.get())) {
-                    this.buttonUpSlowestAnimation.start();
+                    this.buttonUpSlowestAnimation.start(this.tickCount);
                 } else {
                     this.buttonUpAnimation.stop();
                     this.buttonUpSlowerAnimation.stop();
                     this.buttonUpSlowestAnimation.stop();
                 }
                 if (this.isInPose(USPoses.PRESS_BUTTON_DOWN.get())) {
-                    this.buttonDownSlowestAnimation.start();
+                    this.buttonDownSlowestAnimation.start(this.tickCount);
                 } else {
                     this.buttonDownAnimation.stop();
                     this.buttonDownSlowerAnimation.stop();
@@ -265,15 +263,10 @@ public class CopperGolemEntity extends AbstractGolem {
     public void tick() {
         if (this.level.isClientSide()) {
             if (this.shouldWalk()) {
-                this.walkingAnimation.startIfNotRunning();
+                this.walkingAnimation.startIfStopped(this.tickCount);
 
             } else {
                 this.walkingAnimation.stop();
-            }
-        }
-        if (FabricLoader.getInstance().isModLoaded("modmenu")) {
-            if (!FeatureScreen.COPPER_GOLEM.getValue()) {
-                this.remove(RemovalReason.DISCARDED);
             }
         }
         super.tick();
@@ -288,7 +281,7 @@ public class CopperGolemEntity extends AbstractGolem {
             }
             this.setWaxed(true);
             this.level.levelEvent(player, 3003, this.blockPosition(), 0);
-            this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
+            this.gameEvent(GameEvent.ENTITY_INTERACT, this);
             return InteractionResult.SUCCESS;
         }
         else if (stack.getItem() instanceof AxeItem) {
@@ -296,14 +289,14 @@ public class CopperGolemEntity extends AbstractGolem {
                 this.setWaxed(false);
                 this.level.playSound(player, this.blockPosition(), SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
                 this.level.levelEvent(player, 3004, this.blockPosition(), 0);
-                this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
+                this.gameEvent(GameEvent.ENTITY_INTERACT, this);
             } else {
                 if (this.getStage() != Stage.UNAFFECTED) {
                     stack.hurtAndBreak(1, player, e -> e.broadcastBreakEvent(hand));
                     this.setStage(Stage.values()[this.getStage().getId() - 1]);
                     this.level.playSound(player, this.blockPosition(), SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
                     this.level.levelEvent(player, 3005, this.blockPosition(), 0);
-                    this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
+                    this.gameEvent(GameEvent.ENTITY_INTERACT, this);
                 } else {
                     return InteractionResult.PASS;
                 }
@@ -314,7 +307,7 @@ public class CopperGolemEntity extends AbstractGolem {
             this.heal(5.0F);
             float f1 = 1.4F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F;
             this.playSound(USSounds.COPPER_GOLEM_REPAIR, 0.5F, f1);
-            this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
+            this.gameEvent(GameEvent.ENTITY_INTERACT, this);
             if (!player.getAbilities().instabuild) {
                 stack.shrink(1);
             }

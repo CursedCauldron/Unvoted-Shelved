@@ -8,6 +8,7 @@ import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
@@ -86,8 +87,8 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
     }
 
     private static BlockPos getNearbyPos(GlareEntity mob, BlockPos blockPos) {
-        Random random = mob.level.random;
-        return blockPos.offset(getRandomOffset(random), 0, getRandomOffset(random));
+        RandomSource random = mob.level.random;
+        return blockPos.offset(getRandomOffset((Random) random), 0, getRandomOffset((Random) random));
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.common.world.gen.features;
 
 import com.cursedcauldron.unvotedandshelved.common.entity.FrozenCopperGolemEntity;
-import com.cursedcauldron.unvotedandshelved.config.FeatureScreen;
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import com.mojang.serialization.Codec;
 import net.fabricmc.loader.api.FabricLoader;
@@ -22,9 +21,6 @@ public class CopperGolemFeature extends Feature<NoneFeatureConfiguration> {
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
         BlockPos pos = context.origin();
         WorldGenLevel world = context.level();
-        if (FabricLoader.getInstance().isModLoaded("modmenu") && !FeatureScreen.COPPER_GOLEM.getValue()) {
-            return false;
-        } else {
             FrozenCopperGolemEntity copperGolem = USEntities.FROZEN_COPPER_GOLEM.create(world.getLevel());
             copperGolem.setPersistenceRequired();
             copperGolem.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D);
@@ -34,6 +30,5 @@ public class CopperGolemFeature extends Feature<NoneFeatureConfiguration> {
             copperGolem.finalizeSpawn(world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null, null);
             world.addFreshEntityWithPassengers(copperGolem);
             return true;
-        }
     }
 }

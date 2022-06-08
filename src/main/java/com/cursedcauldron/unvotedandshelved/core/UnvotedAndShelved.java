@@ -1,7 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.core;
 
 import com.cursedcauldron.unvotedandshelved.api.LightningRodAccess;
-import com.cursedcauldron.unvotedandshelved.config.UnvotedConfigManager;
 import com.cursedcauldron.unvotedandshelved.core.registries.USActivities;
 import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
@@ -12,7 +11,6 @@ import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
 import com.cursedcauldron.unvotedandshelved.core.registries.USParticles;
 import com.cursedcauldron.unvotedandshelved.core.registries.USSounds;
 import com.cursedcauldron.unvotedandshelved.core.registries.USStructureProcessors;
-import com.cursedcauldron.unvotedandshelved.core.registries.USStructures;
 import com.cursedcauldron.unvotedandshelved.core.registries.USTags;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -59,12 +57,9 @@ public class UnvotedAndShelved implements ModInitializer {
         USMemoryModules.MEMORY_MODULES.register();
         USParticles.PARTICLES.register();
         USSounds.SOUNDS.register();
-        USStructures.init();
         USStructureProcessors.PROCESSORS.register();
         USTags.init();
-        if (FabricLoader.getInstance().isModLoaded("modmenu")) {
-            UnvotedConfigManager.updateItemCategory();
-        }
+
 
 
         Util.make(Maps.newLinkedHashMap(), map -> {
