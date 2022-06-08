@@ -1,6 +1,5 @@
 package com.cursedcauldron.unvotedandshelved.common.entity;
 
-import com.cursedcauldron.unvotedandshelved.config.FeatureScreen;
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import com.cursedcauldron.unvotedandshelved.core.registries.USItems;
 import com.cursedcauldron.unvotedandshelved.mixin.ThrownTridentAccessor;
@@ -131,7 +130,7 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         ItemStack stack = player.getItemInHand(hand);
         if (stack.getItem() instanceof AxeItem) {
             this.convertBack(USEntities.COPPER_GOLEM, true);
-            this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
+            this.gameEvent(GameEvent.ENTITY_INTERACT, this);
             this.level.playSound(player, this.blockPosition(), SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
             this.level.levelEvent(player, 3005, this.blockPosition(), 0);
             return InteractionResult.SUCCESS;
@@ -184,11 +183,6 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
 
     @Override
     public void tick() {
-        if (FabricLoader.getInstance().isModLoaded("modmenu")) {
-            if (!FeatureScreen.COPPER_GOLEM.getValue()) {
-                this.remove(RemovalReason.DISCARDED);
-            }
-        }
         super.tick();
     }
 
@@ -250,7 +244,7 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
             this.kill();
         } else {
             this.level.broadcastEntityEvent(this, (byte)32);
-            this.gameEvent(GameEvent.ENTITY_DAMAGED, damageSource.getEntity());
+            this.gameEvent(GameEvent.ENTITY_DAMAGE, damageSource.getEntity());
             this.lastHit = l;
         }
         return true;
@@ -290,7 +284,7 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
             this.kill();
         } else {
             this.setHealth(g);
-            this.gameEvent(GameEvent.ENTITY_DAMAGED, damageSource.getEntity());
+            this.gameEvent(GameEvent.ENTITY_DAMAGE, damageSource.getEntity());
         }
     }
 

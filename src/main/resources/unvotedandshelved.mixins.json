@@ -18,8 +18,7 @@
     "access.ItemAccessor",
     "access.MemoryModuleAccessor",
     "access.ModelPartAccessor",
-    "access.SimpleParticleTypeAccessor",
-    "access.StructureFeatureAccessor"
+    "access.SimpleParticleTypeAccessor"
   ],
   "client": [
   ],

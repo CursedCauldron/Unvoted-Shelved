@@ -42,7 +42,7 @@ public class SpinHeadTask extends Behavior<CopperGolemEntity> {
         if (this.spinningTicks == playSoundFrame) {
             SoundEvent soundByStage = entity.getStage().getSoundEvent();
             if (soundByStage != null) entity.playSound(soundByStage, 1.0F, 1.0F);
-            entity.gameEvent(USGameEvents.SPIN_HEAD, entity.eyeBlockPosition());
+            entity.gameEvent(USGameEvents.SPIN_HEAD, entity);
             entity.setPose(USPoses.HEAD_SPIN.get());
         }
     }

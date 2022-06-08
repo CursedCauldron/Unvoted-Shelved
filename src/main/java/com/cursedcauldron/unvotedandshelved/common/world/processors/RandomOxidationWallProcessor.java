@@ -5,6 +5,7 @@ import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
 import com.cursedcauldron.unvotedandshelved.core.registries.USStructureProcessors;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SlabBlock;
@@ -25,7 +26,7 @@ public class RandomOxidationWallProcessor extends StructureProcessor {
     @Nullable
     @Override
     public StructureTemplate.StructureBlockInfo processBlock(LevelReader world, BlockPos pos, BlockPos pivot, StructureTemplate.StructureBlockInfo structureBlockInfo, StructureTemplate.StructureBlockInfo structureBlockInfo2, StructurePlaceSettings data) {
-        Random random = data.getRandom(structureBlockInfo2.pos);
+        RandomSource random = data.getRandom(structureBlockInfo2.pos);
         float f = random.nextFloat();
         BlockState state = structureBlockInfo2.state;
         if (state.is(Blocks.OXIDIZED_CUT_COPPER)) {

@@ -1,15 +1,9 @@
 package com.cursedcauldron.unvotedandshelved.client.entity.model;
 
-import com.cursedcauldron.unvotedandshelved.client.entity.CopperGolemAnimations;
-import com.cursedcauldron.unvotedandshelved.client.entity.animation.Animation;
-import com.cursedcauldron.unvotedandshelved.client.entity.animation.AnimationHelper;
-import com.cursedcauldron.unvotedandshelved.client.entity.animation.AnimationState;
-import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.common.entity.FrozenCopperGolemEntity;
 import com.mojang.math.Vector3f;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.Util;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -49,10 +43,7 @@ public class FrozenCopperGolemModel<T extends FrozenCopperGolemEntity> extends H
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float tickDelta, float netHeadYaw, float headPitch) {
         this.root().getAllParts().forEach(ModelModifier::resetPose);
     }
-
-    private void runAnimation(AnimationState animationState, Animation animation, long time) {
-        animationState.run(state -> AnimationHelper.animate(this, animation, time - state.getStartTime(), 1.0F, ANIMATION_PROGRESS));
-    }
+    
 
     @Override
     public ModelPart root() {
