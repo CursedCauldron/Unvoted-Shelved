@@ -1,13 +1,9 @@
 package com.cursedcauldron.unvotedandshelved.common.entity;
 
 import com.cursedcauldron.unvotedandshelved.common.entity.ai.glare.GlareBrain;
-import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
-import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
-import com.cursedcauldron.unvotedandshelved.core.registries.USParticles;
-import com.cursedcauldron.unvotedandshelved.core.registries.USSounds;
+import com.cursedcauldron.unvotedandshelved.core.registries.*;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.DebugPackets;

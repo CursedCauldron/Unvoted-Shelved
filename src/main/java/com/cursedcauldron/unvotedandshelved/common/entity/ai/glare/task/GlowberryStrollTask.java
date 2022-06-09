@@ -15,6 +15,7 @@ import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 
@@ -107,6 +108,7 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
                         BehaviorUtils.setWalkAndLookTargetMemories(entity, getNearbyPos(entity, blockPos), this.speed, 3);
                         if (entity.blockPosition().closerThan(darkPos, 3)) {
                             entity.setLightblock(blockPos);
+                            entity.gameEvent(GameEvent.BLOCK_PLACE, entity);
                             entity.setGlowberries(i - 1);
                             this.darkPos = null;
                         }
@@ -138,6 +140,7 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
                         BehaviorUtils.setWalkAndLookTargetMemories(entity, getNearbyPos(entity, blockPos), this.speed, 3);
                         if (entity.blockPosition().closerThan(darkPos, 3)) {
                             entity.setLightblock(blockPos);
+                            entity.gameEvent(GameEvent.BLOCK_PLACE, entity);
                             entity.setGlowberries(i - 1);
                             this.darkPos = null;
                         }
@@ -171,6 +174,7 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
                         BehaviorUtils.setWalkAndLookTargetMemories(entity, getNearbyPos(entity, blockPos), this.speed, 3);
                         if (entity.blockPosition().closerThan(darkPos, 3)) {
                             entity.setLightblock(blockPos);
+                            entity.gameEvent(GameEvent.BLOCK_PLACE, entity);
                             entity.setGlowberries(i - 1);
                             this.darkPos = null;
                         }
