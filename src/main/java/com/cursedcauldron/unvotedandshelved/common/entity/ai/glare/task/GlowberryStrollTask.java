@@ -1,10 +1,8 @@
 package com.cursedcauldron.unvotedandshelved.common.entity.ai.glare.task;
 
 import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
-import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
 import com.google.common.collect.ImmutableMap;
-import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
@@ -19,6 +17,8 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+
+import java.util.Random;
 
 
 //<>
@@ -82,13 +82,13 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
         return (int) ((Math.random() * (max - min)) + min);
     }
 
-    private static int getRandomOffset(Random random) {
+    private static int getRandomOffset(RandomSource random) {
         return random.nextInt(3) - 1;
     }
 
     private static BlockPos getNearbyPos(GlareEntity mob, BlockPos blockPos) {
-        RandomSource random = mob.level.random;
-        return blockPos.offset(getRandomOffset((Random) random), 0, getRandomOffset((Random) random));
+        RandomSource random = mob.level.getRandom();
+        return blockPos.offset(getRandomOffset(random), 0, getRandomOffset(random));
     }
 
     @Override
