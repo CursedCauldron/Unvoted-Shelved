@@ -16,7 +16,7 @@
   "subtitles.unvotedandshelved.chinese_rip_off_winnie_the_pooh": "Orcinus在你後面",
   "subtitles.unvotedandshelved.copper_button_click": "Button clicks",
   "subtitles.unvotedandshelved.copper_golem_headspin": "Copper Golem rotates",
-  "subtitles.unvotedandshelved.copper_golem_walk": "Copper Golem walks",
+  "subtitles.unvotedandshelved.copper_golem_walk": "Footsteps",
   "subtitles.unvotedandshelved.copper_golem_hit": "Copper Golem hurts",
   "subtitles.unvotedandshelved.copper_golem_death": "Copper Golem dies",
   "subtitles.unvotedandshelved.copper_golem_repair": "Copper Golem repaired",
@@ -65,5 +65,4 @@
   "options.unvotedandshelved.copperButtons.false": "Disabled",
   "options.unvotedandshelved.title": "Unvoted & Shelved",
   "options.unvotedandshelved.link": "Mod Link"
-
 }

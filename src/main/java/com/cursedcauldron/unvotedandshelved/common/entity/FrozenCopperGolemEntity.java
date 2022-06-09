@@ -3,7 +3,6 @@ package com.cursedcauldron.unvotedandshelved.common.entity;
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import com.cursedcauldron.unvotedandshelved.core.registries.USItems;
 import com.cursedcauldron.unvotedandshelved.mixin.ThrownTridentAccessor;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -32,6 +31,8 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.AbstractGolem;
+import net.minecraft.world.entity.boss.wither.WitherBoss;
+import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ThrownTrident;
@@ -213,6 +214,16 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         }
         if (DamageSource.ON_FIRE.equals(damageSource) && this.getHealth() > 0.5f) {
             this.causeDamage(damageSource, 4.0f);
+            return false;
+        }
+        if (damageSource.getDirectEntity() instanceof Warden) {
+            this.kill();
+            Block.popResource(this.level, this.blockPosition(), new ItemStack(USItems.FROZEN_COPPER_GOLEM_ITEM));
+            return false;
+        }
+        if (damageSource.getDirectEntity() instanceof WitherBoss) {
+            this.kill();
+            Block.popResource(this.level, this.blockPosition(), new ItemStack(USItems.FROZEN_COPPER_GOLEM_ITEM));
             return false;
         }
         boolean bl = damageSource.getDirectEntity() instanceof AbstractArrow && !(damageSource.getDirectEntity() instanceof ThrownTrident);
