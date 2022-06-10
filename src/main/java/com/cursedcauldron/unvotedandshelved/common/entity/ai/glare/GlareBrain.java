@@ -97,7 +97,6 @@ public class  GlareBrain {
                 ImmutableSet.of(USMemoryModules.GIVEN_GLOWBERRY));
     }
 
-
     public static void addIdleActivities(Brain<GlareEntity> brain) {
         brain.addActivity(Activity.IDLE,
                 ImmutableList.of(

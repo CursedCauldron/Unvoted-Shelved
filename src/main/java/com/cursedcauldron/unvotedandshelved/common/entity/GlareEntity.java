@@ -18,11 +18,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -288,6 +284,11 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
 
     private void setGrumpyTick(int ticks) {
         this.entityData.set(GRUMPY_TICKS, ticks);
+    }
+
+    @Override
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions entityDimensions) {
+        return entityDimensions.height * (this.isBaby() ? 0.4f : 0.7f);
     }
 
     public int getGrumpyTick() {
