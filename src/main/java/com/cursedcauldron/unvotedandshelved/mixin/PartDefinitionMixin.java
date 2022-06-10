@@ -11,8 +11,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-//<>
-
 @Mixin(PartDefinition.class)
 public class PartDefinitionMixin {
     @Shadow @Final private PartPose partPose;

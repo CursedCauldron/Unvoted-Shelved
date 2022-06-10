@@ -21,7 +21,6 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
@@ -38,7 +37,7 @@ import net.minecraft.world.level.block.LightningRodBlock;
 import net.minecraft.world.level.gameevent.GameEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
+import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class UnvotedAndShelved implements ModInitializer {
@@ -48,6 +47,9 @@ public class UnvotedAndShelved implements ModInitializer {
 
     @Override
     public void onInitialize() {
+
+        // Registry
+
         USActivities.ACTIVITIES.register();
         USBlocks.BLOCKS.register();
         USEntities.ENTITIES.register();
@@ -60,7 +62,7 @@ public class UnvotedAndShelved implements ModInitializer {
         USStructureProcessors.PROCESSORS.register();
         USTags.init();
 
-
+        LOGGER.info("Thank you for downloading Unvoted & Shelved! :)");
 
         Util.make(Maps.newLinkedHashMap(), map -> {
             map.put(USBlocks.COPPER_BUTTON, USBlocks.WAXED_COPPER_BUTTON);
@@ -73,7 +75,11 @@ public class UnvotedAndShelved implements ModInitializer {
             map.put(USBlocks.WEATHERED_COPPER_PILLAR, USBlocks.WAXED_WEATHERED_COPPER_PILLAR);
             map.put(USBlocks.OXIDIZED_COPPER_PILLAR, USBlocks.WAXED_OXIDIZED_COPPER_PILLAR);
 
-        }).forEach((unwaxed, waxed) -> OxidizableBlocksRegistry.registerWaxableBlockPair((Block) unwaxed, (Block) waxed));
+        }).forEach((unwaxed, waxed) -> {
+            assert unwaxed != null;
+            assert waxed != null;
+            OxidizableBlocksRegistry.registerWaxableBlockPair((Block) unwaxed, (Block) waxed);
+        });
 
         List<Block> list = Lists.newLinkedList();
 
@@ -103,7 +109,7 @@ public class UnvotedAndShelved implements ModInitializer {
 
         DispenserBlock.registerBehavior(Blocks.LIGHTNING_ROD, new OptionalDispenseItemBehavior() {
             @Override
-            protected ItemStack execute(BlockSource pointer, ItemStack stack) {
+            protected ItemStack execute(@NotNull BlockSource pointer, @NotNull ItemStack stack) {
                 Level world = pointer.getLevel();
                 BlockPos blockPos = pointer.getPos().relative(pointer.getBlockState().getValue(DispenserBlock.FACING));
                 LightningRodBlock block = (LightningRodBlock) Blocks.LIGHTNING_ROD;

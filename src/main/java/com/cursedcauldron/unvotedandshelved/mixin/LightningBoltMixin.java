@@ -13,13 +13,13 @@ import net.minecraft.world.phys.AABB;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-
 import java.util.List;
 import java.util.Optional;
-
 import net.minecraft.world.entity.LightningBolt;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+// Mixin to allow for lightning to unoxidize any copper related things
 
 @Mixin(LightningBolt.class)
 public class LightningBoltMixin {

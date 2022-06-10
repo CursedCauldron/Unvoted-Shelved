@@ -7,6 +7,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.block.SoundType;
 
+// Sound Registry
+
 public class USSounds {
     public static final CoreRegistry<SoundEvent> SOUNDS = CoreRegistry.create(Registry.SOUND_EVENT_REGISTRY, UnvotedAndShelved.MODID);
 
@@ -14,6 +16,7 @@ public class USSounds {
     public static final SoundEvent GLARE_IDLE = register("glare_idle");
     public static final SoundEvent GLARE_HURT = register("glare_hurt");
     public static final SoundEvent GLARE_DEATH = register("glare_death");
+    public static final SoundEvent GLARE_GIVE_GLOW_BERRIES = register("glare_give_glow_berries");
     public static final SoundEvent GLOWBERRY_DUST_STEP = register("glowberry_dust_step");
     public static final SoundEvent GLOWBERRY_DUST_PLACE = register("glowberry_dust_place");
     public static final SoundEvent GLOWBERRY_DUST_COLLECT = register("glowberry_dust_collect");

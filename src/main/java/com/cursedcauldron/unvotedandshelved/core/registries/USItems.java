@@ -5,13 +5,12 @@ import com.cursedcauldron.unvotedandshelved.common.blocks.GlowberryDustBlockItem
 import com.cursedcauldron.unvotedandshelved.common.items.FrozenCopperGolemItem;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 
-//<>
+// Item Registry
 
 public class USItems {
     public static final CoreRegistry<Item> ITEMS = CoreRegistry.create(Registry.ITEM_REGISTRY, UnvotedAndShelved.MODID);

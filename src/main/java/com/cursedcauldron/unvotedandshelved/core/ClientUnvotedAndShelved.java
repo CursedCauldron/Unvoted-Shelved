@@ -11,8 +11,7 @@ import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.renderer.RenderType;
 
-
-//<>
+// Client Mod Initializer
 
 @Environment(EnvType.CLIENT)
 public class ClientUnvotedAndShelved implements ClientModInitializer {
@@ -23,6 +22,9 @@ public class ClientUnvotedAndShelved implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+
+        // Registry
+
         USEntityRenderer.registerRenderers();
         BlockRenderLayerMap.INSTANCE.putBlock(USBlocks.COPPER_PILLAR, RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(USBlocks.EXPOSED_COPPER_PILLAR, RenderType.cutout());

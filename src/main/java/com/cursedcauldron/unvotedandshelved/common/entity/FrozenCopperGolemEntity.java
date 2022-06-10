@@ -48,6 +48,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -77,6 +78,8 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         this.setPos(x, y, z);
     }
 
+    // Sets gravity for the Oxidized Copper Golem similarly to Armor Stands
+
     private boolean hasPhysics() {
         return !this.isMarker() && !this.isNoGravity();
     }
@@ -86,6 +89,8 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         return super.isEffectiveAi() && this.hasPhysics();
     }
 
+    // NBT Data
+
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
@@ -93,12 +98,12 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
+    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
+    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
     }
 
@@ -107,13 +112,15 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         return this.hasCustomName();
     }
 
+    // Prevents the Oxidized Copper Golem from being pushed
+
     @Override
     public boolean isPushable() {
         return false;
     }
 
     @Override
-    protected void doPush(Entity entity) {
+    protected void doPush(@NotNull Entity entity) {
     }
 
     @Override
@@ -126,8 +133,10 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         }
     }
 
+    // Converts the Oxidized Copper Golem back into a normal Copper Golem if the player scrapes it with an Axe
+
     @Override
-    public InteractionResult interactAt(Player player, Vec3 vec3, InteractionHand hand) {
+    public InteractionResult interactAt(Player player, @NotNull Vec3 vec3, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (stack.getItem() instanceof AxeItem) {
             this.convertBack(USEntities.COPPER_GOLEM, true);
@@ -138,10 +147,11 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         } else return InteractionResult.PASS;
     }
 
+    // Sets all saved attributes when the Oxidized Copper Golem is converted back into a normal Copper Golem
 
-    public <T extends Mob> T convertBack(EntityType<T> entityType, boolean bl) {
+    public <T extends Mob> void convertBack(EntityType<T> entityType, boolean bl) {
         if (this.isRemoved()) {
-            return null;
+            return;
         }
         CopperGolemEntity mob = (CopperGolemEntity)entityType.create(this.level);
         assert mob != null;
@@ -175,12 +185,11 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         if (this.isPassenger()) {
             Entity entity = this.getVehicle();
             this.stopRiding();
+            assert entity != null;
             mob.startRiding(entity, true);
         }
         this.discard();
-        return (T)mob;
     }
-
 
     @Override
     public void tick() {
@@ -188,7 +197,10 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
     }
 
     @Override
-    public boolean hurt(DamageSource damageSource, float f) {
+    public boolean hurt(@NotNull DamageSource damageSource, float f) {
+
+        // Prevents the Copper Golem from being damaged by most damage sources
+
         if (this.level.isClientSide || this.isRemoved()) {
             return false;
         }
@@ -205,6 +217,9 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
             return false;
         }
         if (DamageSource.IN_FIRE.equals(damageSource)) {
+
+            // Sets the Oxidized Copper Golem on fire if standing in fire
+
             if (this.isOnFire()) {
                 this.causeDamage(damageSource, 0.15f);
             } else {
@@ -216,16 +231,25 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
             this.causeDamage(damageSource, 4.0f);
             return false;
         }
+
+        // Prevents Oxidized Copper Golem from being immune to Wardens
+
         if (damageSource.getDirectEntity() instanceof Warden) {
             this.kill();
             Block.popResource(this.level, this.blockPosition(), new ItemStack(USItems.FROZEN_COPPER_GOLEM_ITEM));
             return false;
         }
+
+        // Prevents Oxidized Copper Golem from being immune to Withers
+
         if (damageSource.getDirectEntity() instanceof WitherBoss) {
             this.kill();
             Block.popResource(this.level, this.blockPosition(), new ItemStack(USItems.FROZEN_COPPER_GOLEM_ITEM));
             return false;
         }
+
+        // Unoxidizes the Copper Golem if it is struck by a Trident with Channelling
+
         boolean bl = damageSource.getDirectEntity() instanceof AbstractArrow && !(damageSource.getDirectEntity() instanceof ThrownTrident);
         boolean bl2 = bl && ((AbstractArrow)damageSource.getDirectEntity()).getPierceLevel() > 0;
         boolean bl3 = "player".equals(damageSource.getMsgId());
@@ -234,20 +258,30 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         }
         if (damageSource.getDirectEntity() instanceof ThrownTrident trident && EnchantmentHelper.hasChanneling(((ThrownTridentAccessor)trident).getTridentItem()) && this.level.canSeeSky(this.blockPosition())) {
             LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create(this.level);
+            assert lightningBolt != null;
             lightningBolt.moveTo(Vec3.atBottomCenterOf(this.blockPosition()));
             lightningBolt.setCause(damageSource.getEntity() instanceof ServerPlayer ? (ServerPlayer)damageSource.getEntity() : null);
             this.level.addFreshEntity(lightningBolt);
             this.playSound(SoundEvents.TRIDENT_THUNDER, 5.0F, 1.0f);
         }
+
+        // Prevents the Oxidized Copper Golem from being destroyed by players who don't have building permissions
+
         if (damageSource.getEntity() instanceof Player && !((Player)damageSource.getEntity()).getAbilities().mayBuild) {
             return false;
         }
+
+        // Allows players in Creative Mode to instantly destroy the Oxidized Copper Golem
+
         if (damageSource.isCreativePlayer()) {
             this.playBrokenSound();
             this.showBreakingParticles();
             this.kill();
             return bl2;
         }
+
+        // Lets players who are able to break the Oxidized Copper Golem break it
+
         long l = this.level.getGameTime();
         if (l - this.lastHit <= 5L || bl) {
             this.brokenByPlayer(damageSource);
@@ -260,6 +294,8 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         }
         return true;
     }
+
+    // Plays the copper hit sound when hitting an Oxidized Copper Golem
 
     @Override
     public void handleEntityEvent(byte b) {
@@ -282,11 +318,15 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         return d < (e *= 64.0) * e;
     }
 
+    // Shows breaking particles when Oxidized Copper Golem is broken
+
     private void showBreakingParticles() {
         if (this.level instanceof ServerLevel) {
             ((ServerLevel)this.level).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.OXIDIZED_COPPER.defaultBlockState()), this.getX(), this.getY(0.6666666666666666), this.getZ(), 10, this.getBbWidth() / 4.0f, this.getBbHeight() / 4.0f, this.getBbWidth() / 4.0f, 0.05);
         }
     }
+
+    // Lets the Oxidized Copper Golem take damage
 
     private void causeDamage(DamageSource damageSource, float f) {
         float g = this.getHealth();
@@ -298,6 +338,8 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
             this.gameEvent(GameEvent.ENTITY_DAMAGE, damageSource.getEntity());
         }
     }
+
+    // Drops the Oxidized Copper Golem as an item if broken
 
     private void brokenByPlayer(DamageSource damageSource) {
         Block.popResource(this.level, this.blockPosition(), new ItemStack(USItems.FROZEN_COPPER_GOLEM_ITEM));
@@ -323,6 +365,8 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         }
     }
 
+    // Plays copper breaking sound when Oxidized Copper Golem is broken
+
     private void playBrokenSound() {
         this.level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.COPPER_BREAK, this.getSoundSource(), 1.0f, 1.0f);
     }
@@ -334,8 +378,10 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         return 0.0f;
     }
 
+    // Sets the eye height of the mob
+
     @Override
-    protected float getStandingEyeHeight(Pose pose, EntityDimensions entityDimensions) {
+    protected float getStandingEyeHeight(@NotNull Pose pose, EntityDimensions entityDimensions) {
         return entityDimensions.height * (this.isBaby() ? 0.3f : 0.6f);
     }
 
@@ -345,15 +391,17 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
     }
 
     @Override
-    public void travel(Vec3 vec3) {
+    public void travel(@NotNull Vec3 vec3) {
         if (!this.hasPhysics()) {
             return;
         }
         super.travel(vec3);
     }
 
+    // Unoxidizes the Copper Golem if struck by lightning
+
     @Override
-    public void thunderHit(ServerLevel serverLevel, LightningBolt lightningBolt) {
+    public void thunderHit(@NotNull ServerLevel serverLevel, @NotNull LightningBolt lightningBolt) {
         this.convertBack(USEntities.COPPER_GOLEM, true);
         this.level.playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 2.0f, 0.5f + this.random.nextFloat() * 0.2f, false);
         this.level.levelEvent(3004, this.blockPosition(), 0);
@@ -370,6 +418,8 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         this.yBodyRotO = this.yRotO = f;
         this.yHeadRotO = this.yHeadRot = f;
     }
+
+    // Allows for the Oxidized Copper Golem to be set as invisible
 
     @Override
     protected void updateInvisibilityStatus() {
@@ -397,6 +447,8 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         return this.isInvisible();
     }
 
+    // Piston pushing reaction
+
     @Override
     public PushReaction getPistonPushReaction() {
         if (this.isMarker()) {
@@ -404,8 +456,6 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         }
         return super.getPistonPushReaction();
     }
-
-
 
     public boolean isSmall() {
         return (this.entityData.get(DATA_CLIENT_FLAGS) & 1) != 0;
@@ -415,6 +465,8 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
     public boolean isMarker() {
         return (this.entityData.get(DATA_CLIENT_FLAGS) & 0x10) != 0;
     }
+
+    // Entity Attributes
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.MOVEMENT_SPEED, 0.0D).add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
@@ -426,7 +478,7 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
     }
 
     @Override
-    public boolean skipAttackInteraction(Entity entity) {
+    public boolean skipAttackInteraction(@NotNull Entity entity) {
         return entity instanceof Player && !this.level.mayInteract((Player)entity, this.blockPosition());
     }
 
@@ -435,6 +487,8 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         return HumanoidArm.RIGHT;
     }
 
+    // Sound Events
+
     @Override
     public LivingEntity.Fallsounds getFallSounds() {
         return new LivingEntity.Fallsounds(SoundEvents.COPPER_FALL, SoundEvents.COPPER_FALL);
@@ -442,7 +496,7 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
 
     @Override
     @Nullable
-    protected SoundEvent getHurtSound(DamageSource damageSource) {
+    protected SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
         return SoundEvents.COPPER_HIT;
     }
 
@@ -452,7 +506,7 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         return SoundEvents.COPPER_BREAK;
     }
 
-
+    // Makes it so that fully oxidized Copper Golems are not affected by potion effects
 
     @Override
     public boolean isAffectedByPotions() {
@@ -460,7 +514,7 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
     }
 
     @Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> entityDataAccessor) {
+    public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> entityDataAccessor) {
         if (DATA_CLIENT_FLAGS.equals(entityDataAccessor)) {
             this.refreshDimensions();
             this.blocksBuilding = !this.isMarker();
@@ -468,13 +522,15 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         super.onSyncedDataUpdated(entityDataAccessor);
     }
 
+    // Prevents the Oxidized Copper Golem from being attacked
+
     @Override
     public boolean attackable() {
         return false;
     }
 
     @Override
-    public EntityDimensions getDimensions(Pose pose) {
+    public EntityDimensions getDimensions(@NotNull Pose pose) {
         return this.getDimensionsMarker(this.isMarker());
     }
 

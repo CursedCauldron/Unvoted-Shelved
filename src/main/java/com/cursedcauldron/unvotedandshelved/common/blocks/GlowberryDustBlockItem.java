@@ -20,6 +20,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.gameevent.GameEvent;
 
+import java.util.Objects;
+
 public class GlowberryDustBlockItem extends BlockItem {
     public GlowberryDustBlockItem(Block block, Properties properties) {
         super(block, properties);
@@ -75,7 +77,7 @@ public class GlowberryDustBlockItem extends BlockItem {
             for (String string : compoundTag2.getAllKeys()) {
                 Property<?> property = stateDefinition.getProperty(string);
                 if (property == null) continue;
-                String string2 = compoundTag2.get(string).getAsString();
+                String string2 = Objects.requireNonNull(compoundTag2.get(string)).getAsString();
                 blockState2 = updateState(blockState2, property, string2);
             }
         }

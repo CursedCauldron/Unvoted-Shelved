@@ -3,14 +3,13 @@ package com.cursedcauldron.unvotedandshelved.common.entity.ai.glare;
 import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
 import com.cursedcauldron.unvotedandshelved.common.entity.ai.glare.task.AerialStrollTask;
 import com.cursedcauldron.unvotedandshelved.common.entity.ai.glare.task.GlowberryStrollTask;
-import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.cursedcauldron.unvotedandshelved.core.registries.USActivities;
 import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
+import com.cursedcauldron.unvotedandshelved.core.registries.USSounds;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -27,18 +26,16 @@ import net.minecraft.world.entity.ai.behavior.SetEntityLookTarget;
 import net.minecraft.world.entity.ai.behavior.Swim;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
-import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.phys.Vec3;
 
-//<>
+public class GlareBrain {
 
-public class  GlareBrain {
+    // Memory modules for the Glare
 
-    public static Brain<?> create(GlareEntity glare, Brain<GlareEntity> brain) {
+    public static Brain<?> create(Brain<GlareEntity> brain) {
         addCoreActivities(brain);
         addFindDarknessActivity(brain);
         addIdleActivities(brain);
@@ -57,29 +54,34 @@ public class  GlareBrain {
         ));
     }
 
-    public static boolean isGlowBerry(GlareEntity glare, ItemStack stack) {
+    // Detects if the player has Glow Berries in their hand
+
+    public static boolean isGlowBerry(ItemStack stack) {
         return stack.is(Items.GLOW_BERRIES);
     }
 
     public static InteractionResult playerInteract(GlareEntity glare, Player player, InteractionHand hand) {
+
+        // Sets the Glare to its Glow Berry state if given Glow Berries and consumes the Glow Berries from the player's hand
+
         Brain<?> brain = glare.getBrain();
         ItemStack itemStack = player.getItemInHand(hand);
         if (brain.getMemory(USMemoryModules.GLOWBERRIES_GIVEN).isPresent()) {
             int i = brain.getMemory(USMemoryModules.GLOWBERRIES_GIVEN).get();
             if (!(i >= 5)) {
-                if (isGlowBerry(glare, itemStack)) {
+                if (isGlowBerry(itemStack)) {
                     if (!player.getAbilities().instabuild) {
                         itemStack.shrink(1);
                         brain.setMemory(USMemoryModules.GIVEN_GLOWBERRY, glare);
                     }
                     if (brain.getMemory(USMemoryModules.GLOWBERRIES_GIVEN).isPresent()) {
                         glare.setGlowberries(i + 1);
-                        glare.playSound(SoundEvents.CAVE_VINES_PLACE, 1.0f, 1.0f);
+                        glare.playSound(USSounds.GLARE_GIVE_GLOW_BERRIES, 1.0f, 1.0f);
                         return InteractionResult.SUCCESS;
                     } else {
                         if (brain.getMemory(USMemoryModules.GLOWBERRIES_GIVEN).isPresent()) {
                             glare.setGlowberries(i + 1);
-                            glare.playSound(SoundEvents.CAVE_VINES_PLACE, 1.0f, 1.0f);
+                            glare.playSound(USSounds.GLARE_GIVE_GLOW_BERRIES, 1.0f, 1.0f);
                             return InteractionResult.SUCCESS;
                         }
                     }

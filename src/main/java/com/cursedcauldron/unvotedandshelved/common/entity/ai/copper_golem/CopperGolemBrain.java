@@ -28,6 +28,7 @@ import net.minecraft.world.entity.schedule.Activity;
 /**
  * @author Orcinus
  */
+
 public class CopperGolemBrain {
 
     public static Brain<?> create(CopperGolemEntity copperGolemEntity, Brain<CopperGolemEntity> brain) {
@@ -93,7 +94,6 @@ public class CopperGolemBrain {
         );
     }
 
-
     public static void updateActivity(CopperGolemEntity entity) {
         entity.getBrain().setActiveActivityToFirstValid(
                 ImmutableList.of(
@@ -101,5 +101,4 @@ public class CopperGolemBrain {
                 )
         );
     }
-
 }

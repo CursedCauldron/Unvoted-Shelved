@@ -7,7 +7,6 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -15,27 +14,21 @@ import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
-import java.util.Random;
 import java.util.function.Supplier;
-
-//<>
 
 public class ConnectedRotatedPillarBlock extends RotatedPillarBlock implements WeatheringCopper {
     public static final BooleanProperty CONNECTED = BooleanProperty.create("connected");
     private final WeatherState weatherState;
 
-    public static Supplier<BiMap<Block, Block>> NEXT_BY_BLOCK = Suppliers.memoize(() -> {
-        return ImmutableBiMap.<Block, Block>builder()
-                .put(USBlocks.COPPER_PILLAR, USBlocks.EXPOSED_COPPER_PILLAR)
-                .put(USBlocks.EXPOSED_COPPER_PILLAR, USBlocks.WEATHERED_COPPER_PILLAR)
-                .put(USBlocks.WEATHERED_COPPER_PILLAR, USBlocks.OXIDIZED_COPPER_PILLAR)
-                .build();
-    });
-    public static final Supplier<BiMap<Block, Block>> PREVIOUS_BY_BLOCK = Suppliers.memoize(() -> {
-        return NEXT_BY_BLOCK.get().inverse();
-    });
+    public static Supplier<BiMap<Block, Block>> NEXT_BY_BLOCK = Suppliers.memoize(() -> ImmutableBiMap.<Block, Block>builder()
+            .put(USBlocks.COPPER_PILLAR, USBlocks.EXPOSED_COPPER_PILLAR)
+            .put(USBlocks.EXPOSED_COPPER_PILLAR, USBlocks.WEATHERED_COPPER_PILLAR)
+            .put(USBlocks.WEATHERED_COPPER_PILLAR, USBlocks.OXIDIZED_COPPER_PILLAR)
+            .build());
+    public static final Supplier<BiMap<Block, Block>> PREVIOUS_BY_BLOCK = Suppliers.memoize(() -> NEXT_BY_BLOCK.get().inverse());
 
 
     public ConnectedRotatedPillarBlock(WeatherState state, Properties properties) {
@@ -44,15 +37,13 @@ public class ConnectedRotatedPillarBlock extends RotatedPillarBlock implements W
         this.registerDefaultState(this.stateDefinition.any().setValue(CONNECTED, false));
     }
 
-
-
     @Override
     public boolean isRandomlyTicking(BlockState state) {
         return Optional.ofNullable(NEXT_BY_BLOCK.get().get(state.getBlock())).isPresent();
     }
 
    @Override
-   public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos blockPos2, boolean bl) {
+   public void neighborChanged(BlockState state, Level level, @NotNull BlockPos pos, @NotNull Block block, @NotNull BlockPos blockPos2, boolean bl) {
        BlockPos abovePos  = (state.getValue(AXIS) == Direction.Axis.Y) ? pos.above() : (state.getValue(AXIS) == Direction.Axis.X) ? pos.east() : pos.north();
        BlockState aboveState = level.getBlockState(abovePos);
 

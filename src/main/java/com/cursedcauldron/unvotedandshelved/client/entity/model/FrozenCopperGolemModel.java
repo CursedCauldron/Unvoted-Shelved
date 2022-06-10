@@ -9,8 +9,6 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
-//<>
-
 @Environment(EnvType.CLIENT)
 public class FrozenCopperGolemModel<T extends FrozenCopperGolemEntity> extends HierarchicalModel<T> {
     private static final Vector3f ANIMATION_PROGRESS = new Vector3f();
@@ -21,8 +19,6 @@ public class FrozenCopperGolemModel<T extends FrozenCopperGolemEntity> extends H
         this.body = root.getChild("body");
         this.head = this.body.getChild("head");
     }
-
-
 
     public static LayerDefinition getLayerDefinition() {
         MeshDefinition mesh = new MeshDefinition();
@@ -43,7 +39,6 @@ public class FrozenCopperGolemModel<T extends FrozenCopperGolemEntity> extends H
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float tickDelta, float netHeadYaw, float headPitch) {
         this.root().getAllParts().forEach(ModelModifier::resetPose);
     }
-    
 
     @Override
     public ModelPart root() {

@@ -6,7 +6,7 @@ import com.cursedcauldron.unvotedandshelved.mixin.access.ActivityAccessor;
 import net.minecraft.core.Registry;
 import net.minecraft.world.entity.schedule.Activity;
 
-//<>
+// Activity Registry
 
 public class USActivities {
     public static final CoreRegistry<Activity> ACTIVITIES = CoreRegistry.create(Registry.ACTIVITY_REGISTRY, UnvotedAndShelved.MODID);

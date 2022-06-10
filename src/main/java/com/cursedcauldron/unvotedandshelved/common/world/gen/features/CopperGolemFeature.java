@@ -3,7 +3,6 @@ package com.cursedcauldron.unvotedandshelved.common.world.gen.features;
 import com.cursedcauldron.unvotedandshelved.common.entity.FrozenCopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import com.mojang.serialization.Codec;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.WorldGenLevel;
@@ -22,6 +21,7 @@ public class CopperGolemFeature extends Feature<NoneFeatureConfiguration> {
         BlockPos pos = context.origin();
         WorldGenLevel world = context.level();
             FrozenCopperGolemEntity copperGolem = USEntities.FROZEN_COPPER_GOLEM.create(world.getLevel());
+            assert copperGolem != null;
             copperGolem.setPersistenceRequired();
             copperGolem.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D);
             copperGolem.setYBodyRot(0);

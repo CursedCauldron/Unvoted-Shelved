@@ -7,7 +7,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 
-//<>
+// Particle Registry
 
 public class USParticles {
     public static final CoreRegistry<ParticleType<?>> PARTICLES = CoreRegistry.create(Registry.PARTICLE_TYPE_REGISTRY, UnvotedAndShelved.MODID);

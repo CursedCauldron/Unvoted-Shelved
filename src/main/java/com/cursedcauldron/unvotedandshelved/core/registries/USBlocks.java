@@ -7,7 +7,6 @@ import com.cursedcauldron.unvotedandshelved.common.blocks.GlowberryDustBlock;
 import com.cursedcauldron.unvotedandshelved.common.blocks.WeatheringCopperButtonBlock;
 import com.cursedcauldron.unvotedandshelved.common.blocks.WeatheringRotatedPillarBlock;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -20,7 +19,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 
-//<>
+// Block Registry
 
 public class USBlocks {
 

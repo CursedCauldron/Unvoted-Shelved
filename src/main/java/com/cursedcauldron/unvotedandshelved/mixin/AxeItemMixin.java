@@ -20,10 +20,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
 import java.util.Optional;
-
 import static net.minecraft.world.level.block.ButtonBlock.POWERED;
+
+// Mixin to access Axe scraping for Copper related things
 
 @Mixin(AxeItem.class)
 public class AxeItemMixin {

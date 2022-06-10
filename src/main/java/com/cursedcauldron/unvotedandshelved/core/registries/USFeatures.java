@@ -7,6 +7,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
+// Feature Registry
+
 public class USFeatures {
 
     public static final Feature<NoneFeatureConfiguration> COPPER_GOLEM = new CopperGolemFeature(NoneFeatureConfiguration.CODEC);

@@ -1,8 +1,8 @@
 package com.cursedcauldron.unvotedandshelved.core.registries;
 
-//<>
-
 import net.minecraft.world.entity.Pose;
+
+// Pose Registry
 
 public enum USPoses {
     HEAD_SPIN,

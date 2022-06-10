@@ -3,10 +3,9 @@ package com.cursedcauldron.unvotedandshelved.mixin;
 import com.cursedcauldron.unvotedandshelved.api.LightningRodAccess;
 import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
-import net.fabricmc.loader.api.FabricLoader;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
-
 import java.util.Iterator;
 import java.util.function.Predicate;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -24,6 +23,8 @@ import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import net.minecraft.world.level.block.state.pattern.BlockPatternBuilder;
 import net.minecraft.world.level.block.state.predicate.BlockStatePredicate;
 
+// Mixin to allow for Copper Golems to be built using 1 Copper Block, 1 Carved Pumpkin/Jack-O-Lantern, and 1 Lightning Rod
+
 @Mixin(LightningRodBlock.class)
 public class LightningRodBlockMixin extends Block implements LightningRodAccess {
     @Nullable
@@ -37,7 +38,7 @@ public class LightningRodBlockMixin extends Block implements LightningRodAccess 
         super(settings);
     }
 
-    public void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean notify) {
+    public void onPlace(BlockState state, @NotNull Level world, @NotNull BlockPos pos, BlockState oldState, boolean notify) {
         if (!oldState.is(state.getBlock())) {
             this.trySpawnEntity(world, pos);
         }
@@ -59,10 +60,9 @@ public class LightningRodBlockMixin extends Block implements LightningRodAccess 
             BlockPos cachedBlockPosition = result.getBlock(0, 2, 0).getPos();
             e.moveTo((double) cachedBlockPosition.getX() + 0.5D, (double) cachedBlockPosition.getY() + 0.05D, (double) cachedBlockPosition.getZ() + 0.5D, 0.0F, 0.0F);
             world.addFreshEntity(e);
-            Iterator<ServerPlayer> var6 = world.getEntitiesOfClass(ServerPlayer.class, e.getBoundingBox().inflate(5.0D)).iterator();
 
-            while (var6.hasNext()) {
-                serverPlayerEntity = var6.next();
+            for (ServerPlayer serverPlayer : world.getEntitiesOfClass(ServerPlayer.class, e.getBoundingBox().inflate(5.0D))) {
+                serverPlayerEntity = serverPlayer;
                 CriteriaTriggers.SUMMONED_ENTITY.trigger(serverPlayerEntity, e);
             }
 

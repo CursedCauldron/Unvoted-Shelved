@@ -18,9 +18,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
-
-
-//<>
+import org.jetbrains.annotations.NotNull;
 
 public class GlowberryStrollTask extends Behavior<GlareEntity> {
     private BlockPos darkPos;
@@ -35,12 +33,12 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
     }
 
     @Override
-    protected boolean checkExtraStartConditions(ServerLevel worldIn, GlareEntity owner) {
+    protected boolean checkExtraStartConditions(@NotNull ServerLevel worldIn, GlareEntity owner) {
         return !owner.isInWaterOrBubble() && (owner.getBrain().getMemory(USMemoryModules.GLOWBERRIES_GIVEN).get() >= 1);
     }
 
     @Override
-    protected boolean canStillUse(ServerLevel level, GlareEntity glare, long time) {
+    protected boolean canStillUse(@NotNull ServerLevel level, GlareEntity glare, long time) {
         return (glare.getBrain().getMemory(USMemoryModules.GLOWBERRIES_GIVEN).get() >= 1) && (this.darkPos != null);
     }
 
@@ -52,6 +50,8 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
     private boolean isValidSpawnPos(BlockPos blockPos, ServerLevel level) {
         return !level.getBlockState(blockPos).is(Blocks.VINE) && !level.getBlockState(blockPos).is(BlockTags.LEAVES) &&  !level.getBlockState(blockPos).is(BlockTags.CAVE_VINES) && !level.getBlockState(blockPos).isAir() && !level.getFluidState(blockPos).is(Fluids.WATER) && !level.getFluidState(blockPos).is(Fluids.FLOWING_WATER);
     }
+
+    // Lets the Glare detect if it is in light levels of 0 to place Glow Berry Dust
 
     protected void getDarkPos(ServerLevel level, GlareEntity glare) {
         if (this.darkPos == null) {
@@ -76,7 +76,6 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
         }
     }
 
-
     public int getRandomNumber(int min, int max) {
         return (int) ((Math.random() * (max - min)) + min);
     }
@@ -90,8 +89,10 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
         return blockPos.offset(getRandomOffset(random), 0, getRandomOffset(random));
     }
 
+    // Lets the Glare place Glow Berry Dust if in a dark enough spot
+
     @Override
-    protected void tick(ServerLevel level, GlareEntity entity, long time) {
+    protected void tick(@NotNull ServerLevel level, @NotNull GlareEntity entity, long time) {
         super.tick(level, entity, time);
         if (this.darkPos != null) {
             Brain<GlareEntity> brain = entity.getBrain();
@@ -122,11 +123,13 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
         }
     }
 
+    // Stops the Glare's Glow Berry Stroll task if run out of Glow Berries
+
     @Override
-    protected void stop(ServerLevel level, GlareEntity entity, long time) {
+    protected void stop(@NotNull ServerLevel level, @NotNull GlareEntity entity, long time) {
         if (this.darkPos != null) {
             Brain<GlareEntity> brain = entity.getBrain();
-            BlockPos entityPos = entity.blockPosition();
+            entity.blockPosition();
             BlockPos groundPos = this.darkPos.below().below();
             if ((level.isInWorldBounds(darkPos) && level.getBlockState(darkPos).isAir() && !level.getBlockState(groundPos).isAir() && level.isEmptyBlock(darkPos) && level.getBlockState(darkPos).isPathfindable(level, darkPos, PathComputationType.LAND) &&
                     ((level.getBrightness(LightLayer.BLOCK, darkPos) == 0 && level.getBrightness(LightLayer.SKY, darkPos) == 0) ||
@@ -154,13 +157,15 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
         }
     }
 
+    // Starts the Glare's Glow Berry Stroll task if given Glow Berries
+
     @Override
-    protected void start(ServerLevel level, GlareEntity entity, long time) {
+    protected void start(@NotNull ServerLevel level, @NotNull GlareEntity entity, long time) {
         this.groundNavigation = new GroundPathNavigation(entity, level);
         this.getDarkPos(level, entity);
         if (this.darkPos != null) {
             Brain<GlareEntity> brain = entity.getBrain();
-            BlockPos entityPos = entity.blockPosition();
+            entity.blockPosition();
             BlockPos groundPos = this.darkPos.below().below();
             if ((level.isInWorldBounds(darkPos) && level.getBlockState(darkPos).isAir() && !level.getBlockState(groundPos).isAir() && level.isEmptyBlock(darkPos) && level.getBlockState(darkPos).isPathfindable(level, darkPos, PathComputationType.LAND) &&
                     ((level.getBrightness(LightLayer.BLOCK, darkPos) == 0 && level.getBrightness(LightLayer.SKY, darkPos) == 0) ||

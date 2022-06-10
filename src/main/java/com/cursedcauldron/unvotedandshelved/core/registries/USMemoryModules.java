@@ -8,10 +8,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
-
 import java.util.Optional;
 
-//<>
+// Memory Module Registry
 
 public class USMemoryModules {
     public static final CoreRegistry<MemoryModuleType<?>> MEMORY_MODULES = CoreRegistry.create(Registry.MEMORY_MODULE_TYPE_REGISTRY, UnvotedAndShelved.MODID);

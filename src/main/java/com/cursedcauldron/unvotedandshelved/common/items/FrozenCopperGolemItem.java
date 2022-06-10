@@ -5,13 +5,11 @@ import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Rotations;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.decoration.ArmorStand;
@@ -43,10 +41,9 @@ public class FrozenCopperGolemItem extends Item {
             ItemStack itemStack = useOnContext.getItemInHand();
             Vec3 vec3 = Vec3.atBottomCenterOf(blockPos);
             AABB aABB = EntityType.ARMOR_STAND.getDimensions().makeBoundingBox(vec3.x(), vec3.y(), vec3.z());
-            if (level.noCollision((Entity)null, aABB) && level.getEntities((Entity)null, aABB).isEmpty()) {
-                if (level instanceof ServerLevel) {
-                    ServerLevel serverLevel = (ServerLevel)level;
-                    FrozenCopperGolemEntity armorStand = USEntities.FROZEN_COPPER_GOLEM.create(serverLevel, itemStack.getTag(), (Component)null, useOnContext.getPlayer(), blockPos, MobSpawnType.SPAWN_EGG, true, true);
+            if (level.noCollision(null, aABB) && level.getEntities(null, aABB).isEmpty()) {
+                if (level instanceof ServerLevel serverLevel) {
+                    FrozenCopperGolemEntity armorStand = USEntities.FROZEN_COPPER_GOLEM.create(serverLevel, itemStack.getTag(), null, useOnContext.getPlayer(), blockPos, MobSpawnType.SPAWN_EGG, true, true);
                     if (armorStand == null) {
                         return InteractionResult.FAIL;
                     }

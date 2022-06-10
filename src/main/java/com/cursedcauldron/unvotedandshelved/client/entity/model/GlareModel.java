@@ -11,8 +11,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-
-//<>
+import org.jetbrains.annotations.NotNull;
 
 public class GlareModel<T extends Entity> extends HierarchicalModel<T> {
     private final ModelPart body;
@@ -68,7 +67,7 @@ public class GlareModel<T extends Entity> extends HierarchicalModel<T> {
     }
 
     @Override
-    public void setupAnim(T entity, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch) {
+    public void setupAnim(@NotNull T entity, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch) {
         boolean isGrumpy = ((GlareEntity)entity).isGrumpy();
         float speed;
         float degree = 2.0F;

@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
 @Environment(EnvType.CLIENT)
 public class GlareGlowberriesLayer<T extends GlareEntity, M extends GlareModel<T>> extends RenderLayer<T, M> {
@@ -43,7 +44,7 @@ public class GlareGlowberriesLayer<T extends GlareEntity, M extends GlareModel<T
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource multiBufferSource, int i, T entity, float f, float g, float h, float j, float k, float l) {
+    public void render(@NotNull PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int i, @NotNull T entity, float f, float g, float h, float j, float k, float l) {
         RenderType renderType = this.renderType(entity);
         if (renderType != null) {
             VertexConsumer vertexConsumer = multiBufferSource.getBuffer(renderType);
@@ -74,5 +75,5 @@ public class GlareGlowberriesLayer<T extends GlareEntity, M extends GlareModel<T
                 return entity.isGrumpy() ? FLOWERING_GLARE_GRUMPY_BERRIES_4 : FLOWERING_GLARE_BERRIES_4;
             } else return entity.isGrumpy() ? GLARE_GRUMPY_BERRIES_4 : GLARE_BERRIES_4;
         } else return null;
-    };
+    }
 }

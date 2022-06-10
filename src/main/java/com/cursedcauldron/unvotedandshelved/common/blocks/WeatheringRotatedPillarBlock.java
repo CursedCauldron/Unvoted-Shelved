@@ -1,43 +1,32 @@
 package com.cursedcauldron.unvotedandshelved.common.blocks;
 
 import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
-import com.cursedcauldron.unvotedandshelved.core.registries.USTags;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import org.checkerframework.checker.units.qual.C;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
-import java.util.Random;
 import java.util.function.Supplier;
-
-//<>
 
 public class WeatheringRotatedPillarBlock extends ConnectedRotatedPillarBlock implements WeatheringCopper {
     public static final BooleanProperty CONNECTED = BooleanProperty.create("connected");
     private final WeatheringCopper.WeatherState weatherState;
 
-    public static Supplier<BiMap<Block, Block>> NEXT_BY_BLOCK = Suppliers.memoize(() -> {
-        return ImmutableBiMap.<Block, Block>builder()
-                .put(USBlocks.COPPER_PILLAR, USBlocks.EXPOSED_COPPER_PILLAR)
-                .put(USBlocks.EXPOSED_COPPER_PILLAR, USBlocks.WEATHERED_COPPER_PILLAR)
-                .put(USBlocks.WEATHERED_COPPER_PILLAR, USBlocks.OXIDIZED_COPPER_PILLAR)
-                .build();
-    });
-    public static final Supplier<BiMap<Block, Block>> PREVIOUS_BY_BLOCK = Suppliers.memoize(() -> {
-        return NEXT_BY_BLOCK.get().inverse();
-    });
+    public static Supplier<BiMap<Block, Block>> NEXT_BY_BLOCK = Suppliers.memoize(() -> ImmutableBiMap.<Block, Block>builder()
+            .put(USBlocks.COPPER_PILLAR, USBlocks.EXPOSED_COPPER_PILLAR)
+            .put(USBlocks.EXPOSED_COPPER_PILLAR, USBlocks.WEATHERED_COPPER_PILLAR)
+            .put(USBlocks.WEATHERED_COPPER_PILLAR, USBlocks.OXIDIZED_COPPER_PILLAR)
+            .build());
+    public static final Supplier<BiMap<Block, Block>> PREVIOUS_BY_BLOCK = Suppliers.memoize(() -> NEXT_BY_BLOCK.get().inverse());
 
     public WeatheringRotatedPillarBlock(WeatherState state, Properties properties) {
         super(state, properties);
@@ -46,7 +35,7 @@ public class WeatheringRotatedPillarBlock extends ConnectedRotatedPillarBlock im
     }
 
     @Override
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
         this.onRandomTick(state, level, pos, random);
     }
 

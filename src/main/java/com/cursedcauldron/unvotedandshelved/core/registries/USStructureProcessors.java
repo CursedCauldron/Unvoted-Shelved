@@ -11,7 +11,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 
-//<>
+// Structure Processor Registry
 
 public class USStructureProcessors {
     public static final CoreRegistry<StructureProcessorType<?>> PROCESSORS = CoreRegistry.create(Registry.STRUCTURE_PROCESSOR_REGISTRY, UnvotedAndShelved.MODID);

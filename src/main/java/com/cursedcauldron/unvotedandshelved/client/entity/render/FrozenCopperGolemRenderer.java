@@ -1,22 +1,15 @@
 package com.cursedcauldron.unvotedandshelved.client.entity.render;
 
 import com.cursedcauldron.unvotedandshelved.client.entity.USEntityRenderer;
-import com.cursedcauldron.unvotedandshelved.client.entity.model.CopperGolemModel;
 import com.cursedcauldron.unvotedandshelved.client.entity.model.FrozenCopperGolemModel;
-import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.common.entity.FrozenCopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
-import com.google.common.collect.Maps;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.Util;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.decoration.ArmorStand;
-
-import java.util.Map;
+import org.jetbrains.annotations.NotNull;
 
 
 @Environment(EnvType.CLIENT)
@@ -30,10 +23,10 @@ public class FrozenCopperGolemRenderer extends LivingEntityRenderer<FrozenCopper
     }
 
     @Override
-    protected boolean shouldShowName(FrozenCopperGolemEntity golem) {
+    protected boolean shouldShowName(@NotNull FrozenCopperGolemEntity golem) {
         float f;
         double d = this.entityRenderDispatcher.distanceToSqr(golem);
-        float f2 = f = golem.isCrouching() ? 32.0f : 64.0f;
+        f = golem.isCrouching() ? 32.0f : 64.0f;
         if (d >= (double)(f * f)) {
             return false;
         }
@@ -41,7 +34,7 @@ public class FrozenCopperGolemRenderer extends LivingEntityRenderer<FrozenCopper
     }
 
     @Override
-    public ResourceLocation getTextureLocation(FrozenCopperGolemEntity entity) {
+    public ResourceLocation getTextureLocation(@NotNull FrozenCopperGolemEntity entity) {
         return TEXTURE;
     }
 }

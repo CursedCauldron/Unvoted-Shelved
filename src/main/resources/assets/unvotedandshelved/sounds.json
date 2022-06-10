@@ -39,6 +39,16 @@
     ],
     "subtitle": "subtitles.unvotedandshelved.glare_death"
   },
+  "glare_give_glow_berries": {
+    "sounds": [
+      "unvotedandshelved:mob/glare/give1",
+      "unvotedandshelved:mob/glare/give2",
+      "unvotedandshelved:mob/glare/give3",
+      "unvotedandshelved:mob/glare/give4",
+      "unvotedandshelved:mob/glare/give5"
+    ],
+    "subtitle": "subtitles.unvotedandshelved.glare_give_glow_berries"
+  },
   "glowberry_dust_step": {
     "sounds": [
       "unvotedandshelved:nothing"
