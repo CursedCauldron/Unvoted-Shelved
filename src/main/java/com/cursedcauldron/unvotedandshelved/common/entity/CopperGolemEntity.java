@@ -26,10 +26,12 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.animal.AbstractGolem;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
@@ -69,6 +71,12 @@ public class CopperGolemEntity extends AbstractGolem {
     public CopperGolemEntity(EntityType<? extends AbstractGolem> type, Level world) {
         super(type, world);
         this.maxUpStep = 1.0F;
+    }
+
+    // Makes it so that Copper Golems are scared of and flee from Zombies
+
+    public void registerGoals() {
+        this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Zombie.class, 4.0F, 0.4D, 0.5D));
     }
 
     @Override
