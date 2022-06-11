@@ -44,26 +44,25 @@ public class CopperGolemModel<T extends CopperGolemEntity> extends HierarchicalM
     @Override
     public void setupAnim(T entity, float angle, float distance, float animationProgress, float yaw, float pitch) {
         this.root().getAllParts().forEach(ModelModifier::resetPose);
-        long time = Util.getMillis();
         this.head.yRot = yaw * 0.017453292F;
-        float k = Math.min((float)entity.getDeltaMovement().lengthSqr() * 200.0F, 8.0F);
-        this.animate(entity.walkingAnimation, CopperGolemAnimations.walkingAnimation(entity.getStage()), time, k);
+        float speed = Math.min((float)entity.getDeltaMovement().lengthSqr() * 200.0F, 8.0F);
+        this.animate(entity.walkingAnimation, CopperGolemAnimations.walkingAnimation(entity.getStage()), animationProgress, speed);
 
-        this.animate(entity.headSpinAnimation, CopperGolemAnimations.HEAD_SPIN, time);
-        this.animate(entity.headSpinSlowerAnimation, CopperGolemAnimations.HEAD_SPIN_SLOWER, time);
-        this.animate(entity.headSpinSlowestAnimation, CopperGolemAnimations.HEAD_SPIN_SLOWEST, time);
+        this.animate(entity.headSpinAnimation, CopperGolemAnimations.HEAD_SPIN, animationProgress);
+        this.animate(entity.headSpinSlowerAnimation, CopperGolemAnimations.HEAD_SPIN_SLOWER, animationProgress);
+        this.animate(entity.headSpinSlowestAnimation, CopperGolemAnimations.HEAD_SPIN_SLOWEST, animationProgress);
 
-        this.animate(entity.buttonAnimation, CopperGolemAnimations.BUTTON_PRESS, time);
-        this.animate(entity.buttonSlowerAnimation, CopperGolemAnimations.BUTTON_PRESS, time);
-        this.animate(entity.buttonSlowestAnimation, CopperGolemAnimations.BUTTON_PRESS, time);
+        this.animate(entity.buttonAnimation, CopperGolemAnimations.BUTTON_PRESS, animationProgress);
+        this.animate(entity.buttonSlowerAnimation, CopperGolemAnimations.BUTTON_PRESS, animationProgress);
+        this.animate(entity.buttonSlowestAnimation, CopperGolemAnimations.BUTTON_PRESS, animationProgress);
 
-        this.animate(entity.buttonUpAnimation, CopperGolemAnimations.BUTTON_PRESS_UP, time);
-        this.animate(entity.buttonUpSlowerAnimation, CopperGolemAnimations.BUTTON_PRESS_UP, time);
-        this.animate(entity.buttonUpSlowestAnimation, CopperGolemAnimations.BUTTON_PRESS_UP, time);
+        this.animate(entity.buttonUpAnimation, CopperGolemAnimations.BUTTON_PRESS_UP, animationProgress);
+        this.animate(entity.buttonUpSlowerAnimation, CopperGolemAnimations.BUTTON_PRESS_UP, animationProgress);
+        this.animate(entity.buttonUpSlowestAnimation, CopperGolemAnimations.BUTTON_PRESS_UP, animationProgress);
 
-        this.animate(entity.buttonDownAnimation, CopperGolemAnimations.BUTTON_PRESS_DOWN, time);
-        this.animate(entity.buttonDownSlowerAnimation, CopperGolemAnimations.BUTTON_PRESS_DOWN, time);
-        this.animate(entity.buttonDownSlowestAnimation, CopperGolemAnimations.BUTTON_PRESS_DOWN, time);
+        this.animate(entity.buttonDownAnimation, CopperGolemAnimations.BUTTON_PRESS_DOWN, animationProgress);
+        this.animate(entity.buttonDownSlowerAnimation, CopperGolemAnimations.BUTTON_PRESS_DOWN, animationProgress);
+        this.animate(entity.buttonDownSlowestAnimation, CopperGolemAnimations.BUTTON_PRESS_DOWN, animationProgress);
     }
 
     @Override
