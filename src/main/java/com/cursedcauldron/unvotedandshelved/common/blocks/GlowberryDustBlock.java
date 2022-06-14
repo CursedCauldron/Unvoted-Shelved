@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
@@ -61,6 +62,7 @@ public class GlowberryDustBlock extends Block implements SimpleWaterloggedBlock 
                 player.addItem(USBlocks.GLOWBERRY_DUST.getCloneItemStack(level, blockPos, blockState));
                 level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
                 level.playSound(player, blockPos, USSounds.GLOWBERRY_DUST_COLLECT, SoundSource.BLOCKS, 1.0F, 1.5F);
+                player.gameEvent(GameEvent.BLOCK_DESTROY, player);
                 return InteractionResult.SUCCESS;
             }
         } else if (item.is(GLASS_BOTTLE)) {
