@@ -362,7 +362,6 @@ public class CopperGolemEntity extends AbstractGolem {
             mob.setNoAi(this.isNoAi());
             if (this.hasCustomName()) {
                 mob.setCustomName(this.getCustomName());
-                mob.setCustomNameVisible(this.isCustomNameVisible());
             }
             if (this.isPersistenceRequired()) {
                 mob.setPersistenceRequired();

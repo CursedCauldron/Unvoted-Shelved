@@ -68,6 +68,7 @@ public class GlowberryDustBlock extends Block implements SimpleWaterloggedBlock 
         } else if (item.is(GLASS_BOTTLE)) {
             level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
             level.playSound(player, blockPos, USSounds.GLOWBERRY_DUST_COLLECT, SoundSource.BLOCKS, 1.0F, 1.5F);
+            player.gameEvent(GameEvent.BLOCK_DESTROY, player);
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.CONSUME;

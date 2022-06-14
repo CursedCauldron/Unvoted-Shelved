@@ -29,7 +29,6 @@ public class FrozenCopperGolemItem extends Item {
         super(properties);
     }
 
-
     public InteractionResult useOn(UseOnContext useOnContext) {
         Direction direction = useOnContext.getClickedFace();
         if (direction == Direction.DOWN) {

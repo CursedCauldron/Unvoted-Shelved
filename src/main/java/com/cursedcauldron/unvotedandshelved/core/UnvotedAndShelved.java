@@ -1,17 +1,7 @@
 package com.cursedcauldron.unvotedandshelved.core;
 
 import com.cursedcauldron.unvotedandshelved.api.LightningRodAccess;
-import com.cursedcauldron.unvotedandshelved.core.registries.USActivities;
-import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
-import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
-import com.cursedcauldron.unvotedandshelved.core.registries.USFeatures;
-import com.cursedcauldron.unvotedandshelved.core.registries.USGameEvents;
-import com.cursedcauldron.unvotedandshelved.core.registries.USItems;
-import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
-import com.cursedcauldron.unvotedandshelved.core.registries.USParticles;
-import com.cursedcauldron.unvotedandshelved.core.registries.USSounds;
-import com.cursedcauldron.unvotedandshelved.core.registries.USStructureProcessors;
-import com.cursedcauldron.unvotedandshelved.core.registries.USTags;
+import com.cursedcauldron.unvotedandshelved.core.registries.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.FieldNamingPolicy;

@@ -50,7 +50,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -165,7 +164,6 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         mob.setStage(CopperGolemEntity.Stage.WEATHERED);
         if (this.hasCustomName()) {
             mob.setCustomName(this.getCustomName());
-            mob.setCustomNameVisible(this.isCustomNameVisible());
         }
         if (this.isPersistenceRequired()) {
             mob.setPersistenceRequired();
