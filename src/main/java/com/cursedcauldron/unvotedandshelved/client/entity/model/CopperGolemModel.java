@@ -45,7 +45,7 @@ public class CopperGolemModel<T extends CopperGolemEntity> extends HierarchicalM
     public void setupAnim(T entity, float angle, float distance, float animationProgress, float yaw, float pitch) {
         this.root().getAllParts().forEach(ModelModifier::resetPose);
         this.head.yRot = yaw * 0.017453292F;
-        float speed = Math.min((float)entity.getDeltaMovement().lengthSqr() * 200.0F, 8.0F);
+        float speed = Math.min((float)entity.getDeltaMovement().lengthSqr() * 125.0F, 8.0F);
         this.animate(entity.walkingAnimation, CopperGolemAnimations.walkingAnimation(entity.getStage()), animationProgress, speed);
 
         this.animate(entity.headSpinAnimation, CopperGolemAnimations.HEAD_SPIN, animationProgress);

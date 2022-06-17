@@ -406,7 +406,7 @@ public class CopperGolemEntity extends AbstractGolem {
 
             // Allows the Copper Golem to oxidize over time if not waxed
 
-            if (!this.isWaxed() || this.getStage() != Stage.OXIDIZED) {
+            if (!this.isWaxed() && this.getStage() != Stage.OXIDIZED) {
                 float randomChance = this.random.nextFloat();
                 if (randomChance < 3.4290552E-5F && this.getStage() != Stage.OXIDIZED) {
                     this.setStage(Stage.values()[this.getStage().getId() + 1]);
