@@ -31,11 +31,10 @@
   },
   "glare_death": {
     "sounds": [
-      "unvotedandshelved:mob/glare/hurt1",
-      "unvotedandshelved:mob/glare/hurt2",
-      "unvotedandshelved:mob/glare/hurt3",
-      "unvotedandshelved:mob/glare/hurt4",
-      "unvotedandshelved:mob/glare/hurt5"
+      "unvotedandshelved:mob/glare/death1",
+      "unvotedandshelved:mob/glare/death2",
+      "unvotedandshelved:mob/glare/death3",
+      "unvotedandshelved:mob/glare/death4"
     ],
     "subtitle": "subtitles.unvotedandshelved.glare_death"
   },
