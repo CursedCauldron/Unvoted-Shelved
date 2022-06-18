@@ -361,8 +361,6 @@ public class CopperGolemEntity extends AbstractGolem {
             mob.lookAt(EntityAnchorArgument.Anchor.EYES, this.getLookAngle());
             mob.setYBodyRot(this.getYRot());
             mob.setYHeadRot(this.getYHeadRot());
-            mob.setBaby(this.isBaby());
-            mob.setNoAi(this.isNoAi());
             if (this.hasCustomName()) {
                 mob.setCustomName(this.getCustomName());
             }
@@ -401,7 +399,6 @@ public class CopperGolemEntity extends AbstractGolem {
                 this.playSound(USSounds.CHINESE_RIP_OFF_WINNIE_THE_POOH, 1.0F, 1.0F);
             }
             if (this.getStage() == Stage.OXIDIZED) {
-                this.getBrain().removeAllBehaviors();
                 this.convertToFrozen(USEntities.FROZEN_COPPER_GOLEM,true);
             } else {
                 CopperGolemBrain.updateActivity(this);
