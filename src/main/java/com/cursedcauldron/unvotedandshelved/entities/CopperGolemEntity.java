@@ -1,6 +1,5 @@
 package com.cursedcauldron.unvotedandshelved.entities;
 
-import com.cursedcauldron.unvotedandshelved.util.AnimationState;
 import com.cursedcauldron.unvotedandshelved.entities.ai.copper_golem.CopperGolemBrain;
 import com.cursedcauldron.unvotedandshelved.init.USEntityTypes;
 import com.cursedcauldron.unvotedandshelved.init.USMemoryModules;
@@ -23,6 +22,7 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -128,28 +128,28 @@ public class CopperGolemEntity extends AbstractGolem {
             Pose pose = this.getPose();
             if (this.getStage() == Stage.UNAFFECTED) {
                 if (PoseUtil.isInPose(this, USPoses.HEAD_SPIN)) {
-                    this.headSpinAnimation.start();
+                    this.headSpinAnimation.start(this.tickCount);
                 } else {
                     this.headSpinAnimation.stop();
                     this.headSpinSlowerAnimation.stop();
                     this.headSpinSlowestAnimation.stop();
                 }
                 if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON)) {
-                    this.buttonAnimation.start();
+                    this.buttonAnimation.start(this.tickCount);
                 } else {
                     this.buttonAnimation.stop();
                     this.buttonSlowerAnimation.stop();
                     this.buttonSlowestAnimation.stop();
                 }
                 if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON_UP)) {
-                    this.buttonUpAnimation.start();
+                    this.buttonUpAnimation.start(this.tickCount);
                 } else {
                     this.buttonUpAnimation.stop();
                     this.buttonUpSlowerAnimation.stop();
                     this.buttonUpSlowestAnimation.stop();
                 }
                 if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON_DOWN)) {
-                    this.buttonDownAnimation.start();
+                    this.buttonDownAnimation.start(this.tickCount);
                 } else {
                     this.buttonDownAnimation.stop();
                     this.buttonDownSlowerAnimation.stop();
@@ -157,28 +157,28 @@ public class CopperGolemEntity extends AbstractGolem {
                 }
             } else if (this.getStage() == Stage.EXPOSED) {
                 if (PoseUtil.isInPose(this, USPoses.HEAD_SPIN)) {
-                    this.headSpinSlowerAnimation.start();
+                    this.headSpinSlowerAnimation.start(this.tickCount);
                 } else {
                     this.headSpinAnimation.stop();
                     this.headSpinSlowerAnimation.stop();
                     this.headSpinSlowestAnimation.stop();
                 }
                 if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON)) {
-                    this.buttonSlowerAnimation.start();
+                    this.buttonSlowerAnimation.start(this.tickCount);
                 } else {
                     this.buttonAnimation.stop();
                     this.buttonSlowerAnimation.stop();
                     this.buttonSlowestAnimation.stop();
                 }
                 if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON_UP)) {
-                    this.buttonUpSlowerAnimation.start();
+                    this.buttonUpSlowerAnimation.start(this.tickCount);
                 } else {
                     this.buttonUpAnimation.stop();
                     this.buttonUpSlowerAnimation.stop();
                     this.buttonUpSlowestAnimation.stop();
                 }
                 if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON_DOWN)) {
-                    this.buttonDownSlowerAnimation.start();
+                    this.buttonDownSlowerAnimation.start(this.tickCount);
                 } else {
                     this.buttonDownAnimation.stop();
                     this.buttonDownSlowerAnimation.stop();
@@ -186,28 +186,28 @@ public class CopperGolemEntity extends AbstractGolem {
                 }
             } else {
                 if (PoseUtil.isInPose(this, USPoses.HEAD_SPIN)) {
-                    this.headSpinSlowestAnimation.start();
+                    this.headSpinSlowestAnimation.start(this.tickCount);
                 } else {
                     this.headSpinAnimation.stop();
                     this.headSpinSlowerAnimation.stop();
                     this.headSpinSlowestAnimation.stop();
                 }
                 if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON)) {
-                    this.buttonSlowestAnimation.start();
+                    this.buttonSlowestAnimation.start(this.tickCount);
                 } else {
                     this.buttonAnimation.stop();
                     this.buttonSlowerAnimation.stop();
                     this.buttonSlowestAnimation.stop();
                 }
                 if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON_UP)) {
-                    this.buttonUpSlowestAnimation.start();
+                    this.buttonUpSlowestAnimation.start(this.tickCount);
                 } else {
                     this.buttonUpAnimation.stop();
                     this.buttonUpSlowerAnimation.stop();
                     this.buttonUpSlowestAnimation.stop();
                 }
                 if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON_DOWN)) {
-                    this.buttonDownSlowestAnimation.start();
+                    this.buttonDownSlowestAnimation.start(this.tickCount);
                 } else {
                     this.buttonDownAnimation.stop();
                     this.buttonDownSlowerAnimation.stop();
@@ -254,7 +254,7 @@ public class CopperGolemEntity extends AbstractGolem {
     public void tick() {
         if (this.level.isClientSide()) {
             if (this.shouldWalk()) {
-                this.walkingAnimation.startIfNotRunning();
+                this.walkingAnimation.startIfStopped(this.tickCount);
 
             } else {
                 this.walkingAnimation.stop();

@@ -1,12 +1,8 @@
 package com.cursedcauldron.unvotedandshelved.client.entity.models;
 
-import com.cursedcauldron.unvotedandshelved.client.entity.CopperGolemAnimations;
+import com.cursedcauldron.unvotedandshelved.client.entity.animations.CopperGolemAnimations;
 import com.cursedcauldron.unvotedandshelved.entities.CopperGolemEntity;
-import com.cursedcauldron.unvotedandshelved.util.Animation;
-import com.cursedcauldron.unvotedandshelved.util.AnimationHelper;
-import com.cursedcauldron.unvotedandshelved.util.AnimationState;
 import com.mojang.math.Vector3f;
-import net.minecraft.Util;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -20,7 +16,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class CopperGolemModel<T extends CopperGolemEntity> extends HierarchicalModel<T> {
-    private static final Vector3f ANIMATION_PROGRESS = new Vector3f();
     private final ModelPart head;
     private final ModelPart body;
     private final ModelPart root;
@@ -46,39 +41,26 @@ public class CopperGolemModel<T extends CopperGolemEntity> extends HierarchicalM
 
     @Override
     public void setupAnim(T entity, float angle, float distance, float animationProgress, float yaw, float pitch) {
-        this.root().getAllParts().forEach(ModelModifier::resetPose);
-        long time = Util.getMillis();
+        this.root().getAllParts().forEach(ModelPart::resetPose);
         this.head.yRot = yaw * 0.017453292F;
-        this.runAnimation(entity.walkingAnimation, CopperGolemAnimations.walkingAnimation(entity.getStage()), time);
+        float speed = Math.min((float)entity.getDeltaMovement().lengthSqr() * 125.0F, 1.0F);
+        this.animate(entity.walkingAnimation, CopperGolemAnimations.walkingAnimation(entity.getStage()), animationProgress, speed);
 
-        this.runAnimation(entity.headSpinAnimation, CopperGolemAnimations.HEAD_SPIN, time);
-        this.runAnimation(entity.headSpinSlowerAnimation, CopperGolemAnimations.HEAD_SPIN_SLOWER, time);
-        this.runAnimation(entity.headSpinSlowestAnimation, CopperGolemAnimations.HEAD_SPIN_SLOWEST, time);
+        this.animate(entity.headSpinAnimation, CopperGolemAnimations.HEAD_SPIN, animationProgress);
+        this.animate(entity.headSpinSlowerAnimation, CopperGolemAnimations.HEAD_SPIN_SLOWER, animationProgress);
+        this.animate(entity.headSpinSlowestAnimation, CopperGolemAnimations.HEAD_SPIN_SLOWEST, animationProgress);
 
-        this.runAnimation(entity.buttonAnimation, CopperGolemAnimations.BUTTON_PRESS, time);
-        this.runSlowerAnimation(entity.buttonSlowerAnimation, CopperGolemAnimations.BUTTON_PRESS, time);
-        this.runSlowestAnimation(entity.buttonSlowestAnimation, CopperGolemAnimations.BUTTON_PRESS, time);
+        this.animate(entity.buttonAnimation, CopperGolemAnimations.BUTTON_PRESS, animationProgress);
+        this.animate(entity.buttonSlowerAnimation, CopperGolemAnimations.BUTTON_PRESS, animationProgress);
+        this.animate(entity.buttonSlowestAnimation, CopperGolemAnimations.BUTTON_PRESS, animationProgress);
 
-        this.runAnimation(entity.buttonUpAnimation, CopperGolemAnimations.BUTTON_PRESS_UP, time);
-        this.runSlowerAnimation(entity.buttonUpSlowerAnimation, CopperGolemAnimations.BUTTON_PRESS_UP, time);
-        this.runSlowestAnimation(entity.buttonUpSlowestAnimation, CopperGolemAnimations.BUTTON_PRESS_UP, time);
+        this.animate(entity.buttonUpAnimation, CopperGolemAnimations.BUTTON_PRESS_UP, animationProgress);
+        this.animate(entity.buttonUpSlowerAnimation, CopperGolemAnimations.BUTTON_PRESS_UP, animationProgress);
+        this.animate(entity.buttonUpSlowestAnimation, CopperGolemAnimations.BUTTON_PRESS_UP, animationProgress);
 
-        this.runAnimation(entity.buttonDownAnimation, CopperGolemAnimations.BUTTON_PRESS_DOWN, time);
-        this.runSlowerAnimation(entity.buttonDownSlowerAnimation, CopperGolemAnimations.BUTTON_PRESS_DOWN, time);
-        this.runSlowestAnimation(entity.buttonDownSlowestAnimation, CopperGolemAnimations.BUTTON_PRESS_DOWN, time);
-    }
-
-
-    private void runAnimation(AnimationState animationState, Animation animation, long time) {
-        animationState.run(state -> AnimationHelper.animate(this, animation, time - state.getStartTime(), 1.0F, ANIMATION_PROGRESS));
-    }
-
-    private void runSlowerAnimation(AnimationState animationState, Animation animation, long time) {
-        animationState.run(state -> AnimationHelper.animate(this, animation, time - state.getStartTime(), 0.75F, ANIMATION_PROGRESS));
-    }
-
-    private void runSlowestAnimation(AnimationState animationState, Animation animation, long time) {
-        animationState.run(state -> AnimationHelper.animate(this, animation, time - state.getStartTime(), 0.5F, ANIMATION_PROGRESS));
+        this.animate(entity.buttonDownAnimation, CopperGolemAnimations.BUTTON_PRESS_DOWN, animationProgress);
+        this.animate(entity.buttonDownSlowerAnimation, CopperGolemAnimations.BUTTON_PRESS_DOWN, animationProgress);
+        this.animate(entity.buttonDownSlowestAnimation, CopperGolemAnimations.BUTTON_PRESS_DOWN, animationProgress);
     }
 
     @Override

@@ -1,0 +1,71 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:lead"
+    },
+    "title": {"translate":"The Three Musketeers"},
+    "description": {"color":"#75E1FF","translate":"Lead the Glare, Allay, and Copper Golem"},
+    "announce_to_chat": "true",
+    "frame": "goal"
+  },
+  "parent": "minecraft:husbandry/root",
+  "criteria": {
+    "minecraft:allay": {
+      "trigger": "minecraft:player_interacted_with_entity",
+      "conditions": {
+        "item": {
+          "items": [
+            "minecraft:lead"
+          ]
+        },
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "minecraft:allay"
+            }
+          }
+        ]
+      }
+    },
+    "unvotedandshelved:glare": {
+      "trigger": "minecraft:player_interacted_with_entity",
+      "conditions": {
+        "item": {
+          "items": [
+            "minecraft:lead"
+          ]
+        },
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "unvotedandshelved:glare"
+            }
+          }
+        ]
+      }
+    },
+    "unvotedandshelved:copper_golem": {
+      "trigger": "minecraft:player_interacted_with_entity",
+      "conditions": {
+        "item": {
+          "items": [
+            "minecraft:lead"
+          ]
+        },
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "unvotedandshelved:copper_golem"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

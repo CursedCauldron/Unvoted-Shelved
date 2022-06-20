@@ -13,7 +13,6 @@ import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-//<>
 @OnlyIn(Dist.CLIENT)
 public class GlareModel<T extends GlareEntity> extends HierarchicalModel<T> {
     private final ModelPart body;

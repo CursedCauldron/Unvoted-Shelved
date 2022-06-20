@@ -11,9 +11,6 @@
     "access.ThrownTridentAccessor"
   ],
   "client": [
-    "ModelPartMixin",
-    "PartDefinitionMixin",
-    "access.ModelPartAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
