@@ -60,8 +60,8 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
     private static final EntityDataAccessor<Boolean> GRUMPY = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> SHINY = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> FINDING_DARKNESS = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> GRUMPY_TICKS;
-    private static final EntityDataAccessor<Integer> GLOWBERRIES_GIVEN;
+    private static final EntityDataAccessor<Integer> GRUMPY_TICKS = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> GLOWBERRIES_GIVEN = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.INT);
 
     public GlareEntity(EntityType<? extends AgeableMob> entityType, Level level) {
         super(entityType, level);
@@ -294,11 +294,6 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
 
     public int getGrumpyTick() {
         return this.entityData.get(GRUMPY_TICKS);
-    }
-
-    static {
-        GRUMPY_TICKS = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.INT);
-        GLOWBERRIES_GIVEN = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.INT);
     }
 
     public void setLightblock(BlockPos pos) {
