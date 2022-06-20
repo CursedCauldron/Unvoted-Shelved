@@ -129,7 +129,7 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         ItemStack stack = player.getItemInHand(hand);
         if (stack.getItem() instanceof AxeItem) {
             this.convertBack(USEntityTypes.COPPER_GOLEM.get(), true);
-            this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
+            this.gameEvent(GameEvent.ENTITY_INTERACT);
             this.level.playSound(player, this.blockPosition(), SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
             this.level.levelEvent(player, 3005, this.blockPosition(), 0);
             return InteractionResult.SUCCESS;
@@ -243,7 +243,7 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
             this.kill();
         } else {
             this.level.broadcastEntityEvent(this, (byte)32);
-            this.gameEvent(GameEvent.ENTITY_DAMAGED, damageSource.getEntity());
+            this.gameEvent(GameEvent.ENTITY_DAMAGE);
             this.lastHit = l;
         }
         return true;
@@ -283,7 +283,7 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
             this.kill();
         } else {
             this.setHealth(g);
-            this.gameEvent(GameEvent.ENTITY_DAMAGED, damageSource.getEntity());
+            this.gameEvent(GameEvent.ENTITY_DAMAGE);
         }
     }
 

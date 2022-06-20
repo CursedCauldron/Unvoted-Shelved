@@ -6,6 +6,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
@@ -39,7 +40,7 @@ public class WeatheringCopperButtonBlock extends CopperButtonBlock implements We
     }
 
     @Override
-    public void randomTick(BlockState state, ServerLevel world, BlockPos blockPos, Random random) {
+    public void randomTick(BlockState state, ServerLevel world, BlockPos blockPos, RandomSource random) {
         this.onRandomTick(state, world, blockPos, random);
     }
 

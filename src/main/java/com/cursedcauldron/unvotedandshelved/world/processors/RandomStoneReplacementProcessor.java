@@ -2,6 +2,7 @@ package com.cursedcauldron.unvotedandshelved.world.processors;
 
 import com.cursedcauldron.unvotedandshelved.init.USStructureProcessors;
 import com.mojang.serialization.Codec;
+import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
@@ -24,7 +25,7 @@ public class RandomStoneReplacementProcessor extends StructureProcessor {
     @Nullable
     @Override
     public StructureTemplate.StructureBlockInfo processBlock(LevelReader world, BlockPos pos, BlockPos pivot, StructureTemplate.StructureBlockInfo structureBlockInfo, StructureTemplate.StructureBlockInfo structureBlockInfo2, StructurePlaceSettings data) {
-        Random random = data.getRandom(structureBlockInfo2.pos);
+        RandomSource random = data.getRandom(structureBlockInfo2.pos);
         float f = random.nextFloat();
         BlockState state = structureBlockInfo2.state;
         Block randomBlock;

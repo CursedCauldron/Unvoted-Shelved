@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
@@ -79,12 +80,12 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
         return (int) ((Math.random() * (max - min)) + min);
     }
 
-    private static int getRandomOffset(Random random) {
+    private static int getRandomOffset(RandomSource random) {
         return random.nextInt(3) - 1;
     }
 
     private static BlockPos getNearbyPos(GlareEntity mob, BlockPos blockPos) {
-        Random random = mob.level.random;
+        RandomSource random = mob.level.random;
         return blockPos.offset(getRandomOffset(random), 0, getRandomOffset(random));
     }
 

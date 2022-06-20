@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.WorldGenRegion;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -69,7 +70,7 @@ public class CloseOffFluidSourcesProcessor extends StructureProcessor {
                     FluidState fluidState = levelChunkSection.getFluidState(SectionPos.sectionRelative(mutable.getX()), SectionPos.sectionRelative(mutable.getY()), SectionPos.sectionRelative(mutable.getZ()));
 
                     if (fluidState.isSource()) {
-                        Random random = new WorldgenRandom(new LegacyRandomSource(0L));
+                        RandomSource random = new WorldgenRandom(new LegacyRandomSource(0L));
                         random.setSeed(mutable.asLong() * mutable.getY());
 
                         levelChunkSection.setBlockState(SectionPos.sectionRelative(mutable.getX()), SectionPos.sectionRelative(mutable.getY()), SectionPos.sectionRelative(mutable.getZ()), Blocks.STONE.defaultBlockState(), false);

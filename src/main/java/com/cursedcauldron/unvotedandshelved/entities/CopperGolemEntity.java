@@ -272,7 +272,7 @@ public class CopperGolemEntity extends AbstractGolem {
             }
             this.setWaxed(true);
             this.level.levelEvent(player, 3003, this.blockPosition(), 0);
-            this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
+            this.gameEvent(GameEvent.ENTITY_INTERACT);
             return InteractionResult.SUCCESS;
         }
         else if (stack.getItem() instanceof AxeItem) {
@@ -280,14 +280,14 @@ public class CopperGolemEntity extends AbstractGolem {
                 this.setWaxed(false);
                 this.level.playSound(player, this.blockPosition(), SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
                 this.level.levelEvent(player, 3004, this.blockPosition(), 0);
-                this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
+                this.gameEvent(GameEvent.ENTITY_INTERACT);
             } else {
                 if (this.getStage() != Stage.UNAFFECTED) {
                     stack.hurtAndBreak(1, player, e -> e.broadcastBreakEvent(hand));
                     this.setStage(Stage.values()[this.getStage().getId() - 1]);
                     this.level.playSound(player, this.blockPosition(), SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
                     this.level.levelEvent(player, 3005, this.blockPosition(), 0);
-                    this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
+                    this.gameEvent(GameEvent.ENTITY_INTERACT);
                 } else {
                     return InteractionResult.PASS;
                 }
@@ -298,7 +298,7 @@ public class CopperGolemEntity extends AbstractGolem {
             this.heal(5.0F);
             float f1 = 1.4F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F;
             this.playSound(SoundEvents.IRON_GOLEM_REPAIR, 0.5F, f1);
-            this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
+            this.gameEvent(GameEvent.ENTITY_INTERACT);
             if (!player.getAbilities().instabuild) {
                 stack.shrink(1);
             }

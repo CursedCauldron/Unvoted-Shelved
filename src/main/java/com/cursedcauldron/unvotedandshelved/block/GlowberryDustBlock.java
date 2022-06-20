@@ -31,7 +31,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import java.util.Random;
+import net.minecraft.util.RandomSource;
 
 public class GlowberryDustBlock extends Block implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -71,7 +71,7 @@ public class GlowberryDustBlock extends Block implements SimpleWaterloggedBlock 
     }
 
     @Override
-    public void animateTick(BlockState state, Level world, BlockPos blockPos, Random random) {
+    public void animateTick(BlockState state, Level world, BlockPos blockPos, RandomSource random) {
         int x= blockPos.getX();
         int y= blockPos.getY();
         int z = blockPos.getZ();

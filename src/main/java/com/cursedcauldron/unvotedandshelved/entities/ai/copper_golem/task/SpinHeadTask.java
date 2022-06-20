@@ -49,7 +49,7 @@ public class SpinHeadTask extends Behavior<CopperGolemEntity> {
                 default -> soundEvent = USSoundEvents.HEAD_SPIN_SLOWEST.get();
             }
             entity.playSound(soundEvent, 1.0F, 1.0F);
-            entity.gameEvent(USGameEvents.SPIN_HEAD, entity.eyeBlockPosition());
+            entity.gameEvent(USGameEvents.SPIN_HEAD);
             PoseUtil.setModPose(USPoses.HEAD_SPIN, entity);
         }
     }

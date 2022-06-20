@@ -4,6 +4,7 @@ import com.cursedcauldron.unvotedandshelved.events.MiscEvents;
 import com.cursedcauldron.unvotedandshelved.events.MobEvents;
 import com.cursedcauldron.unvotedandshelved.events.WorldEvents;
 import com.cursedcauldron.unvotedandshelved.init.USActivities;
+import com.cursedcauldron.unvotedandshelved.init.USBiomeModifiers;
 import com.cursedcauldron.unvotedandshelved.init.USBlocks;
 import com.cursedcauldron.unvotedandshelved.init.USEntityTypes;
 import com.cursedcauldron.unvotedandshelved.init.USFeatures;
@@ -11,9 +12,9 @@ import com.cursedcauldron.unvotedandshelved.init.USGameEvents;
 import com.cursedcauldron.unvotedandshelved.init.USItems;
 import com.cursedcauldron.unvotedandshelved.init.USMemoryModules;
 import com.cursedcauldron.unvotedandshelved.init.USParticleTypes;
+import com.cursedcauldron.unvotedandshelved.init.USSensorTypes;
 import com.cursedcauldron.unvotedandshelved.init.USSoundEvents;
 import com.cursedcauldron.unvotedandshelved.init.USStructureProcessors;
-import com.cursedcauldron.unvotedandshelved.init.USStructures;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -32,16 +33,17 @@ public class UnvotedAndShelved {
 
         USActivities.ACTIVITIES.register(modEventBus);
         USBlocks.BLOCKS.register(modEventBus);
+        USBiomeModifiers.BIOME_MODIFIERS.register(modEventBus);
         USEntityTypes.ENTITY_TYPES.register(modEventBus);
         USFeatures.FEATURES.register(modEventBus);
         USItems.ITEMS.register(modEventBus);
         USMemoryModules.MEMORY_MODULES.register(modEventBus);
         USParticleTypes.PARTICLE_TYPES.register(modEventBus);
-        USStructures.STRUCTURES.register(modEventBus);
+        USSensorTypes.SENSOR_TYPES.register(modEventBus);
         USSoundEvents.SOUND_EVENTS.register(modEventBus);
 
         eventBus.register(this);
-        eventBus.register(new WorldEvents());
+//        eventBus.register(new WorldEvents());
         eventBus.register(new MobEvents());
         eventBus.register(new MiscEvents());
     }

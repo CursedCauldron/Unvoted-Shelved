@@ -3,7 +3,7 @@ loaderVersion="[39,)"
 license="All rights reserved"
 [[mods]]
 modId="unvotedandshelved"
-version="1.18.2-2.0.1-forge"
+version="1.19-1.0.0-forge"
 displayName="Unvoted and Shelved"
 logoFile="unvotedandshelved.png"
 authors="Dopadream, Orcinus, Ninni, Blackgear"
@@ -19,6 +19,6 @@ Introduces the outvoted Mobs from previous mob votes.
 [[dependencies.unvotedandshelved]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.18.1,1.19)"
+    versionRange="[1.19,1.20)"
     ordering="NONE"
     side="BOTH"
