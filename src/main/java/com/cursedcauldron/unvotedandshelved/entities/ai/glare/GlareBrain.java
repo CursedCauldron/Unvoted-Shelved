@@ -122,6 +122,6 @@ public class GlareBrain {
     }
 
     public static Ingredient getTemptations() {
-        return Frog.TEMPTATION_ITEM;
+        return GlareEntity.TEMPTATION_ITEM;
     }
 }
