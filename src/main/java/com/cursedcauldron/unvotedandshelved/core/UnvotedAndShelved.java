@@ -31,6 +31,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class UnvotedAndShelved implements ModInitializer {
+
     public static final String MODID = "unvotedandshelved";
     public static final Logger LOGGER = LogManager.getLogger(MODID);
     public static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).setPrettyPrinting().create();
@@ -38,7 +39,7 @@ public class UnvotedAndShelved implements ModInitializer {
     @Override
     public void onInitialize() {
 
-        // Registry
+        // Registry:
 
         USActivities.ACTIVITIES.register();
         USBlocks.BLOCKS.register();

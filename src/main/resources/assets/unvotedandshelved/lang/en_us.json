@@ -43,6 +43,7 @@
   "entity.unvotedandshelved.copper_golem": "Copper Golem",
   "entity.unvotedandshelved.oxidized_copper_golem": "Oxidized Copper Golem",
   "entity.unvotedandshelved.glare": "Glare",
+  "entity.unvotedandshelved.moobloom": "Moobloom",
   "options.unvotedandshelved.copperGolem": "Copper Golems",
   "options.unvotedandshelved.copperGolem.tooltip": "Determines whether or not Copper Golems can exist. Disabling this as the host will delete any and all Copper Golems from your loaded world.",
   "options.unvotedandshelved.copperGolem.true": "Enabled",

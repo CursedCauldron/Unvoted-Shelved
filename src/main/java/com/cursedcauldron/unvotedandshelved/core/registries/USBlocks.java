@@ -1,20 +1,14 @@
 package com.cursedcauldron.unvotedandshelved.core.registries;
 
 import com.cursedcauldron.unvotedandshelved.api.CoreRegistry;
-import com.cursedcauldron.unvotedandshelved.common.blocks.ConnectedRotatedPillarBlock;
-import com.cursedcauldron.unvotedandshelved.common.blocks.CopperButtonBlock;
-import com.cursedcauldron.unvotedandshelved.common.blocks.GlowberryDustBlock;
-import com.cursedcauldron.unvotedandshelved.common.blocks.WeatheringCopperButtonBlock;
-import com.cursedcauldron.unvotedandshelved.common.blocks.WeatheringRotatedPillarBlock;
+import com.cursedcauldron.unvotedandshelved.common.blocks.*;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import net.minecraft.core.Registry;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.WeatheringCopper;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;

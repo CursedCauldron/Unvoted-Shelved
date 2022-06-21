@@ -24,17 +24,13 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.control.LookControl;
-import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.animal.FlyingAnimal;
-import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.LightLayer;
@@ -65,13 +61,6 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 16.0F);
         this.setPathfindingMalus(BlockPathTypes.COCOA, -1.0F);
         this.setPathfindingMalus(BlockPathTypes.FENCE, -1.0F);
-    }
-
-    // Allows Glares to follow players who are holding Glow Berries in their hand, as well as for Glares to flee from Creepers
-
-    public void registerGoals() {
-        this.goalSelector.addGoal(2, new TemptGoal(this, .8D, Ingredient.of(Items.GLOW_BERRIES), false));
-        this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Creeper.class, 4.0F, 0.5D, 0.8D));
     }
 
     // Glare Spawning
