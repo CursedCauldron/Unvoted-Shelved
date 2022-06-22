@@ -52,6 +52,9 @@ public class FrozenCopperGolemItem extends Item {
                     serverLevel.addFreshEntityWithPassengers(armorStand);
                     level.playSound(null, armorStand.getX(), armorStand.getY(), armorStand.getZ(), SoundEvents.COPPER_PLACE, SoundSource.BLOCKS, 0.75F, 0.8F);
                     level.gameEvent(useOnContext.getPlayer(), GameEvent.ENTITY_PLACE, armorStand.position());
+                    if (itemStack.hasCustomHoverName()) {
+                        armorStand.setCustomName(itemStack.getHoverName());
+                    }
                 }
 
                 itemStack.shrink(1);

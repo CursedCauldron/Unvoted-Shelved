@@ -108,7 +108,7 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
 
     @Override
     public boolean isCustomNameVisible() {
-        return this.hasCustomName();
+    return this.hasCustomName();
     }
 
     // Prevents the Oxidized Copper Golem from being pushed
@@ -197,7 +197,7 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
     @Override
     public boolean hurt(@NotNull DamageSource damageSource, float f) {
 
-        // Prevents the Copper Golem from being damaged by most damage sources
+        // Damages the Oxidized Copper Golem if taken damage through several damage sources
 
         if (this.level.isClientSide || this.isRemoved()) {
             return false;
@@ -212,6 +212,11 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         if (damageSource.isExplosion()) {
             this.brokenByAnything(damageSource);
             this.kill();
+            var item = new ItemStack(USItems.FROZEN_COPPER_GOLEM_ITEM);
+            Block.popResource(this.level, this.blockPosition(), item);
+            if (this.hasCustomName()) {
+                item.setHoverName(this.getCustomName());
+            }
             return false;
         }
         if (DamageSource.IN_FIRE.equals(damageSource)) {
@@ -234,7 +239,11 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
 
         if (damageSource.getDirectEntity() instanceof Warden) {
             this.kill();
-            Block.popResource(this.level, this.blockPosition(), new ItemStack(USItems.FROZEN_COPPER_GOLEM_ITEM));
+            var item = new ItemStack(USItems.FROZEN_COPPER_GOLEM_ITEM);
+            Block.popResource(this.level, this.blockPosition(), item);
+            if (this.hasCustomName()) {
+                item.setHoverName(this.getCustomName());
+            }
             return false;
         }
 
@@ -242,7 +251,11 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
 
         if (damageSource.getDirectEntity() instanceof WitherBoss) {
             this.kill();
-            Block.popResource(this.level, this.blockPosition(), new ItemStack(USItems.FROZEN_COPPER_GOLEM_ITEM));
+            var item = new ItemStack(USItems.FROZEN_COPPER_GOLEM_ITEM);
+            Block.popResource(this.level, this.blockPosition(), item);
+            if (this.hasCustomName()) {
+                item.setHoverName(this.getCustomName());
+            }
             return false;
         }
 
@@ -340,8 +353,12 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
     // Drops the Oxidized Copper Golem as an item if broken
 
     private void brokenByPlayer(DamageSource damageSource) {
-        Block.popResource(this.level, this.blockPosition(), new ItemStack(USItems.FROZEN_COPPER_GOLEM_ITEM));
+        var item = new ItemStack(USItems.FROZEN_COPPER_GOLEM_ITEM);
+        Block.popResource(this.level, this.blockPosition(), item);
         this.brokenByAnything(damageSource);
+        if (this.hasCustomName()) {
+            item.setHoverName(this.getCustomName());
+        }
     }
 
     public final void brokenByAnything(DamageSource damageSource) {
