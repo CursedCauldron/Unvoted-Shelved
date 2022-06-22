@@ -277,6 +277,12 @@ public class CopperGolemEntity extends AbstractGolem {
         return this.onGround && this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6 && !this.isInWaterOrBubble();
     }
 
+    // Prevents the Copper Golem from drowning, similar to Iron Golems
+
+    protected int decreaseAirSupply(int i) {
+        return i;
+    }
+
     @Override
     public void tick() {
         if (this.level.isClientSide()) {
