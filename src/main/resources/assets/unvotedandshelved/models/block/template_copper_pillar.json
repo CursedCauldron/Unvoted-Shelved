@@ -1,10 +1,10 @@
 {
 	"parent": "minecraft:block/block",
 	"textures": {
-		"end": "",
-		"particle": "",
-		"side": "",
-		"joint": ""
+		"end": "#end",
+		"particle": "#side",
+		"side": "#side",
+		"joint": "#joint"
 	},
 	"elements": [
 		{
@@ -22,8 +22,8 @@
 		},
 		{
 			"name": "Joint",
-			"from": [0, 16, 0],
-			"to": [16.02, 18, 16.02],
+			"from": [-0.01, 15.99, -0.01],
+			"to": [16.01, 18.01, 16.01],
 			"faces": {
 				"north": {"uv": [0, 14, 16, 16], "texture": "#joint"},
 				"east": {"uv": [0, 14, 16, 16], "texture": "#joint"},
