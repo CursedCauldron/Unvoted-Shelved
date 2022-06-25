@@ -101,7 +101,7 @@ jar {
     manifest {
         attributes([
                 "Specification-Title"     : "Unvoted and Shelved",
-                "Specification-Vendor"    : "Dopadream, Orcinus, Ninni, Blackgear",
+                "Specification-Vendor"    : "Dopadream, Orcinus, Ninni, Sydokiddo, Blackgear",
                 "Specification-Version"   : "1",
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
