@@ -406,13 +406,7 @@ public class CopperGolemEntity extends AbstractGolem {
 
     // Cooldown for the Copper Golem pressing Copper Buttons
 
-    public void setCooldown() {
-        double bound = Math.pow(2, this.getStage().getId() - 1);
-        int min = (int) (120 * bound);
-        int max = (int) (240 * bound);
-        int duration = UniformInt.of(min, max).sample(level.getRandom());
-        this.getBrain().setMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS, duration);
-    }
+
 
     // Sound Events
 

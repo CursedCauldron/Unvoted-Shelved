@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
@@ -63,12 +64,12 @@ public class PressCopperButtonTask extends Behavior<CopperGolemEntity> {
     // Sets cooldown for Copper Golem pressing Copper Buttons
 
     @Override
-    protected void tick(@NotNull ServerLevel world, @NotNull CopperGolemEntity entity, long p_22553_) {
+    protected void tick(@NotNull ServerLevel level, @NotNull CopperGolemEntity entity, long p_22553_) {
         if (this.buttonTicks < 60) {
             this.buttonTicks++;
         } else {
             entity.getBrain().eraseMemory(USMemoryModules.COPPER_BUTTON);
-            entity.setCooldown();
+            entity.getBrain().setMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS, UniformInt.of(120, 240).sample(level.getRandom()));
             entity.setPose(Pose.STANDING);
         }
     }

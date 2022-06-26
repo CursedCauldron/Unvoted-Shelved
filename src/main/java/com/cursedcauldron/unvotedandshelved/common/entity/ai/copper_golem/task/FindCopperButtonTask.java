@@ -7,6 +7,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
@@ -21,7 +22,7 @@ public class FindCopperButtonTask extends Behavior<CopperGolemEntity> {
     private BlockPos copperPosBelowPublic;
 
     public FindCopperButtonTask() {
-        super(ImmutableMap.of(MemoryModuleType.LOOK_TARGET, MemoryStatus.REGISTERED, MemoryModuleType.WALK_TARGET, MemoryStatus.REGISTERED, MemoryModuleType.HURT_BY, MemoryStatus.VALUE_ABSENT, USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS, MemoryStatus.VALUE_ABSENT, USMemoryModules.COPPER_BUTTON, MemoryStatus.VALUE_ABSENT));
+        super(ImmutableMap.of(MemoryModuleType.HURT_BY, MemoryStatus.VALUE_ABSENT, USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS, MemoryStatus.VALUE_ABSENT, USMemoryModules.COPPER_BUTTON, MemoryStatus.VALUE_ABSENT));
     }
 
     @Override
@@ -36,10 +37,10 @@ public class FindCopperButtonTask extends Behavior<CopperGolemEntity> {
 
     @Override
     protected void start(@NotNull ServerLevel level, @NotNull CopperGolemEntity entity, long p_22542_) {
-        BlockPos copperPos = this.getCopperPos(entity);
+        BlockPos copperPos = this.getCopperPos(entity, level);
         if (copperPos != null) {
             this.copperPosPublic = copperPos;
-            BlockPos copperPosBelow = this.getCopperPos(entity).below();
+            BlockPos copperPosBelow = this.getCopperPos(entity, level).below();
             if (copperPosBelow != null) {
                 this.copperPosBelowPublic = copperPosBelow;
             }
@@ -78,7 +79,7 @@ public class FindCopperButtonTask extends Behavior<CopperGolemEntity> {
 
     // Gets the position of a nearby Copper Button
 
-    public BlockPos getCopperPos(CopperGolemEntity entity) {
+    public BlockPos getCopperPos(CopperGolemEntity entity, ServerLevel level) {
         int radius = 16;
         List<BlockPos> possibles = Lists.newArrayList();
         for (int x = -radius; x <= radius; x++) {
@@ -92,7 +93,7 @@ public class FindCopperButtonTask extends Behavior<CopperGolemEntity> {
             }
         }
         if (possibles.isEmpty()) {
-            entity.setCooldown();
+            entity.getBrain().setMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS, UniformInt.of(120, 240).sample(level.getRandom()));
             return null;
         } else {
             return possibles.get(entity.getRandom().nextInt(possibles.size()));
