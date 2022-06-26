@@ -45,7 +45,6 @@ public class WeatheringCopperButtonBlock extends CopperButtonBlock implements We
         return Optional.ofNullable(NEXT_BY_BLOCK.get().get(state.getBlock())).isPresent();
     }
 
-
     @Override
     public Optional<BlockState> getNext(BlockState blockState) {
         return WeatheringCopper.getNext(blockState.getBlock()).map(block -> block.withPropertiesOf(blockState).setValue(POWERED, false));

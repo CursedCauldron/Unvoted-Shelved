@@ -2,11 +2,22 @@ package com.cursedcauldron.unvotedandshelved.mixin;
 
 import com.cursedcauldron.unvotedandshelved.api.LightningRodAccess;
 import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
+import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
+import com.google.common.base.Suppliers;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.ImmutableBiMap;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.WeatheringCopper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+
+import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
+
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -25,16 +36,27 @@ import net.minecraft.world.level.block.state.predicate.BlockStatePredicate;
 // Mixin to allow for Copper Golems to be built using 1 Copper Block, 1 Carved Pumpkin/Jack-O-Lantern, and 1 Lightning Rod
 
 @Mixin(LightningRodBlock.class)
-public class LightningRodBlockMixin extends Block implements LightningRodAccess {
+public class LightningRodBlockMixin extends Block implements LightningRodAccess, WeatheringCopper {
     @Nullable
     private BlockPattern copperGolemPattern;
     @Nullable
     private BlockPattern copperGolemDispenserPattern;
     private static final Predicate<BlockState> IS_GOLEM_HEAD_PREDICATE = (state) -> state != null && (state.is(Blocks.CARVED_PUMPKIN) || state.is(Blocks.JACK_O_LANTERN));
     private static final Predicate<BlockState> IS_GOLEM_HEAD_TIP_PREDICATE = (state) -> state != null && (state == Blocks.LIGHTNING_ROD.defaultBlockState().setValue(LightningRodBlock.FACING, Direction.UP));
+    private static Supplier<BiMap<Block, Block>> NEXT_BY_BLOCK = Suppliers.memoize(() -> ImmutableBiMap.<Block, Block>builder()
+            .put(Blocks.LIGHTNING_ROD, USBlocks.EXPOSED_LIGHTNING_ROD)
+            .put(USBlocks.EXPOSED_LIGHTNING_ROD, USBlocks.WEATHERED_LIGHTNING_ROD)
+            .put(USBlocks.WEATHERED_LIGHTNING_ROD, USBlocks.OXIDIZED_LIGHTNING_ROD)
+            .build());
+    private static final Supplier<BiMap<Block, Block>> PREVIOUS_BY_BLOCK = Suppliers.memoize(() -> NEXT_BY_BLOCK.get().inverse());
 
     public LightningRodBlockMixin(Properties settings) {
         super(settings);
+    }
+
+    @Override
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        this.onRandomTick(state, level, pos, random);
     }
 
     public void onPlace(BlockState state, @NotNull Level world, @NotNull BlockPos pos, BlockState oldState, boolean notify) {
@@ -92,5 +114,24 @@ public class LightningRodBlockMixin extends Block implements LightningRodAccess 
     @Override
     public boolean canDispense(LevelReader worldView, BlockPos pos) {
         return this.getCopperGolemDispenserPattern().find(worldView, pos) != null;
+    }
+
+    @Override
+    public WeatherState getAge() {
+        return WeatherState.UNAFFECTED;
+    }
+
+    @Override
+    public Optional<BlockState> getNext(BlockState blockState) {
+        return WeatheringCopper.getNext(blockState.getBlock()).map(block -> block.withPropertiesOf(blockState));
+    }
+
+    private static Optional<BlockState> getPreviousState(BlockState state) {
+        return Optional.ofNullable(PREVIOUS_BY_BLOCK.get().get(state.getBlock())).map((block) -> block.withPropertiesOf(state));
+    }
+
+    @Override
+    public boolean isRandomlyTicking(BlockState state) {
+        return Optional.ofNullable(NEXT_BY_BLOCK.get().get(state.getBlock())).isPresent();
     }
 }
