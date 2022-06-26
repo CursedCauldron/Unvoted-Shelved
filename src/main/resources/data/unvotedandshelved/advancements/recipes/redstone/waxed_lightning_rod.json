@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "unvotedandshelved:waxed_lightning_rod"
+    ]
+  },
+  "criteria": {
+    "has_lighting_rod": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:lightning_rod"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "unvotedandshelved:waxed_lightning_rod"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_lighting_rod",
+      "has_the_recipe"
+    ]
+  ]
+}

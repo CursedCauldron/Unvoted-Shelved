@@ -13,11 +13,9 @@ import net.minecraft.world.level.block.WeatheringCopper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
-
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -43,7 +41,7 @@ public class LightningRodBlockMixin extends Block implements LightningRodAccess,
     private BlockPattern copperGolemDispenserPattern;
     private static final Predicate<BlockState> IS_GOLEM_HEAD_PREDICATE = (state) -> state != null && (state.is(Blocks.CARVED_PUMPKIN) || state.is(Blocks.JACK_O_LANTERN));
     private static final Predicate<BlockState> IS_GOLEM_HEAD_TIP_PREDICATE = (state) -> state != null && (state == Blocks.LIGHTNING_ROD.defaultBlockState().setValue(LightningRodBlock.FACING, Direction.UP));
-    private static Supplier<BiMap<Block, Block>> NEXT_BY_BLOCK = Suppliers.memoize(() -> ImmutableBiMap.<Block, Block>builder()
+    private static final Supplier<BiMap<Block, Block>> NEXT_BY_BLOCK = Suppliers.memoize(() -> ImmutableBiMap.<Block, Block>builder()
             .put(Blocks.LIGHTNING_ROD, USBlocks.EXPOSED_LIGHTNING_ROD)
             .put(USBlocks.EXPOSED_LIGHTNING_ROD, USBlocks.WEATHERED_LIGHTNING_ROD)
             .put(USBlocks.WEATHERED_LIGHTNING_ROD, USBlocks.OXIDIZED_LIGHTNING_ROD)
@@ -55,7 +53,7 @@ public class LightningRodBlockMixin extends Block implements LightningRodAccess,
     }
 
     @Override
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
         this.onRandomTick(state, level, pos, random);
     }
 
