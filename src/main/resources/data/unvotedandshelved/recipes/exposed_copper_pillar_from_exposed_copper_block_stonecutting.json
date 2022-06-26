@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "minecraft:exposed_copper"
+  },
+  "result": "unvotedandshelved:exposed_copper_pillar",
+  "count": 4
+}

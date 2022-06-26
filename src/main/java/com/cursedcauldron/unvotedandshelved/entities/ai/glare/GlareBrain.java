@@ -5,19 +5,17 @@ import com.cursedcauldron.unvotedandshelved.entities.ai.glare.task.AerialStrollT
 import com.cursedcauldron.unvotedandshelved.entities.ai.glare.task.GlowberryStrollTask;
 import com.cursedcauldron.unvotedandshelved.init.USActivities;
 import com.cursedcauldron.unvotedandshelved.init.USMemoryModules;
+import com.cursedcauldron.unvotedandshelved.init.USSoundEvents;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.Brain;
-import net.minecraft.world.entity.ai.behavior.CountDownCooldownTicks;
 import net.minecraft.world.entity.ai.behavior.DoNothing;
-import net.minecraft.world.entity.ai.behavior.FollowTemptation;
 import net.minecraft.world.entity.ai.behavior.GateBehavior;
 import net.minecraft.world.entity.ai.behavior.LookAtTargetSink;
 import net.minecraft.world.entity.ai.behavior.MoveToTargetSink;
@@ -28,19 +26,16 @@ import net.minecraft.world.entity.ai.behavior.SetEntityLookTarget;
 import net.minecraft.world.entity.ai.behavior.Swim;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
-import net.minecraft.world.entity.ai.util.LandRandomPos;
-import net.minecraft.world.entity.animal.frog.Frog;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.phys.Vec3;
 
-//<>
 public class GlareBrain {
 
-    public static Brain<?> create(GlareEntity glare, Brain<GlareEntity> brain) {
+    // Memory modules for the Glare
+
+    public static Brain<?> create(Brain<GlareEntity> brain) {
         addCoreActivities(brain);
         addFindDarknessActivity(brain);
         addIdleActivities(brain);
@@ -55,33 +50,42 @@ public class GlareBrain {
         brain.addActivity(Activity.CORE, 0, ImmutableList.of(
                 new Swim(0.8F),
                 new LookAtTargetSink(45, 90),
-                new MoveToTargetSink(),
-                new CountDownCooldownTicks(MemoryModuleType.TEMPTATION_COOLDOWN_TICKS)
+                new MoveToTargetSink()
         ));
     }
 
-    private static Vec3 getRandomNearbyPos(GlareEntity glare) {
-        Vec3 vec3 = LandRandomPos.getPos(glare, 4, 2);
-        return vec3 == null ? glare.position() : vec3;
-    }
+    // Detects if the player has Glow Berries in their hand
 
-    public static boolean isGlowBerry(GlareEntity glare, ItemStack stack) {
+    public static boolean isGlowBerry(ItemStack stack) {
         return stack.is(Items.GLOW_BERRIES);
     }
 
     public static InteractionResult playerInteract(GlareEntity glare, Player player, InteractionHand hand) {
+
+        // Sets the Glare to its Glow Berry state if given Glow Berries and consumes the Glow Berries from the player's hand
+
         Brain<?> brain = glare.getBrain();
         ItemStack itemStack = player.getItemInHand(hand);
         if (brain.getMemory(USMemoryModules.GLOWBERRIES_GIVEN.get()).isPresent()) {
             int i = brain.getMemory(USMemoryModules.GLOWBERRIES_GIVEN.get()).get();
-            if (i < 5 && isGlowBerry(glare, itemStack)) {
-                if (!player.getAbilities().instabuild) {
-                    itemStack.shrink(1);
-                    brain.setMemory(USMemoryModules.GIVEN_GLOWBERRY.get(), glare);
+            if (!(i >= 5)) {
+                if (isGlowBerry(itemStack)) {
+                    if (!player.getAbilities().instabuild) {
+                        itemStack.shrink(1);
+                        brain.setMemory(USMemoryModules.GIVEN_GLOWBERRY.get(), glare);
+                    }
+                    if (brain.getMemory(USMemoryModules.GLOWBERRIES_GIVEN.get()).isPresent()) {
+                        glare.setGlowberries(i + 1);
+                        glare.playSound(USSoundEvents.GLARE_GIVE_GLOW_BERRIES.get(), 1.0f, 1.0f);
+                        return InteractionResult.SUCCESS;
+                    } else {
+                        if (brain.getMemory(USMemoryModules.GLOWBERRIES_GIVEN.get()).isPresent()) {
+                            glare.setGlowberries(i + 1);
+                            glare.playSound(USSoundEvents.GLARE_GIVE_GLOW_BERRIES.get(), 1.0f, 1.0f);
+                            return InteractionResult.SUCCESS;
+                        }
+                    }
                 }
-                glare.setGlowberries(i + 1);
-                glare.playSound(SoundEvents.CAVE_VINES_PLACE, 1.0F, 1.0F);
-                return InteractionResult.SUCCESS;
             }
         }
         glare.setPersistenceRequired();
@@ -95,12 +99,10 @@ public class GlareBrain {
                 ImmutableSet.of(USMemoryModules.GIVEN_GLOWBERRY.get()));
     }
 
-
     public static void addIdleActivities(Brain<GlareEntity> brain) {
         brain.addActivity(Activity.IDLE,
                 ImmutableList.of(
                         Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(5, 10))),
-                        Pair.of(1, new FollowTemptation(livingEntity -> 1.25F)),
                         Pair.of(2, new GateBehavior<>(
                                 ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT),
                                 ImmutableSet.of(),
@@ -110,18 +112,14 @@ public class GlareBrain {
                                         Pair.of(new AerialStrollTask(0.6F), 2),
                                         Pair.of(new RandomStroll(0.6F), 2),
                                         Pair.of(new GlowberryStrollTask(10, 0.6F), 2),
-                                        Pair.of(new RunIf<>(GlareEntity::isFlying, new DoNothing(10, 20)), 5),
-                                        Pair.of(new RunIf<>(GlareEntity::isOnGround, new DoNothing(10, 20)), 5)
-                )))
-        ));
+                                        Pair.of(new RunIf<>(GlareEntity::isFlying, new DoNothing(30, 60)), 5),
+                                        Pair.of(new RunIf<>(GlareEntity::isOnGround, new DoNothing(30, 60)), 5)
+                                )))
+                ));
     }
 
     public static void updateActivities(GlareEntity glare) {
         Brain<GlareEntity> brain = glare.getBrain();
         brain.setActiveActivityToFirstValid(ImmutableList.of(USActivities.GOTO_DARKNESS.get(), Activity.IDLE));
-    }
-
-    public static Ingredient getTemptations() {
-        return GlareEntity.TEMPTATION_ITEM;
     }
 }

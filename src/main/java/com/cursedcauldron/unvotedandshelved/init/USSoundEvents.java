@@ -18,11 +18,20 @@ public class USSoundEvents {
 
     public static final RegistryObject<SoundEvent> GLARE_GRUMPY_IDLE = register("glare_grumpy_idle");
     public static final RegistryObject<SoundEvent> GLARE_IDLE = register("glare_idle");
+    public static final RegistryObject<SoundEvent> GLARE_HURT = register("glare_hurt");
+    public static final RegistryObject<SoundEvent> GLARE_DEATH = register("glare_death");
+    public static final RegistryObject<SoundEvent> GLARE_GIVE_GLOW_BERRIES = register("glare_give_glow_berries");
     public static final RegistryObject<SoundEvent> GLOWBERRY_DUST_STEP = register("glowberry_dust_step");
+    public static final RegistryObject<SoundEvent> GLOWBERRY_DUST_PLACE = register("glowberry_dust_place");
+    public static final RegistryObject<SoundEvent> GLOWBERRY_DUST_COLLECT = register("glowberry_dust_collect");
     public static final RegistryObject<SoundEvent> COPPER_CLICK = register("copper_button_click");
     public static final RegistryObject<SoundEvent> HEAD_SPIN = register("copper_golem_headspin");
     public static final RegistryObject<SoundEvent> HEAD_SPIN_SLOWER = register("copper_golem_headspin_slower");
     public static final RegistryObject<SoundEvent> HEAD_SPIN_SLOWEST = register("copper_golem_headspin_slowest");
+    public static final RegistryObject<SoundEvent> COPPER_GOLEM_WALK = register("copper_golem_walk");
+    public static final RegistryObject<SoundEvent> COPPER_GOLEM_HIT = register("copper_golem_hit");
+    public static final RegistryObject<SoundEvent> COPPER_GOLEM_DEATH = register("copper_golem_death");
+    public static final RegistryObject<SoundEvent> COPPER_GOLEM_REPAIR = register("copper_golem_repair");
     public static final RegistryObject<SoundEvent> CHINESE_RIP_OFF_WINNIE_THE_POOH = register("chinese_rip_off_winnie_the_pooh");
 
     public static class USBlockSoundGroup {

@@ -20,7 +20,6 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 
 import java.util.Random;
 
-//<>
 public class GlowberryStrollTask extends Behavior<GlareEntity> {
     private BlockPos darkPos;
     private final int range;

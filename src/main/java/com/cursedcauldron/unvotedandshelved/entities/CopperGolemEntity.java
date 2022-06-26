@@ -1,11 +1,11 @@
 package com.cursedcauldron.unvotedandshelved.entities;
 
+import com.cursedcauldron.unvotedandshelved.entities.FrozenCopperGolemEntity;
 import com.cursedcauldron.unvotedandshelved.entities.ai.copper_golem.CopperGolemBrain;
 import com.cursedcauldron.unvotedandshelved.init.USEntityTypes;
 import com.cursedcauldron.unvotedandshelved.init.USMemoryModules;
 import com.cursedcauldron.unvotedandshelved.init.USPoses;
 import com.cursedcauldron.unvotedandshelved.init.USSoundEvents;
-import com.cursedcauldron.unvotedandshelved.util.PoseUtil;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
@@ -24,6 +24,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
@@ -42,15 +43,22 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Comparator;
 
 public class CopperGolemEntity extends AbstractGolem {
+
+    // ඞ
+
     protected static final ImmutableList<SensorType<? extends Sensor<? super CopperGolemEntity>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.HURT_BY);
     protected static final ImmutableList<MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(MemoryModuleType.LOOK_TARGET, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS.get(),  USMemoryModules.COPPER_GOLEM_HEADSPIN_TICKS.get(), USMemoryModules.COPPER_BUTTON.get());
     private static final EntityDataAccessor<Integer> STAGE = SynchedEntityData.defineId(CopperGolemEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> WAXED = SynchedEntityData.defineId(CopperGolemEntity.class, EntityDataSerializers.BOOLEAN);
+
+    // Animation States:
+
     public final AnimationState walkingAnimation = new AnimationState();
     public final AnimationState headSpinAnimation = new AnimationState();
     public final AnimationState headSpinSlowerAnimation = new AnimationState();
@@ -73,21 +81,26 @@ public class CopperGolemEntity extends AbstractGolem {
         this.maxUpStep = 1.0F;
     }
 
-    // ඞ
-
     @Override
     protected Brain.Provider<CopperGolemEntity> brainProvider() {
         return Brain.provider(MEMORY_TYPES, SENSOR_TYPES);
     }
 
     @Override
-    protected Brain<?> makeBrain(Dynamic<?> dynamic) {
+    protected Brain<?> makeBrain(@NotNull Dynamic<?> dynamic) {
         return CopperGolemBrain.create(this, this.brainProvider().makeBrain(dynamic));
     }
 
     @Override @SuppressWarnings("all")
     public Brain<CopperGolemEntity> getBrain() {
         return (Brain<CopperGolemEntity>)super.getBrain();
+    }
+
+    // Sets the eye height of the mob
+
+    @Override
+    protected float getStandingEyeHeight(@NotNull Pose pose, EntityDimensions entityDimensions) {
+        return entityDimensions.height * (this.isBaby() ? 0.3f : 0.6f);
     }
 
     @Override
@@ -97,15 +110,17 @@ public class CopperGolemEntity extends AbstractGolem {
         this.entityData.define(WAXED, false);
     }
 
+    // Waxed NBT Tag:
+
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
+    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         this.setStage(CopperGolemEntity.Stage.BY_ID[tag.getInt("Stage")]);
         this.setWaxed(tag.getBoolean("Waxed"));
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
+    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putInt("Stage", this.getStage().getId());
         tag.putBoolean("Waxed", this.isWaxed());
@@ -122,33 +137,35 @@ public class CopperGolemEntity extends AbstractGolem {
         super.customServerAiStep();
     }
 
+    // Animations:
+
     @Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> data) {
+    public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> data) {
         if (DATA_POSE.equals(data)) {
-            Pose pose = this.getPose();
+            this.getPose();
             if (this.getStage() == Stage.UNAFFECTED) {
-                if (PoseUtil.isInPose(this, USPoses.HEAD_SPIN)) {
+                if (this.isInPose(USPoses.HEAD_SPIN.get())) {
                     this.headSpinAnimation.start(this.tickCount);
                 } else {
                     this.headSpinAnimation.stop();
                     this.headSpinSlowerAnimation.stop();
                     this.headSpinSlowestAnimation.stop();
                 }
-                if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON)) {
+                if (this.isInPose(USPoses.PRESS_BUTTON.get())) {
                     this.buttonAnimation.start(this.tickCount);
                 } else {
                     this.buttonAnimation.stop();
                     this.buttonSlowerAnimation.stop();
                     this.buttonSlowestAnimation.stop();
                 }
-                if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON_UP)) {
+                if (this.isInPose(USPoses.PRESS_BUTTON_UP.get())) {
                     this.buttonUpAnimation.start(this.tickCount);
                 } else {
                     this.buttonUpAnimation.stop();
                     this.buttonUpSlowerAnimation.stop();
                     this.buttonUpSlowestAnimation.stop();
                 }
-                if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON_DOWN)) {
+                if (this.isInPose(USPoses.PRESS_BUTTON_DOWN.get())) {
                     this.buttonDownAnimation.start(this.tickCount);
                 } else {
                     this.buttonDownAnimation.stop();
@@ -156,28 +173,28 @@ public class CopperGolemEntity extends AbstractGolem {
                     this.buttonDownSlowestAnimation.stop();
                 }
             } else if (this.getStage() == Stage.EXPOSED) {
-                if (PoseUtil.isInPose(this, USPoses.HEAD_SPIN)) {
+                if (this.isInPose(USPoses.HEAD_SPIN.get())) {
                     this.headSpinSlowerAnimation.start(this.tickCount);
                 } else {
                     this.headSpinAnimation.stop();
                     this.headSpinSlowerAnimation.stop();
                     this.headSpinSlowestAnimation.stop();
                 }
-                if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON)) {
+                if (this.isInPose(USPoses.PRESS_BUTTON.get())) {
                     this.buttonSlowerAnimation.start(this.tickCount);
                 } else {
                     this.buttonAnimation.stop();
                     this.buttonSlowerAnimation.stop();
                     this.buttonSlowestAnimation.stop();
                 }
-                if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON_UP)) {
+                if (this.isInPose(USPoses.PRESS_BUTTON_UP.get())) {
                     this.buttonUpSlowerAnimation.start(this.tickCount);
                 } else {
                     this.buttonUpAnimation.stop();
                     this.buttonUpSlowerAnimation.stop();
                     this.buttonUpSlowestAnimation.stop();
                 }
-                if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON_DOWN)) {
+                if (this.isInPose(USPoses.PRESS_BUTTON_DOWN.get())) {
                     this.buttonDownSlowerAnimation.start(this.tickCount);
                 } else {
                     this.buttonDownAnimation.stop();
@@ -185,28 +202,28 @@ public class CopperGolemEntity extends AbstractGolem {
                     this.buttonDownSlowestAnimation.stop();
                 }
             } else {
-                if (PoseUtil.isInPose(this, USPoses.HEAD_SPIN)) {
+                if (this.isInPose(USPoses.HEAD_SPIN.get())) {
                     this.headSpinSlowestAnimation.start(this.tickCount);
                 } else {
                     this.headSpinAnimation.stop();
                     this.headSpinSlowerAnimation.stop();
                     this.headSpinSlowestAnimation.stop();
                 }
-                if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON)) {
+                if (this.isInPose(USPoses.PRESS_BUTTON.get())) {
                     this.buttonSlowestAnimation.start(this.tickCount);
                 } else {
                     this.buttonAnimation.stop();
                     this.buttonSlowerAnimation.stop();
                     this.buttonSlowestAnimation.stop();
                 }
-                if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON_UP)) {
+                if (this.isInPose(USPoses.PRESS_BUTTON_UP.get())) {
                     this.buttonUpSlowestAnimation.start(this.tickCount);
                 } else {
                     this.buttonUpAnimation.stop();
                     this.buttonUpSlowerAnimation.stop();
                     this.buttonUpSlowestAnimation.stop();
                 }
-                if (PoseUtil.isInPose(this, USPoses.PRESS_BUTTON_DOWN)) {
+                if (this.isInPose(USPoses.PRESS_BUTTON_DOWN.get())) {
                     this.buttonDownSlowestAnimation.start(this.tickCount);
                 } else {
                     this.buttonDownAnimation.stop();
@@ -218,10 +235,15 @@ public class CopperGolemEntity extends AbstractGolem {
         super.onSyncedDataUpdated(data);
     }
 
+    private boolean isInPose(Pose pose) {
+        return this.getPose() == pose;
+    }
 
     public CopperGolemEntity.Stage getStage() {
         return CopperGolemEntity.Stage.BY_ID[this.entityData.get(STAGE)];
     }
+
+    // Changes the movement speed depending on how much the Copper Golem has oxidized
 
     @SuppressWarnings("all")
     public void setStage(CopperGolemEntity.Stage stage) {
@@ -242,12 +264,22 @@ public class CopperGolemEntity extends AbstractGolem {
         this.entityData.set(WAXED, waxed);
     }
 
+    // Entity Attributes
+
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.MOVEMENT_SPEED, 0.5D).add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }
 
+    // Plays Walking Animation if Entity is Moving
+
     private boolean shouldWalk() {
         return this.onGround && this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6 && !this.isInWaterOrBubble();
+    }
+
+    // Prevents the Copper Golem from drowning, similar to Iron Golems
+
+    protected int decreaseAirSupply(int i) {
+        return i;
     }
 
     @Override
@@ -264,7 +296,10 @@ public class CopperGolemEntity extends AbstractGolem {
     }
 
     @Override
-    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+    protected InteractionResult mobInteract(Player player, @NotNull InteractionHand hand) {
+
+        // Copper Golem waxing using Honeycomb
+
         ItemStack stack = player.getItemInHand(hand);
         if (stack.is(Items.HONEYCOMB) && !this.isWaxed()) {
             if (!player.getAbilities().instabuild) {
@@ -272,33 +307,39 @@ public class CopperGolemEntity extends AbstractGolem {
             }
             this.setWaxed(true);
             this.level.levelEvent(player, 3003, this.blockPosition(), 0);
-            this.gameEvent(GameEvent.ENTITY_INTERACT);
+            this.gameEvent(GameEvent.ENTITY_INTERACT, this);
             return InteractionResult.SUCCESS;
         }
+
+        // Copper Golem scraping using an Axe
+
         else if (stack.getItem() instanceof AxeItem) {
             if (this.isWaxed()) {
                 this.setWaxed(false);
                 this.level.playSound(player, this.blockPosition(), SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
                 this.level.levelEvent(player, 3004, this.blockPosition(), 0);
-                this.gameEvent(GameEvent.ENTITY_INTERACT);
+                this.gameEvent(GameEvent.ENTITY_INTERACT, this);
             } else {
                 if (this.getStage() != Stage.UNAFFECTED) {
                     stack.hurtAndBreak(1, player, e -> e.broadcastBreakEvent(hand));
                     this.setStage(Stage.values()[this.getStage().getId() - 1]);
                     this.level.playSound(player, this.blockPosition(), SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
                     this.level.levelEvent(player, 3005, this.blockPosition(), 0);
-                    this.gameEvent(GameEvent.ENTITY_INTERACT);
+                    this.gameEvent(GameEvent.ENTITY_INTERACT, this);
                 } else {
                     return InteractionResult.PASS;
                 }
             }
             return InteractionResult.SUCCESS;
         }
+
+        // Copper Golem repairing using a Copper Ingot
+
         else if (this.getHealth() < this.getMaxHealth() && stack.is(Items.COPPER_INGOT)) {
             this.heal(5.0F);
             float f1 = 1.4F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F;
-            this.playSound(SoundEvents.IRON_GOLEM_REPAIR, 0.5F, f1);
-            this.gameEvent(GameEvent.ENTITY_INTERACT);
+            this.playSound(USSoundEvents.COPPER_GOLEM_REPAIR.get(), 0.5F, f1);
+            this.gameEvent(GameEvent.ENTITY_INTERACT, this);
             if (!player.getAbilities().instabuild) {
                 stack.shrink(1);
             }
@@ -306,6 +347,8 @@ public class CopperGolemEntity extends AbstractGolem {
         }
         return super.mobInteract(player, hand);
     }
+
+    // Converts the Copper Golem to an Oxidized Copper Golem if fully oxidized
 
     public <T extends Mob> void convertToFrozen(EntityType<T> entityType, boolean bl) {
         if (!this.isRemoved()) {
@@ -315,11 +358,8 @@ public class CopperGolemEntity extends AbstractGolem {
             mob.lookAt(EntityAnchorArgument.Anchor.EYES, this.getLookAngle());
             mob.setYBodyRot(this.getYRot());
             mob.setYHeadRot(this.getYHeadRot());
-            mob.setBaby(this.isBaby());
-            mob.setNoAi(this.isNoAi());
             if (this.hasCustomName()) {
                 mob.setCustomName(this.getCustomName());
-                mob.setCustomNameVisible(this.isCustomNameVisible());
             }
             if (this.isPersistenceRequired()) {
                 mob.setPersistenceRequired();
@@ -356,13 +396,14 @@ public class CopperGolemEntity extends AbstractGolem {
                 this.playSound(USSoundEvents.CHINESE_RIP_OFF_WINNIE_THE_POOH.get(), 1.0F, 1.0F);
             }
             if (this.getStage() == Stage.OXIDIZED) {
-                this.getBrain().removeAllBehaviors();
                 this.convertToFrozen(USEntityTypes.FROZEN_COPPER_GOLEM.get(),true);
             } else {
                 CopperGolemBrain.updateActivity(this);
             }
 
-            if (!this.isWaxed() || this.getStage() != Stage.OXIDIZED) {
+            // Allows the Copper Golem to oxidize over time if not waxed
+
+            if (!this.isWaxed() && this.getStage() != Stage.OXIDIZED) {
                 float randomChance = this.random.nextFloat();
                 if (randomChance < 3.4290552E-5F && this.getStage() != Stage.OXIDIZED) {
                     this.setStage(Stage.values()[this.getStage().getId() + 1]);
@@ -370,6 +411,8 @@ public class CopperGolemEntity extends AbstractGolem {
             }
         }
     }
+
+    // Cooldown for the Copper Golem pressing Copper Buttons
 
     public void setCooldown() {
         double bound = Math.pow(2, this.getStage().getId() - 1);
@@ -379,35 +422,41 @@ public class CopperGolemEntity extends AbstractGolem {
         this.getBrain().setMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS.get(), duration);
     }
 
-    protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.COPPER_FALL;
+    // Sound Events
+
+    protected SoundEvent getHurtSound(@NotNull DamageSource source) {
+        return USSoundEvents.COPPER_GOLEM_HIT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return SoundEvents.COPPER_BREAK;
+        return USSoundEvents.COPPER_GOLEM_DEATH.get();
     }
 
     protected SoundEvent getStepSound() {
-        return SoundEvents.COPPER_STEP;
+        return USSoundEvents.COPPER_GOLEM_WALK.get();
     }
 
-    protected void playStepSound(BlockPos pos, BlockState state) {
+    protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState state) {
         this.playSound(this.getStepSound(), 0.5F, 1.0F);
     }
 
+    // Sounds depending on what stage of oxidization the Copper Golem is on
+
     public enum Stage {
-        UNAFFECTED(0, "unaffected"),
-        EXPOSED(1, "exposed"),
-        WEATHERED(2, "weathered"),
-        OXIDIZED(3, "oxidized");
+        UNAFFECTED(0, "unaffected", USSoundEvents.HEAD_SPIN.get()),
+        EXPOSED(1, "exposed", USSoundEvents.HEAD_SPIN_SLOWER.get()),
+        WEATHERED(2, "weathered", USSoundEvents.HEAD_SPIN_SLOWEST.get()),
+        OXIDIZED(3, "oxidized", null);
 
         public static final CopperGolemEntity.Stage[] BY_ID = Arrays.stream(values()).sorted(Comparator.comparingInt(CopperGolemEntity.Stage::getId)).toArray(Stage[]::new);
         private final int id;
         private final String name;
+        private final SoundEvent soundEvent;
 
-        Stage(int id, String name) {
+        Stage(int id, String name, SoundEvent soundEvent) {
             this.id = id;
             this.name = name;
+            this.soundEvent = soundEvent;
         }
 
         public int getId() {
@@ -418,7 +467,8 @@ public class CopperGolemEntity extends AbstractGolem {
             return this.name;
         }
 
+        public SoundEvent getSoundEvent() {
+            return this.soundEvent;
+        }
     }
-
-
 }

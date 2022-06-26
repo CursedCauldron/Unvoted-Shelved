@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "waxed_copper_pillar",
+  "ingredients": [
+    {
+      "item": "unvotedandshelved:copper_pillar"
+    },
+    {
+      "item": "minecraft:honeycomb"
+    }
+  ],
+  "result": {
+    "item": "unvotedandshelved:waxed_copper_pillar"
+  }
+}

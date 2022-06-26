@@ -3,12 +3,11 @@ package com.cursedcauldron.unvotedandshelved.entities;
 import com.cursedcauldron.unvotedandshelved.entities.ai.glare.GlareBrain;
 import com.cursedcauldron.unvotedandshelved.init.USBlocks;
 import com.cursedcauldron.unvotedandshelved.init.USMemoryModules;
-import com.cursedcauldron.unvotedandshelved.init.USSensorTypes;
+import com.cursedcauldron.unvotedandshelved.init.USParticleTypes;
 import com.cursedcauldron.unvotedandshelved.init.USSoundEvents;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.DebugPackets;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -22,11 +21,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -39,8 +34,6 @@ import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.LightLayer;
@@ -49,22 +42,21 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.Optional;
 
 public class GlareEntity extends AgeableMob implements FlyingAnimal {
-    public static final Ingredient TEMPTATION_ITEM = Ingredient.of(Items.GLOW_BERRIES);
-    protected static final ImmutableList<SensorType<? extends Sensor<? super GlareEntity>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_PLAYERS, USSensorTypes.GLARE_TEMPTATIONS.get());
-    protected static final ImmutableList<MemoryModuleType<?>> MEMORY_MODULES = ImmutableList.of(USMemoryModules.GLOWBERRIES_GIVEN.get(), USMemoryModules.GRUMPY_TICKS.get(), USMemoryModules.DARK_TICKS_REMAINING.get(), MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.BREED_TARGET, MemoryModuleType.IS_PANICKING, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.AVOID_TARGET);
+    protected static final ImmutableList<SensorType<? extends Sensor<? super GlareEntity>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_PLAYERS);
+    protected static final ImmutableList<MemoryModuleType<?>> MEMORY_MODULES = ImmutableList.of(USMemoryModules.GLOWBERRIES_GIVEN.get(), USMemoryModules.GRUMPY_TICKS.get(), USMemoryModules.DARK_TICKS_REMAINING.get(), MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.AVOID_TARGET);
     private static final EntityDataAccessor<Boolean> GRUMPY = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> SHINY = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> FINDING_DARKNESS = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> GRUMPY_TICKS = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> GLOWBERRIES_GIVEN = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.INT);
 
-    public GlareEntity(EntityType<? extends AgeableMob> entityType, Level level) {
-        super(entityType, level);
+    public GlareEntity(EntityType<? extends AgeableMob> entityType, Level world) {
+        super(entityType, world);
         this.moveControl = new FlyingMoveControl(this, 5, true);
         this.lookControl = new LookControl(this);
         this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
@@ -74,8 +66,10 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         this.setPathfindingMalus(BlockPathTypes.FENCE, -1.0F);
     }
 
+    // Glare Spawning
+
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverLevelAccessor, @NotNull DifficultyInstance difficultyInstance, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
         if (spawnGroupData == null) {
             spawnGroupData = new AgeableMobGroupData(false);
         }
@@ -91,54 +85,60 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
     }
 
     @Override
-    protected Brain<?> makeBrain(Dynamic<?> dynamic) {
-        return GlareBrain.create(this, this.brainProvider().makeBrain(dynamic));
+    protected Brain<?> makeBrain(@NotNull Dynamic<?> dynamic) {
+        return GlareBrain.create(this.brainProvider().makeBrain(dynamic));
     }
+
+    // NBT Data
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(GRUMPY, false);
-        this.entityData.define(FINDING_DARKNESS, false);
         this.entityData.define(SHINY, false);
+        this.entityData.define(FINDING_DARKNESS, false);
         this.entityData.define(GRUMPY_TICKS, 0);
         this.entityData.define(GLOWBERRIES_GIVEN, 0);
     }
 
-    @Override
-    protected boolean shouldDespawnInPeaceful() {
-        return super.shouldDespawnInPeaceful() || this.getBrain().hasMemoryValue(USMemoryModules.GIVEN_GLOWBERRY.get());
+    public boolean requiresCustomPersistence() {
+        return super.requiresCustomPersistence() || this.getBrain().hasMemoryValue(USMemoryModules.GIVEN_GLOWBERRY.get());
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putBoolean("IsGrumpy", this.isGrumpy());
-        tag.putInt("GrumpyTicks", this.getGrumpyTick());
-        tag.putBoolean("IsShiny", this.isShiny());
+    public void addAdditionalSaveData(@NotNull CompoundTag nbt) {
+        super.addAdditionalSaveData(nbt);
+        nbt.putBoolean("IsGrumpy", this.isGrumpy());
+        nbt.putBoolean("IsShiny", this.isShiny());
+        nbt.putInt("GrumpyTicks", this.getGrumpyTick());
         if (this.brain.getMemory(USMemoryModules.DARK_TICKS_REMAINING.get()).isPresent()) {
-            tag.putInt("FindDarknessTicks", this.brain.getMemory(USMemoryModules.DARK_TICKS_REMAINING.get()).get());
+            nbt.putInt("FindDarknessTicks", this.brain.getMemory(USMemoryModules.DARK_TICKS_REMAINING.get()).get());
         }
         if (this.brain.getMemory(USMemoryModules.GLOWBERRIES_GIVEN.get()).isPresent()) {
-            tag.putInt("GlowberriesGiven", this.brain.getMemory(USMemoryModules.GLOWBERRIES_GIVEN.get()).get());
+            nbt.putInt("GlowberriesGiven", this.brain.getMemory(USMemoryModules.GLOWBERRIES_GIVEN.get()).get());
         }
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        this.setGrumpy(tag.getBoolean("IsGrumpy"));
-        this.setShiny(tag.getBoolean("IsShiny"));
-        this.setGrumpyTick(tag.getInt("GrumpyTicks"));
-        this.setGlowberries(tag.getInt("GlowberriesGiven"));
+    public void readAdditionalSaveData(@NotNull CompoundTag nbt) {
+        super.readAdditionalSaveData(nbt);
+        this.setGrumpy(nbt.getBoolean("IsGrumpy"));
+        this.setShiny(nbt.getBoolean("IsShiny"));
+        this.setGrumpyTick(nbt.getInt("GrumpyTicks"));
+        this.setGlowberries(nbt.getInt("GlowberriesGiven"));
     }
 
     @Override
-    public float getWalkTargetValue(BlockPos pos, LevelReader level) {
-        return level.getBlockState(pos).isAir() ? 10.0F : 0.0F;
+    public boolean isFlying() {
+        return this.level.getBlockState(this.blockPosition()).isAir();
     }
 
     @Override
+    public float getWalkTargetValue(@NotNull BlockPos pos, LevelReader world) {
+        return world.getBlockState(pos).isAir() ? 10.0F : 0.0F;
+    }
+
+    @Override @SuppressWarnings("all")
     public Brain<GlareEntity> getBrain() {
         return (Brain<GlareEntity>)super.getBrain();
     }
@@ -161,6 +161,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         this.entityData.set(GRUMPY, isGrumpy);
     }
 
+
     public void setShiny(boolean isShiny) {
         this.entityData.set(SHINY, isShiny);
     }
@@ -178,13 +179,10 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.FLYING_SPEED, 0.6F).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.ATTACK_DAMAGE, 2.0D).add(Attributes.FOLLOW_RANGE, 48.0D);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 16.0D).add(Attributes.FLYING_SPEED, 0.6000000238418579D).add(Attributes.MOVEMENT_SPEED, 0.30000001192092896D).add(Attributes.ATTACK_DAMAGE, 2.0D).add(Attributes.FOLLOW_RANGE, 48.0D);
     }
 
-    @Override
-    protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(SoundEvents.MOSS_STEP, 0.5F, 1.0F);
-    }
+    // Sends Debug Packets to Server:
 
     @Override
     protected void sendDebugPackets() {
@@ -193,18 +191,20 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
     }
 
     @Override
-    protected PathNavigation createNavigation(Level world) {
-        FlyingPathNavigation pathNavigation = new FlyingPathNavigation(this, world) {
+    protected PathNavigation createNavigation(@NotNull Level world) {
+        FlyingPathNavigation navigator = new FlyingPathNavigation(this, world) {
             @Override
-            public boolean isStableDestination(BlockPos blockPos) {
-                return !this.level.getBlockState(blockPos.below()).isAir();
+            public boolean isStableDestination(BlockPos pos) {
+                return !this.level.getBlockState(pos.below()).isAir();
             }
         };
-        pathNavigation.setCanPassDoors(false);
-        pathNavigation.setCanFloat(true);
-        pathNavigation.setCanOpenDoors(true);
-        return pathNavigation;
+        navigator.setCanOpenDoors(false);
+        navigator.setCanFloat(true);
+        navigator.setCanPassDoors(true);
+        return navigator;
     }
+
+    // Makes the Glare become grumpy when in light levels of 0
 
     private void updateGrumpy(Level level) {
         if (!level.isClientSide()) {
@@ -219,10 +219,11 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         }
     }
 
+    // Makes the Glare persistent and emit Glow Berry Dust particles when given Glow Berries
+
     @Override
     public void aiStep() {
         super.aiStep();
-        this.getBrain().getMemory(MemoryModuleType.TEMPTATION_COOLDOWN_TICKS).ifPresent(System.out::println);
         if (level.getGameTime() % 20L == 0L) {
             updateGrumpy(this.level);
         }
@@ -230,8 +231,11 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         if (berryAmount > 0) {
             this.setPersistenceRequired();
             this.setGlowberries(berryAmount);
-            this.level.addParticle(ParticleTypes.FALLING_SPORE_BLOSSOM, this.getRandomX(0.6D), this.getRandomY(), this.getRandomZ(0.6D), 0.0D, 0.0D, 0.0D);
+            this.level.addParticle(USParticleTypes.GLOWBERRY_DUST_PARTICLES.get(), this.getRandomX(0.6D), this.getRandomY(), this.getRandomZ(0.6D), 0.0D, 0.0D, 0.0D);
         }
+
+        // Makes the Glare become persistent when leashed
+
         if (this.isLeashed()) {
             this.setPersistenceRequired();
             if (!this.getBlockStateOn().isAir()) {
@@ -240,53 +244,72 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         }
     }
 
+    // Makes it so that the Glare cannot take fall damage
+
     @Override
-    public boolean causeFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource) {
+    public boolean causeFallDamage(float fallDistance, float damageMultiplier, @NotNull DamageSource damageSource) {
         return false;
     }
 
-    @Override
-    protected void checkFallDamage(double heightDifference, boolean onGround, BlockState landedState, BlockPos landedPosition) {
+    protected void checkFallDamage(double heightDifference, boolean onGround, @NotNull BlockState landedState, @NotNull BlockPos landedPosition) {
     }
 
-    @Override
-    protected void jumpInLiquid(TagKey<Fluid> p_204045_) {
+    protected void jumpInLiquid(@NotNull TagKey<Fluid> fluid) {
         this.setDeltaMovement(this.getDeltaMovement().add(0.0D, 0.01D, 0.0D));
     }
 
-    @Override
+    // Gets the offset for where Leads attach to the mob
+
     public Vec3 getLeashOffset() {
         return new Vec3(0.0D, 0.5F * this.getEyeHeight(), this.getBbWidth() * 0.2F);
     }
 
+    // Allows the player to interact with a Glare using Glow Berries
+
     @Override
-    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+    public InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
         InteractionResult actionResult = super.mobInteract(player, hand);
         if (actionResult.consumesAction()) {
             return actionResult;
-        } else if (!this.level.isClientSide()) {
+        } else if (!this.level.isClientSide) {
             return GlareBrain.playerInteract(this, player, hand);
         } else {
-            Optional<Integer> memory = this.getBrain().getMemory(USMemoryModules.GLOWBERRIES_GIVEN.get());
-            boolean bl = (memory.isPresent() && memory.get() < 5) && GlareBrain.isGlowBerry(this, player.getItemInHand(hand));
+            boolean bl = GlareBrain.isGlowBerry(player.getItemInHand(hand));
             return bl ? InteractionResult.SUCCESS : InteractionResult.PASS;
         }
     }
+
+    // Sound Events
 
     @Override
     protected SoundEvent getAmbientSound() {
         return this.isGrumpy() ? USSoundEvents.GLARE_GRUMPY_IDLE.get() : USSoundEvents.GLARE_IDLE.get();
     }
 
-    @Override
-    protected SoundEvent getHurtSound(DamageSource source) {
+    protected SoundEvent getHurtSound(@NotNull DamageSource source) {
+        return USSoundEvents.GLARE_HURT.get();
+    }
+
+    protected SoundEvent getDeathSound() {
+        return USSoundEvents.GLARE_DEATH.get();
+    }
+
+    protected SoundEvent getStepSound() {
         return SoundEvents.MOSS_STEP;
     }
 
-    @Override
-    protected SoundEvent getDeathSound() {
-        return SoundEvents.MOSS_BREAK;
+    protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState state) {
+        this.playSound(this.getStepSound(), 0.5F, 1.0F);
     }
+
+    // Sets the eye height of the mob
+
+    @Override
+    protected float getStandingEyeHeight(@NotNull Pose pose, EntityDimensions entityDimensions) {
+        return entityDimensions.height * (this.isBaby() ? 0.4f : 0.7f);
+    }
+
+    // Sets the amount of ticks for how long the Glare is grumpy
 
     private void setGrumpyTick(int ticks) {
         this.entityData.set(GRUMPY_TICKS, ticks);
@@ -296,11 +319,13 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         return this.entityData.get(GRUMPY_TICKS);
     }
 
+    // Allows the Glare to place Glow Berry Dust when given Glow Berries
+
     public void setLightblock(BlockPos pos) {
         BlockState blockState = USBlocks.GLOWBERRY_DUST.get().defaultBlockState();
         if (level.getBlockState(pos).isAir()) {
             level.setBlockAndUpdate(pos, blockState);
-            this.playSound(SoundEvents.RESPAWN_ANCHOR_CHARGE, 1.0f, 1.5f);
+            this.playSound(USSoundEvents.GLOWBERRY_DUST_PLACE.get(), 1.0f, 1.0f);
         }
     }
 
@@ -315,12 +340,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
 
     @Nullable
     @Override
-    public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob entity) {
+    public AgeableMob getBreedOffspring(@NotNull ServerLevel world, @NotNull AgeableMob entity) {
         return null;
-    }
-
-    @Override
-    public boolean isFlying() {
-        return this.level.getBlockState(this.blockPosition()).isAir();
     }
 }

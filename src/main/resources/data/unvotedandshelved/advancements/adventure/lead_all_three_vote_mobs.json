@@ -3,8 +3,12 @@
     "icon": {
       "item": "minecraft:lead"
     },
-    "title": {"translate":"The Three Musketeers"},
-    "description": {"color":"#75E1FF","translate":"Lead the Glare, Allay, and Copper Golem"},
+    "title": {
+      "translate": "advancements.adventure.lead_all_three_vote_mobs.title"
+    },
+    "description": {
+      "translate": "advancements.adventure.lead_all_three_vote_mobs.description"
+    },
     "announce_to_chat": "true",
     "frame": "goal"
   },
