@@ -126,10 +126,6 @@ public class LightningRodBlockMixin extends Block implements LightningRodAccess,
         return WeatheringCopper.getNext(blockState.getBlock()).map(block -> block.withPropertiesOf(blockState));
     }
 
-    private static Optional<BlockState> getPreviousState(BlockState state) {
-        return Optional.ofNullable(PREVIOUS_BY_BLOCK.get().get(state.getBlock())).map((block) -> block.withPropertiesOf(state));
-    }
-
     @Override
     public boolean isRandomlyTicking(BlockState state) {
         return Optional.ofNullable(NEXT_BY_BLOCK.get().get(state.getBlock())).isPresent();
