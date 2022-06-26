@@ -11,6 +11,7 @@
     "ModelPartMixin",
     "PartDefinitionMixin",
     "PoseMixin",
+    "ServerLevelMixin",
     "ThrownTridentAccessor",
     "ZombieMixin",
     "access.ActivityAccessor",
@@ -18,6 +19,7 @@
     "access.ItemAccessor",
     "access.MemoryModuleAccessor",
     "access.ModelPartAccessor",
+    "access.PoiTypesAccessor",
     "access.SimpleParticleTypeAccessor"
   ],
   "client": [

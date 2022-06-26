@@ -51,8 +51,9 @@ public class UnvotedAndShelved implements ModInitializer {
         USParticles.PARTICLES.register();
         USSounds.SOUNDS.register();
         USStructureProcessors.PROCESSORS.register();
-        USTags.init();
         USPoiTypes.init();
+        USBlockTags.init();
+        USPoiTags.init();
 
         LOGGER.info("Thank you for downloading Unvoted & Shelved! :)");
 

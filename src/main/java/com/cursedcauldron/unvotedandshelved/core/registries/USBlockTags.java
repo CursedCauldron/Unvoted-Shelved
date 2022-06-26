@@ -8,17 +8,13 @@ import net.minecraft.world.level.block.Block;
 
 // Tag Registry
 
-public class USTags {
+public class USBlockTags {
 
-    public static void init() {
-    }
+    public static void init() {}
 
     public static final TagKey<Block> COPPER_BUTTONS = create("copper_buttons");
     public static final TagKey<Block> COPPER_PILLARS = create("copper_pillars");
     public static final TagKey<Block> LIGHTNING_RODS = create("lightning_rods");
-
-    private USTags() {
-    }
 
     private static TagKey<Block> create(String string) {
         return TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(UnvotedAndShelved.MODID, string));

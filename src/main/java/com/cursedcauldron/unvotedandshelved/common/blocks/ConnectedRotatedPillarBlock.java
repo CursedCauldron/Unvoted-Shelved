@@ -1,7 +1,7 @@
 package com.cursedcauldron.unvotedandshelved.common.blocks;
 
 import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
-import com.cursedcauldron.unvotedandshelved.core.registries.USTags;
+import com.cursedcauldron.unvotedandshelved.core.registries.USBlockTags;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
@@ -50,12 +50,12 @@ public class ConnectedRotatedPillarBlock extends RotatedPillarBlock implements W
        BlockPos belowPos  = (state.getValue(AXIS) == Direction.Axis.Y) ? pos.below() : (state.getValue(AXIS) == Direction.Axis.X) ? pos.west() : pos.south();
        BlockState belowState = level.getBlockState(belowPos);
 
-       if (aboveState.is(USTags.COPPER_PILLARS) && aboveState.getValue(AXIS) == state.getValue(AXIS)) {
+       if (aboveState.is(USBlockTags.COPPER_PILLARS) && aboveState.getValue(AXIS) == state.getValue(AXIS)) {
            level.setBlock(pos, state.setValue(CONNECTED, true), 3);
        } else {
            level.setBlock(pos, state.setValue(CONNECTED, false), 3);
        }
-       if (belowState.is(USTags.COPPER_PILLARS) && belowState.getValue(AXIS) == state.getValue(AXIS)) {
+       if (belowState.is(USBlockTags.COPPER_PILLARS) && belowState.getValue(AXIS) == state.getValue(AXIS)) {
            level.setBlock(belowPos, belowState.setValue(CONNECTED, true), 3);
        }
 
