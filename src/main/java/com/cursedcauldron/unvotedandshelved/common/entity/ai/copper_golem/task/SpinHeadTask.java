@@ -38,6 +38,7 @@ public class SpinHeadTask extends Behavior<CopperGolemEntity> {
         if (this.spinningTicks < timeLimit) {
             this.spinningTicks++;
         } else {
+
             entity.getBrain().setMemory(USMemoryModules.COPPER_GOLEM_HEADSPIN_TICKS, UniformInt.of(120, 200).sample(world.getRandom()));
         }
         if (this.spinningTicks == playSoundFrame) {
