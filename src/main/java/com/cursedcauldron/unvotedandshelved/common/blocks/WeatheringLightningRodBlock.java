@@ -8,29 +8,29 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LightningRodBlock;
 import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import org.jetbrains.annotations.NotNull;
+
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public class WeatheringRotatedPillarBlock extends ConnectedRotatedPillarBlock implements WeatheringCopper {
-    public static final BooleanProperty CONNECTED = BooleanProperty.create("connected");
+public class WeatheringLightningRodBlock extends LightningRodBlock implements WeatheringCopper {
     private final WeatheringCopper.WeatherState weatherState;
+
+    public WeatheringLightningRodBlock(Properties properties, WeatherState weatherState) {
+        super(properties);
+        this.weatherState = weatherState;
+    }
+
     public static Supplier<BiMap<Block, Block>> NEXT_BY_BLOCK = Suppliers.memoize(() -> ImmutableBiMap.<Block, Block>builder()
-            .put(USBlocks.COPPER_PILLAR, USBlocks.EXPOSED_COPPER_PILLAR)
-            .put(USBlocks.EXPOSED_COPPER_PILLAR, USBlocks.WEATHERED_COPPER_PILLAR)
-            .put(USBlocks.WEATHERED_COPPER_PILLAR, USBlocks.OXIDIZED_COPPER_PILLAR)
+            .put(Blocks.LIGHTNING_ROD, USBlocks.EXPOSED_LIGHTNING_ROD)
+            .put(USBlocks.EXPOSED_LIGHTNING_ROD, USBlocks.WEATHERED_LIGHTNING_ROD)
+            .put(USBlocks.WEATHERED_LIGHTNING_ROD, USBlocks.OXIDIZED_LIGHTNING_ROD)
             .build());
     public static final Supplier<BiMap<Block, Block>> PREVIOUS_BY_BLOCK = Suppliers.memoize(() -> NEXT_BY_BLOCK.get().inverse());
-
-    public WeatheringRotatedPillarBlock(WeatherState state, Properties properties) {
-        super(state, properties);
-        this.weatherState = state;
-        this.registerDefaultState(this.stateDefinition.any().setValue(CONNECTED, false));
-    }
 
     @Override
     public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
@@ -41,7 +41,6 @@ public class WeatheringRotatedPillarBlock extends ConnectedRotatedPillarBlock im
     public boolean isRandomlyTicking(BlockState state) {
         return Optional.ofNullable(NEXT_BY_BLOCK.get().get(state.getBlock())).isPresent();
     }
-
 
     @Override
     public Optional<BlockState> getNext(BlockState state) {
@@ -55,10 +54,5 @@ public class WeatheringRotatedPillarBlock extends ConnectedRotatedPillarBlock im
     @Override
     public WeatherState getAge() {
         return this.weatherState;
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder);
     }
 }

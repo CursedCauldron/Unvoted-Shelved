@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "#unvotedandshelved:copper_buttons",
-    "#unvotedandshelved:copper_pillars"
+    "#unvotedandshelved:copper_pillars",
+    "#unvotedandshelved:lightning_rods"
   ]
 }

@@ -1,5 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.mixin;
 
+import com.cursedcauldron.unvotedandshelved.common.blocks.WeatheringLightningRodBlock;
 import com.cursedcauldron.unvotedandshelved.common.blocks.WeatheringRotatedPillarBlock;
 import com.cursedcauldron.unvotedandshelved.common.blocks.WeatheringCopperButtonBlock;
 import com.cursedcauldron.unvotedandshelved.common.entity.CopperGolemEntity;
@@ -45,6 +46,7 @@ public class LightningBoltMixin {
                 WeatheringCopper.getPrevious(blockstate).ifPresent(state -> world.setBlockAndUpdate(blockpos, state));
                 WeatheringCopperButtonBlock.getPreviousState(blockstate).ifPresent(state -> world.setBlockAndUpdate(blockpos, state));
                 WeatheringRotatedPillarBlock.getPreviousState(blockstate).ifPresent(state -> world.setBlockAndUpdate(blockpos, state));
+                WeatheringLightningRodBlock.getPreviousState(blockstate).ifPresent(state -> world.setBlockAndUpdate(blockpos, state));
                 world.levelEvent(3002, blockpos, -1);
                 cir.setReturnValue(Optional.of(blockpos));
             }

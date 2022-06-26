@@ -36,6 +36,13 @@ public class USBlocks {
     public static final Block WAXED_EXPOSED_COPPER_PILLAR = register("waxed_exposed_copper_pillar", new ConnectedRotatedPillarBlock(WeatheringCopper.WeatherState.EXPOSED, BlockBehaviour.Properties.copy(Blocks.EXPOSED_COPPER)), CreativeModeTab.TAB_BUILDING_BLOCKS);
     public static final Block WAXED_WEATHERED_COPPER_PILLAR = register("waxed_weathered_copper_pillar", new ConnectedRotatedPillarBlock(WeatheringCopper.WeatherState.WEATHERED, BlockBehaviour.Properties.copy(Blocks.WEATHERED_COPPER)), CreativeModeTab.TAB_BUILDING_BLOCKS);
     public static final Block WAXED_OXIDIZED_COPPER_PILLAR = register("waxed_oxidized_copper_pillar", new ConnectedRotatedPillarBlock(WeatheringCopper.WeatherState.OXIDIZED, BlockBehaviour.Properties.copy(Blocks.OXIDIZED_COPPER)), CreativeModeTab.TAB_BUILDING_BLOCKS);
+    public static final Block EXPOSED_LIGHTNING_ROD = register("exposed_lightning_rod", new WeatheringLightningRodBlock(BlockBehaviour.Properties.copy(Blocks.LIGHTNING_ROD), WeatheringCopper.WeatherState.EXPOSED), CreativeModeTab.TAB_REDSTONE);
+    public static final Block WEATHERED_LIGHTNING_ROD = register("weathered_lightning_rod", new WeatheringLightningRodBlock(BlockBehaviour.Properties.copy(Blocks.LIGHTNING_ROD), WeatheringCopper.WeatherState.WEATHERED), CreativeModeTab.TAB_REDSTONE);
+    public static final Block OXIDIZED_LIGHTNING_ROD = register("oxidized_lightning_rod", new WeatheringLightningRodBlock(BlockBehaviour.Properties.copy(Blocks.LIGHTNING_ROD), WeatheringCopper.WeatherState.OXIDIZED), CreativeModeTab.TAB_REDSTONE);
+    public static final Block WAXED_LIGHTNING_ROD = register("waxed_lightning_rod", new WeatheringLightningRodBlock(BlockBehaviour.Properties.copy(Blocks.LIGHTNING_ROD), WeatheringCopper.WeatherState.UNAFFECTED), CreativeModeTab.TAB_REDSTONE);
+    public static final Block WAXED_EXPOSED_LIGHTNING_ROD = register("waxed_exposed_lightning_rod", new WeatheringLightningRodBlock(BlockBehaviour.Properties.copy(Blocks.LIGHTNING_ROD), WeatheringCopper.WeatherState.EXPOSED), CreativeModeTab.TAB_REDSTONE);
+    public static final Block WAXED_WEATHERED_LIGHTNING_ROD = register("waxed_weathered_lightning_rod", new WeatheringLightningRodBlock(BlockBehaviour.Properties.copy(Blocks.LIGHTNING_ROD), WeatheringCopper.WeatherState.WEATHERED), CreativeModeTab.TAB_REDSTONE);
+    public static final Block WAXED_OXIDIZED_LIGHTNING_ROD = register("waxed_oxidized_lightning_rod", new WeatheringLightningRodBlock(BlockBehaviour.Properties.copy(Blocks.LIGHTNING_ROD), WeatheringCopper.WeatherState.OXIDIZED), CreativeModeTab.TAB_REDSTONE);
 
     public static Block register(String id, Block block) {
         return BLOCKS.register(id, block);

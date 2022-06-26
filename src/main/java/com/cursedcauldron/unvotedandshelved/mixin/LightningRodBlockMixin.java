@@ -6,7 +6,6 @@ import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
-import java.util.Iterator;
 import java.util.function.Predicate;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
@@ -58,6 +57,7 @@ public class LightningRodBlockMixin extends Block implements LightningRodAccess 
 
             CopperGolemEntity e = USEntities.COPPER_GOLEM.create(world);
             BlockPos cachedBlockPosition = result.getBlock(0, 2, 0).getPos();
+            assert e != null;
             e.moveTo((double) cachedBlockPosition.getX() + 0.5D, (double) cachedBlockPosition.getY() + 0.05D, (double) cachedBlockPosition.getZ() + 0.5D, 0.0F, 0.0F);
             world.addFreshEntity(e);
 

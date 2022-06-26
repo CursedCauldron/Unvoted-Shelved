@@ -66,6 +66,11 @@ public class UnvotedAndShelved implements ModInitializer {
             map.put(USBlocks.WEATHERED_COPPER_PILLAR, USBlocks.WAXED_WEATHERED_COPPER_PILLAR);
             map.put(USBlocks.OXIDIZED_COPPER_PILLAR, USBlocks.WAXED_OXIDIZED_COPPER_PILLAR);
 
+            map.put(Blocks.LIGHTNING_ROD, USBlocks.WAXED_LIGHTNING_ROD);
+            map.put(USBlocks.EXPOSED_LIGHTNING_ROD, USBlocks.WAXED_EXPOSED_LIGHTNING_ROD);
+            map.put(USBlocks.WEATHERED_LIGHTNING_ROD, USBlocks.WAXED_WEATHERED_LIGHTNING_ROD);
+            map.put(USBlocks.OXIDIZED_LIGHTNING_ROD, USBlocks.WAXED_OXIDIZED_LIGHTNING_ROD);
+
         }).forEach((unwaxed, waxed) -> {
             assert unwaxed != null;
             assert waxed != null;
@@ -92,6 +97,17 @@ public class UnvotedAndShelved implements ModInitializer {
 
         for (int i = 0; i < list.size() - 1; i++) {
             OxidizableBlocksRegistry.registerOxidizableBlockPair(list2.get(i), list2.get(i + 1));
+        }
+
+        List<Block> list3 = Lists.newLinkedList();
+
+        list3.add(Blocks.LIGHTNING_ROD);
+        list3.add(USBlocks.EXPOSED_LIGHTNING_ROD);
+        list3.add(USBlocks.WEATHERED_LIGHTNING_ROD);
+        list3.add(USBlocks.OXIDIZED_LIGHTNING_ROD);
+
+        for (int i = 0; i < list.size() - 1; i++) {
+            OxidizableBlocksRegistry.registerOxidizableBlockPair(list3.get(i), list3.get(i + 1));
         }
 
         BiomeModifications.addSpawn(BiomeSelectors.includeByKey(Biomes.LUSH_CAVES), MobCategory.UNDERGROUND_WATER_CREATURE, USEntities.GLARE, 10, 1, 1);

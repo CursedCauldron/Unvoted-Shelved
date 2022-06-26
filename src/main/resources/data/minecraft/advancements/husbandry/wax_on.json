@@ -34,7 +34,11 @@
               "unvotedandshelved:copper_button",
               "unvotedandshelved:exposed_copper_button",
               "unvotedandshelved:weathered_copper_button",
-              "unvotedandshelved:oxidized_copper_button"
+              "unvotedandshelved:oxidized_copper_button",
+              "minecraft:lightning_rod",
+              "unvotedandshelved:exposed_lightning_rod",
+              "unvotedandshelved:weathered_lightning_rod",
+              "unvotedandshelved:oxidized_lightning_rod"
             ]
           }
         }
