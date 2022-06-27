@@ -31,6 +31,8 @@ import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
@@ -41,8 +43,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 public class GlareEntity extends AgeableMob implements FlyingAnimal {
-    protected static final ImmutableList<SensorType<? extends Sensor<? super GlareEntity>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_PLAYERS);
-    protected static final ImmutableList<MemoryModuleType<?>> MEMORY_MODULES = ImmutableList.of(USMemoryModules.GLOWBERRIES_GIVEN, USMemoryModules.GRUMPY_TICKS, USMemoryModules.DARK_TICKS_REMAINING, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.AVOID_TARGET);
+    public static final Ingredient TEMPTATION_ITEM = Ingredient.of(Items.GLOW_BERRIES);
+    protected static final ImmutableList<SensorType<? extends Sensor<? super GlareEntity>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_PLAYERS, USSensorTypes.GLARE_TEMPTATIONS);
+    protected static final ImmutableList<MemoryModuleType<?>> MEMORY_MODULES = ImmutableList.of(USMemoryModules.GLOWBERRIES_GIVEN, USMemoryModules.GRUMPY_TICKS, USMemoryModules.DARK_TICKS_REMAINING, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.AVOID_TARGET, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.BREED_TARGET, MemoryModuleType.IS_PANICKING, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES);
     private static final EntityDataAccessor<Boolean> GRUMPY = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> SHINY = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> FINDING_DARKNESS = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.BOOLEAN);

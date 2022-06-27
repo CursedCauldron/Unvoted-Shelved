@@ -11,6 +11,7 @@
     "ModelPartMixin",
     "PartDefinitionMixin",
     "PoseMixin",
+    "SensorTypeAccessor",
     "ServerLevelMixin",
     "ThrownTridentAccessor",
     "ZombieMixin",

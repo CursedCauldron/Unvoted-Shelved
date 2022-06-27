@@ -6,8 +6,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
 
-//<>
-
 public class USPoiTags {
     public static void init() {}
 

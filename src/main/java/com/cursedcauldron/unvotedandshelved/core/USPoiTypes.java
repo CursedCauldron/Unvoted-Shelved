@@ -13,8 +13,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.Set;
 
 public class USPoiTypes {
-    public static void init (){
+
+    public static void init() {
     }
+
     private static final Set<BlockState> RODS = ImmutableList.of(
             USBlocks.EXPOSED_LIGHTNING_ROD,
             USBlocks.WEATHERED_LIGHTNING_ROD,
@@ -32,4 +34,5 @@ public class USPoiTypes {
         PoiTypesAccessor.callRegister(Registry.POINT_OF_INTEREST_TYPE, entry, states, 1, 1);
         return entry;
     }
+
 }

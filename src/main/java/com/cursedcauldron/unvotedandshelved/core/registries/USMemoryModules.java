@@ -24,6 +24,7 @@ public class USMemoryModules {
     public static final MemoryModuleType<Integer> COPPER_GOLEM_HEADSPIN_TICKS = register("copper_golem_headspin_ticks", Codec.INT);
 
     public static final MemoryModuleType<BlockPos> COPPER_BUTTON = register("copper_button");
+
     public static <U> MemoryModuleType<U> register(String id, Codec<U> codec) {
         return MEMORY_MODULES.register(id, MemoryModuleAccessor.createMemoryModuleType(Optional.of(codec)));
     }
