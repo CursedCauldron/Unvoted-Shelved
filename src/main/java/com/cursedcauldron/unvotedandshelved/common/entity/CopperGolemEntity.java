@@ -39,12 +39,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import static com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS;
+
 public class CopperGolemEntity extends AbstractGolem {
     
     // ඞ
 
     protected static final ImmutableList<SensorType<? extends Sensor<? super CopperGolemEntity>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.HURT_BY);
-    protected static final ImmutableList<MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(MemoryModuleType.LOOK_TARGET, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS,  USMemoryModules.COPPER_GOLEM_HEADSPIN_TICKS, USMemoryModules.COPPER_BUTTON);
+    protected static final ImmutableList<MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(MemoryModuleType.LOOK_TARGET, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, COPPER_BUTTON_COOLDOWN_TICKS,  USMemoryModules.COPPER_GOLEM_HEADSPIN_TICKS, USMemoryModules.COPPER_BUTTON);
     private static final EntityDataAccessor<Integer> STAGE = SynchedEntityData.defineId(CopperGolemEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> WAXED = SynchedEntityData.defineId(CopperGolemEntity.class, EntityDataSerializers.BOOLEAN);
 
@@ -400,6 +402,10 @@ public class CopperGolemEntity extends AbstractGolem {
                     this.setStage(Stage.values()[this.getStage().getId() + 1]);
                 }
             }
+
+        }
+        if (this.getBrain().getMemory(COPPER_BUTTON_COOLDOWN_TICKS).isPresent()) {
+            System.out.println(this.getBrain().getMemory(COPPER_BUTTON_COOLDOWN_TICKS).get().floatValue());
         }
     }
 

@@ -64,15 +64,18 @@ public class FindCopperButtonTask extends Behavior<CopperGolemEntity> {
                         entity.getBrain().setMemory(USMemoryModules.COPPER_BUTTON, copperPos);
                         this.copperPosPublic = copperPos;
                     }
-                } else if (buttonBelow != null) {
-                    if (buttonBelow.canReach()) {
-                        entity.getNavigation().moveTo(button, 0.4);
-                        if (entity.blockPosition().closerThan(copperPos, 2) && entity.level.getBlockState(copperPos).getBlock() instanceof CopperButtonBlock) {
-                            entity.getBrain().setMemory(USMemoryModules.COPPER_BUTTON, copperPos);
-                            this.copperPosPublic = copperPos;
-                        }
+                }
+            } else if (buttonBelow != null) {
+                if (buttonBelow.canReach()) {
+                    entity.getNavigation().moveTo(button, 0.4);
+                    if (entity.blockPosition().closerThan(copperPos, 2) && entity.level.getBlockState(copperPos).getBlock() instanceof CopperButtonBlock) {
+                        entity.getBrain().setMemory(USMemoryModules.COPPER_BUTTON, copperPos);
+                        this.copperPosPublic = copperPos;
                     }
                 }
+            } else {
+                entity.getBrain().eraseMemory(USMemoryModules.COPPER_BUTTON);
+                entity.getBrain().eraseMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS);
             }
         }
     }
