@@ -31,7 +31,7 @@ import net.minecraft.world.entity.schedule.Activity;
 
 public class CopperGolemBrain {
 
-    public static Brain<?> create(CopperGolemEntity copperGolemEntity, Brain<CopperGolemEntity> brain) {
+    public static Brain<?> create(Brain<CopperGolemEntity> brain) {
         addCoreActivities(brain);
         addIdleActivities(brain);
         addHeadSpinActivity(brain);

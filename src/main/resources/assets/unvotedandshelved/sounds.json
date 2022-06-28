@@ -126,5 +126,12 @@
       "unvotedandshelved:mob/copper_golem/repair"
     ],
     "subtitle": "subtitles.unvotedandshelved.copper_golem_repair"
+  },
+  "copper_golem_damage": {
+    "sounds": [
+      "unvotedandshelved:mob/copper_golem/damage1",
+      "unvotedandshelved:mob/copper_golem/damage2"
+    ],
+    "subtitle": "subtitles.unvotedandshelved.copper_golem_damage"
   }
 }

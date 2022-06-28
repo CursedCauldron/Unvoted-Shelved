@@ -28,6 +28,7 @@ public class USSounds {
     public static final SoundEvent COPPER_GOLEM_HIT = register("copper_golem_hit");
     public static final SoundEvent COPPER_GOLEM_DEATH = register("copper_golem_death");
     public static final SoundEvent COPPER_GOLEM_REPAIR = register("copper_golem_repair");
+    public static final SoundEvent COPPER_GOLEM_DAMAGE = register("copper_golem_damage");
     public static final SoundEvent CHINESE_RIP_OFF_WINNIE_THE_POOH = register("chinese_rip_off_winnie_the_pooh");
 
     public static final SoundType GLOW = new SoundType(1.0F, 2.0F, USSounds.GLOWBERRY_DUST_PLACE, GLOWBERRY_DUST_STEP, USSounds.GLOWBERRY_DUST_PLACE , USSounds.GLOWBERRY_DUST_PLACE, USSounds.GLOWBERRY_DUST_PLACE);

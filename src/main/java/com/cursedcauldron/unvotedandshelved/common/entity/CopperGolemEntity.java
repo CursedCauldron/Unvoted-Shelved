@@ -17,7 +17,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -80,7 +79,7 @@ public class CopperGolemEntity extends AbstractGolem {
 
     @Override
     protected Brain<?> makeBrain(@NotNull Dynamic<?> dynamic) {
-        return CopperGolemBrain.create(this, this.brainProvider().makeBrain(dynamic));
+        return CopperGolemBrain.create(this.brainProvider().makeBrain(dynamic));
     }
 
     @Override @SuppressWarnings("all")
