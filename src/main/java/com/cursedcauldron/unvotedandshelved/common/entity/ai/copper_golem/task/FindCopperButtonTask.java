@@ -57,25 +57,21 @@ public class FindCopperButtonTask extends Behavior<CopperGolemEntity> {
             BehaviorUtils.setWalkAndLookTargetMemories(entity, copperPos, 0.4F, 1);
             Path button = entity.getNavigation().createPath(copperPos, 1);
             Path buttonBelow = entity.getNavigation().createPath(copperPosBelow, 1);
-            if (button != null) {
-                if (button.canReach()) {
+            if (button != null && button.canReach()) {
                     entity.getNavigation().moveTo(button, 0.4);
                     if (entity.blockPosition().closerThan(copperPos, 2) && entity.level.getBlockState(copperPos).getBlock() instanceof CopperButtonBlock) {
                         entity.getBrain().setMemory(USMemoryModules.COPPER_BUTTON, copperPos);
                         this.copperPosPublic = copperPos;
-                    }
                 }
-            } else if (buttonBelow != null) {
-                if (buttonBelow.canReach()) {
+            } else if (buttonBelow != null && buttonBelow.canReach()) {
                     entity.getNavigation().moveTo(button, 0.4);
                     if (entity.blockPosition().closerThan(copperPos, 2) && entity.level.getBlockState(copperPos).getBlock() instanceof CopperButtonBlock) {
                         entity.getBrain().setMemory(USMemoryModules.COPPER_BUTTON, copperPos);
                         this.copperPosPublic = copperPos;
-                    }
                 }
             } else {
                 entity.getBrain().eraseMemory(USMemoryModules.COPPER_BUTTON);
-                entity.getBrain().eraseMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS);
+                entity.getBrain().setMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS, UniformInt.of(120, 240).sample(level.getRandom()));
             }
         }
     }

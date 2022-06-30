@@ -390,8 +390,6 @@ public class CopperGolemEntity extends AbstractGolem {
             }
             if (this.getStage() == Stage.OXIDIZED) {
                 this.convertToFrozen(USEntities.FROZEN_COPPER_GOLEM,true);
-            } else {
-                CopperGolemBrain.updateActivity(this);
             }
 
             // Allows the Copper Golem to oxidize over time if not waxed

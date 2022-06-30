@@ -66,7 +66,7 @@ public class CopperGolemBrain {
                                         Pair.of(new DoNothing(30, 60), 1))
                         ))),
                 ImmutableSet.of(
-                        Pair.of(USMemoryModules.COPPER_BUTTON, MemoryStatus.VALUE_ABSENT)));
+                        Pair.of(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS, MemoryStatus.VALUE_PRESENT)));
     }
 
     private static void addCopperButtonActivities(Brain<CopperGolemEntity> brain) {

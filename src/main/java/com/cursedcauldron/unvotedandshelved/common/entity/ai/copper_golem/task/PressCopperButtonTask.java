@@ -24,7 +24,7 @@ public class PressCopperButtonTask extends Behavior<CopperGolemEntity> {
     private int buttonTicks;
 
     public PressCopperButtonTask() {
-        super(ImmutableMap.of(MemoryModuleType.LOOK_TARGET, MemoryStatus.VALUE_PRESENT, USMemoryModules.COPPER_BUTTON, MemoryStatus.VALUE_PRESENT));
+        super(ImmutableMap.of(USMemoryModules.COPPER_BUTTON, MemoryStatus.VALUE_PRESENT));
     }
 
     @Override
