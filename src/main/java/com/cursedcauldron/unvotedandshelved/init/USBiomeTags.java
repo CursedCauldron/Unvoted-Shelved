@@ -12,7 +12,7 @@ public class USBiomeTags {
 
     }
 
-    public static final TagKey<Biome> RUINED_CAPITAL = create("ruined_capital");
+    public static final TagKey<Biome> RUINED_CAPITAL = create("has_structure/ruined_capital");
 
     private static TagKey<Biome> create(String string) {
         return TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(UnvotedAndShelved.MODID, string));

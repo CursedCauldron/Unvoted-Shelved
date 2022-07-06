@@ -50,14 +50,10 @@ import java.util.Comparator;
 
 public class CopperGolemEntity extends AbstractGolem {
 
-    // ඞ
-
     protected static final ImmutableList<SensorType<? extends Sensor<? super CopperGolemEntity>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.HURT_BY);
     protected static final ImmutableList<MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(MemoryModuleType.LOOK_TARGET, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS.get(),  USMemoryModules.COPPER_GOLEM_HEADSPIN_TICKS.get(), USMemoryModules.COPPER_BUTTON.get());
     private static final EntityDataAccessor<Integer> STAGE = SynchedEntityData.defineId(CopperGolemEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> WAXED = SynchedEntityData.defineId(CopperGolemEntity.class, EntityDataSerializers.BOOLEAN);
-
-    // Animation States:
 
     public final AnimationState walkingAnimation = new AnimationState();
     public final AnimationState headSpinAnimation = new AnimationState();
@@ -96,8 +92,6 @@ public class CopperGolemEntity extends AbstractGolem {
         return (Brain<CopperGolemEntity>)super.getBrain();
     }
 
-    // Sets the eye height of the mob
-
     @Override
     protected float getStandingEyeHeight(@NotNull Pose pose, EntityDimensions entityDimensions) {
         return entityDimensions.height * (this.isBaby() ? 0.3f : 0.6f);
@@ -109,8 +103,6 @@ public class CopperGolemEntity extends AbstractGolem {
         this.entityData.define(STAGE, 0);
         this.entityData.define(WAXED, false);
     }
-
-    // Waxed NBT Tag:
 
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag tag) {
@@ -136,8 +128,6 @@ public class CopperGolemEntity extends AbstractGolem {
         this.level.getProfiler().pop();
         super.customServerAiStep();
     }
-
-    // Animations:
 
     @Override
     public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> data) {
@@ -243,8 +233,6 @@ public class CopperGolemEntity extends AbstractGolem {
         return CopperGolemEntity.Stage.BY_ID[this.entityData.get(STAGE)];
     }
 
-    // Changes the movement speed depending on how much the Copper Golem has oxidized
-
     @SuppressWarnings("all")
     public void setStage(CopperGolemEntity.Stage stage) {
         this.entityData.set(STAGE, stage.getId());
@@ -270,14 +258,11 @@ public class CopperGolemEntity extends AbstractGolem {
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.MOVEMENT_SPEED, 0.5D).add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }
 
-    // Plays Walking Animation if Entity is Moving
-
     private boolean shouldWalk() {
         return this.onGround && this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6 && !this.isInWaterOrBubble();
     }
 
-    // Prevents the Copper Golem from drowning, similar to Iron Golems
-
+    @Override
     protected int decreaseAirSupply(int i) {
         return i;
     }
@@ -297,9 +282,6 @@ public class CopperGolemEntity extends AbstractGolem {
 
     @Override
     protected InteractionResult mobInteract(Player player, @NotNull InteractionHand hand) {
-
-        // Copper Golem waxing using Honeycomb
-
         ItemStack stack = player.getItemInHand(hand);
         if (stack.is(Items.HONEYCOMB) && !this.isWaxed()) {
             if (!player.getAbilities().instabuild) {
@@ -310,8 +292,6 @@ public class CopperGolemEntity extends AbstractGolem {
             this.gameEvent(GameEvent.ENTITY_INTERACT, this);
             return InteractionResult.SUCCESS;
         }
-
-        // Copper Golem scraping using an Axe
 
         else if (stack.getItem() instanceof AxeItem) {
             if (this.isWaxed()) {
@@ -333,8 +313,6 @@ public class CopperGolemEntity extends AbstractGolem {
             return InteractionResult.SUCCESS;
         }
 
-        // Copper Golem repairing using a Copper Ingot
-
         else if (this.getHealth() < this.getMaxHealth() && stack.is(Items.COPPER_INGOT)) {
             this.heal(5.0F);
             float f1 = 1.4F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F;
@@ -347,8 +325,6 @@ public class CopperGolemEntity extends AbstractGolem {
         }
         return super.mobInteract(player, hand);
     }
-
-    // Converts the Copper Golem to an Oxidized Copper Golem if fully oxidized
 
     public <T extends Mob> void convertToFrozen(EntityType<T> entityType, boolean bl) {
         if (!this.isRemoved()) {
@@ -401,8 +377,6 @@ public class CopperGolemEntity extends AbstractGolem {
                 CopperGolemBrain.updateActivity(this);
             }
 
-            // Allows the Copper Golem to oxidize over time if not waxed
-
             if (!this.isWaxed() && this.getStage() != Stage.OXIDIZED) {
                 float randomChance = this.random.nextFloat();
                 if (randomChance < 3.4290552E-5F && this.getStage() != Stage.OXIDIZED) {
@@ -411,18 +385,6 @@ public class CopperGolemEntity extends AbstractGolem {
             }
         }
     }
-
-    // Cooldown for the Copper Golem pressing Copper Buttons
-
-    public void setCooldown() {
-        double bound = Math.pow(2, this.getStage().getId() - 1);
-        int min = (int) (120 * bound);
-        int max = (int) (240 * bound);
-        int duration = UniformInt.of(min, max).sample(level.getRandom());
-        this.getBrain().setMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS.get(), duration);
-    }
-
-    // Sound Events
 
     protected SoundEvent getHurtSound(@NotNull DamageSource source) {
         return USSoundEvents.COPPER_GOLEM_HIT.get();
@@ -439,8 +401,6 @@ public class CopperGolemEntity extends AbstractGolem {
     protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState state) {
         this.playSound(this.getStepSound(), 0.5F, 1.0F);
     }
-
-    // Sounds depending on what stage of oxidization the Copper Golem is on
 
     public enum Stage {
         UNAFFECTED(0, "unaffected", USSoundEvents.HEAD_SPIN.get()),
