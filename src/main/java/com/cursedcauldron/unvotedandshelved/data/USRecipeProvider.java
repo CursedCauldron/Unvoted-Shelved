@@ -70,7 +70,7 @@ public class USRecipeProvider extends RecipeProvider {
                 shapeless(result)
                 .requires(ingredient)
                 .requires(Items.HONEYCOMB)
-                .unlockedBy("has_" + Registry.ITEM.getKey(ingredient.asItem()), has(ingredient))
+                .unlockedBy("has_" + Registry.ITEM.getKey(ingredient.asItem()).getPath(), has(ingredient))
                 .save(consumer);
     }
 
@@ -79,7 +79,7 @@ public class USRecipeProvider extends RecipeProvider {
                 .define('#', ingredient)
                 .pattern("##")
                 .pattern("##")
-                .unlockedBy("has_" + Registry.ITEM.getKey(ingredient.asItem()), has(ingredient))
+                .unlockedBy("has_" + Registry.ITEM.getKey(ingredient.asItem()).getPath(), has(ingredient))
                 .save(consumer);
     }
 

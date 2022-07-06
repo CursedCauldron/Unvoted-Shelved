@@ -7,7 +7,7 @@
       },
       "trigger": "minecraft:recipe_unlocked"
     },
-    "has_unvotedandshelved:weathered_copper_button": {
+    "has_weathered_copper_button": {
       "conditions": {
         "items": [
           {
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_unvotedandshelved:weathered_copper_button",
+      "has_weathered_copper_button",
       "has_the_recipe"
     ]
   ],
