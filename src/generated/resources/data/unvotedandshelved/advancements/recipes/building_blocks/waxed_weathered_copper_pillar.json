@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "unvotedandshelved:waxed_weathered_copper_pillar"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_unvotedandshelved:weathered_copper_pillar": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "unvotedandshelved:weathered_copper_pillar"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_unvotedandshelved:weathered_copper_pillar",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "unvotedandshelved:waxed_weathered_copper_pillar"
+    ]
+  }
+}

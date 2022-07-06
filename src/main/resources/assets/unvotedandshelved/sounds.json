@@ -19,20 +19,67 @@
     ],
     "subtitle": "subtitles.unvotedandshelved.glare_idle"
   },
+  "glare_hurt": {
+    "sounds": [
+      "unvotedandshelved:mob/glare/hurt1",
+      "unvotedandshelved:mob/glare/hurt2",
+      "unvotedandshelved:mob/glare/hurt3",
+      "unvotedandshelved:mob/glare/hurt4",
+      "unvotedandshelved:mob/glare/hurt5"
+    ],
+    "subtitle": "subtitles.unvotedandshelved.glare_hurt"
+  },
+  "glare_death": {
+    "sounds": [
+      "unvotedandshelved:mob/glare/death1",
+      "unvotedandshelved:mob/glare/death2",
+      "unvotedandshelved:mob/glare/death3",
+      "unvotedandshelved:mob/glare/death4"
+    ],
+    "subtitle": "subtitles.unvotedandshelved.glare_death"
+  },
+  "glare_give_glow_berries": {
+    "sounds": [
+      "unvotedandshelved:mob/glare/give1",
+      "unvotedandshelved:mob/glare/give2",
+      "unvotedandshelved:mob/glare/give3",
+      "unvotedandshelved:mob/glare/give4",
+      "unvotedandshelved:mob/glare/give5"
+    ],
+    "subtitle": "subtitles.unvotedandshelved.glare_give_glow_berries"
+  },
   "glowberry_dust_step": {
     "sounds": [
       "unvotedandshelved:nothing"
     ]
   },
+  "glowberry_dust_place": {
+    "sounds": [
+      "unvotedandshelved:block/glowberry_dust/place1",
+      "unvotedandshelved:block/glowberry_dust/place2",
+      "unvotedandshelved:block/glowberry_dust/place3"
+    ],
+    "subtitle": "subtitles.unvotedandshelved.glowberry_dust_place"
+  },
+  "glowberry_dust_collect": {
+    "sounds": [
+      "unvotedandshelved:block/glowberry_dust/place1",
+      "unvotedandshelved:block/glowberry_dust/place2",
+      "unvotedandshelved:block/glowberry_dust/place3"
+    ],
+    "subtitle": "subtitles.unvotedandshelved.glowberry_dust_collect"
+  },
   "copper_button_click": {
     "sounds": [
       "unvotedandshelved:block/copper_button/click"
-    ]
+    ],
+    "subtitle": "subtitles.unvotedandshelved.copper_button_click"
   },
   "copper_golem_headspin": {
     "sounds": [
       "unvotedandshelved:mob/copper_golem/copper_golem_headspin"
-    ]
+    ],
+    "subtitle": "subtitles.unvotedandshelved.copper_golem_headspin"
   },
   "copper_golem_headspin_slower": {
     "sounds": [
@@ -49,5 +96,42 @@
       "unvotedandshelved:mob/copper_golem/chinese_rip_off_winnie_the_pooh"
     ],
     "subtitle": "subtitles.unvotedandshelved.chinese_rip_off_winnie_the_pooh"
+  },
+  "copper_golem_walk": {
+    "sounds": [
+      "unvotedandshelved:mob/copper_golem/walk1",
+      "unvotedandshelved:mob/copper_golem/walk2",
+      "unvotedandshelved:mob/copper_golem/walk3",
+      "unvotedandshelved:mob/copper_golem/walk4"
+    ],
+    "subtitle": "subtitles.unvotedandshelved.copper_golem_walk"
+  },
+  "copper_golem_hit": {
+    "sounds": [
+      "unvotedandshelved:mob/copper_golem/hit1",
+      "unvotedandshelved:mob/copper_golem/hit2",
+      "unvotedandshelved:mob/copper_golem/hit3",
+      "unvotedandshelved:mob/copper_golem/hit4"
+    ],
+    "subtitle": "subtitles.unvotedandshelved.copper_golem_hit"
+  },
+  "copper_golem_death": {
+    "sounds": [
+      "unvotedandshelved:mob/copper_golem/death"
+    ],
+    "subtitle": "subtitles.unvotedandshelved.copper_golem_death"
+  },
+  "copper_golem_repair": {
+    "sounds": [
+      "unvotedandshelved:mob/copper_golem/repair"
+    ],
+    "subtitle": "subtitles.unvotedandshelved.copper_golem_repair"
+  },
+  "copper_golem_damage": {
+    "sounds": [
+      "unvotedandshelved:mob/copper_golem/damage1",
+      "unvotedandshelved:mob/copper_golem/damage2"
+    ],
+    "subtitle": "subtitles.unvotedandshelved.copper_golem_damage"
   }
 }

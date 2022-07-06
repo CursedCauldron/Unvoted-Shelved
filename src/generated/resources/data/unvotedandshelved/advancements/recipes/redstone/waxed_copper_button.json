@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "unvotedandshelved:waxed_copper_button"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_unvotedandshelved:copper_button": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "unvotedandshelved:copper_button"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_unvotedandshelved:copper_button",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "unvotedandshelved:waxed_copper_button"
+    ]
+  }
+}
