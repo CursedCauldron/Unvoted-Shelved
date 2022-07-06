@@ -10,33 +10,27 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LightningRodBlock;
 import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
-import java.util.Random;
 import java.util.function.Supplier;
 
-public class WeatheringRotatedPillarBlock extends ConnectedRotatedPillarBlock implements WeatheringCopper, IWeatheringObject {
-    public static final BooleanProperty CONNECTED = BooleanProperty.create("connected");
+public class WeatheringLightningRodBlock extends LightningRodBlock implements WeatheringCopper, IWeatheringObject {
     private final WeatheringCopper.WeatherState weatherState;
-    public static Supplier<BiMap<Block, Block>> NEXT_BY_BLOCK = Suppliers.memoize(() -> {
-        return ImmutableBiMap.<Block, Block>builder()
-                .put(USBlocks.COPPER_PILLAR.get(), USBlocks.EXPOSED_COPPER_PILLAR.get())
-                .put(USBlocks.EXPOSED_COPPER_PILLAR.get(), USBlocks.WEATHERED_COPPER_PILLAR.get())
-                .put(USBlocks.WEATHERED_COPPER_PILLAR.get(), USBlocks.OXIDIZED_COPPER_PILLAR.get())
-                .build();
-    });
-    public static final Supplier<BiMap<Block, Block>> PREVIOUS_BY_BLOCK = Suppliers.memoize(() -> {
-        return NEXT_BY_BLOCK.get().inverse();
-    });
+    public static Supplier<BiMap<Block, Block>> NEXT_BY_BLOCK = Suppliers.memoize(() -> ImmutableBiMap.<Block, Block>builder()
+            .put(Blocks.LIGHTNING_ROD, USBlocks.EXPOSED_LIGHTNING_ROD.get())
+            .put(USBlocks.EXPOSED_LIGHTNING_ROD.get(), USBlocks.WEATHERED_LIGHTNING_ROD.get())
+            .put(USBlocks.WEATHERED_LIGHTNING_ROD.get(), USBlocks.OXIDIZED_LIGHTNING_ROD.get())
+            .build());
+    public static final Supplier<BiMap<Block, Block>> PREVIOUS_BY_BLOCK = Suppliers.memoize(() -> NEXT_BY_BLOCK.get().inverse());
+    public static final Supplier<BiMap<Block, Block>> WAXABLES = Suppliers.memoize(() -> ImmutableBiMap.<Block, Block>builder().put(Blocks.LIGHTNING_ROD, USBlocks.WAXED_LIGHTNING_ROD.get()).put(USBlocks.EXPOSED_LIGHTNING_ROD.get(), USBlocks.WAXED_EXPOSED_LIGHTNING_ROD.get()).put(USBlocks.WEATHERED_LIGHTNING_ROD.get(), USBlocks.WAXED_WEATHERED_LIGHTNING_ROD.get()).put(USBlocks.OXIDIZED_LIGHTNING_ROD.get(), USBlocks.WAXED_OXIDIZED_LIGHTNING_ROD.get()).build());
 
-    public WeatheringRotatedPillarBlock(WeatherState state, Properties properties) {
-        super(state, properties);
-        this.weatherState = state;
-        this.registerDefaultState(this.stateDefinition.any().setValue(CONNECTED, false));
+    public WeatheringLightningRodBlock(WeatherState weatherState, Properties properties) {
+        super(properties);
+        this.weatherState = weatherState;
     }
 
     @Override
@@ -64,4 +58,8 @@ public class WeatheringRotatedPillarBlock extends ConnectedRotatedPillarBlock im
         return Optional.ofNullable(PREVIOUS_BY_BLOCK.get().get(state.getBlock())).map(block -> block.withPropertiesOf(state));
     }
 
+    @Override
+    public Supplier<BiMap<Block, Block>> getWaxables() {
+        return WAXABLES;
+    }
 }

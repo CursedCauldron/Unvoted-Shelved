@@ -8,9 +8,7 @@ import net.minecraft.world.level.biome.Biome;
 
 public class USBiomeTags {
 
-    public static void init() {
-
-    }
+    public static void init() { }
 
     public static final TagKey<Biome> RUINED_CAPITAL = create("has_structure/ruined_capital");
 

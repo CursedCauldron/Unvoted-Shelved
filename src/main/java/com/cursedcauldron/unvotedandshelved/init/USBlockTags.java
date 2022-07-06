@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.Block;
 
 public class USBlockTags {
 
-    public static void init() {}
+    public static void init() { }
 
     public static final TagKey<Block> COPPER_BUTTONS = create("copper_buttons");
     public static final TagKey<Block> COPPER_PILLARS = create("copper_pillars");

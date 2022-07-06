@@ -8,7 +8,7 @@ import net.minecraft.world.item.Item;
 
 public class USItemTags {
 
-    public static void init() {}
+    public static void init() { }
 
     public static final TagKey<Item> COPPER_BUTTONS = create("copper_buttons");
 

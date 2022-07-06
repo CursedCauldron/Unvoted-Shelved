@@ -1,5 +1,6 @@
-// 1.19	2022-07-06T09:19:02.7380375	Tags for minecraft:block
+// 1.19	2022-07-06T11:02:47.0600388	Tags for minecraft:block
 11fcbf9501702b3373d338442c992129cc43f058 data/minecraft/tags/blocks/buttons.json
-4d6bf5b1e7f9905a684611ad8c7b59d5b18d6fce data/minecraft/tags/blocks/mineable/pickaxe.json
+a18769c1f6641e7c3db19e10fbfc34db30bca27c data/minecraft/tags/blocks/mineable/pickaxe.json
 c0db25c58fb034a69cac45e2c51114048dae09bb data/unvotedandshelved/tags/blocks/copper_buttons.json
 e40e35f16ce4978b97c973a47eb396a30355b9aa data/unvotedandshelved/tags/blocks/copper_pillars.json
+12111779a676e0b68531e632e9984a126326c36f data/unvotedandshelved/tags/blocks/lightning_rods.json

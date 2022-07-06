@@ -1,17 +1,26 @@
 package com.cursedcauldron.unvotedandshelved.mixin;
 
+import com.cursedcauldron.unvotedandshelved.api.IWaxableObject;
+import com.cursedcauldron.unvotedandshelved.api.IWeatheringObject;
 import com.cursedcauldron.unvotedandshelved.api.LightningRodAccess;
 import com.cursedcauldron.unvotedandshelved.entities.CopperGolemEntity;
+import com.cursedcauldron.unvotedandshelved.init.USBlocks;
 import com.cursedcauldron.unvotedandshelved.init.USEntityTypes;
+import com.google.common.base.Suppliers;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.ImmutableBiMap;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LightningRodBlock;
+import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import net.minecraft.world.level.block.state.pattern.BlockPattern;
@@ -19,18 +28,22 @@ import net.minecraft.world.level.block.state.pattern.BlockPatternBuilder;
 import net.minecraft.world.level.block.state.predicate.BlockStatePredicate;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 @Mixin(LightningRodBlock.class)
-public class LightningRodBlockMixin extends Block implements LightningRodAccess {
+public class LightningRodBlockMixin extends Block implements LightningRodAccess, WeatheringCopper, IWaxableObject {
     @Nullable
     private BlockPattern copperGolemPattern;
     @Nullable
     private BlockPattern copperGolemDispenserPattern;
     private static final Predicate<BlockState> IS_GOLEM_HEAD_PREDICATE = (state) -> state != null && (state.is(Blocks.CARVED_PUMPKIN) || state.is(Blocks.JACK_O_LANTERN));
     private static final Predicate<BlockState> IS_GOLEM_HEAD_TIP_PREDICATE = (state) -> state != null && (state == Blocks.LIGHTNING_ROD.defaultBlockState().setValue(LightningRodBlock.FACING, Direction.UP));
+    private static final Supplier<BiMap<Block, Block>> WAXABLES = Suppliers.memoize(() -> ImmutableBiMap.<Block, Block>builder().put(Blocks.LIGHTNING_ROD, USBlocks.WAXED_LIGHTNING_ROD.get()).put(USBlocks.EXPOSED_LIGHTNING_ROD.get(), USBlocks.WAXED_EXPOSED_LIGHTNING_ROD.get()).put(USBlocks.WEATHERED_LIGHTNING_ROD.get(), USBlocks.WAXED_WEATHERED_LIGHTNING_ROD.get()).put(USBlocks.OXIDIZED_LIGHTNING_ROD.get(), USBlocks.WAXED_OXIDIZED_LIGHTNING_ROD.get()).build());
 
     public LightningRodBlockMixin(Properties settings) {
         super(settings);
@@ -93,4 +106,30 @@ public class LightningRodBlockMixin extends Block implements LightningRodAccess 
     public boolean canDispense(LevelReader worldView, BlockPos pos) {
         return this.getCopperGolemDispenserPattern().find(worldView, pos) != null;
     }
+
+    @Override
+    public WeatherState getAge() {
+        return WeatherState.UNAFFECTED;
+    }
+
+    @Override
+    public Optional<BlockState> getNext(BlockState blockState) {
+        return WeatheringCopper.getNext(blockState.getBlock()).map(block -> block.withPropertiesOf(blockState));
+    }
+
+    @Override
+    public boolean isRandomlyTicking(BlockState state) {
+        return Optional.ofNullable(NEXT_BY_BLOCK.get().get(state.getBlock())).isPresent();
+    }
+
+    @Override
+    public void onRandomTick(BlockState state, ServerLevel world, BlockPos blockPos, RandomSource random) {
+        this.onRandomTick(state, world, blockPos, random);
+    }
+
+    @Override
+    public Supplier<BiMap<Block, Block>> getWaxables() {
+        return WAXABLES;
+    }
+
 }

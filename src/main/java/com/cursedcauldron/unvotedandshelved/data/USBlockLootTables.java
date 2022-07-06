@@ -27,6 +27,13 @@ public class USBlockLootTables extends BlockLoot {
         dropSelf(USBlocks.WAXED_EXPOSED_COPPER_PILLAR.get());
         dropSelf(USBlocks.WAXED_WEATHERED_COPPER_PILLAR.get());
         dropSelf(USBlocks.WAXED_OXIDIZED_COPPER_PILLAR.get());
+        dropSelf(USBlocks.EXPOSED_LIGHTNING_ROD.get());
+        dropSelf(USBlocks.WEATHERED_LIGHTNING_ROD.get());
+        dropSelf(USBlocks.OXIDIZED_LIGHTNING_ROD.get());
+        dropSelf(USBlocks.WAXED_LIGHTNING_ROD.get());
+        dropSelf(USBlocks.WAXED_EXPOSED_LIGHTNING_ROD.get());
+        dropSelf(USBlocks.WAXED_WEATHERED_LIGHTNING_ROD.get());
+        dropSelf(USBlocks.WAXED_OXIDIZED_LIGHTNING_ROD.get());
     }
 
     @Override

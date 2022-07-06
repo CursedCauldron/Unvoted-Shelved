@@ -5,12 +5,15 @@ import com.cursedcauldron.unvotedandshelved.block.ConnectedRotatedPillarBlock;
 import com.cursedcauldron.unvotedandshelved.block.CopperButtonBlock;
 import com.cursedcauldron.unvotedandshelved.block.GlowberryDustBlock;
 import com.cursedcauldron.unvotedandshelved.block.WeatheringCopperButtonBlock;
+import com.cursedcauldron.unvotedandshelved.block.WeatheringLightningRodBlock;
 import com.cursedcauldron.unvotedandshelved.block.WeatheringRotatedPillarBlock;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LightningRodBlock;
+import net.minecraft.world.level.block.RedStoneOreBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -45,6 +48,13 @@ public class USBlocks {
     public static final RegistryObject<Block> WAXED_EXPOSED_COPPER_PILLAR = registerBlock("waxed_exposed_copper_pillar", () -> new ConnectedRotatedPillarBlock(WeatheringCopper.WeatherState.EXPOSED, BlockBehaviour.Properties.copy(Blocks.EXPOSED_COPPER)), CreativeModeTab.TAB_BUILDING_BLOCKS);
     public static final RegistryObject<Block> WAXED_WEATHERED_COPPER_PILLAR = registerBlock("waxed_weathered_copper_pillar", () -> new ConnectedRotatedPillarBlock(WeatheringCopper.WeatherState.WEATHERED, BlockBehaviour.Properties.copy(Blocks.WEATHERED_COPPER)), CreativeModeTab.TAB_BUILDING_BLOCKS);
     public static final RegistryObject<Block> WAXED_OXIDIZED_COPPER_PILLAR = registerBlock("waxed_oxidized_copper_pillar", () -> new ConnectedRotatedPillarBlock(WeatheringCopper.WeatherState.OXIDIZED, BlockBehaviour.Properties.copy(Blocks.OXIDIZED_COPPER)), CreativeModeTab.TAB_BUILDING_BLOCKS);
+    public static final RegistryObject<Block> EXPOSED_LIGHTNING_ROD = registerBlock("exposed_lightning_rod", () -> new WeatheringLightningRodBlock(WeatheringCopper.WeatherState.EXPOSED, BlockBehaviour.Properties.of(Material.METAL, MaterialColor.TERRACOTTA_LIGHT_GRAY).requiresCorrectToolForDrops().strength(3.0F, 6.0F).sound(SoundType.COPPER).noOcclusion()), CreativeModeTab.TAB_REDSTONE);
+    public static final RegistryObject<Block> WEATHERED_LIGHTNING_ROD = registerBlock("weathered_lightning_rod", () -> new WeatheringLightningRodBlock(WeatheringCopper.WeatherState.WEATHERED, BlockBehaviour.Properties.of(Material.METAL, MaterialColor.WARPED_STEM).requiresCorrectToolForDrops().strength(3.0F, 6.0F).sound(SoundType.COPPER).noOcclusion()), CreativeModeTab.TAB_REDSTONE);
+    public static final RegistryObject<Block> OXIDIZED_LIGHTNING_ROD = registerBlock("oxidized_lightning_rod", () -> new WeatheringLightningRodBlock(WeatheringCopper.WeatherState.OXIDIZED, BlockBehaviour.Properties.of(Material.METAL, MaterialColor.WARPED_NYLIUM).requiresCorrectToolForDrops().strength(3.0F, 6.0F).sound(SoundType.COPPER).noOcclusion()), CreativeModeTab.TAB_REDSTONE);
+    public static final RegistryObject<Block> WAXED_LIGHTNING_ROD = registerBlock("waxed_lightning_rod", () -> new WeatheringLightningRodBlock(WeatheringCopper.WeatherState.UNAFFECTED, BlockBehaviour.Properties.of(Material.METAL, MaterialColor.TERRACOTTA_LIGHT_GRAY).requiresCorrectToolForDrops().strength(3.0F, 6.0F).sound(SoundType.COPPER).noOcclusion()), CreativeModeTab.TAB_REDSTONE);
+    public static final RegistryObject<Block> WAXED_EXPOSED_LIGHTNING_ROD = registerBlock("waxed_exposed_lightning_rod", () -> new WeatheringLightningRodBlock(WeatheringCopper.WeatherState.EXPOSED, BlockBehaviour.Properties.of(Material.METAL, MaterialColor.TERRACOTTA_LIGHT_GRAY).requiresCorrectToolForDrops().strength(3.0F, 6.0F).sound(SoundType.COPPER).noOcclusion()), CreativeModeTab.TAB_REDSTONE);
+    public static final RegistryObject<Block> WAXED_WEATHERED_LIGHTNING_ROD = registerBlock("waxed_weathered_lightning_rod", () -> new WeatheringLightningRodBlock(WeatheringCopper.WeatherState.WEATHERED, BlockBehaviour.Properties.of(Material.METAL, MaterialColor.WARPED_STEM).requiresCorrectToolForDrops().strength(3.0F, 6.0F).sound(SoundType.COPPER).noOcclusion()), CreativeModeTab.TAB_REDSTONE);
+    public static final RegistryObject<Block> WAXED_OXIDIZED_LIGHTNING_ROD = registerBlock("waxed_oxidized_lightning_rod", () -> new WeatheringLightningRodBlock(WeatheringCopper.WeatherState.OXIDIZED, BlockBehaviour.Properties.of(Material.METAL, MaterialColor.WARPED_NYLIUM).requiresCorrectToolForDrops().strength(3.0F, 6.0F).sound(SoundType.COPPER).noOcclusion()), CreativeModeTab.TAB_REDSTONE);
 
     public static <B extends Block> RegistryObject<B> registerBlock(String name, Supplier<? extends B> supplier, CreativeModeTab tab) {
         RegistryObject<B> block = BLOCKS.register(name, supplier);
