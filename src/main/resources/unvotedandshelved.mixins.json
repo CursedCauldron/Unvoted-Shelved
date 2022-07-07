@@ -16,7 +16,6 @@
     "ServerLevelMixin",
     "ThrownTridentAccessor",
     "WardenMixin",
-    "ZoglinMixin",
     "ZombieMixin",
     "access.ActivityAccessor",
     "access.AxeItemAccessor",
