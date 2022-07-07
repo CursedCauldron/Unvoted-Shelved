@@ -8,12 +8,15 @@
     "HoneycombItemMixin",
     "LightningBoltMixin",
     "LightningRodBlockMixin",
+    "LivingEntityMixin",
     "ModelPartMixin",
     "PartDefinitionMixin",
     "PoseMixin",
     "SensorTypeAccessor",
     "ServerLevelMixin",
     "ThrownTridentAccessor",
+    "WardenMixin",
+    "ZoglinMixin",
     "ZombieMixin",
     "access.ActivityAccessor",
     "access.AxeItemAccessor",
@@ -24,6 +27,7 @@
     "access.SimpleParticleTypeAccessor"
   ],
   "client": [
+    "PigRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
