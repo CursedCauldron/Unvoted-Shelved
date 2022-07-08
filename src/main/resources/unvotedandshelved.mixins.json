@@ -7,7 +7,9 @@
   "mixins": [
     "LightningBoltMixin",
     "LightningRodBlockMixin",
+    "LivingEntityMixin",
     "PoseMixin",
+    "WardenMixin",
     "access.ThrownTridentAccessor"
   ],
   "client": [
