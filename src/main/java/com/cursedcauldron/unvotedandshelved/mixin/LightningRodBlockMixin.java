@@ -1,6 +1,5 @@
 package com.cursedcauldron.unvotedandshelved.mixin;
 
-import com.cursedcauldron.unvotedandshelved.api.IWaxableObject;
 import com.cursedcauldron.unvotedandshelved.api.IWeatheringObject;
 import com.cursedcauldron.unvotedandshelved.api.LightningRodAccess;
 import com.cursedcauldron.unvotedandshelved.entities.CopperGolemEntity;
@@ -26,37 +25,45 @@ import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import net.minecraft.world.level.block.state.pattern.BlockPatternBuilder;
 import net.minecraft.world.level.block.state.predicate.BlockStatePredicate;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 
-import java.util.Iterator;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 @Mixin(LightningRodBlock.class)
-public class LightningRodBlockMixin extends Block implements LightningRodAccess, WeatheringCopper, IWaxableObject {
+public class LightningRodBlockMixin extends Block implements LightningRodAccess, WeatheringCopper, IWeatheringObject {
     @Nullable
     private BlockPattern copperGolemPattern;
     @Nullable
     private BlockPattern copperGolemDispenserPattern;
     private static final Predicate<BlockState> IS_GOLEM_HEAD_PREDICATE = (state) -> state != null && (state.is(Blocks.CARVED_PUMPKIN) || state.is(Blocks.JACK_O_LANTERN));
     private static final Predicate<BlockState> IS_GOLEM_HEAD_TIP_PREDICATE = (state) -> state != null && (state == Blocks.LIGHTNING_ROD.defaultBlockState().setValue(LightningRodBlock.FACING, Direction.UP));
+    private static final Supplier<BiMap<Block, Block>> NEXT_BY_BLOCK = Suppliers.memoize(() -> ImmutableBiMap.<Block, Block>builder()
+            .put(Blocks.LIGHTNING_ROD, USBlocks.EXPOSED_LIGHTNING_ROD.get())
+            .put(USBlocks.EXPOSED_LIGHTNING_ROD.get(), USBlocks.WEATHERED_LIGHTNING_ROD.get())
+            .put(USBlocks.WEATHERED_LIGHTNING_ROD.get(), USBlocks.OXIDIZED_LIGHTNING_ROD.get())
+            .build());
     private static final Supplier<BiMap<Block, Block>> WAXABLES = Suppliers.memoize(() -> ImmutableBiMap.<Block, Block>builder().put(Blocks.LIGHTNING_ROD, USBlocks.WAXED_LIGHTNING_ROD.get()).put(USBlocks.EXPOSED_LIGHTNING_ROD.get(), USBlocks.WAXED_EXPOSED_LIGHTNING_ROD.get()).put(USBlocks.WEATHERED_LIGHTNING_ROD.get(), USBlocks.WAXED_WEATHERED_LIGHTNING_ROD.get()).put(USBlocks.OXIDIZED_LIGHTNING_ROD.get(), USBlocks.WAXED_OXIDIZED_LIGHTNING_ROD.get()).build());
 
     public LightningRodBlockMixin(Properties settings) {
         super(settings);
     }
 
-    public void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean notify) {
+    @Override
+    public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+        this.onRandomTick(state, level, pos, random);
+    }
+
+    public void onPlace(BlockState state, @NotNull Level world, @NotNull BlockPos pos, BlockState oldState, boolean notify) {
         if (!oldState.is(state.getBlock())) {
             this.trySpawnEntity(world, pos);
         }
     }
 
     public void trySpawnEntity(Level world, BlockPos pos) {
-
         BlockPattern.BlockPatternMatch result = this.getCopperGolemPattern().find(world, pos);
         int i;
         ServerPlayer serverPlayerEntity;
@@ -70,12 +77,12 @@ public class LightningRodBlockMixin extends Block implements LightningRodAccess,
 
             CopperGolemEntity e = USEntityTypes.COPPER_GOLEM.get().create(world);
             BlockPos cachedBlockPosition = result.getBlock(0, 2, 0).getPos();
+            assert e != null;
             e.moveTo((double) cachedBlockPosition.getX() + 0.5D, (double) cachedBlockPosition.getY() + 0.05D, (double) cachedBlockPosition.getZ() + 0.5D, 0.0F, 0.0F);
             world.addFreshEntity(e);
-            Iterator<ServerPlayer> var6 = world.getEntitiesOfClass(ServerPlayer.class, e.getBoundingBox().inflate(5.0D)).iterator();
 
-            while (var6.hasNext()) {
-                serverPlayerEntity = var6.next();
+            for (ServerPlayer serverPlayer : world.getEntitiesOfClass(ServerPlayer.class, e.getBoundingBox().inflate(5.0D))) {
+                serverPlayerEntity = serverPlayer;
                 CriteriaTriggers.SUMMONED_ENTITY.trigger(serverPlayerEntity, e);
             }
 
@@ -113,8 +120,8 @@ public class LightningRodBlockMixin extends Block implements LightningRodAccess,
     }
 
     @Override
-    public Optional<BlockState> getNext(BlockState blockState) {
-        return WeatheringCopper.getNext(blockState.getBlock()).map(block -> block.withPropertiesOf(blockState));
+    public Optional<BlockState> getNext(BlockState state) {
+        return Optional.of(NEXT_BY_BLOCK.get().get(state.getBlock())).map((block) -> block.withPropertiesOf(state));
     }
 
     @Override
@@ -123,13 +130,12 @@ public class LightningRodBlockMixin extends Block implements LightningRodAccess,
     }
 
     @Override
-    public void onRandomTick(BlockState state, ServerLevel world, BlockPos blockPos, RandomSource random) {
-        this.onRandomTick(state, world, blockPos, random);
-    }
-
-    @Override
     public Supplier<BiMap<Block, Block>> getWaxables() {
         return WAXABLES;
     }
 
+    @Override
+    public Optional<BlockState> getPrevState(BlockState state) {
+        return Optional.ofNullable(PREVIOUS_BY_BLOCK.get().get(state.getBlock())).map(block -> block.withPropertiesOf(state));
+    }
 }

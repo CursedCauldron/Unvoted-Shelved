@@ -5,10 +5,8 @@ import com.cursedcauldron.unvotedandshelved.api.IWaxableObject;
 import com.cursedcauldron.unvotedandshelved.api.IWeatheringObject;
 import com.cursedcauldron.unvotedandshelved.api.LightningRodAccess;
 import com.cursedcauldron.unvotedandshelved.block.CopperButtonBlock;
-import com.cursedcauldron.unvotedandshelved.init.USBlocks;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.BiMap;
-import com.google.common.collect.ImmutableBiMap;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
@@ -23,7 +21,6 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.SuspiciousStewItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -37,15 +34,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = UnvotedAndShelved.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class MiscEvents {
-    public static final Supplier<BiMap<Block, Block>> WAXABLES = Suppliers.memoize(() -> ImmutableBiMap.<Block, Block>builder().put(USBlocks.COPPER_BUTTON.get(), USBlocks.WAXED_COPPER_BUTTON.get()).put(USBlocks.EXPOSED_COPPER_BUTTON.get(), USBlocks.WAXED_EXPOSED_COPPER_BUTTON.get()).put(USBlocks.WEATHERED_COPPER_BUTTON.get(), USBlocks.WAXED_WEATHERED_COPPER_BUTTON.get()).put(USBlocks.OXIDIZED_COPPER_BUTTON.get(), USBlocks.WAXED_OXIDIZED_COPPER_BUTTON.get()).build());
-    public static final Supplier<BiMap<Block, Block>> WAXABLES_PILLAR = Suppliers.memoize(() -> ImmutableBiMap.<Block, Block>builder().put(USBlocks.COPPER_PILLAR.get(), USBlocks.WAXED_COPPER_PILLAR.get()).put(USBlocks.EXPOSED_COPPER_PILLAR.get(), USBlocks.WAXED_EXPOSED_COPPER_PILLAR.get()).put(USBlocks.WEATHERED_COPPER_PILLAR.get(), USBlocks.WAXED_WEATHERED_COPPER_PILLAR.get()).put(USBlocks.OXIDIZED_COPPER_PILLAR.get(), USBlocks.WAXED_OXIDIZED_COPPER_PILLAR.get()).build());
-    public static final Supplier<BiMap<Block, Block>> WAX_OFF_BY_BLOCK = Suppliers.memoize(() -> WAXABLES.get().inverse());
-    public static final Supplier<BiMap<Block, Block>> WAX_OFF_BY_PILLAR = Suppliers.memoize(() -> WAXABLES_PILLAR.get().inverse());
 
     @SubscribeEvent
     public void onTagsUpdated(TagsUpdatedEvent event) {
