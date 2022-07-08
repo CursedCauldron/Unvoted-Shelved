@@ -11,6 +11,7 @@ import com.cursedcauldron.unvotedandshelved.init.USGameEvents;
 import com.cursedcauldron.unvotedandshelved.init.USItems;
 import com.cursedcauldron.unvotedandshelved.init.USMemoryModules;
 import com.cursedcauldron.unvotedandshelved.init.USParticleTypes;
+import com.cursedcauldron.unvotedandshelved.init.USPoiTypes;
 import com.cursedcauldron.unvotedandshelved.init.USSoundEvents;
 import com.cursedcauldron.unvotedandshelved.init.USStructureProcessors;
 import net.minecraftforge.common.MinecraftForge;
@@ -36,6 +37,7 @@ public class UnvotedAndShelved {
         USItems.ITEMS.register(modEventBus);
         USMemoryModules.MEMORY_MODULES.register(modEventBus);
         USParticleTypes.PARTICLE_TYPES.register(modEventBus);
+        USPoiTypes.POI_TYPES.register(modEventBus);
         USSoundEvents.SOUND_EVENTS.register(modEventBus);
 
         eventBus.register(this);

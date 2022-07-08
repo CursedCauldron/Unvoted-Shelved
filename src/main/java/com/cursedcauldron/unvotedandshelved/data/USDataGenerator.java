@@ -21,6 +21,7 @@ public class USDataGenerator {
         dataGenerator.addProvider(event.includeServer(), new USItemTagsProvider(dataGenerator, existingFileHelper));
         dataGenerator.addProvider(event.includeServer(), new USGameEventTagsProvider(dataGenerator, existingFileHelper));
         dataGenerator.addProvider(event.includeServer(), new USBiomeTagsProvider(dataGenerator, existingFileHelper));
+        dataGenerator.addProvider(event.includeServer(), new USPoiTypeTagsProvider(dataGenerator, existingFileHelper));
     }
 
 }

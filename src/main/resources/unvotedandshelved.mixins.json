@@ -9,6 +9,7 @@
     "LightningRodBlockMixin",
     "LivingEntityMixin",
     "PoseMixin",
+    "ServerLevelMixin",
     "WardenMixin",
     "access.ThrownTridentAccessor"
   ],
