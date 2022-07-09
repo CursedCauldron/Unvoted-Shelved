@@ -42,6 +42,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
+@SuppressWarnings("all")
 public class GlareEntity extends AgeableMob implements FlyingAnimal {
     public static final Ingredient TEMPTATION_ITEM = Ingredient.of(Items.GLOW_BERRIES);
     protected static final ImmutableList<SensorType<? extends Sensor<? super GlareEntity>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_PLAYERS, USSensorTypes.GLARE_TEMPTATIONS);
@@ -66,7 +67,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
     // Glare Spawning
 
     @Nullable
-    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverLevelAccessor, @NotNull DifficultyInstance difficultyInstance, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
         if (spawnGroupData == null) {
             spawnGroupData = new AgeableMobGroupData(false);
         }
@@ -82,7 +83,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
     }
 
     @Override
-    protected Brain<?> makeBrain(@NotNull Dynamic<?> dynamic) {
+    protected Brain<?> makeBrain(Dynamic<?> dynamic) {
         return GlareBrain.create(this.brainProvider().makeBrain(dynamic));
     }
 
@@ -103,7 +104,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
     }
 
     @Override
-    public void addAdditionalSaveData(@NotNull CompoundTag nbt) {
+    public void addAdditionalSaveData(CompoundTag nbt) {
         super.addAdditionalSaveData(nbt);
         nbt.putBoolean("IsGrumpy", this.isGrumpy());
         nbt.putBoolean("IsShiny", this.isShiny());
@@ -117,7 +118,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
     }
 
     @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag nbt) {
+    public void readAdditionalSaveData(CompoundTag nbt) {
         super.readAdditionalSaveData(nbt);
         this.setGrumpy(nbt.getBoolean("IsGrumpy"));
         this.setShiny(nbt.getBoolean("IsShiny"));
@@ -131,7 +132,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
     }
 
     @Override
-    public float getWalkTargetValue(@NotNull BlockPos pos, LevelReader world) {
+    public float getWalkTargetValue(BlockPos pos, LevelReader world) {
         return world.getBlockState(pos).isAir() ? 10.0F : 0.0F;
     }
 
@@ -188,7 +189,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
     }
 
     @Override
-    protected PathNavigation createNavigation(@NotNull Level world) {
+    protected PathNavigation createNavigation(Level world) {
         FlyingPathNavigation navigator = new FlyingPathNavigation(this, world) {
             @Override
             public boolean isStableDestination(BlockPos pos) {
@@ -244,14 +245,14 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
     // Makes it so that the Glare cannot take fall damage
 
     @Override
-    public boolean causeFallDamage(float fallDistance, float damageMultiplier, @NotNull DamageSource damageSource) {
+    public boolean causeFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource) {
         return false;
     }
 
-    protected void checkFallDamage(double heightDifference, boolean onGround, @NotNull BlockState landedState, @NotNull BlockPos landedPosition) {
+    protected void checkFallDamage(double heightDifference, boolean onGround, BlockState landedState, BlockPos landedPosition) {
     }
 
-    protected void jumpInLiquid(@NotNull TagKey<Fluid> fluid) {
+    protected void jumpInLiquid(TagKey<Fluid> fluid) {
         this.setDeltaMovement(this.getDeltaMovement().add(0.0D, 0.01D, 0.0D));
     }
 
@@ -264,7 +265,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
     // Allows the player to interact with a Glare using Glow Berries
 
     @Override
-    public InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
         InteractionResult actionResult = super.mobInteract(player, hand);
         if (actionResult.consumesAction()) {
             return actionResult;
@@ -283,7 +284,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         return this.isGrumpy() ? USSounds.GLARE_GRUMPY_IDLE : USSounds.GLARE_IDLE;
     }
 
-    protected SoundEvent getHurtSound(@NotNull DamageSource source) {
+    protected SoundEvent getHurtSound(DamageSource source) {
         return USSounds.GLARE_HURT;
     }
 
@@ -295,14 +296,14 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         return SoundEvents.MOSS_STEP;
     }
 
-    protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState state) {
+    protected void playStepSound(BlockPos pos, BlockState state) {
         this.playSound(this.getStepSound(), 0.5F, 1.0F);
     }
 
     // Sets the eye height of the mob
 
     @Override
-    protected float getStandingEyeHeight(@NotNull Pose pose, EntityDimensions entityDimensions) {
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions entityDimensions) {
         return entityDimensions.height * (this.isBaby() ? 0.4f : 0.7f);
     }
 
@@ -337,7 +338,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
 
     @Nullable
     @Override
-    public AgeableMob getBreedOffspring(@NotNull ServerLevel world, @NotNull AgeableMob entity) {
+    public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob entity) {
         return null;
     }
 }

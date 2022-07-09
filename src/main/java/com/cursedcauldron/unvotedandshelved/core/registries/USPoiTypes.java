@@ -1,5 +1,6 @@
-package com.cursedcauldron.unvotedandshelved.core;
+package com.cursedcauldron.unvotedandshelved.core.registries;
 
+import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
 import com.cursedcauldron.unvotedandshelved.mixin.access.PoiTypesAccessor;
 import com.google.common.collect.ImmutableList;

@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+@SuppressWarnings("all")
 public class FindCopperButtonTask extends Behavior<CopperGolemEntity> {
     private BlockPos copperPosPublic;
     private BlockPos copperPosBelowPublic;
@@ -26,17 +27,17 @@ public class FindCopperButtonTask extends Behavior<CopperGolemEntity> {
     }
 
     @Override
-    protected boolean checkExtraStartConditions(@NotNull ServerLevel world, CopperGolemEntity entity) {
+    protected boolean checkExtraStartConditions(ServerLevel world, CopperGolemEntity entity) {
         return entity.getBrain().getMemory(USMemoryModules.COPPER_BUTTON).isEmpty() && entity.getBrain().getMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS).isEmpty();
     }
 
     @Override
-    protected boolean canStillUse(@NotNull ServerLevel world, CopperGolemEntity entity, long p_22547_) {
+    protected boolean canStillUse(ServerLevel world, CopperGolemEntity entity, long p_22547_) {
         return entity.getBrain().getMemory(USMemoryModules.COPPER_BUTTON).isEmpty() && entity.getBrain().getMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS).isEmpty();
     }
 
     @Override
-    protected void start(@NotNull ServerLevel level, @NotNull CopperGolemEntity entity, long p_22542_) {
+    protected void start(ServerLevel level, CopperGolemEntity entity, long p_22542_) {
         BlockPos copperPos = this.getCopperPos(entity, level);
         if (copperPos != null) {
             this.copperPosPublic = copperPos;
@@ -50,7 +51,7 @@ public class FindCopperButtonTask extends Behavior<CopperGolemEntity> {
     // Lets the Copper Golem find and press a Copper Button if it can reach it
 
     @Override
-    protected void tick(@NotNull ServerLevel level, @NotNull CopperGolemEntity entity, long l) {
+    protected void tick(ServerLevel level, CopperGolemEntity entity, long l) {
         if (this.copperPosPublic != null && this.copperPosBelowPublic != null) {
             BlockPos copperPos = this.copperPosPublic;
             BlockPos copperPosBelow = this.copperPosBelowPublic;

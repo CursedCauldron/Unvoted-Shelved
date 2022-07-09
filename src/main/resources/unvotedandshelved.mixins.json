@@ -9,8 +9,6 @@
     "LightningBoltMixin",
     "LightningRodBlockMixin",
     "LivingEntityMixin",
-    "ModelPartMixin",
-    "PartDefinitionMixin",
     "PoseMixin",
     "SensorTypeAccessor",
     "ServerLevelMixin",

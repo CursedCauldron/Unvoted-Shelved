@@ -27,6 +27,7 @@ public class GlowberryDustBlockItem extends BlockItem {
         super(block, properties);
     }
 
+    @Override
     public InteractionResult place(BlockPlaceContext blockPlaceContext) {
         if (!blockPlaceContext.canPlace()) {
             return InteractionResult.FAIL;
@@ -86,7 +87,9 @@ public class GlowberryDustBlockItem extends BlockItem {
         }
         return blockState2;
     }
+
     private static <T extends Comparable<T>> BlockState updateState(BlockState blockState, Property<T> property, String string) {
         return property.getValue(string).map(comparable -> blockState.setValue(property, comparable)).orElse(blockState);
     }
+
 }

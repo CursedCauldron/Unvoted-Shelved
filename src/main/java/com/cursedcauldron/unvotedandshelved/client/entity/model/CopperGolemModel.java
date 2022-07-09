@@ -14,6 +14,7 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.world.entity.AnimationState;
 
 @Environment(EnvType.CLIENT)
 public class CopperGolemModel<T extends CopperGolemEntity> extends HierarchicalModel<T> {
@@ -43,7 +44,7 @@ public class CopperGolemModel<T extends CopperGolemEntity> extends HierarchicalM
 
     @Override
     public void setupAnim(T entity, float angle, float distance, float animationProgress, float yaw, float pitch) {
-        this.root().getAllParts().forEach(ModelModifier::resetPose);
+        this.root().getAllParts().forEach(ModelPart::resetPose);
         this.head.yRot = yaw * 0.017453292F;
         float speed = Math.min((float)entity.getDeltaMovement().lengthSqr() * 125.0F, 1.0F);
         this.animate(entity.walkingAnimation, CopperGolemAnimations.walkingAnimation(entity.getStage()), animationProgress, speed);

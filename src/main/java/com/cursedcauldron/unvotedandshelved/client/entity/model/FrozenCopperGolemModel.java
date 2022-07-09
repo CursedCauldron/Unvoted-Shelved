@@ -37,7 +37,7 @@ public class FrozenCopperGolemModel<T extends FrozenCopperGolemEntity> extends H
 
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float tickDelta, float netHeadYaw, float headPitch) {
-        this.root().getAllParts().forEach(ModelModifier::resetPose);
+        this.root().getAllParts().forEach(ModelPart::resetPose);
     }
 
     @Override

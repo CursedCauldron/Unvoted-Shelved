@@ -19,6 +19,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings("all")
 public class CopperButtonBlock extends ButtonBlock {
     private final WeatheringCopper.WeatherState weatherState;
 
@@ -34,13 +35,13 @@ public class CopperButtonBlock extends ButtonBlock {
     }
 
     @Override
-    protected void playSound(@Nullable Player player, LevelAccessor world, @NotNull BlockPos pos, boolean powered) {
+    protected void playSound(@Nullable Player player, LevelAccessor world, BlockPos pos, boolean powered) {
         world.playSound(powered ? player : null, pos, this.getSound(powered), SoundSource.BLOCKS, 0.3F, powered ? 1.0F : 0.9F);
     }
 
 
     @Override
-    public InteractionResult use(@NotNull BlockState blockState, @NotNull Level level, @NotNull BlockPos blockPos, Player player, @NotNull InteractionHand interactionHand, @NotNull BlockHitResult blockHitResult) {
+    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         ItemStack stack = player.getItemInHand(interactionHand);
         BlockState nextState = (weatherState == WeatheringCopper.WeatherState.UNAFFECTED) ? USBlocks.COPPER_BUTTON.defaultBlockState() : (weatherState == WeatheringCopper.WeatherState.EXPOSED) ? USBlocks.EXPOSED_COPPER_BUTTON.defaultBlockState() : (weatherState == WeatheringCopper.WeatherState.WEATHERED) ? USBlocks.WEATHERED_COPPER_BUTTON.defaultBlockState() : USBlocks.OXIDIZED_COPPER_BUTTON.defaultBlockState();
 
@@ -53,7 +54,7 @@ public class CopperButtonBlock extends ButtonBlock {
     }
 
     @Override
-    public void press(BlockState blockState, Level level, @NotNull BlockPos blockPos) {
+    public void press(BlockState blockState, Level level, BlockPos blockPos) {
         level.setBlock(blockPos, blockState.setValue(POWERED, true), 3);
         this.updateNeighbours(blockState, level, blockPos);
         level.scheduleTick(blockPos, this, this.getPressDuration());

@@ -20,8 +20,8 @@ public class CopperGolemFeature extends Feature<NoneFeatureConfiguration> {
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
         BlockPos pos = context.origin();
         WorldGenLevel world = context.level();
-            FrozenCopperGolemEntity copperGolem = USEntities.FROZEN_COPPER_GOLEM.create(world.getLevel());
-            assert copperGolem != null;
+        FrozenCopperGolemEntity copperGolem = USEntities.FROZEN_COPPER_GOLEM.create(world.getLevel());
+        if (copperGolem != null) {
             copperGolem.setPersistenceRequired();
             copperGolem.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D);
             copperGolem.setYBodyRot(0);
@@ -29,6 +29,7 @@ public class CopperGolemFeature extends Feature<NoneFeatureConfiguration> {
             copperGolem.setXRot(0);
             copperGolem.finalizeSpawn(world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null, null);
             world.addFreshEntityWithPassengers(copperGolem);
-            return true;
+        }
+        return true;
     }
 }

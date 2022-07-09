@@ -41,6 +41,7 @@ import java.util.Comparator;
 
 import static com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS;
 
+@SuppressWarnings("all")
 public class CopperGolemEntity extends AbstractGolem {
     
     // ඞ
@@ -80,7 +81,7 @@ public class CopperGolemEntity extends AbstractGolem {
     }
 
     @Override
-    protected Brain<?> makeBrain(@NotNull Dynamic<?> dynamic) {
+    protected Brain<?> makeBrain(Dynamic<?> dynamic) {
         return CopperGolemBrain.create(this.brainProvider().makeBrain(dynamic));
     }
 
@@ -92,7 +93,7 @@ public class CopperGolemEntity extends AbstractGolem {
     // Sets the eye height of the mob
 
     @Override
-    protected float getStandingEyeHeight(@NotNull Pose pose, EntityDimensions entityDimensions) {
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions entityDimensions) {
         return entityDimensions.height * (this.isBaby() ? 0.3f : 0.6f);
     }
 
@@ -106,14 +107,14 @@ public class CopperGolemEntity extends AbstractGolem {
     // Waxed NBT Tag:
 
     @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
+    public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         this.setStage(CopperGolemEntity.Stage.BY_ID[tag.getInt("Stage")]);
         this.setWaxed(tag.getBoolean("Waxed"));
     }
 
     @Override
-    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
+    public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putInt("Stage", this.getStage().getId());
         tag.putBoolean("Waxed", this.isWaxed());
@@ -133,7 +134,7 @@ public class CopperGolemEntity extends AbstractGolem {
     // Animations:
 
     @Override
-    public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> data) {
+    public void onSyncedDataUpdated(EntityDataAccessor<?> data) {
         if (DATA_POSE.equals(data)) {
             this.getPose();
             if (this.getStage() == Stage.UNAFFECTED) {
@@ -289,7 +290,7 @@ public class CopperGolemEntity extends AbstractGolem {
     }
 
     @Override
-    protected InteractionResult mobInteract(Player player, @NotNull InteractionHand hand) {
+    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
 
         // Copper Golem waxing using Honeycomb
 
@@ -402,9 +403,6 @@ public class CopperGolemEntity extends AbstractGolem {
             }
 
         }
-        if (this.getBrain().getMemory(COPPER_BUTTON_COOLDOWN_TICKS).isPresent()) {
-            System.out.println(this.getBrain().getMemory(COPPER_BUTTON_COOLDOWN_TICKS).get().floatValue());
-        }
     }
 
     // Cooldown for the Copper Golem pressing Copper Buttons
@@ -413,7 +411,7 @@ public class CopperGolemEntity extends AbstractGolem {
 
     // Sound Events
 
-    protected SoundEvent getHurtSound(@NotNull DamageSource source) {
+    protected SoundEvent getHurtSound(DamageSource source) {
         return USSounds.COPPER_GOLEM_HIT;
     }
 
@@ -425,7 +423,7 @@ public class CopperGolemEntity extends AbstractGolem {
         return USSounds.COPPER_GOLEM_WALK;
     }
 
-    protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState state) {
+    protected void playStepSound(BlockPos pos, BlockState state) {
         this.playSound(this.getStepSound(), 0.5F, 1.0F);
     }
 

@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+@SuppressWarnings("all")
 public class WeatheringLightningRodBlock extends LightningRodBlock implements WeatheringCopper {
     private final WeatheringCopper.WeatherState weatherState;
 
@@ -33,7 +34,7 @@ public class WeatheringLightningRodBlock extends LightningRodBlock implements We
     public static final Supplier<BiMap<Block, Block>> PREVIOUS_BY_BLOCK = Suppliers.memoize(() -> NEXT_BY_BLOCK.get().inverse());
 
     @Override
-    public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         this.onRandomTick(state, level, pos, random);
     }
 

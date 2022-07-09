@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+@SuppressWarnings("all")
 public class WeatheringRotatedPillarBlock extends ConnectedRotatedPillarBlock implements WeatheringCopper {
     public static final BooleanProperty CONNECTED = BooleanProperty.create("connected");
     private final WeatheringCopper.WeatherState weatherState;
@@ -33,7 +34,7 @@ public class WeatheringRotatedPillarBlock extends ConnectedRotatedPillarBlock im
     }
 
     @Override
-    public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         this.onRandomTick(state, level, pos, random);
     }
 

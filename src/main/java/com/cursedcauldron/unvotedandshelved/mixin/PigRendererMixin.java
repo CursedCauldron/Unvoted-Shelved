@@ -14,9 +14,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PigRenderer.class)
 public class PigRendererMixin {
+
     @Inject(method = "<init>", at = @At("TAIL"))
     public void PigRenderer(EntityRendererProvider.Context context, CallbackInfo ci) {
-        PigRenderer $this = PigRenderer.class.cast(this);
-        $this.addLayer(new TechnobladePigLayer($this, new PigModel(context.bakeLayer(ModelLayers.PIG_SADDLE)), new ResourceLocation(UnvotedAndShelved.MODID, "textures/entity/pig/pig_technoblade.png")));
+        PigRenderer $this = (PigRenderer) (Object) this;
+        $this.addLayer(new TechnobladePigLayer<>($this, new PigModel<>(context.bakeLayer(ModelLayers.PIG_SADDLE))));
     }
+
 }

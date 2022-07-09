@@ -37,7 +37,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static net.minecraft.world.item.Items.GLASS_BOTTLE;
 
-@SuppressWarnings("deprecation")
+@SuppressWarnings("all")
 public class GlowberryDustBlock extends Block implements SimpleWaterloggedBlock {
     public static final IntegerProperty LEVEL = BlockStateProperties.LEVEL;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -54,7 +54,7 @@ public class GlowberryDustBlock extends Block implements SimpleWaterloggedBlock 
     }
 
     @Override
-    public InteractionResult use(@NotNull BlockState blockState, @NotNull Level level, @NotNull BlockPos blockPos, Player player, @NotNull InteractionHand interactionHand, @NotNull BlockHitResult blockHitResult) {
+    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         ItemStack item = player.getItemInHand(interactionHand);
         if (!player.getAbilities().instabuild) {
             if (item.is(GLASS_BOTTLE)) {
@@ -75,12 +75,12 @@ public class GlowberryDustBlock extends Block implements SimpleWaterloggedBlock 
     }
 
     @Override
-    public VoxelShape getShape(@NotNull BlockState blockState, @NotNull BlockGetter blockGetter, @NotNull BlockPos blockPos, CollisionContext collisionContext) {
+    public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         return collisionContext.isHoldingItem(GLASS_BOTTLE) ? Shapes.block() : Shapes.empty();
     }
 
     @Override
-    public void animateTick(@NotNull BlockState blockState, Level level, BlockPos blockPos, RandomSource random) {
+    public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource random) {
         int i = blockPos.getX();
         int j = blockPos.getY();
         int k = blockPos.getZ();
@@ -98,22 +98,22 @@ public class GlowberryDustBlock extends Block implements SimpleWaterloggedBlock 
     }
 
     @Override
-    public boolean propagatesSkylightDown(@NotNull BlockState blockState, @NotNull BlockGetter blockGetter, @NotNull BlockPos blockPos) {
+    public boolean propagatesSkylightDown(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
         return true;
     }
 
     @Override
-    public RenderShape getRenderShape(@NotNull BlockState blockState) {
+    public RenderShape getRenderShape(BlockState blockState) {
         return RenderShape.INVISIBLE;
     }
 
     @Override
-    public float getShadeBrightness(@NotNull BlockState blockState, @NotNull BlockGetter blockGetter, @NotNull BlockPos blockPos) {
+    public float getShadeBrightness(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
         return 1.0f;
     }
 
     @Override
-    public BlockState updateShape(BlockState blockState, @NotNull Direction direction, @NotNull BlockState blockState2, @NotNull LevelAccessor levelAccessor, @NotNull BlockPos blockPos, @NotNull BlockPos blockPos2) {
+    public BlockState updateShape(BlockState blockState, Direction direction, BlockState blockState2, LevelAccessor levelAccessor, BlockPos blockPos, BlockPos blockPos2) {
         if (blockState.getValue(WATERLOGGED)) {
             levelAccessor.scheduleTick(blockPos, Fluids.WATER, Fluids.WATER.getTickDelay(levelAccessor));
         }

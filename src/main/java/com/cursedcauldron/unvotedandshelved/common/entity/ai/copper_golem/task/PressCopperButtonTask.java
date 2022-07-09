@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
+@SuppressWarnings("all")
 public class PressCopperButtonTask extends Behavior<CopperGolemEntity> {
     private int buttonTicks;
 
@@ -28,19 +29,19 @@ public class PressCopperButtonTask extends Behavior<CopperGolemEntity> {
     }
 
     @Override
-    protected boolean checkExtraStartConditions(@NotNull ServerLevel world, CopperGolemEntity entity) {
+    protected boolean checkExtraStartConditions(ServerLevel world, CopperGolemEntity entity) {
         return entity.getBrain().getMemory(USMemoryModules.COPPER_BUTTON).isPresent() && entity.getBrain().getMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS).isEmpty();
     }
 
     @Override
-    protected boolean canStillUse(@NotNull ServerLevel world, CopperGolemEntity entity, long p_22547_) {
+    protected boolean canStillUse(ServerLevel world, CopperGolemEntity entity, long p_22547_) {
         return entity.getBrain().getMemory(USMemoryModules.COPPER_BUTTON).isPresent() && entity.getBrain().getMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS).isEmpty();
     }
 
     // Lets the Copper Golem press a Copper Button
 
     @Override
-    protected void start(@NotNull ServerLevel world, CopperGolemEntity entity, long p_22542_) {
+    protected void start(ServerLevel world, CopperGolemEntity entity, long p_22542_) {
         Optional<BlockPos> optional = entity.getBrain().getMemory(USMemoryModules.COPPER_BUTTON);
         optional.ifPresent(blockPos -> {
             BlockState state = entity.level.getBlockState(blockPos);
@@ -64,7 +65,7 @@ public class PressCopperButtonTask extends Behavior<CopperGolemEntity> {
     // Sets cooldown for Copper Golem pressing Copper Buttons
 
     @Override
-    protected void tick(@NotNull ServerLevel level, @NotNull CopperGolemEntity entity, long p_22553_) {
+    protected void tick(ServerLevel level, CopperGolemEntity entity, long p_22553_) {
         if (this.buttonTicks < 60) {
             this.buttonTicks++;
         } else {
@@ -77,7 +78,7 @@ public class PressCopperButtonTask extends Behavior<CopperGolemEntity> {
     // Stops the button pressing animation whenever the Copper Golem stops pressing a Copper Button
 
     @Override
-    protected void stop(@NotNull ServerLevel world, @NotNull CopperGolemEntity entity, long p_22550_) {
+    protected void stop(ServerLevel world, CopperGolemEntity entity, long p_22550_) {
         if (this.buttonTicks >= 1) {
             this.buttonTicks = 0;
             entity.setPose(Pose.STANDING);

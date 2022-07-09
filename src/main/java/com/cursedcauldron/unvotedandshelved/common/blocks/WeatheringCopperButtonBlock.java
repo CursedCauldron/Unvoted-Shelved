@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+@SuppressWarnings("all")
 public class WeatheringCopperButtonBlock extends CopperButtonBlock implements WeatheringCopper {
     public static Supplier<BiMap<Block, Block>> NEXT_BY_BLOCK = Suppliers.memoize(() -> ImmutableBiMap.<Block, Block>builder()
             .put(USBlocks.COPPER_BUTTON, USBlocks.EXPOSED_COPPER_BUTTON)
@@ -36,7 +37,7 @@ public class WeatheringCopperButtonBlock extends CopperButtonBlock implements We
     }
 
     @Override
-    public void randomTick(@NotNull BlockState state, @NotNull ServerLevel world, @NotNull BlockPos blockPos, @NotNull RandomSource random) {
+    public void randomTick(BlockState state, ServerLevel world, BlockPos blockPos, RandomSource random) {
         this.onRandomTick(state, world, blockPos, random);
     }
 

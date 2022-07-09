@@ -14,6 +14,7 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings("all")
 public class SpinHeadTask extends Behavior<CopperGolemEntity> {
     private int spinningTicks;
 
@@ -22,17 +23,17 @@ public class SpinHeadTask extends Behavior<CopperGolemEntity> {
     }
 
     @Override
-    protected boolean checkExtraStartConditions(@NotNull ServerLevel world, CopperGolemEntity entity) {
+    protected boolean checkExtraStartConditions(ServerLevel world, CopperGolemEntity entity) {
         return (entity.getBrain().getMemory(MemoryModuleType.WALK_TARGET).isEmpty() && entity.getBrain().getMemory(USMemoryModules.COPPER_GOLEM_HEADSPIN_TICKS).isEmpty());
     }
 
     @Override
-    protected boolean canStillUse(@NotNull ServerLevel world, CopperGolemEntity entity, long p_22547_) {
+    protected boolean canStillUse(ServerLevel world, CopperGolemEntity entity, long p_22547_) {
         return (entity.getBrain().getMemory(MemoryModuleType.WALK_TARGET).isEmpty() && entity.getBrain().getMemory(USMemoryModules.COPPER_GOLEM_HEADSPIN_TICKS).isEmpty());
     }
 
     @Override
-    protected void tick(@NotNull ServerLevel world, CopperGolemEntity entity, long p_22553_) {
+    protected void tick(ServerLevel world, CopperGolemEntity entity, long p_22553_) {
         int timeLimit = 40 + (entity.getStage().getId() * 10);
         int playSoundFrame = 20 + (entity.getStage().getId() * 5);
         if (this.spinningTicks < timeLimit) {
@@ -50,14 +51,14 @@ public class SpinHeadTask extends Behavior<CopperGolemEntity> {
     }
 
     @Override
-    protected void start(@NotNull ServerLevel level, CopperGolemEntity entity, long p_22542_) {
+    protected void start(ServerLevel level, CopperGolemEntity entity, long p_22542_) {
         entity.getNavigation().stop();
         entity.getBrain().eraseMemory(MemoryModuleType.WALK_TARGET);
         entity.getBrain().eraseMemory(MemoryModuleType.LOOK_TARGET);
     }
 
     @Override
-    protected void stop(@NotNull ServerLevel serverLevel, @NotNull CopperGolemEntity livingEntity, long l) {
+    protected void stop(ServerLevel serverLevel, CopperGolemEntity livingEntity, long l) {
         if (this.spinningTicks >= 1) {
             this.spinningTicks = 0;
             livingEntity.setPose(Pose.STANDING);

@@ -11,21 +11,22 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings("all")
 public class AerialStrollTask extends RandomStroll {
 
 	public AerialStrollTask(float speed) {
 		super(speed);
 	}
 
-	protected boolean checkExtraStartConditions(@NotNull ServerLevel serverLevel, PathfinderMob livingEntity) {
+	protected boolean checkExtraStartConditions(ServerLevel serverLevel, PathfinderMob livingEntity) {
 		return livingEntity.getNavigation().isDone() && livingEntity.getRandom().nextInt(10) == 0;
 	}
 
-	protected boolean canStillUse(@NotNull ServerLevel serverLevel, PathfinderMob livingEntity, long l) {
+	protected boolean canStillUse(ServerLevel serverLevel, PathfinderMob livingEntity, long l) {
 		return livingEntity.getNavigation().isInProgress();
 	}
 
-	protected void start(@NotNull ServerLevel serverLevel, @NotNull PathfinderMob pathfinderMob, long l) {
+	protected void start(ServerLevel serverLevel, PathfinderMob pathfinderMob, long l) {
 		Vec3 vec3 = this.findPos(pathfinderMob);
 		if (vec3 != null) {
 			BehaviorUtils.setWalkAndLookTargetMemories(pathfinderMob, new BlockPos(vec3), 0.6F, 3 );

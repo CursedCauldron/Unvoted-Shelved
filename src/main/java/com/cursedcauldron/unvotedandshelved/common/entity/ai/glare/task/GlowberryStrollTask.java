@@ -20,6 +20,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings("all")
 public class GlowberryStrollTask extends Behavior<GlareEntity> {
     private BlockPos darkPos;
     private final int range;
@@ -33,12 +34,12 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
     }
 
     @Override
-    protected boolean checkExtraStartConditions(@NotNull ServerLevel worldIn, GlareEntity owner) {
+    protected boolean checkExtraStartConditions(ServerLevel worldIn, GlareEntity owner) {
         return !owner.isInWaterOrBubble() && (owner.getBrain().getMemory(USMemoryModules.GLOWBERRIES_GIVEN).get() >= 1);
     }
 
     @Override
-    protected boolean canStillUse(@NotNull ServerLevel level, GlareEntity glare, long time) {
+    protected boolean canStillUse(ServerLevel level, GlareEntity glare, long time) {
         return (glare.getBrain().getMemory(USMemoryModules.GLOWBERRIES_GIVEN).get() >= 1) && (this.darkPos != null);
     }
 
@@ -92,7 +93,7 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
     // Lets the Glare place Glow Berry Dust if in a dark enough spot
 
     @Override
-    protected void tick(@NotNull ServerLevel level, @NotNull GlareEntity entity, long time) {
+    protected void tick(ServerLevel level, GlareEntity entity, long time) {
         super.tick(level, entity, time);
         if (this.darkPos != null) {
             Brain<GlareEntity> brain = entity.getBrain();
@@ -126,7 +127,7 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
     // Stops the Glare's Glow Berry Stroll task if run out of Glow Berries
 
     @Override
-    protected void stop(@NotNull ServerLevel level, @NotNull GlareEntity entity, long time) {
+    protected void stop(ServerLevel level, GlareEntity entity, long time) {
         if (this.darkPos != null) {
             Brain<GlareEntity> brain = entity.getBrain();
             entity.blockPosition();
@@ -160,7 +161,7 @@ public class GlowberryStrollTask extends Behavior<GlareEntity> {
     // Starts the Glare's Glow Berry Stroll task if given Glow Berries
 
     @Override
-    protected void start(@NotNull ServerLevel level, @NotNull GlareEntity entity, long time) {
+    protected void start(ServerLevel level, GlareEntity entity, long time) {
         this.groundNavigation = new GroundPathNavigation(entity, level);
         this.getDarkPos(level, entity);
         if (this.darkPos != null) {

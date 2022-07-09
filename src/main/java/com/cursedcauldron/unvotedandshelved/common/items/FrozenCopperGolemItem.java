@@ -25,10 +25,12 @@ import net.minecraft.world.phys.Vec3;
 import java.util.Random;
 
 public class FrozenCopperGolemItem extends Item {
+
     public FrozenCopperGolemItem(Properties properties) {
         super(properties);
     }
 
+    @Override
     public InteractionResult useOn(UseOnContext useOnContext) {
         Direction direction = useOnContext.getClickedFace();
         if (direction == Direction.DOWN) {
@@ -65,15 +67,4 @@ public class FrozenCopperGolemItem extends Item {
         }
     }
 
-    private void randomizePose(ArmorStand armorStand, Random random) {
-        Rotations rotations = armorStand.getHeadPose();
-        float f = random.nextFloat() * 5.0F;
-        float g = random.nextFloat() * 20.0F - 10.0F;
-        Rotations rotations2 = new Rotations(rotations.getX() + f, rotations.getY() + g, rotations.getZ());
-        armorStand.setHeadPose(rotations2);
-        rotations = armorStand.getBodyPose();
-        f = random.nextFloat() * 10.0F - 5.0F;
-        rotations2 = new Rotations(rotations.getX(), rotations.getY() + f, rotations.getZ());
-        armorStand.setBodyPose(rotations2);
-    }
 }

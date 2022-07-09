@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+@SuppressWarnings("all")
 public class ConnectedRotatedPillarBlock extends RotatedPillarBlock implements WeatheringCopper {
     public static final BooleanProperty CONNECTED = BooleanProperty.create("connected");
     private final WeatherState weatherState;
@@ -43,7 +44,7 @@ public class ConnectedRotatedPillarBlock extends RotatedPillarBlock implements W
     }
 
    @Override
-   public void neighborChanged(BlockState state, Level level, @NotNull BlockPos pos, @NotNull Block block, @NotNull BlockPos blockPos2, boolean bl) {
+   public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos blockPos2, boolean bl) {
        BlockPos abovePos  = (state.getValue(AXIS) == Direction.Axis.Y) ? pos.above() : (state.getValue(AXIS) == Direction.Axis.X) ? pos.east() : pos.north();
        BlockState aboveState = level.getBlockState(abovePos);
 

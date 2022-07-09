@@ -48,11 +48,12 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
 import java.util.function.Predicate;
 
+@SuppressWarnings("all")
 public class FrozenCopperGolemEntity extends AbstractGolem {
     private static final EntityDimensions MARKER_DIMENSIONS = new EntityDimensions(0.0f, 0.0f, true);
     private static final EntityDimensions BABY_DIMENSIONS = EntityType.ARMOR_STAND.getDimensions().scale(0.5f);
@@ -97,12 +98,12 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
     }
 
     @Override
-    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
+    public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
     }
 
     @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
+    public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
     }
 
@@ -119,7 +120,7 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
     }
 
     @Override
-    protected void doPush(@NotNull Entity entity) {
+    protected void doPush(Entity entity) {
     }
 
     @Override
@@ -135,7 +136,7 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
     // Converts the Oxidized Copper Golem back into a normal Copper Golem if the player scrapes it with an Axe
 
     @Override
-    public InteractionResult interactAt(Player player, @NotNull Vec3 vec3, @NotNull InteractionHand hand) {
+    public InteractionResult interactAt(Player player, Vec3 vec3, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (stack.getItem() instanceof AxeItem) {
             this.convertBack(USEntities.COPPER_GOLEM, true);
@@ -195,7 +196,7 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
     }
 
     @Override
-    public boolean hurt(@NotNull DamageSource damageSource, float f) {
+    public boolean hurt(DamageSource damageSource, float f) {
 
         // Damages the Oxidized Copper Golem if taken damage through several damage sources
 
@@ -396,7 +397,7 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
     // Sets the eye height of the mob
 
     @Override
-    protected float getStandingEyeHeight(@NotNull Pose pose, EntityDimensions entityDimensions) {
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions entityDimensions) {
         return entityDimensions.height * (this.isBaby() ? 0.3f : 0.6f);
     }
 
@@ -406,7 +407,7 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
     }
 
     @Override
-    public void travel(@NotNull Vec3 vec3) {
+    public void travel(Vec3 vec3) {
         if (!this.hasPhysics()) {
             return;
         }
@@ -416,7 +417,7 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
     // Unoxidizes the Copper Golem if struck by lightning
 
     @Override
-    public void thunderHit(@NotNull ServerLevel serverLevel, @NotNull LightningBolt lightningBolt) {
+    public void thunderHit(ServerLevel serverLevel, LightningBolt lightningBolt) {
         this.convertBack(USEntities.COPPER_GOLEM, true);
         this.level.playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 2.0f, 0.5f + this.random.nextFloat() * 0.2f, false);
         this.level.levelEvent(3004, this.blockPosition(), 0);
@@ -493,7 +494,7 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
     }
 
     @Override
-    public boolean skipAttackInteraction(@NotNull Entity entity) {
+    public boolean skipAttackInteraction(Entity entity) {
         return entity instanceof Player && !this.level.mayInteract((Player)entity, this.blockPosition());
     }
 
@@ -511,7 +512,7 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
 
     @Override
     @Nullable
-    protected SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
+    protected SoundEvent getHurtSound(DamageSource damageSource) {
         return SoundEvents.COPPER_HIT;
     }
 
@@ -529,7 +530,7 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
     }
 
     @Override
-    public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> entityDataAccessor) {
+    public void onSyncedDataUpdated(EntityDataAccessor<?> entityDataAccessor) {
         if (DATA_CLIENT_FLAGS.equals(entityDataAccessor)) {
             this.refreshDimensions();
             this.blocksBuilding = !this.isMarker();
@@ -545,7 +546,7 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
     }
 
     @Override
-    public EntityDimensions getDimensions(@NotNull Pose pose) {
+    public EntityDimensions getDimensions(Pose pose) {
         return this.getDimensionsMarker(this.isMarker());
     }
 

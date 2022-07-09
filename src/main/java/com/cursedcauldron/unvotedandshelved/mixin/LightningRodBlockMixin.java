@@ -33,6 +33,7 @@ import net.minecraft.world.level.block.state.predicate.BlockStatePredicate;
 
 // Mixin to allow for Copper Golems to be built using 1 Copper Block, 1 Carved Pumpkin/Jack-O-Lantern, and 1 Lightning Rod
 
+@SuppressWarnings("all")
 @Mixin(LightningRodBlock.class)
 public class LightningRodBlockMixin extends Block implements LightningRodAccess, WeatheringCopper {
     @Nullable
@@ -53,11 +54,11 @@ public class LightningRodBlockMixin extends Block implements LightningRodAccess,
     }
 
     @Override
-    public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         this.onRandomTick(state, level, pos, random);
     }
 
-    public void onPlace(BlockState state, @NotNull Level world, @NotNull BlockPos pos, BlockState oldState, boolean notify) {
+    public void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean notify) {
         if (!oldState.is(state.getBlock())) {
             this.trySpawnEntity(world, pos);
         }
