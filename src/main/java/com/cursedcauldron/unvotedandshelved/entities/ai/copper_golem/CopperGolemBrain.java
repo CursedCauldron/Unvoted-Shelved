@@ -30,7 +30,7 @@ import net.minecraft.world.entity.schedule.Activity;
  */
 public class CopperGolemBrain {
 
-    public static Brain<?> create(CopperGolemEntity copperGolemEntity, Brain<CopperGolemEntity> brain) {
+    public static Brain<?> create(Brain<CopperGolemEntity> brain) {
         addCoreActivities(brain);
         addIdleActivities(brain);
         addHeadSpinActivity(brain);
@@ -65,7 +65,7 @@ public class CopperGolemBrain {
                                         Pair.of(new DoNothing(30, 60), 1))
                         ))),
                 ImmutableSet.of(
-                        Pair.of(USMemoryModules.COPPER_BUTTON.get(), MemoryStatus.VALUE_PRESENT)));
+                        Pair.of(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS.get(), MemoryStatus.VALUE_PRESENT)));
     }
 
     private static void addCopperButtonActivities(Brain<CopperGolemEntity> brain) {
@@ -93,7 +93,6 @@ public class CopperGolemBrain {
         );
     }
 
-
     public static void updateActivity(CopperGolemEntity entity) {
         entity.getBrain().setActiveActivityToFirstValid(
                 ImmutableList.of(
@@ -101,5 +100,4 @@ public class CopperGolemBrain {
                 )
         );
     }
-
 }

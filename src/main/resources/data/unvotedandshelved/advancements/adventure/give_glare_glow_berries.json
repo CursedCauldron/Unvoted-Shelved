@@ -1,0 +1,44 @@
+{
+  "parent": "minecraft:adventure/root",
+  "criteria": {
+    "give_glare_glow_berries": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "unvotedandshelved:glare"
+            }
+          }
+        ],
+        "item": {
+          "items": [
+            "minecraft:glow_berries"
+          ]
+        }
+      },
+      "trigger": "minecraft:player_interacted_with_entity"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.adventure.give_glare_glow_berries.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:glow_berries"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.adventure.give_glare_glow_berries.title"
+    }
+  },
+  "requirements": [
+    [
+      "give_glare_glow_berries"
+    ]
+  ]
+}

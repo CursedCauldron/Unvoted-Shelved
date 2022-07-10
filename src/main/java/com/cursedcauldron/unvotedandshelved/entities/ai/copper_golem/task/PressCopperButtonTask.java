@@ -68,6 +68,8 @@ public class PressCopperButtonTask extends Behavior<CopperGolemEntity> {
         }
     }
 
+    // Stops the button pressing animation whenever the Copper Golem stops pressing a Copper Button
+
     @Override
     protected void stop(ServerLevel world, CopperGolemEntity entity, long p_22550_) {
         if (this.buttonTicks >= 1) {
