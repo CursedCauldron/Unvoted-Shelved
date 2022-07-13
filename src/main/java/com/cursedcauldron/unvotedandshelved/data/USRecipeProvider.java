@@ -26,7 +26,7 @@ public class USRecipeProvider extends RecipeProvider {
 
     @Override
     protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
-        buildCopperButton(consumer, USBlocks.COPPER_BUTTON.get(), Blocks.COPPER_BLOCK);
+        buildCopperButton(consumer, USBlocks.COPPER_BUTTON.get(), Items.COPPER_INGOT);
         waxing(consumer, USBlocks.WAXED_COPPER_BUTTON.get(), USBlocks.COPPER_BUTTON.get());
         waxing(consumer, USBlocks.WAXED_EXPOSED_COPPER_BUTTON.get(), USBlocks.EXPOSED_COPPER_BUTTON.get());
         waxing(consumer, USBlocks.WAXED_WEATHERED_COPPER_BUTTON.get(), USBlocks.WEATHERED_COPPER_BUTTON.get());

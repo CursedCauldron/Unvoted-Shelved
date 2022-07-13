@@ -20,7 +20,7 @@ mixin {
 }
 
 group = 'com.cursedcauldron.unvotedandshelved'
-version = "${project.minecraft_version}-${project.mod_version}-forge"
+version = "${project.minecraft_version}-${project.mod_version}-forge-patch1"
 
 java {
     archivesBaseName = 'unvotedandshelved'
