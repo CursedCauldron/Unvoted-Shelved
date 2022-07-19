@@ -2,11 +2,9 @@ package com.cursedcauldron.unvotedandshelved.entities.ai.copper_golem.task;
 
 import com.cursedcauldron.unvotedandshelved.block.CopperButtonBlock;
 import com.cursedcauldron.unvotedandshelved.entities.CopperGolemEntity;
-import com.cursedcauldron.unvotedandshelved.init.USActivities;
 import com.cursedcauldron.unvotedandshelved.init.USMemoryModules;
 import com.cursedcauldron.unvotedandshelved.init.USPoses;
 import com.cursedcauldron.unvotedandshelved.init.USSoundEvents;
-import com.cursedcauldron.unvotedandshelved.util.PoseUtil;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -14,10 +12,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.behavior.Behavior;
-import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
-import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
-import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 
@@ -27,7 +22,7 @@ public class PressCopperButtonTask extends Behavior<CopperGolemEntity> {
     private int buttonTicks;
 
     public PressCopperButtonTask() {
-        super(ImmutableMap.of(MemoryModuleType.LOOK_TARGET, MemoryStatus.VALUE_PRESENT, USMemoryModules.COPPER_BUTTON.get(), MemoryStatus.VALUE_PRESENT));
+        super(ImmutableMap.of(USMemoryModules.COPPER_BUTTON.get(), MemoryStatus.VALUE_PRESENT));
     }
 
     @Override
@@ -49,13 +44,13 @@ public class PressCopperButtonTask extends Behavior<CopperGolemEntity> {
             if (flag && state.getBlock() instanceof CopperButtonBlock buttonBlock) {
                 AttachFace direction = state.getValue(CopperButtonBlock.FACE);
                 entity.getLookControl().setLookAt(blockPos.getX(), blockPos.getY(), blockPos.getZ());
-                USPoses poses;
+                Pose pose;
                 switch (direction) {
-                    case FLOOR -> poses = USPoses.PRESS_BUTTON_DOWN;
-                    case CEILING -> poses = USPoses.PRESS_BUTTON_UP;
-                    default -> poses = USPoses.PRESS_BUTTON;
+                    case FLOOR -> pose = USPoses.PRESS_BUTTON_DOWN.get();
+                    case CEILING -> pose = USPoses.PRESS_BUTTON_UP.get();
+                    default -> pose = USPoses.PRESS_BUTTON.get();
                 }
-                PoseUtil.setModPose(poses.name(), entity);
+                entity.setPose(pose);
                 buttonBlock.press(state, world, blockPos);
                 world.playSound(null, blockPos.getX(), blockPos.getY(), blockPos.getZ(), USSoundEvents.COPPER_CLICK.get(), SoundSource.BLOCKS, 1, 1);
             }
@@ -63,16 +58,15 @@ public class PressCopperButtonTask extends Behavior<CopperGolemEntity> {
     }
 
     @Override
-    protected void tick(ServerLevel world, CopperGolemEntity entity, long p_22553_) {
+    protected void tick(ServerLevel level, CopperGolemEntity entity, long p_22553_) {
         if (this.buttonTicks < 60) {
             this.buttonTicks++;
         } else {
             entity.getBrain().eraseMemory(USMemoryModules.COPPER_BUTTON.get());
-            entity.setCooldown();
+            entity.getBrain().setMemory(USMemoryModules.COPPER_BUTTON_COOLDOWN_TICKS.get(), UniformInt.of(120, 240).sample(level.getRandom()));
             entity.setPose(Pose.STANDING);
         }
     }
-
 
     @Override
     protected void stop(ServerLevel world, CopperGolemEntity entity, long p_22550_) {

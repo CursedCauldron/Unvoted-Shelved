@@ -1,5 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.block;
 
+import com.cursedcauldron.unvotedandshelved.api.IWeatheringObject;
 import com.cursedcauldron.unvotedandshelved.init.USBlocks;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.BiMap;
@@ -14,7 +15,7 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.function.Supplier;
 
-public class WeatheringCopperButtonBlock extends CopperButtonBlock implements WeatheringCopper {
+public class WeatheringCopperButtonBlock extends CopperButtonBlock implements WeatheringCopper, IWeatheringObject {
     public static Supplier<BiMap<Block, Block>> NEXT_BY_BLOCK = Suppliers.memoize(() -> {
         return ImmutableBiMap.<Block, Block>builder()
                 .put(USBlocks.COPPER_BUTTON.get(), USBlocks.EXPOSED_COPPER_BUTTON.get())
@@ -32,10 +33,6 @@ public class WeatheringCopperButtonBlock extends CopperButtonBlock implements We
         this.weatherState = weatherState;
         this.registerDefaultState(this.stateDefinition.any().setValue(POWERED, false));
 
-    }
-
-    public static Optional<BlockState> getPreviousState(BlockState state) {
-        return Optional.ofNullable(PREVIOUS_BY_BLOCK.get().get(state.getBlock())).map((block) -> block.withPropertiesOf(state).setValue(POWERED, false));
     }
 
     @Override
@@ -57,4 +54,10 @@ public class WeatheringCopperButtonBlock extends CopperButtonBlock implements We
     public WeatherState getAge() {
         return this.weatherState;
     }
+
+    @Override
+    public Optional<BlockState> getPrevState(BlockState state) {
+        return Optional.ofNullable(PREVIOUS_BY_BLOCK.get().get(state.getBlock())).map(block -> block.withPropertiesOf(state));
+    }
+
 }

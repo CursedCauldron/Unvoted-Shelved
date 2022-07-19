@@ -1,7 +1,11 @@
 package com.cursedcauldron.unvotedandshelved.block;
 
+import com.cursedcauldron.unvotedandshelved.api.IWaxableObject;
 import com.cursedcauldron.unvotedandshelved.init.USBlocks;
 import com.cursedcauldron.unvotedandshelved.init.USSoundEvents;
+import com.google.common.base.Suppliers;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.ImmutableBiMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -12,13 +16,17 @@ import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-public class CopperButtonBlock extends ButtonBlock {
+import java.util.function.Supplier;
+
+public class CopperButtonBlock extends ButtonBlock implements IWaxableObject {
+    public static final Supplier<BiMap<Block, Block>> WAXABLES = Suppliers.memoize(() -> ImmutableBiMap.<Block, Block>builder().put(USBlocks.COPPER_BUTTON.get(), USBlocks.WAXED_COPPER_BUTTON.get()).put(USBlocks.EXPOSED_COPPER_BUTTON.get(), USBlocks.WAXED_EXPOSED_COPPER_BUTTON.get()).put(USBlocks.WEATHERED_COPPER_BUTTON.get(), USBlocks.WAXED_WEATHERED_COPPER_BUTTON.get()).put(USBlocks.OXIDIZED_COPPER_BUTTON.get(), USBlocks.WAXED_OXIDIZED_COPPER_BUTTON.get()).build());
     private final WeatheringCopper.WeatherState weatherState;
 
     public CopperButtonBlock(WeatheringCopper.WeatherState weatherState, Properties settings) {
@@ -68,4 +76,8 @@ public class CopperButtonBlock extends ButtonBlock {
         } else return 50;
     }
 
+    @Override
+    public Supplier<BiMap<Block, Block>> getWaxables() {
+        return WAXABLES;
+    }
 }

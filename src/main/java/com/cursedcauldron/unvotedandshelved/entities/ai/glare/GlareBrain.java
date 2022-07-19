@@ -5,6 +5,7 @@ import com.cursedcauldron.unvotedandshelved.entities.ai.glare.task.AerialStrollT
 import com.cursedcauldron.unvotedandshelved.entities.ai.glare.task.GlowberryStrollTask;
 import com.cursedcauldron.unvotedandshelved.init.USActivities;
 import com.cursedcauldron.unvotedandshelved.init.USMemoryModules;
+import com.cursedcauldron.unvotedandshelved.init.USSoundEvents;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -33,10 +34,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 
-//<>
 public class GlareBrain {
 
-    public static Brain<?> create(GlareEntity glare, Brain<GlareEntity> brain) {
+    public static Brain<?> create(Brain<GlareEntity> brain) {
         addCoreActivities(brain);
         addFindDarknessActivity(brain);
         addIdleActivities(brain);
@@ -60,7 +60,7 @@ public class GlareBrain {
         return vec3 == null ? glare.position() : vec3;
     }
 
-    public static boolean isGlowBerry(GlareEntity glare, ItemStack stack) {
+    public static boolean isGlowBerry(ItemStack stack) {
         return stack.is(Items.GLOW_BERRIES);
     }
 
@@ -69,14 +69,24 @@ public class GlareBrain {
         ItemStack itemStack = player.getItemInHand(hand);
         if (brain.getMemory(USMemoryModules.GLOWBERRIES_GIVEN.get()).isPresent()) {
             int i = brain.getMemory(USMemoryModules.GLOWBERRIES_GIVEN.get()).get();
-            if (i < 5 && isGlowBerry(glare, itemStack)) {
-                if (!player.getAbilities().instabuild) {
-                    itemStack.shrink(1);
-                    brain.setMemory(USMemoryModules.GIVEN_GLOWBERRY.get(), glare);
+            if (!(i >= 5)) {
+                if (isGlowBerry(itemStack)) {
+                    if (!player.getAbilities().instabuild) {
+                        itemStack.shrink(1);
+                        brain.setMemory(USMemoryModules.GIVEN_GLOWBERRY.get(), glare);
+                    }
+                    if (brain.getMemory(USMemoryModules.GLOWBERRIES_GIVEN.get()).isPresent()) {
+                        glare.setGlowberries(i + 1);
+                        glare.playSound(USSoundEvents.GLARE_GIVE_GLOW_BERRIES.get(), 1.0f, 1.0f);
+                        return InteractionResult.SUCCESS;
+                    } else {
+                        if (brain.getMemory(USMemoryModules.GLOWBERRIES_GIVEN.get()).isPresent()) {
+                            glare.setGlowberries(i + 1);
+                            glare.playSound(USSoundEvents.GLARE_GIVE_GLOW_BERRIES.get(), 1.0f, 1.0f);
+                            return InteractionResult.SUCCESS;
+                        }
+                    }
                 }
-                glare.setGlowberries(i + 1);
-                glare.playSound(SoundEvents.CAVE_VINES_PLACE, 1.0F, 1.0F);
-                return InteractionResult.SUCCESS;
             }
         }
         glare.setPersistenceRequired();

@@ -8,8 +8,6 @@ import com.cursedcauldron.unvotedandshelved.util.Transformation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-//<>
-
 @OnlyIn(Dist.CLIENT)
 public class CopperGolemAnimations {
     public static final Animation WALKING = Animation.Builder.create(1.08333F)

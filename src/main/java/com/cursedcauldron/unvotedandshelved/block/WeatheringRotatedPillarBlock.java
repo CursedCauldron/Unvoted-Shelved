@@ -1,5 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.block;
 
+import com.cursedcauldron.unvotedandshelved.api.IWeatheringObject;
 import com.cursedcauldron.unvotedandshelved.init.USBlocks;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.BiMap;
@@ -9,17 +10,15 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
 import java.util.Optional;
 import java.util.Random;
 import java.util.function.Supplier;
 
-public class WeatheringRotatedPillarBlock extends ConnectedRotatedPillarBlock implements WeatheringCopper {
+public class WeatheringRotatedPillarBlock extends ConnectedRotatedPillarBlock implements WeatheringCopper, IWeatheringObject {
     public static final BooleanProperty CONNECTED = BooleanProperty.create("connected");
     private final WeatheringCopper.WeatherState weatherState;
-
     public static Supplier<BiMap<Block, Block>> NEXT_BY_BLOCK = Suppliers.memoize(() -> {
         return ImmutableBiMap.<Block, Block>builder()
                 .put(USBlocks.COPPER_PILLAR.get(), USBlocks.EXPOSED_COPPER_PILLAR.get())
@@ -52,17 +51,14 @@ public class WeatheringRotatedPillarBlock extends ConnectedRotatedPillarBlock im
         return Optional.ofNullable(NEXT_BY_BLOCK.get().get(state.getBlock())).map(block -> block.withPropertiesOf(state));
     }
 
-    public static Optional<BlockState> getPreviousState(BlockState state) {
-        return Optional.ofNullable(PREVIOUS_BY_BLOCK.get().get(state.getBlock())).map((block) -> block.withPropertiesOf(state));
-    }
-
     @Override
     public WeatherState getAge() {
         return this.weatherState;
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder);
+    public Optional<BlockState> getPrevState(BlockState state) {
+        return Optional.ofNullable(PREVIOUS_BY_BLOCK.get().get(state.getBlock())).map(block -> block.withPropertiesOf(state));
     }
+
 }

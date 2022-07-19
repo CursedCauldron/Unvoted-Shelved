@@ -2,20 +2,19 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "unvotedandshelved:waxed_weathered_copper_button"
-          "name": "unvotedandshelved:weathered_copper_button"
-        }
-      ],
       "conditions": [
         {
           "condition": "minecraft:survives_explosion"
         }
-      ]
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "unvotedandshelved:waxed_weathered_copper_button"
+        }
+      ],
+      "rolls": 1.0
     }
   ]
 }

@@ -2,7 +2,7 @@
   "parent": "minecraft:adventure/root",
   "display": {
     "icon": {
-      "item": "minecraft:lightning_rod"
+      "item": "minecraft:copper_ingot"
     },
     "title": {
       "translate": "advancements.adventure.summon_copper_golem.title"

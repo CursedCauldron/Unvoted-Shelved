@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "group": "waxed_copper_button",
   "ingredients": [
     {
       "item": "unvotedandshelved:oxidized_copper_button"

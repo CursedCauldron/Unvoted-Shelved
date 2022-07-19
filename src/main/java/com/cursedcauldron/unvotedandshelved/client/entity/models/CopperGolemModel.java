@@ -68,7 +68,6 @@ public class CopperGolemModel<T extends CopperGolemEntity> extends HierarchicalM
         this.runSlowestAnimation(entity.buttonDownSlowestAnimation, CopperGolemAnimations.BUTTON_PRESS_DOWN, time);
     }
 
-
     private void runAnimation(AnimationState animationState, Animation animation, long time) {
         animationState.run(state -> AnimationHelper.animate(this, animation, time - state.getStartTime(), 1.0F, ANIMATION_PROGRESS));
     }

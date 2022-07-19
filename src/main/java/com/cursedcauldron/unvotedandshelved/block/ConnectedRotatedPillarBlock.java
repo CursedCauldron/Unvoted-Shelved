@@ -1,14 +1,14 @@
 package com.cursedcauldron.unvotedandshelved.block;
 
+import com.cursedcauldron.unvotedandshelved.api.IWaxableObject;
+import com.cursedcauldron.unvotedandshelved.init.USBlockTags;
 import com.cursedcauldron.unvotedandshelved.init.USBlocks;
-import com.cursedcauldron.unvotedandshelved.init.USTags;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -21,12 +21,9 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.function.Supplier;
 
-//<>
-
-public class ConnectedRotatedPillarBlock extends RotatedPillarBlock implements WeatheringCopper {
+public class ConnectedRotatedPillarBlock extends RotatedPillarBlock implements WeatheringCopper, IWaxableObject {
     public static final BooleanProperty CONNECTED = BooleanProperty.create("connected");
     private final WeatherState weatherState;
-
     public static Supplier<BiMap<Block, Block>> NEXT_BY_BLOCK = Suppliers.memoize(() -> {
         return ImmutableBiMap.<Block, Block>builder()
                 .put(USBlocks.COPPER_PILLAR.get(), USBlocks.EXPOSED_COPPER_PILLAR.get())
@@ -37,7 +34,7 @@ public class ConnectedRotatedPillarBlock extends RotatedPillarBlock implements W
     public static final Supplier<BiMap<Block, Block>> PREVIOUS_BY_BLOCK = Suppliers.memoize(() -> {
         return NEXT_BY_BLOCK.get().inverse();
     });
-
+    public static final Supplier<BiMap<Block, Block>> WAXABLES = Suppliers.memoize(() -> ImmutableBiMap.<Block, Block>builder().put(USBlocks.COPPER_PILLAR.get(), USBlocks.WAXED_COPPER_PILLAR.get()).put(USBlocks.EXPOSED_COPPER_PILLAR.get(), USBlocks.WAXED_EXPOSED_COPPER_PILLAR.get()).put(USBlocks.WEATHERED_COPPER_PILLAR.get(), USBlocks.WAXED_WEATHERED_COPPER_PILLAR.get()).put(USBlocks.OXIDIZED_COPPER_PILLAR.get(), USBlocks.WAXED_OXIDIZED_COPPER_PILLAR.get()).build());
 
     public ConnectedRotatedPillarBlock(WeatherState state, Properties properties) {
         super(properties);
@@ -63,12 +60,12 @@ public class ConnectedRotatedPillarBlock extends RotatedPillarBlock implements W
         BlockPos belowPos  = (state.getValue(AXIS) == Direction.Axis.Y) ? pos.below() : (state.getValue(AXIS) == Direction.Axis.X) ? pos.west() : pos.south();
         BlockState belowState = level.getBlockState(belowPos);
 
-        if (aboveState.is(USTags.COPPER_PILLARS) && aboveState.getValue(AXIS) == state.getValue(AXIS)) {
+        if (aboveState.is(USBlockTags.COPPER_PILLARS) && aboveState.getValue(AXIS) == state.getValue(AXIS)) {
             level.setBlock(pos, state.setValue(CONNECTED, true), 3);
         } else {
             level.setBlock(pos, state.setValue(CONNECTED, false), 3);
         }
-        if (belowState.is(USTags.COPPER_PILLARS) && belowState.getValue(AXIS) == state.getValue(AXIS)) {
+        if (belowState.is(USBlockTags.COPPER_PILLARS) && belowState.getValue(AXIS) == state.getValue(AXIS)) {
             level.setBlock(belowPos, belowState.setValue(CONNECTED, true), 3);
         }
 
@@ -93,5 +90,10 @@ public class ConnectedRotatedPillarBlock extends RotatedPillarBlock implements W
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(CONNECTED);
+    }
+
+    @Override
+    public Supplier<BiMap<Block, Block>> getWaxables() {
+        return WAXABLES;
     }
 }
