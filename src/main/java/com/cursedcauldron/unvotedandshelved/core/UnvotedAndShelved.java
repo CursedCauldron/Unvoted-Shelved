@@ -1,12 +1,15 @@
 package com.cursedcauldron.unvotedandshelved.core;
 
 import com.cursedcauldron.unvotedandshelved.api.LightningRodAccess;
+import com.cursedcauldron.unvotedandshelved.config.ModConfig;
 import com.cursedcauldron.unvotedandshelved.core.registries.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
@@ -35,6 +38,7 @@ public class UnvotedAndShelved implements ModInitializer {
     public static final String MODID = "unvotedandshelved";
     public static final Logger LOGGER = LogManager.getLogger(MODID);
     public static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).setPrettyPrinting().create();
+    private static final ModConfig CONFIG = AutoConfig.register(ModConfig.class, GsonConfigSerializer::new).getConfig();
 
     @Override
     public void onInitialize() {
@@ -137,5 +141,11 @@ public class UnvotedAndShelved implements ModInitializer {
                 return stack;
             }
         });
+    }
+
+    // Mod Config
+
+    public static ModConfig getConfig () {
+        return CONFIG;
     }
 }

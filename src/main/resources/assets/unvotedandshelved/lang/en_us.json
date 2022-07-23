@@ -9,6 +9,7 @@
   "advancements.adventure.ride_a_boat_with_a_glare.description": "Get in a Boat and float with a Glare",
   "advancements.adventure.lead_all_three_vote_mobs.title": "The Three Musketeers",
   "advancements.adventure.lead_all_three_vote_mobs.description": "Lead the Glare, Allay, and Copper Golem",
+
   "subtitles.unvotedandshelved.glare_grumpy_idle": "Glare grumbles",
   "subtitles.unvotedandshelved.glare_idle": "Glare mumbles",
   "subtitles.unvotedandshelved.glare_hurt": "Glare hurts",
@@ -24,7 +25,9 @@
   "subtitles.unvotedandshelved.copper_golem_death": "Copper Golem dies",
   "subtitles.unvotedandshelved.copper_golem_repair": "Copper Golem repaired",
   "subtitles.unvotedandshelved.copper_golem_damage": "Copper Golem breaks",
+
   "item.unvotedandshelved.glare_spawn_egg": "Glare Spawn Egg",
+
   "block.unvotedandshelved.glowberry_dust": "Bottle of Glowberry Dust",
   "block.unvotedandshelved.copper_button": "Copper Button",
   "block.unvotedandshelved.exposed_copper_button": "Exposed Copper Button",
@@ -50,30 +53,29 @@
   "block.unvotedandshelved.waxed_exposed_lightning_rod": "Waxed Exposed Lightning Rod",
   "block.unvotedandshelved.waxed_weathered_lightning_rod": "Waxed Weathered Lightning Rod",
   "block.unvotedandshelved.waxed_oxidized_lightning_rod": "Waxed Oxidized Lightning Rod",
+
   "entity.unvotedandshelved.copper_golem": "Copper Golem",
   "entity.unvotedandshelved.oxidized_copper_golem": "Oxidized Copper Golem",
   "entity.unvotedandshelved.glare": "Glare",
   "entity.unvotedandshelved.moobloom": "Moobloom",
-  "options.unvotedandshelved.copperGolem": "Copper Golems",
-  "options.unvotedandshelved.copperGolem.tooltip": "Determines whether or not Copper Golems can exist. Disabling this as the host will delete any and all Copper Golems from your loaded world.",
-  "options.unvotedandshelved.copperGolem.true": "Enabled",
-  "options.unvotedandshelved.copperGolem.false": "Disabled",
-  "options.unvotedandshelved.glare": "Glares",
-  "options.unvotedandshelved.glare.tooltip": "Determines whether or not the Glare can exist. Disabling this as the host will delete any and all Glares from your loaded world.",
-  "options.unvotedandshelved.glare.true": "Enabled",
-  "options.unvotedandshelved.glare.false": "Disabled",
-  "options.unvotedandshelved.ruinedCapitals": "Ruined Capitals",
-  "options.unvotedandshelved.ruinedCapitals.tooltip": "Determines whether or not Ruined Capitals can generate. Disabling this as the host will prevent the generation of Ruined Capitals.",
-  "options.unvotedandshelved.ruinedCapitals.true": "Enabled",
-  "options.unvotedandshelved.ruinedCapitals.false": "Disabled",
-  "options.unvotedandshelved.copperPillars": "Copper Pillars",
-  "options.unvotedandshelved.copperPillars.tooltip": "Determines whether or not Copper Pillars can exist. Disabling this as the host will prevent the crafting and generation of Copper Pillars.",
-  "options.unvotedandshelved.copperPillars.true": "Enabled",
-  "options.unvotedandshelved.copperPillars.false": "Disabled",
-  "options.unvotedandshelved.copperButtons": "Copper Buttons",
-  "options.unvotedandshelved.copperButtons.tooltip": "Determines whether or not Copper Buttons can exist. Disabling this as the host will prevent the crafting and generation of Copper Buttons.",
-  "options.unvotedandshelved.copperButtons.true": "Enabled",
-  "options.unvotedandshelved.copperButtons.false": "Disabled",
-  "options.unvotedandshelved.title": "Unvoted & Shelved",
-  "options.unvotedandshelved.link": "Mod Link"
+
+  "text.autoconfig.unvotedandshelved.title": "Unvoted & Shelved Configuration",
+
+  "text.autoconfig.unvotedandshelved.option.mobs": "Mobs",
+  "text.autoconfig.unvotedandshelved.option.mobs.glare": "Glare",
+  "text.autoconfig.unvotedandshelved.option.mobs.glare.@Tooltip": "Determines whether or not the Glare can exist. Disabling this as the host will delete any and all Glares from your loaded world.",
+  "text.autoconfig.unvotedandshelved.option.mobs.copper_golem": "Copper Golem",
+  "text.autoconfig.unvotedandshelved.option.mobs.copper_golem.@Tooltip": "Determines whether or not Copper Golems can exist. Disabling this as the host will delete any and all Copper Golems from your loaded world.",
+
+  "text.autoconfig.unvotedandshelved.option.structures": "Structures",
+  "text.autoconfig.unvotedandshelved.option.structures.ruined_capital": "Ruined Capital",
+  "text.autoconfig.unvotedandshelved.option.structures.ruined_capital.@Tooltip": "Determines whether or not Ruined Capitals can generate. Disabling this as the host will prevent the generation of Ruined Capitals.",
+
+  "text.autoconfig.unvotedandshelved.option.blocks": "Blocks",
+  "text.autoconfig.unvotedandshelved.option.blocks.copper_pillars": "Copper Pillars",
+  "text.autoconfig.unvotedandshelved.option.blocks.copper_pillars.@Tooltip": "Determines whether or not Copper Pillars can exist. Disabling this as the host will prevent the crafting and generation of Copper Pillars.",
+  "text.autoconfig.unvotedandshelved.option.blocks.copper_buttons": "Copper Buttons",
+  "text.autoconfig.unvotedandshelved.option.blocks.copper_buttons.@Tooltip": "Determines whether or not Copper Buttons can exist. Disabling this as the host will prevent the crafting and generation of Copper Buttons.",
+  "text.autoconfig.unvotedandshelved.option.blocks.lightning_rod_variants": "Oxidizing Lightning Rods",
+  "text.autoconfig.unvotedandshelved.option.blocks.lightning_rod_variants.@Tooltip": "Determines whether or not Oxidizing Lightning Rods can exist. Disabling this as the host will prevent Lightning Rods from oxidizing or being able to oxidize."
 }

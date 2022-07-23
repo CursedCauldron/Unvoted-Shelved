@@ -1,7 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.mixin;
 
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Pig;
@@ -13,11 +12,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Objects;
 
+// Wardens cannot target Pigs named Technoblade
+
 @Mixin(Warden.class)
 public class WardenMixin {
     @Inject(method = "canTargetEntity(Lnet/minecraft/world/entity/Entity;)Z", at = @At("RETURN"), cancellable = true)
     public void canTargetEntity(Entity entity, CallbackInfoReturnable<Boolean> cir) {
-        Warden $this = Warden.class.cast(this);
         if (entity instanceof Pig) {
             LivingEntity livingEntity = (LivingEntity)entity;
             if (livingEntity.getType() == EntityType.PIG && Objects.equals(livingEntity.getName().getString(), "Technoblade")) {
@@ -25,6 +25,5 @@ public class WardenMixin {
                 cir.cancel();
             }
         }
-
     }
 }

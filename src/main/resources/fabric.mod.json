@@ -20,6 +20,9 @@
     ],
     "client": [
       "com.cursedcauldron.unvotedandshelved.core.ClientUnvotedAndShelved"
+    ],
+    "modmenu": [
+      "com.cursedcauldron.unvotedandshelved.config.ModMenuCompatibility"
     ]
   },
   "accessWidener": "unvotedandshelved.accesswidener",

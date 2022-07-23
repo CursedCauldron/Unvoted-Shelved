@@ -15,6 +15,8 @@ import java.util.Optional;
 @Mixin(ServerLevel.class)
 public class ServerLevelMixin {
 
+    // Allows for Lightning to target any Oxidized stages of Lightning Rods
+
     @Inject(method = "findLightningTargetAround", at = @At("TAIL"), cancellable = true)
     private void US$findLightningTargetAround(BlockPos pos, CallbackInfoReturnable<BlockPos> cir) {
         BlockPos position = ((ServerLevel)(Object)this).getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos);

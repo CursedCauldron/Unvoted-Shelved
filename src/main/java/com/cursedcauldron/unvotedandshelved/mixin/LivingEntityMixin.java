@@ -7,8 +7,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
 import java.util.Objects;
+
+// Living Entities cannot attack any Pig named Technoblade
 
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
