@@ -24,6 +24,7 @@
     "access.SimpleParticleTypeAccessor"
   ],
   "client": [
+    "MinecraftMixin",
     "PigRendererMixin"
   ],
   "injectors": {
