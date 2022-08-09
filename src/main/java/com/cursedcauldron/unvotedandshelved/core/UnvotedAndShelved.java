@@ -145,7 +145,7 @@ public class UnvotedAndShelved implements ModInitializer {
 
     // Mod Config
 
-    public static ModConfig getConfig () {
+    public static ModConfig getConfig() {
         return CONFIG;
     }
 }
