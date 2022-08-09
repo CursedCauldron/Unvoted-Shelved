@@ -26,10 +26,6 @@ public class MoobloomType {
         return MAP;
     }
 
-    public Pair<ResourceLocation, Item> getPair() {
-        return this.pair;
-    }
-
     public ResourceLocation getTexture() {
         return this.pair.getFirst();
     }
