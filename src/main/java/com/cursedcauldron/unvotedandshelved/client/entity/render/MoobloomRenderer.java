@@ -1,6 +1,7 @@
 package com.cursedcauldron.unvotedandshelved.client.entity.render;
 
 import com.cursedcauldron.unvotedandshelved.client.entity.USEntityRenderer;
+import com.cursedcauldron.unvotedandshelved.client.entity.render.feature.MoobloomFlowerLayer;
 import com.cursedcauldron.unvotedandshelved.common.entity.MoobloomEntity;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.cursedcauldron.unvotedandshelved.core.registries.USMoobloomTypes;
@@ -17,6 +18,7 @@ public class MoobloomRenderer extends MobRenderer<MoobloomEntity, CowModel<Moobl
 
     public MoobloomRenderer(EntityRendererProvider.Context context) {
         super(context, new CowModel<>(context.bakeLayer(USEntityRenderer.MOOBLOOM)), 0.7f);
+        this.addLayer(new MoobloomFlowerLayer<>(this, context.getBlockRenderDispatcher()));
     }
 
     @Override
