@@ -2,6 +2,7 @@ package com.cursedcauldron.unvotedandshelved.core.registries;
 
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.cursedcauldron.unvotedandshelved.core.util.MoobloomType;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -25,6 +26,16 @@ public class USMoobloomTypes {
     public static final MoobloomType RED_TULIP = registerMoobloomType(11, "red_tulip", Items.RED_TULIP);
     public static final MoobloomType WHITE_TULIP = registerMoobloomType(12, "white_tulip", Items.WHITE_TULIP);
     public static final MoobloomType WITHER_ROSE = registerMoobloomType(13, "wither_rose", Items.WITHER_ROSE);
+
+    //Compat moobloom
+    //Increase the id whenever a new moobloom type is added
+    //public static final MoobloomType CUSTOM_FLOWER = registerCompatMoobloomType(n + 1, "custom_flower", "custom_mod", "custom_flower");
+
+    public static MoobloomType registerCompatMoobloomType(int id, String name, String modid, String moddedFlowerItem) {
+        MoobloomType moobloomType = new MoobloomType(id, new ResourceLocation(UnvotedAndShelved.MODID, "textures/entity/moobloom/moobloom_" + name + ".png"), Registry.ITEM.get(new ResourceLocation(modid, moddedFlowerItem)));
+        MOOBLOOM_TYPES.add(moobloomType);
+        return moobloomType;
+    }
 
     public static MoobloomType registerMoobloomType(int id, String name, Item item) {
         MoobloomType moobloomType = new MoobloomType(id, new ResourceLocation(UnvotedAndShelved.MODID, "textures/entity/moobloom/moobloom_" + name + ".png"), item);
