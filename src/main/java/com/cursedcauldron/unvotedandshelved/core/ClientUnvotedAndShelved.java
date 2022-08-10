@@ -34,5 +34,6 @@ public class ClientUnvotedAndShelved implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(USBlocks.WAXED_EXPOSED_COPPER_PILLAR, RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(USBlocks.WAXED_WEATHERED_COPPER_PILLAR, RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(USBlocks.WAXED_OXIDIZED_COPPER_PILLAR, RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(USBlocks.BUTTERCUP, RenderType.cutout());
     }
 }

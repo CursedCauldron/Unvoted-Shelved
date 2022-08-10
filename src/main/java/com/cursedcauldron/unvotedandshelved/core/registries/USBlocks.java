@@ -4,6 +4,7 @@ import com.cursedcauldron.unvotedandshelved.api.CoreRegistry;
 import com.cursedcauldron.unvotedandshelved.common.blocks.*;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import net.minecraft.core.Registry;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -53,6 +54,8 @@ public class USBlocks {
     public static final Block WAXED_EXPOSED_LIGHTNING_ROD = register("waxed_exposed_lightning_rod", new WeatheringLightningRodBlock(BlockBehaviour.Properties.copy(Blocks.LIGHTNING_ROD), WeatheringCopper.WeatherState.EXPOSED), CreativeModeTab.TAB_REDSTONE);
     public static final Block WAXED_WEATHERED_LIGHTNING_ROD = register("waxed_weathered_lightning_rod", new WeatheringLightningRodBlock(BlockBehaviour.Properties.copy(Blocks.LIGHTNING_ROD), WeatheringCopper.WeatherState.WEATHERED), CreativeModeTab.TAB_REDSTONE);
     public static final Block WAXED_OXIDIZED_LIGHTNING_ROD = register("waxed_oxidized_lightning_rod", new WeatheringLightningRodBlock(BlockBehaviour.Properties.copy(Blocks.LIGHTNING_ROD), WeatheringCopper.WeatherState.OXIDIZED), CreativeModeTab.TAB_REDSTONE);
+
+    public static final Block BUTTERCUP = register("buttercup", new FlowerBlock(MobEffects.SATURATION, 7, BlockBehaviour.Properties.of(Material.PLANT).noCollission().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ)));
 
     public static Block register(String id, Block block) {
         return BLOCKS.register(id, block);
