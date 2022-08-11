@@ -33,7 +33,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.LinkedList;
 import java.util.Objects;
 
 public class MoobloomEntity extends Cow implements Shearable {
@@ -52,7 +51,7 @@ public class MoobloomEntity extends Cow implements Shearable {
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
-        this.setFlowerType(getMoobloomTypes().get(this.random.nextInt(getMoobloomTypes().toArray().length)).getId());
+        this.setMoobloomType(USMoobloomTypes.getMoobloomTypes().get(this.random.nextInt(USMoobloomTypes.getMoobloomTypes().toArray().length)));
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
 
@@ -73,10 +72,6 @@ public class MoobloomEntity extends Cow implements Shearable {
                 this.level.addParticle(ParticleTypes.SMOKE, this.getX() + random.nextDouble() / 5.0, this.getY(1.0D), this.getZ() + random.nextDouble() / 5.0, 0.0, 0.0, 0.0);
             }
         }
-    }
-
-    private LinkedList<MoobloomType> getMoobloomTypes() {
-        return USMoobloomTypes.getMoobloomTypes();
     }
 
     @Override
@@ -104,6 +99,10 @@ public class MoobloomEntity extends Cow implements Shearable {
         return moobloomType;
     }
 
+    public void setMoobloomType(MoobloomType type) {
+        this.setFlowerType(type.getId());
+    }
+
     public String getFlowerType() {
         return this.entityData.get(FLOWER_TYPE);
     }
@@ -128,12 +127,10 @@ public class MoobloomEntity extends Cow implements Shearable {
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand interactionHand) {
         ItemStack itemStack = player.getItemInHand(interactionHand);
-        for (String i : MoobloomType.getMAP().keySet()) {
-            Pair<ResourceLocation, Item> pair = MoobloomType.getMAP().get(i);
-            Item second = pair.getSecond();
-            if (!itemStack.is(second)) continue;
-            if (itemStack.is(second) && !Objects.equals(this.getFlowerType(), i)) {
-                this.setFlowerType(i);
+        for (MoobloomType moobloomType : USMoobloomTypes.getMoobloomTypes()) {
+            Item item = moobloomType.getItem();
+            if (itemStack.is(item) && this.getMoobloomType() != moobloomType) {
+                this.setMoobloomType(moobloomType);
                 this.playSound(SoundEvents.BONE_MEAL_USE, 1.0F, 1.0F);
                 return InteractionResult.sidedSuccess(this.level.isClientSide);
             }
