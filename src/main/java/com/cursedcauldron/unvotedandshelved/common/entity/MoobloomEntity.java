@@ -3,13 +3,11 @@ package com.cursedcauldron.unvotedandshelved.common.entity;
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import com.cursedcauldron.unvotedandshelved.core.registries.USMoobloomTypes;
 import com.cursedcauldron.unvotedandshelved.core.util.MoobloomType;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -37,6 +35,7 @@ import java.util.Objects;
 
 public class MoobloomEntity extends Cow implements Shearable {
     private static final EntityDataAccessor<String> FLOWER_TYPE = SynchedEntityData.defineId(MoobloomEntity.class, EntityDataSerializers.STRING);
+    private static final UniformInt COOLDOWN_RANGE = UniformInt.of(1200, 6000);
     private int cooldownTicks;
 
     public MoobloomEntity(EntityType<? extends Cow> entityType, Level level) {
@@ -150,7 +149,7 @@ public class MoobloomEntity extends Cow implements Shearable {
             if (!player.getAbilities().instabuild) {
                 itemStack.shrink(1);
             }
-            this.setCooldownTicks(6000);
+            this.setCooldownTicks(COOLDOWN_RANGE.sample(random));
             this.playSound(SoundEvents.BONE_MEAL_USE, 1.0F, 1.0F);
             return InteractionResult.SUCCESS;
         }
