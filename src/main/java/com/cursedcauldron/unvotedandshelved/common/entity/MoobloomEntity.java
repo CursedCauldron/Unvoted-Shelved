@@ -2,6 +2,7 @@ package com.cursedcauldron.unvotedandshelved.common.entity;
 
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import com.cursedcauldron.unvotedandshelved.core.registries.USMoobloomTypes;
+import com.cursedcauldron.unvotedandshelved.core.util.FlowerEquation;
 import com.cursedcauldron.unvotedandshelved.core.util.MoobloomType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -15,6 +16,7 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
@@ -25,10 +27,13 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.SuspiciousStewItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -36,6 +41,7 @@ import java.util.Objects;
 public class MoobloomEntity extends Cow implements Shearable {
     private static final EntityDataAccessor<String> FLOWER_TYPE = SynchedEntityData.defineId(MoobloomEntity.class, EntityDataSerializers.STRING);
     private static final UniformInt COOLDOWN_RANGE = UniformInt.of(1200, 6000);
+    private final FlowerEquation flowerEquation = new FlowerEquation(this);
     private int cooldownTicks;
 
     public MoobloomEntity(EntityType<? extends Cow> entityType, Level level) {
@@ -142,7 +148,7 @@ public class MoobloomEntity extends Cow implements Shearable {
             }
             return InteractionResult.sidedSuccess(this.level.isClientSide);
         }
-            if (itemStack.is(Items.BONE_MEAL) && !this.level.isClientSide && this.getCooldownTicks() == 0) {
+        if (itemStack.is(Items.BONE_MEAL) && !this.level.isClientSide && this.getCooldownTicks() == 0) {
             for (int i = 0; i < UniformInt.of(1, 3).sample(random); i++) {
                 this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(1.0D), this.getZ(), new ItemStack(this.getMoobloomType().getItem())));
             }
@@ -153,7 +159,23 @@ public class MoobloomEntity extends Cow implements Shearable {
             this.playSound(SoundEvents.BONE_MEAL_USE, 1.0F, 1.0F);
             return InteractionResult.SUCCESS;
         }
+        if (itemStack.is(Items.BOWL) && !this.isBaby()) {
+            ItemStack suspiciousStew = new ItemStack(Items.SUSPICIOUS_STEW);
+            SuspiciousStewItem.saveMobEffect(suspiciousStew, this.getFlowerEffect(), this.getEffectDuration());
+            player.setItemInHand(interactionHand, ItemUtils.createFilledResult(itemStack, player, suspiciousStew, false));
+            this.playSound(SoundEvents.MOOSHROOM_MILK_SUSPICIOUSLY, 1.0f, 1.0f);
+            return InteractionResult.sidedSuccess(this.level.isClientSide);
+        }
         return super.mobInteract(player, interactionHand);
+    }
+
+    private int getEffectDuration() {
+        return this.flowerEquation.getEffectDurationByItem();
+    }
+
+    @NotNull
+    private MobEffect getFlowerEffect() {
+        return Objects.requireNonNull(this.flowerEquation.getEffectByItem());
     }
 
     @Override

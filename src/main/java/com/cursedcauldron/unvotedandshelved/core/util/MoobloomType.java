@@ -7,6 +7,10 @@ import net.minecraft.world.item.Item;
 
 import java.util.Map;
 
+/**
+ * A utility class for storing the data of a moobloom type
+ * @author 0rc1nus
+ */
 public class MoobloomType {
     private final String id;
     private final Pair<ResourceLocation, Item> pair;
@@ -20,10 +24,6 @@ public class MoobloomType {
         this.pair = pair;
         this.id = id;
         MAP.put(id, pair);
-    }
-
-    public static Map<String, Pair<ResourceLocation, Item>> getMAP() {
-        return MAP;
     }
 
     public ResourceLocation getTexture() {

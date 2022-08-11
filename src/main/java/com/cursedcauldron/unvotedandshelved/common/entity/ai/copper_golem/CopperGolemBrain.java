@@ -26,9 +26,8 @@ import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.schedule.Activity;
 
 /**
- * @author Orcinus
+ * @author 0rc1nus
  */
-
 public class CopperGolemBrain {
 
     public static Brain<?> create(Brain<CopperGolemEntity> brain) {
