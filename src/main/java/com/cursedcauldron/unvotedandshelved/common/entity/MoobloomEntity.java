@@ -13,7 +13,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.valueproviders.UniformFloat;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -35,9 +34,10 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
+import java.util.Objects;
 
 public class MoobloomEntity extends Cow implements Shearable {
-    private static final EntityDataAccessor<Integer> FLOWER_TYPE = SynchedEntityData.defineId(MoobloomEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<String> FLOWER_TYPE = SynchedEntityData.defineId(MoobloomEntity.class, EntityDataSerializers.STRING);
     private int cooldownTicks;
 
     public MoobloomEntity(EntityType<? extends Cow> entityType, Level level) {
@@ -47,7 +47,7 @@ public class MoobloomEntity extends Cow implements Shearable {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(FLOWER_TYPE, 0);
+        this.entityData.define(FLOWER_TYPE, "allium");
     }
 
     @Override
@@ -68,7 +68,7 @@ public class MoobloomEntity extends Cow implements Shearable {
         if (this.getCooldownTicks() > 0) {
             this.setCooldownTicks(this.getCooldownTicks() - 1);
         }
-        if (this.getFlowerType() == USMoobloomTypes.WITHER_ROSE.getId()) {
+        if (Objects.equals(this.getFlowerType(), USMoobloomTypes.WITHER_ROSE.getId())) {
             for (int i = 0; i < 3; i++) {
                 this.level.addParticle(ParticleTypes.SMOKE, this.getX() + random.nextDouble() / 5.0, this.getY(1.0D), this.getZ() + random.nextDouble() / 5.0, 0.0, 0.0, 0.0);
             }
@@ -82,22 +82,33 @@ public class MoobloomEntity extends Cow implements Shearable {
     @Override
     public void addAdditionalSaveData(CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
-        compoundTag.putInt("FlowerType", this.getFlowerType());
+        compoundTag.putString("FlowerType", this.getFlowerType());
         compoundTag.putInt("CooldownTicks", this.getCooldownTicks());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
-        this.setFlowerType(compoundTag.getInt("FlowerType"));
+        this.setFlowerType(compoundTag.getString("FlowerType"));
         this.setCooldownTicks(compoundTag.getInt("CooldownTicks"));
     }
 
-    public int getFlowerType() {
+    public MoobloomType getMoobloomType() {
+        MoobloomType moobloomType = null;
+        for (MoobloomType type : USMoobloomTypes.getMoobloomTypes()) {
+            if (!Objects.equals(type.getId(), this.getFlowerType())) continue;
+            if (Objects.equals(type.getId(), this.getFlowerType())) {
+                moobloomType = type;
+            }
+        }
+        return moobloomType;
+    }
+
+    public String getFlowerType() {
         return this.entityData.get(FLOWER_TYPE);
     }
 
-    public void setFlowerType(int flowerType) {
+    public void setFlowerType(String flowerType) {
         this.entityData.set(FLOWER_TYPE, flowerType);
     }
 
@@ -117,11 +128,11 @@ public class MoobloomEntity extends Cow implements Shearable {
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand interactionHand) {
         ItemStack itemStack = player.getItemInHand(interactionHand);
-        for (int i : MoobloomType.getMAP().keySet()) {
+        for (String i : MoobloomType.getMAP().keySet()) {
             Pair<ResourceLocation, Item> pair = MoobloomType.getMAP().get(i);
             Item second = pair.getSecond();
             if (!itemStack.is(second)) continue;
-            if (itemStack.is(second) && this.getFlowerType() != i) {
+            if (itemStack.is(second) && !Objects.equals(this.getFlowerType(), i)) {
                 this.setFlowerType(i);
                 this.playSound(SoundEvents.BONE_MEAL_USE, 1.0F, 1.0F);
                 return InteractionResult.sidedSuccess(this.level.isClientSide);
@@ -137,7 +148,7 @@ public class MoobloomEntity extends Cow implements Shearable {
         }
             if (itemStack.is(Items.BONE_MEAL) && !this.level.isClientSide && this.getCooldownTicks() == 0) {
             for (int i = 0; i < UniformInt.of(1, 3).sample(random); i++) {
-                this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(1.0D), this.getZ(), new ItemStack(this.getMoobloomTypes().get(this.getFlowerType()).getItem())));
+                this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(1.0D), this.getZ(), new ItemStack(this.getMoobloomType().getItem())));
             }
             if (!player.getAbilities().instabuild) {
                 itemStack.shrink(1);
@@ -151,7 +162,7 @@ public class MoobloomEntity extends Cow implements Shearable {
 
     @Override
     public void shear(SoundSource soundSource) {
-        Item item = getMoobloomTypes().get(this.getFlowerType()).getItem();
+        Item item = this.getMoobloomType().getItem();
         this.level.playSound(null, this, SoundEvents.MOOSHROOM_SHEAR, soundSource, 1.0f, 1.0f);
         if (!this.level.isClientSide()) {
             ((ServerLevel)this.level).sendParticles(ParticleTypes.EXPLOSION, this.getX(), this.getY(0.5), this.getZ(), 1, 0.0, 0.0, 0.0, 0.0);

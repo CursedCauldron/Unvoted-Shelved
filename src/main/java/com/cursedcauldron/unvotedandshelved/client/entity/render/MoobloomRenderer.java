@@ -5,6 +5,7 @@ import com.cursedcauldron.unvotedandshelved.client.entity.render.feature.Moobloo
 import com.cursedcauldron.unvotedandshelved.common.entity.MoobloomEntity;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.cursedcauldron.unvotedandshelved.core.registries.USMoobloomTypes;
+import com.cursedcauldron.unvotedandshelved.core.util.MoobloomType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.CowModel;
@@ -23,7 +24,7 @@ public class MoobloomRenderer extends MobRenderer<MoobloomEntity, CowModel<Moobl
 
     @Override
     public ResourceLocation getTextureLocation(MoobloomEntity entity) {
-        ResourceLocation texture = USMoobloomTypes.getMoobloomTypes().get(entity.getFlowerType()).getTexture();
+        ResourceLocation texture = entity.getMoobloomType().getTexture();
         //returns to allium texture if the flower index returns null
         return texture == null ? TEXTURE : texture;
     }

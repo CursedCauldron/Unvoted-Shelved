@@ -8,21 +8,21 @@ import net.minecraft.world.item.Item;
 import java.util.Map;
 
 public class MoobloomType {
-    private final int id;
+    private final String id;
     private final Pair<ResourceLocation, Item> pair;
-    private static final Map<Integer, Pair<ResourceLocation, Item>> MAP = Maps.newHashMap();
+    private static final Map<String, Pair<ResourceLocation, Item>> MAP = Maps.newHashMap();
 
-    public MoobloomType(int id, ResourceLocation resourceLocation, Item item) {
+    public MoobloomType(String id, ResourceLocation resourceLocation, Item item) {
         this(id, Pair.of(resourceLocation, item));
     }
 
-    public MoobloomType(int id, Pair<ResourceLocation, Item> pair) {
+    public MoobloomType(String id, Pair<ResourceLocation, Item> pair) {
         this.pair = pair;
         this.id = id;
         MAP.put(id, pair);
     }
 
-    public static Map<Integer, Pair<ResourceLocation, Item>> getMAP() {
+    public static Map<String, Pair<ResourceLocation, Item>> getMAP() {
         return MAP;
     }
 
@@ -34,7 +34,8 @@ public class MoobloomType {
         return this.pair.getSecond();
     }
 
-    public int getId() {
+    public String getId() {
         return this.id;
     }
+
 }

@@ -37,7 +37,7 @@ public class MoobloomFlowerLayer<T extends MoobloomEntity> extends RenderLayer<T
         if (moobloom.isInvisible() && !bl) {
             return;
         }
-        BlockState blockState = Block.byItem(USMoobloomTypes.getMoobloomTypes().get(moobloom.getFlowerType()).getItem()).defaultBlockState();
+        BlockState blockState = Block.byItem(moobloom.getMoobloomType().getItem()).defaultBlockState();
         int m = LivingEntityRenderer.getOverlayCoords(moobloom, 0.0f);
         BakedModel bakedModel = this.blockRenderer.getBlockModel(blockState);
         poseStack.pushPose();
