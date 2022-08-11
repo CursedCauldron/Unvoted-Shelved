@@ -21,8 +21,7 @@
     "access.MemoryModuleAccessor",
     "access.ModelPartAccessor",
     "access.PoiTypesAccessor",
-    "access.SimpleParticleTypeAccessor",
-    "MinecraftMixin"
+    "access.SimpleParticleTypeAccessor"
   ],
   "client": [
     "PigRendererMixin"
