@@ -1,7 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.client.entity.render.feature;
 
 import com.cursedcauldron.unvotedandshelved.common.entity.MoobloomEntity;
-import com.cursedcauldron.unvotedandshelved.core.registries.USMoobloomTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.fabricmc.api.EnvType;
@@ -37,6 +36,7 @@ public class MoobloomFlowerLayer<T extends MoobloomEntity> extends RenderLayer<T
         if (moobloom.isInvisible() && !bl) {
             return;
         }
+        if (moobloom.getMoobloomType().getItem() == null) return;
         BlockState blockState = Block.byItem(moobloom.getMoobloomType().getItem()).defaultBlockState();
         int m = LivingEntityRenderer.getOverlayCoords(moobloom, 0.0f);
         BakedModel bakedModel = this.blockRenderer.getBlockModel(blockState);

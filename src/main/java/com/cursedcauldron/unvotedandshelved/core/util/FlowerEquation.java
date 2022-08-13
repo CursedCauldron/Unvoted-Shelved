@@ -1,7 +1,7 @@
 package com.cursedcauldron.unvotedandshelved.core.util;
 
 import com.cursedcauldron.unvotedandshelved.common.entity.MoobloomEntity;
-import com.cursedcauldron.unvotedandshelved.core.registries.USMoobloomTypes;
+import com.cursedcauldron.unvotedandshelved.data.MoobloomTypeManager;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -18,7 +18,7 @@ public record FlowerEquation(MoobloomEntity moobloomEntity) {
     @Nullable
     public MobEffect getEffectByItem() {
         MobEffect mobEffect = null;
-        for (MoobloomType moobloomType : USMoobloomTypes.getMoobloomTypes()) {
+        for (MoobloomType moobloomType : MoobloomTypeManager.getMoobloomTypes()) {
             if (this.moobloomEntity.getMoobloomType() == moobloomType) {
                 Item item = moobloomType.getItem();
                 Block block = Block.byItem(item);
@@ -32,7 +32,7 @@ public record FlowerEquation(MoobloomEntity moobloomEntity) {
 
     public int getEffectDurationByItem() {
         int duration = 0;
-        for (MoobloomType moobloomType : USMoobloomTypes.getMoobloomTypes()) {
+        for (MoobloomType moobloomType : MoobloomTypeManager.getMoobloomTypes()) {
             if (this.moobloomEntity.getMoobloomType() == moobloomType) {
                 Item item = moobloomType.getItem();
                 Block block = Block.byItem(item);

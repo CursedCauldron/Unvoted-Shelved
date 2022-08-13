@@ -3,6 +3,7 @@ package com.cursedcauldron.unvotedandshelved.core;
 import com.cursedcauldron.unvotedandshelved.api.LightningRodAccess;
 import com.cursedcauldron.unvotedandshelved.config.ModConfig;
 import com.cursedcauldron.unvotedandshelved.core.registries.*;
+import com.cursedcauldron.unvotedandshelved.data.MoobloomTypeManager;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.FieldNamingPolicy;
@@ -14,10 +15,12 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
@@ -58,6 +61,8 @@ public class UnvotedAndShelved implements ModInitializer {
         USPoiTypes.init();
         USBlockTags.init();
         USPoiTags.init();
+
+        ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new MoobloomTypeManager());
 
         LOGGER.info("Thank you for downloading Unvoted & Shelved! :)");
 

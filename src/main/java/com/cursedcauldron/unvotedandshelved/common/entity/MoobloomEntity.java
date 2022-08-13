@@ -1,9 +1,9 @@
 package com.cursedcauldron.unvotedandshelved.common.entity;
 
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
-import com.cursedcauldron.unvotedandshelved.core.registries.USMoobloomTypes;
 import com.cursedcauldron.unvotedandshelved.core.util.FlowerEquation;
 import com.cursedcauldron.unvotedandshelved.core.util.MoobloomType;
+import com.cursedcauldron.unvotedandshelved.data.MoobloomTypeManager;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -56,7 +56,7 @@ public class MoobloomEntity extends Cow implements Shearable {
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
-        this.setMoobloomType(USMoobloomTypes.getMoobloomTypes().get(this.random.nextInt(USMoobloomTypes.getMoobloomTypes().toArray().length)));
+        this.setMoobloomType(MoobloomTypeManager.getMoobloomTypes().get(this.random.nextInt(MoobloomTypeManager.getMoobloomTypes().toArray().length)));
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
 
@@ -72,7 +72,7 @@ public class MoobloomEntity extends Cow implements Shearable {
         if (this.getCooldownTicks() > 0) {
             this.setCooldownTicks(this.getCooldownTicks() - 1);
         }
-        if (Objects.equals(this.getFlowerType(), USMoobloomTypes.WITHER_ROSE.getId())) {
+        if (Objects.equals(this.getFlowerType(), Objects.requireNonNull(MoobloomTypeManager.getMoobloomType("wither_rose")).getId())) {
             for (int i = 0; i < 3; i++) {
                 this.level.addParticle(ParticleTypes.SMOKE, this.getX() + random.nextDouble() / 5.0, this.getY(1.0D), this.getZ() + random.nextDouble() / 5.0, 0.0, 0.0, 0.0);
             }
@@ -95,7 +95,7 @@ public class MoobloomEntity extends Cow implements Shearable {
 
     public MoobloomType getMoobloomType() {
         MoobloomType moobloomType = null;
-        for (MoobloomType type : USMoobloomTypes.getMoobloomTypes()) {
+        for (MoobloomType type : MoobloomTypeManager.getMoobloomTypes()) {
             if (!Objects.equals(type.getId(), this.getFlowerType())) continue;
             if (Objects.equals(type.getId(), this.getFlowerType())) {
                 moobloomType = type;
@@ -132,7 +132,7 @@ public class MoobloomEntity extends Cow implements Shearable {
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand interactionHand) {
         ItemStack itemStack = player.getItemInHand(interactionHand);
-        for (MoobloomType moobloomType : USMoobloomTypes.getMoobloomTypes()) {
+        for (MoobloomType moobloomType : MoobloomTypeManager.getMoobloomTypes()) {
             Item item = moobloomType.getItem();
             if (itemStack.is(item) && this.getMoobloomType() != moobloomType) {
                 this.setMoobloomType(moobloomType);
