@@ -35,4 +35,3 @@ public class TechnobladePigLayer<T extends Entity, M extends EntityModel<T>> ext
         }
      }
 }
-
