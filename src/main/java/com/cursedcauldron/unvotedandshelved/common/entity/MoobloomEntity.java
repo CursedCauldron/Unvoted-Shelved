@@ -35,12 +35,11 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.Objects;
 
 public class MoobloomEntity extends Cow implements Shearable {
     private static final EntityDataAccessor<String> FLOWER_TYPE = SynchedEntityData.defineId(MoobloomEntity.class, EntityDataSerializers.STRING);
-    private static final UniformInt COOLDOWN_RANGE = UniformInt.of(1200, 6000);
+    private static final UniformInt COOLDOWN_RANGE = UniformInt.of(20, 100);
     private final FlowerEquation flowerEquation = new FlowerEquation(this);
     private int cooldownTicks;
 
@@ -55,15 +54,14 @@ public class MoobloomEntity extends Cow implements Shearable {
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverLevelAccessor, @NotNull DifficultyInstance difficultyInstance, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
         this.setMoobloomType(MoobloomTypeManager.getMoobloomTypes().get(this.random.nextInt(MoobloomTypeManager.getMoobloomTypes().toArray().length)));
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
 
     @Override
-    public Cow getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
-        MoobloomEntity moobloomEntity = USEntities.MOOBLOOM.create(serverLevel);
-        return moobloomEntity;
+    public Cow getBreedOffspring(@NotNull ServerLevel serverLevel, @NotNull AgeableMob ageableMob) {
+        return USEntities.MOOBLOOM.create(serverLevel);
     }
 
     @Override
@@ -80,14 +78,14 @@ public class MoobloomEntity extends Cow implements Shearable {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compoundTag) {
+    public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putString("FlowerType", this.getFlowerType());
         compoundTag.putInt("CooldownTicks", this.getCooldownTicks());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compoundTag) {
+    public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
         this.setFlowerType(compoundTag.getString("FlowerType"));
         this.setCooldownTicks(compoundTag.getInt("CooldownTicks"));
@@ -130,13 +128,17 @@ public class MoobloomEntity extends Cow implements Shearable {
     }
 
     @Override
-    public InteractionResult mobInteract(Player player, InteractionHand interactionHand) {
+    public InteractionResult mobInteract(Player player, @NotNull InteractionHand interactionHand) {
         ItemStack itemStack = player.getItemInHand(interactionHand);
         for (MoobloomType moobloomType : MoobloomTypeManager.getMoobloomTypes()) {
             Item item = moobloomType.getItem();
-            if (itemStack.is(item) && this.getMoobloomType() != moobloomType) {
+            if (itemStack.is(item) && (this.getMoobloomType() != moobloomType)) {
                 this.setMoobloomType(moobloomType);
-                this.playSound(SoundEvents.BONE_MEAL_USE, 1.0F, 1.0F);
+                itemStack.shrink(1);
+                if (!this.level.isClientSide()) {
+                    ((ServerLevel) this.level).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.getX() + 0.5D, this.getY() + 0.5D, this.getZ() + 0.5D, 1, 0.0D, 0.0D, 0.0D, 0.0D);
+                }
+                this.playSound(SoundEvents.MOOSHROOM_CONVERT, 1.0F, 1.0F);
                 return InteractionResult.sidedSuccess(this.level.isClientSide);
             }
         }
@@ -156,6 +158,9 @@ public class MoobloomEntity extends Cow implements Shearable {
                 itemStack.shrink(1);
             }
             this.setCooldownTicks(COOLDOWN_RANGE.sample(random));
+            if (!this.level.isClientSide()) {
+                ((ServerLevel) this.level).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.getX(), this.getY(0.5D), this.getZ(), 1, 0.0D, 0.0D, 0.0D, 0.0D);
+            }
             this.playSound(SoundEvents.BONE_MEAL_USE, 1.0F, 1.0F);
             return InteractionResult.SUCCESS;
         }
@@ -179,13 +184,15 @@ public class MoobloomEntity extends Cow implements Shearable {
     }
 
     @Override
-    public void shear(SoundSource soundSource) {
+    public void shear(@NotNull SoundSource soundSource) {
         Item item = this.getMoobloomType().getItem();
         this.level.playSound(null, this, SoundEvents.MOOSHROOM_SHEAR, soundSource, 1.0f, 1.0f);
         if (!this.level.isClientSide()) {
-            ((ServerLevel)this.level).sendParticles(ParticleTypes.EXPLOSION, this.getX(), this.getY(0.5), this.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
+            ((ServerLevel)this.level).sendParticles(ParticleTypes.EXPLOSION, this.getX(), this.getY(0.5D), this.getZ(), 1, 0.0D, 0.0D, 0.0D, 0.0D);
+            this.gameEvent(GameEvent.SHEAR, this);
             this.discard();
             Cow cow = EntityType.COW.create(this.level);
+            assert cow != null;
             cow.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
             cow.setHealth(this.getHealth());
             cow.yBodyRot = this.yBodyRot;

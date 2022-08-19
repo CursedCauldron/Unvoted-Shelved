@@ -123,6 +123,8 @@ public class UnvotedAndShelved implements ModInitializer {
 
         BiomeModifications.addSpawn(BiomeSelectors.includeByKey(Biomes.LUSH_CAVES), MobCategory.UNDERGROUND_WATER_CREATURE, USEntities.GLARE, 10, 1, 1);
 
+        BiomeModifications.addSpawn(BiomeSelectors.includeByKey(Biomes.FLOWER_FOREST), MobCategory.CREATURE, USEntities.MOOBLOOM, 30, 4, 4);
+
         USEntities.registerAttributes();
 
         DispenserBlock.registerBehavior(Blocks.LIGHTNING_ROD, new OptionalDispenseItemBehavior() {
