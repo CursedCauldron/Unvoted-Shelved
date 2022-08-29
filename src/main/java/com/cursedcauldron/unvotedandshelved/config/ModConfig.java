@@ -25,18 +25,25 @@ public class ModConfig implements ConfigData {
 
         @ConfigEntry.Gui.Tooltip
         public boolean copper_golem = true;
+
+        @ConfigEntry.Gui.Tooltip
+        public boolean moobloom = true;
     }
 
     // Structures
 
-    @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
-    public Structures structures = new Structures();
+    //
+    //idk how to do this, im pretty sure people can just disable them with a datapack tho
+    //
 
-    public static class Structures {
-
-        @ConfigEntry.Gui.Tooltip
-        public boolean ruined_capital = true;
-    }
+//    @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
+//    public Structures structures = new Structures();
+//
+//    public static class Structures {
+//
+//        @ConfigEntry.Gui.Tooltip
+//        public boolean ruined_capital = true;
+//    }
 
     // Blocks
 

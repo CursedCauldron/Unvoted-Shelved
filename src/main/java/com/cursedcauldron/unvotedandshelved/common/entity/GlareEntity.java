@@ -1,6 +1,8 @@
 package com.cursedcauldron.unvotedandshelved.common.entity;
 
 import com.cursedcauldron.unvotedandshelved.common.entity.ai.glare.GlareBrain;
+import com.cursedcauldron.unvotedandshelved.config.ModConfig;
+import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.cursedcauldron.unvotedandshelved.core.registries.*;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
@@ -52,7 +54,6 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
     private static final EntityDataAccessor<Boolean> FINDING_DARKNESS = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> GRUMPY_TICKS = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> GLOWBERRIES_GIVEN = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.INT);
-
     public GlareEntity(EntityType<? extends AgeableMob> entityType, Level world) {
         super(entityType, world);
         this.moveControl = new FlyingMoveControl(this, 5, true);
@@ -143,6 +144,9 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
 
     @Override
     protected void customServerAiStep() {
+        if (!UnvotedAndShelved.getConfig().mobs.glare) {
+            this.remove(RemovalReason.DISCARDED);
+        }
         this.level.getProfiler().push("glareBrain");
         this.getBrain().tick((ServerLevel)this.level, this);
         this.level.getProfiler().pop();

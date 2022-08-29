@@ -1,5 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.common.entity;
 
+import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import com.cursedcauldron.unvotedandshelved.core.util.FlowerEquation;
 import com.cursedcauldron.unvotedandshelved.core.util.MoobloomType;
@@ -67,6 +68,9 @@ public class MoobloomEntity extends Cow implements Shearable {
     @Override
     public void tick() {
         super.tick();
+        if (!UnvotedAndShelved.getConfig().mobs.moobloom) {
+            this.remove(RemovalReason.DISCARDED);
+        }
         if (this.getCooldownTicks() > 0) {
             this.setCooldownTicks(this.getCooldownTicks() - 1);
         }

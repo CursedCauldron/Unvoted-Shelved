@@ -1,6 +1,7 @@
 package com.cursedcauldron.unvotedandshelved.common.entity;
 
 import com.cursedcauldron.unvotedandshelved.common.entity.ai.copper_golem.CopperGolemBrain;
+import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
 import com.cursedcauldron.unvotedandshelved.core.registries.USPoses;
@@ -122,6 +123,9 @@ public class CopperGolemEntity extends AbstractGolem {
 
     @Override
     protected void customServerAiStep() {
+        if (!UnvotedAndShelved.getConfig().mobs.copper_golem) {
+            this.remove(RemovalReason.DISCARDED);
+        }
         this.level.getProfiler().push("copperGolemBrain");
         this.getBrain().tick((ServerLevel)this.level, this);
         this.level.getProfiler().pop();

@@ -1,5 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.common.entity;
 
+import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.cursedcauldron.unvotedandshelved.core.registries.USEntities;
 import com.cursedcauldron.unvotedandshelved.core.registries.USItems;
 import com.cursedcauldron.unvotedandshelved.mixin.ThrownTridentAccessor;
@@ -193,6 +194,9 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
     @Override
     public void tick() {
         super.tick();
+        if (!UnvotedAndShelved.getConfig().mobs.copper_golem) {
+            this.remove(RemovalReason.DISCARDED);
+        }
     }
 
     @Override
