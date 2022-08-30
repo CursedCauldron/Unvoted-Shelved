@@ -25,7 +25,7 @@ public class MobEvents {
 
     @SubscribeEvent
     public void onLivingCreated(LivingSpawnEvent event) {
-        LivingEntity livingEntity = event.getEntityLiving();
+        LivingEntity livingEntity = event.getEntity();
         if (livingEntity instanceof Zombie zombie) {
             zombie.goalSelector.addGoal(3, new NearestAttackableTargetGoal<>(zombie, CopperGolemEntity.class, true));
         }

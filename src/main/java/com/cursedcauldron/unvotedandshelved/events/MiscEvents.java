@@ -66,9 +66,9 @@ public class MiscEvents {
     @SubscribeEvent
     public void onRightClick(PlayerInteractEvent.RightClickBlock event) {
         BlockPos blockPos = event.getPos();
-        Level world = event.getWorld();
+        Level world = event.getLevel();
         BlockState state = world.getBlockState(blockPos);
-        Player player = event.getPlayer();
+        Player player = event.getEntity();
         ItemStack stack = event.getItemStack();
         InteractionHand hand = event.getHand();
         if (stack.getItem() == Items.HONEYCOMB && state.getBlock() instanceof IWaxableObject iWaxable) {
