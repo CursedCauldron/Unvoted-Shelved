@@ -33,7 +33,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
-import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ThrownTrident;
@@ -237,18 +236,6 @@ public class FrozenCopperGolemEntity extends AbstractGolem {
         }
         if (DamageSource.ON_FIRE.equals(damageSource) && this.getHealth() > 0.5f) {
             this.causeDamage(damageSource, 4.0f);
-            return false;
-        }
-
-        // Prevents Oxidized Copper Golem from being immune to Wardens
-
-        if (damageSource.getDirectEntity() instanceof Warden) {
-            this.kill();
-            var item = new ItemStack(USItems.FROZEN_COPPER_GOLEM_ITEM);
-            Block.popResource(this.level, this.blockPosition(), item);
-            if (this.hasCustomName()) {
-                item.setHoverName(this.getCustomName());
-            }
             return false;
         }
 
