@@ -41,15 +41,15 @@ public class MoobloomFlowerLayer<T extends MoobloomEntity> extends RenderLayer<T
         int m = LivingEntityRenderer.getOverlayCoords(moobloom, 0.0f);
         BakedModel bakedModel = this.blockRenderer.getBlockModel(blockState);
         poseStack.pushPose();
-        poseStack.translate(0.2f, -0.35f, 0.5);
+        poseStack.translate(0.2f, -0.25f, 0.5);
         poseStack.mulPose(Vector3f.YP.rotationDegrees(-48.0f));
-        float size = 1.0f;
+        float size = 0.75f;
         poseStack.scale(-size, -size, size);
         poseStack.translate(-0.5, -0.5, -0.5);
         this.renderMushroomBlock(poseStack, multiBufferSource, i, bl, blockState, m, bakedModel);
         poseStack.popPose();
         poseStack.pushPose();
-        poseStack.translate(0.2f, -0.35f, 0.5);
+        poseStack.translate(0.2f, -0.25f, 0.5);
         poseStack.mulPose(Vector3f.YP.rotationDegrees(42.0f));
         poseStack.translate(0.1f, 0.0, -0.6f);
         poseStack.mulPose(Vector3f.YP.rotationDegrees(-48.0f));
@@ -59,7 +59,7 @@ public class MoobloomFlowerLayer<T extends MoobloomEntity> extends RenderLayer<T
         poseStack.popPose();
         poseStack.pushPose();
         this.getParentModel().getHead().translateAndRotate(poseStack);
-        poseStack.translate(0.0, -0.7f, -0.2f);
+        poseStack.translate(0.0, -0.63f, -0.2f);
         poseStack.mulPose(Vector3f.YP.rotationDegrees(-78.0f));
         poseStack.scale(-size, -size, size);
         poseStack.translate(-0.5, -0.5, -0.5);

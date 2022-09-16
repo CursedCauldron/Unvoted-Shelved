@@ -1,6 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.mixin;
 
-import com.cursedcauldron.unvotedandshelved.common.entity.TechnobladePigLayer;
+import com.cursedcauldron.unvotedandshelved.client.entity.render.TechnobladePigLayer;
 import net.minecraft.client.model.PigModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

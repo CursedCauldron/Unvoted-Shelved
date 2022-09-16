@@ -15,5 +15,6 @@ public class LambdDynLightsImpl implements DynamicLightsInitializer {
                 luminance = entity.getGlowberries() * 3;
             return luminance;
         });
+
     }
 }

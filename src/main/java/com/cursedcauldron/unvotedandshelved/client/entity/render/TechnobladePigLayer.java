@@ -1,4 +1,4 @@
-package com.cursedcauldron.unvotedandshelved.common.entity;
+package com.cursedcauldron.unvotedandshelved.client.entity.render;
 
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.mojang.blaze3d.vertex.PoseStack;
