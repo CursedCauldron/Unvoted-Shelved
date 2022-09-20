@@ -95,6 +95,7 @@ public class MoobloomEntity extends Cow implements Shearable {
         this.setCooldownTicks(compoundTag.getInt("CooldownTicks"));
     }
 
+    @Nullable
     public MoobloomType getMoobloomType() {
         MoobloomType moobloomType = null;
         for (MoobloomType type : MoobloomTypeManager.getMoobloomTypes()) {
