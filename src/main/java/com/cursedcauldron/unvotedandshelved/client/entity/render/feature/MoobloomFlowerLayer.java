@@ -36,6 +36,7 @@ public class MoobloomFlowerLayer<T extends MoobloomEntity> extends RenderLayer<T
         if (moobloom.isInvisible() && !bl) {
             return;
         }
+        if (moobloom.getMoobloomType() == null) return;
         if (moobloom.getMoobloomType().getItem() == null) return;
         BlockState blockState = Block.byItem(moobloom.getMoobloomType().getItem()).defaultBlockState();
         int m = LivingEntityRenderer.getOverlayCoords(moobloom, 0.0f);
