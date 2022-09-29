@@ -75,7 +75,7 @@ public class MoobloomEntity extends Cow implements Shearable {
         if (this.getCooldownTicks() > 0) {
             this.setCooldownTicks(this.getCooldownTicks() - 1);
         }
-        if (Objects.equals(this.getFlowerType(), Objects.requireNonNull(MoobloomTypeManager.getMoobloomType("wither_rose")).getId())) {
+        if (getFlowerType() == "wither_rose") {
             for (double i = 0; i < 0.5; i++) {
                 this.level.addParticle(ParticleTypes.SMOKE, this.getX() + random.nextDouble() - 0.5, this.getY(1.0D), this.getZ() + random.nextDouble() - 0.5, 0.0, 0.0, 0.0);
             }
