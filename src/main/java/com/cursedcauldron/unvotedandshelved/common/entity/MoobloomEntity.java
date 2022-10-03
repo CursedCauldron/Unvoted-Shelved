@@ -52,12 +52,15 @@ public class MoobloomEntity extends Cow implements Shearable {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(FLOWER_TYPE, "allium");
+        this.entityData.define(FLOWER_TYPE, "dandelion");
     }
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
         this.setMoobloomType(MoobloomTypeManager.getMoobloomTypes().get(this.random.nextInt(MoobloomTypeManager.getMoobloomTypes().toArray().length)));
+        if (this.getMoobloomType() == MoobloomTypeManager.getMoobloomType("wither_rose")) {
+            this.setMoobloomType(MoobloomTypeManager.getMoobloomType("dandelion"));
+        }
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
 
