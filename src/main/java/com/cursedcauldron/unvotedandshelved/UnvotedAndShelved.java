@@ -3,7 +3,6 @@ package com.cursedcauldron.unvotedandshelved;
 import com.cursedcauldron.unvotedandshelved.events.MiscEvents;
 import com.cursedcauldron.unvotedandshelved.events.MobEvents;
 import com.cursedcauldron.unvotedandshelved.init.USActivities;
-import com.cursedcauldron.unvotedandshelved.init.USBiomeModifiers;
 import com.cursedcauldron.unvotedandshelved.init.USBlocks;
 import com.cursedcauldron.unvotedandshelved.init.USEntityTypes;
 import com.cursedcauldron.unvotedandshelved.init.USFeatures;
@@ -31,7 +30,6 @@ public class UnvotedAndShelved {
 
         USActivities.ACTIVITIES.register(modEventBus);
         USBlocks.BLOCKS.register(modEventBus);
-        USBiomeModifiers.BIOME_MODIFIERS.register(modEventBus);
         USEntityTypes.ENTITY_TYPES.register(modEventBus);
         USFeatures.FEATURES.register(modEventBus);
         USItems.ITEMS.register(modEventBus);
