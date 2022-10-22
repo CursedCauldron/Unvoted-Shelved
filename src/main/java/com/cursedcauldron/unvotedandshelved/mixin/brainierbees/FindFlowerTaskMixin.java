@@ -38,7 +38,6 @@ public class FindFlowerTaskMixin {
 
         list.stream().filter(MoobloomEntity::isAlive).forEach(livingEntity -> {
             moobloomPossibles.add(livingEntity.blockPosition().above());
-            this.flowerPosPublic = livingEntity.blockPosition().above();
             System.out.println(livingEntity.blockPosition());
         });
 
