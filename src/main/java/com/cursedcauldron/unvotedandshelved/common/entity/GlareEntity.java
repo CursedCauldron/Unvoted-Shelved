@@ -1,9 +1,12 @@
 package com.cursedcauldron.unvotedandshelved.common.entity;
 
 import com.cursedcauldron.unvotedandshelved.common.entity.ai.glare.GlareBrain;
-import com.cursedcauldron.unvotedandshelved.config.ModConfig;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
-import com.cursedcauldron.unvotedandshelved.core.registries.*;
+import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
+import com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModules;
+import com.cursedcauldron.unvotedandshelved.core.registries.USParticles;
+import com.cursedcauldron.unvotedandshelved.core.registries.USSensorTypes;
+import com.cursedcauldron.unvotedandshelved.core.registries.USSounds;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
 import net.minecraft.core.BlockPos;
@@ -20,7 +23,13 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -35,25 +44,29 @@ import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.*;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import java.util.Optional;
 
 @SuppressWarnings("all")
 public class GlareEntity extends AgeableMob implements FlyingAnimal {
-    public static final Ingredient TEMPTATION_ITEM = Ingredient.of(Items.GLOW_BERRIES);
-    protected static final ImmutableList<SensorType<? extends Sensor<? super GlareEntity>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_PLAYERS, USSensorTypes.GLARE_TEMPTATIONS);
-    protected static final ImmutableList<MemoryModuleType<?>> MEMORY_MODULES = ImmutableList.of(USMemoryModules.GLOWBERRIES_GIVEN, USMemoryModules.GRUMPY_TICKS, USMemoryModules.DARK_TICKS_REMAINING, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.AVOID_TARGET, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.BREED_TARGET, MemoryModuleType.IS_PANICKING, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES);
     private static final EntityDataAccessor<Boolean> GRUMPY = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> SHINY = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> FINDING_DARKNESS = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> GRUMPY_TICKS = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> GLOWBERRIES_GIVEN = SynchedEntityData.defineId(GlareEntity.class, EntityDataSerializers.INT);
+    protected static final ImmutableList<SensorType<? extends Sensor<? super GlareEntity>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_PLAYERS, USSensorTypes.GLARE_TEMPTATIONS);
+    protected static final ImmutableList<MemoryModuleType<?>> MEMORY_MODULES = ImmutableList.of(USMemoryModules.GLOWBERRIES_GIVEN, USMemoryModules.GRUMPY_TICKS, USMemoryModules.DARK_TICKS_REMAINING, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.AVOID_TARGET, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.BREED_TARGET, MemoryModuleType.IS_PANICKING, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES);
+    public static final Ingredient TEMPTATION_ITEM = Ingredient.of(Items.GLOW_BERRIES);
+
     public GlareEntity(EntityType<? extends AgeableMob> entityType, Level world) {
         super(entityType, world);
         this.moveControl = new FlyingMoveControl(this, 5, true);
@@ -68,14 +81,14 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
     // Glare Spawning
 
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
-        if (spawnGroupData == null) {
-            spawnGroupData = new AgeableMobGroupData(false);
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficultyInstance, MobSpawnType spawnType, @Nullable SpawnGroupData groupData, @Nullable CompoundTag tag) {
+        if (groupData == null) {
+            groupData = new AgeableMobGroupData(false);
         }
 
         this.setShiny(this.getRandom().nextInt(100) == 1);
 
-        return spawnGroupData;
+        return groupData;
     }
 
     @Override
@@ -144,9 +157,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
 
     @Override
     protected void customServerAiStep() {
-        if (!UnvotedAndShelved.getConfig().mobs.glare) {
-            this.remove(RemovalReason.DISCARDED);
-        }
+        if (!UnvotedAndShelved.getConfig().mobs.glare) this.remove(RemovalReason.DISCARDED);
         this.level.getProfiler().push("glareBrain");
         this.getBrain().tick((ServerLevel)this.level, this);
         this.level.getProfiler().pop();
@@ -340,8 +351,7 @@ public class GlareEntity extends AgeableMob implements FlyingAnimal {
         return this.entityData.get(GLOWBERRIES_GIVEN);
     }
 
-    @Nullable
-    @Override
+    @Nullable @Override
     public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob entity) {
         return null;
     }

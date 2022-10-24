@@ -31,7 +31,7 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class MoobloomTypeManager extends SimpleJsonResourceReloadListener implements IdentifiableResourceReloadListener {
-    private static final Gson GSON_INSTANCE = (new GsonBuilder()).create();
+    private static final Gson GSON_INSTANCE = new GsonBuilder().create();
     private static final LinkedList<MoobloomType> MOOBLOOM_TYPES = Lists.newLinkedList();
 
     public MoobloomTypeManager() {

@@ -30,12 +30,8 @@ public class MoobloomFlowerLayer<T extends MoobloomEntity> extends RenderLayer<T
     @Override
     public void render(PoseStack poseStack, MultiBufferSource multiBufferSource, int i, T moobloom, float f, float g, float h, float j, float k, float l) {
         boolean bl = Minecraft.getInstance().shouldEntityAppearGlowing(moobloom) && moobloom.isInvisible();
-        if (moobloom.isBaby()) {
-            return;
-        }
-        if (moobloom.isInvisible() && !bl) {
-            return;
-        }
+        if (moobloom.isBaby()) return;
+        if (moobloom.isInvisible() && !bl) return;
         if (moobloom.getMoobloomType() == null) return;
         if (moobloom.getMoobloomType().getItem() == null) return;
         BlockState blockState = Block.byItem(moobloom.getMoobloomType().getItem()).defaultBlockState();
