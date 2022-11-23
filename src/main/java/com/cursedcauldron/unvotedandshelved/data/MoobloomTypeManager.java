@@ -3,13 +3,11 @@ package com.cursedcauldron.unvotedandshelved.data;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.cursedcauldron.unvotedandshelved.core.util.MoobloomType;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.mojang.datafixers.util.Pair;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -17,6 +15,7 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.Item;
 
@@ -26,9 +25,11 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class MoobloomTypeManager extends SimpleJsonResourceReloadListener implements IdentifiableResourceReloadListener {
     private static final Gson GSON_INSTANCE = new GsonBuilder().create();
@@ -45,6 +46,11 @@ public class MoobloomTypeManager extends SimpleJsonResourceReloadListener implem
 
     public static LinkedList<MoobloomType> getMoobloomTypes() {
         return MOOBLOOM_TYPES;
+    }
+
+    public static MoobloomType pickRandomMoobloomType(RandomSource randomSource) {
+        List<MoobloomType> moobloomTypes = MoobloomTypeManager.getMoobloomTypes().stream().filter(moobloomType -> !moobloomType.getId().equals("wither_rose")).toList();
+        return moobloomTypes.get(randomSource.nextInt(moobloomTypes.size() - 1));
     }
 
     @Override

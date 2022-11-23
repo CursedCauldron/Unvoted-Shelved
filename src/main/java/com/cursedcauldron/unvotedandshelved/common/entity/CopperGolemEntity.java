@@ -44,29 +44,20 @@ import static com.cursedcauldron.unvotedandshelved.core.registries.USMemoryModul
 
 @SuppressWarnings("all")
 public class CopperGolemEntity extends AbstractGolem {
-    
-    // ඞ
-
     protected static final ImmutableList<SensorType<? extends Sensor<? super CopperGolemEntity>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.HURT_BY);
     protected static final ImmutableList<MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(MemoryModuleType.LOOK_TARGET, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, COPPER_BUTTON_COOLDOWN_TICKS,  USMemoryModules.COPPER_GOLEM_HEADSPIN_TICKS, USMemoryModules.COPPER_BUTTON);
     private static final EntityDataAccessor<Integer> STAGE = SynchedEntityData.defineId(CopperGolemEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> WAXED = SynchedEntityData.defineId(CopperGolemEntity.class, EntityDataSerializers.BOOLEAN);
-
-    // Animation States:
-
     public final AnimationState walkingAnimation = new AnimationState();
     public final AnimationState headSpinAnimation = new AnimationState();
     public final AnimationState headSpinSlowerAnimation = new AnimationState();
     public final AnimationState headSpinSlowestAnimation = new AnimationState();
-
     public final AnimationState buttonAnimation = new AnimationState();
     public final AnimationState buttonSlowerAnimation = new AnimationState();
     public final AnimationState buttonSlowestAnimation = new AnimationState();
-
     public final AnimationState buttonUpAnimation = new AnimationState();
     public final AnimationState buttonUpSlowerAnimation = new AnimationState();
     public final AnimationState buttonUpSlowestAnimation = new AnimationState();
-
     public final AnimationState buttonDownAnimation = new AnimationState();
     public final AnimationState buttonDownSlowerAnimation = new AnimationState();
     public final AnimationState buttonDownSlowestAnimation = new AnimationState();
@@ -86,12 +77,11 @@ public class CopperGolemEntity extends AbstractGolem {
         return CopperGolemBrain.create(this.brainProvider().makeBrain(dynamic));
     }
 
-    @Override @SuppressWarnings("all")
+    @Override
+    @SuppressWarnings("all")
     public Brain<CopperGolemEntity> getBrain() {
         return (Brain<CopperGolemEntity>)super.getBrain();
     }
-
-    // Sets the eye height of the mob
 
     @Override
     protected float getStandingEyeHeight(Pose pose, EntityDimensions entityDimensions) {
@@ -104,8 +94,6 @@ public class CopperGolemEntity extends AbstractGolem {
         this.entityData.define(STAGE, 0);
         this.entityData.define(WAXED, false);
     }
-
-    // Waxed NBT Tag:
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
@@ -241,8 +229,6 @@ public class CopperGolemEntity extends AbstractGolem {
         return CopperGolemEntity.Stage.BY_ID[this.entityData.get(STAGE)];
     }
 
-    // Changes the movement speed depending on how much the Copper Golem has oxidized
-
     @SuppressWarnings("all")
     public void setStage(CopperGolemEntity.Stage stage) {
         this.entityData.set(STAGE, stage.getId());
@@ -262,20 +248,15 @@ public class CopperGolemEntity extends AbstractGolem {
         this.entityData.set(WAXED, waxed);
     }
 
-    // Entity Attributes
-
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.MOVEMENT_SPEED, 0.5D).add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }
-
-    // Plays Walking Animation if Entity is Moving
 
     private boolean shouldWalk() {
         return this.onGround && this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6 && !this.isInWaterOrBubble();
     }
 
-    // Prevents the Copper Golem from drowning, similar to Iron Golems
-
+    @Override
     protected int decreaseAirSupply(int i) {
         return i;
     }
@@ -295,9 +276,6 @@ public class CopperGolemEntity extends AbstractGolem {
 
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-
-        // Copper Golem waxing using Honeycomb
-
         ItemStack stack = player.getItemInHand(hand);
         if (stack.is(Items.HONEYCOMB) && !this.isWaxed()) {
             if (!player.getAbilities().instabuild) {
@@ -308,9 +286,6 @@ public class CopperGolemEntity extends AbstractGolem {
             this.gameEvent(GameEvent.ENTITY_INTERACT, this);
             return InteractionResult.SUCCESS;
         }
-
-        // Copper Golem scraping using an Axe
-
         else if (stack.getItem() instanceof AxeItem) {
             if (this.isWaxed()) {
                 this.setWaxed(false);
@@ -331,8 +306,6 @@ public class CopperGolemEntity extends AbstractGolem {
             return InteractionResult.SUCCESS;
         }
 
-        // Copper Golem repairing using a Copper Ingot
-
         else if (this.getHealth() < this.getMaxHealth() && stack.is(Items.COPPER_INGOT)) {
             this.heal(5.0F);
             float f1 = 1.4F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F;
@@ -345,8 +318,6 @@ public class CopperGolemEntity extends AbstractGolem {
         }
         return super.mobInteract(player, hand);
     }
-
-    // Converts the Copper Golem to an Oxidized Copper Golem if fully oxidized
 
     public <T extends Mob> void convertToFrozen(EntityType<T> entityType, boolean bl) {
         if (!this.isRemoved()) {
@@ -389,15 +360,9 @@ public class CopperGolemEntity extends AbstractGolem {
     public void aiStep() {
         super.aiStep();
         if (!this.level.isClientSide()) {
-            float chance = this.random.nextFloat();
-            if (chance < 3.4290552E-11F) {
-                this.playSound(USSounds.CHINESE_RIP_OFF_WINNIE_THE_POOH, 1.0F, 1.0F);
-            }
             if (this.getStage() == Stage.OXIDIZED) {
                 this.convertToFrozen(USEntities.FROZEN_COPPER_GOLEM,true);
             }
-
-            // Allows the Copper Golem to oxidize over time if not waxed
 
             if (!this.isWaxed() && this.getStage() != Stage.OXIDIZED) {
                 float randomChance = this.random.nextFloat();
@@ -409,29 +374,20 @@ public class CopperGolemEntity extends AbstractGolem {
         }
     }
 
-    // Cooldown for the Copper Golem pressing Copper Buttons
-
-
-
-    // Sound Events
-
+    @Override
     protected SoundEvent getHurtSound(DamageSource source) {
         return USSounds.COPPER_GOLEM_HIT;
     }
 
+    @Override
     protected SoundEvent getDeathSound() {
         return USSounds.COPPER_GOLEM_DEATH;
     }
 
-    protected SoundEvent getStepSound() {
-        return USSounds.COPPER_GOLEM_WALK;
-    }
-
+    @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(this.getStepSound(), 0.5F, 1.0F);
+        this.playSound(USSounds.COPPER_GOLEM_WALK, 0.5F, 1.0F);
     }
-
-    // Sounds depending on what stage of oxidization the Copper Golem is on
 
     public enum Stage {
         UNAFFECTED(0, "unaffected", USSounds.HEAD_SPIN),
@@ -462,4 +418,5 @@ public class CopperGolemEntity extends AbstractGolem {
             return this.soundEvent;
         }
     }
+
 }

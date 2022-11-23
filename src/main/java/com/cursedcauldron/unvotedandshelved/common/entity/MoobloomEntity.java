@@ -34,8 +34,8 @@ import net.minecraft.world.item.SuspiciousStewItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import java.util.Objects;
 
 @SuppressWarnings("all")
@@ -57,16 +57,17 @@ public class MoobloomEntity extends Cow implements Shearable {
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
-        this.setMoobloomType(MoobloomTypeManager.getMoobloomTypes().get(this.random.nextInt(MoobloomTypeManager.getMoobloomTypes().toArray().length)));
-        if (this.getMoobloomType() == MoobloomTypeManager.getMoobloomType("wither_rose")) {
-            this.setMoobloomType(MoobloomTypeManager.getMoobloomType("dandelion"));
-        }
+        this.setMoobloomType(MoobloomTypeManager.pickRandomMoobloomType(this.getRandom()));
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
 
     @Override
     public Cow getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
-        return USEntities.MOOBLOOM.create(serverLevel);
+        MoobloomEntity moobloomEntity = USEntities.MOOBLOOM.create(serverLevel);
+        if (moobloomEntity != null) {
+            moobloomEntity.setMoobloomType(MoobloomTypeManager.pickRandomMoobloomType(serverLevel.getRandom()));
+        }
+        return moobloomEntity;
     }
 
     @Override
@@ -78,7 +79,7 @@ public class MoobloomEntity extends Cow implements Shearable {
         if (this.getCooldownTicks() > 0) {
             this.setCooldownTicks(this.getCooldownTicks() - 1);
         }
-        if (getFlowerType() == "wither_rose") {
+        if (this.getFlowerType() == "wither_rose") {
             for (double i = 0; i < 0.5; i++) {
                 this.level.addParticle(ParticleTypes.SMOKE, this.getX() + random.nextDouble() - 0.5, this.getY(1.0D), this.getZ() + random.nextDouble() - 0.5, 0.0, 0.0, 0.0);
             }

@@ -19,6 +19,15 @@
         "projection": "rigid",
         "processors": "unvotedandshelved:ruined_capital_processors"
       }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "unvotedandshelved:ruined_capital_3",
+        "projection": "rigid",
+        "processors": "unvotedandshelved:ruined_capital_processors"
+      }
     }
   ]
 }
