@@ -1,6 +1,8 @@
 package com.cursedcauldron.unvotedandshelved.client.entity.model;
 
 import com.cursedcauldron.unvotedandshelved.common.entity.GlareEntity;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -11,6 +13,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
+@Environment(EnvType.CLIENT)
 public class GlareModel<T extends GlareEntity> extends HierarchicalModel<T> {
     private final ModelPart body;
     private final ModelPart frown;

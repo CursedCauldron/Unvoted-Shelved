@@ -22,8 +22,7 @@
     "access.MemoryModuleAccessor",
     "access.ModelPartAccessor",
     "access.PoiTypesAccessor",
-    "access.SimpleParticleTypeAccessor",
-    "brainierbees.FindFlowerTaskMixin"
+    "access.SimpleParticleTypeAccessor"
   ],
   "client": [
     "PigRendererMixin"

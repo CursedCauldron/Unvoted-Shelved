@@ -11,7 +11,6 @@ import net.minecraft.client.model.geom.builders.*;
 
 @Environment(EnvType.CLIENT)
 public class FrozenCopperGolemModel<T extends FrozenCopperGolemEntity> extends HierarchicalModel<T> {
-    private static final Vector3f ANIMATION_PROGRESS = new Vector3f();
     private final ModelPart head;
     private final ModelPart body;
 

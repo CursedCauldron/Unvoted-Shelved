@@ -11,6 +11,10 @@
     },
     {
       "processor_type": "unvotedandshelved:waterlogged_processor"
+    },
+    {
+      "processor_type": "unvotedandshelved:copper_pillar_processor",
+      "twigs_compat": true
     }
   ]
 }

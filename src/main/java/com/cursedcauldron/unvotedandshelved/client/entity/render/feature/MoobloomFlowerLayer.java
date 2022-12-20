@@ -1,6 +1,7 @@
 package com.cursedcauldron.unvotedandshelved.client.entity.render.feature;
 
-import com.cursedcauldron.unvotedandshelved.common.entity.MoobloomEntity;
+import com.cursedcauldron.unvotedandshelved.common.entity.Moobloom;
+import com.cursedcauldron.unvotedandshelved.core.registries.USBlocks;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.fabricmc.api.EnvType;
@@ -15,11 +16,11 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 @Environment(value=EnvType.CLIENT)
-public class MoobloomFlowerLayer<T extends MoobloomEntity> extends RenderLayer<T, CowModel<T>> {
+public class MoobloomFlowerLayer<T extends Moobloom> extends RenderLayer<T, CowModel<T>> {
     private final BlockRenderDispatcher blockRenderer;
 
     public MoobloomFlowerLayer(RenderLayerParent<T, CowModel<T>> renderLayerParent, BlockRenderDispatcher blockRenderDispatcher) {
@@ -32,9 +33,7 @@ public class MoobloomFlowerLayer<T extends MoobloomEntity> extends RenderLayer<T
         boolean bl = Minecraft.getInstance().shouldEntityAppearGlowing(moobloom) && moobloom.isInvisible();
         if (moobloom.isBaby()) return;
         if (moobloom.isInvisible() && !bl) return;
-        if (moobloom.getMoobloomType() == null) return;
-        if (moobloom.getMoobloomType().getItem() == null) return;
-        BlockState blockState = Block.byItem(moobloom.getMoobloomType().getItem()).defaultBlockState();
+        BlockState blockState = USBlocks.BUTTERCUP.defaultBlockState();
         int m = LivingEntityRenderer.getOverlayCoords(moobloom, 0.0f);
         BakedModel bakedModel = this.blockRenderer.getBlockModel(blockState);
         poseStack.pushPose();
