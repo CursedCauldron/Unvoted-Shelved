@@ -1,6 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "group": "waxed_copper_pillar",
+  "group": "waxed_exposed_copper_pillar",
   "ingredients": [
     {
       "item": "unvotedandshelved:exposed_copper_pillar"
