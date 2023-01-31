@@ -3,7 +3,7 @@ loaderVersion="[39,)"
 license="All rights reserved"
 [[mods]]
 modId="unvotedandshelved"
-version="1.18.2-2.0.5-forge"
+version="1.18.2-2.0.6-forge"
 displayName="Unvoted and Shelved"
 logoFile="unvotedandshelved.png"
 authors="Dopadream, Orcinus, Ninni, Blackgear, Sydokiddo"
