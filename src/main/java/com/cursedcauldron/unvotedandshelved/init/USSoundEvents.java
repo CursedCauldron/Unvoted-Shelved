@@ -32,7 +32,6 @@ public class USSoundEvents {
     public static final RegistryObject<SoundEvent> COPPER_GOLEM_HIT = register("copper_golem_hit");
     public static final RegistryObject<SoundEvent> COPPER_GOLEM_DEATH = register("copper_golem_death");
     public static final RegistryObject<SoundEvent> COPPER_GOLEM_REPAIR = register("copper_golem_repair");
-    public static final RegistryObject<SoundEvent> CHINESE_RIP_OFF_WINNIE_THE_POOH = register("chinese_rip_off_winnie_the_pooh");
 
     public static class USBlockSoundGroup {
         public static final SoundType GLOW = new ForgeSoundType(1.0f, 2.0f, () -> SoundEvents.RESPAWN_ANCHOR_CHARGE, GLOWBERRY_DUST_STEP, () -> SoundEvents.RESPAWN_ANCHOR_CHARGE , () -> SoundEvents.RESPAWN_ANCHOR_CHARGE, () -> SoundEvents.RESPAWN_ANCHOR_CHARGE);
