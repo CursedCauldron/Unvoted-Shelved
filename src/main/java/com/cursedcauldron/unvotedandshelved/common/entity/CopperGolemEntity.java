@@ -367,10 +367,6 @@ public class CopperGolemEntity extends AbstractGolem {
     public void aiStep() {
         super.aiStep();
         if (!this.level.isClientSide()) {
-            float chance = this.random.nextFloat();
-            if (chance < 3.4290552E-11F) {
-                this.playSound(USSounds.CHINESE_RIP_OFF_WINNIE_THE_POOH, 1.0F, 1.0F);
-            }
             if (this.getStage() == Stage.OXIDIZED) {
                 this.getBrain().removeAllBehaviors();
                 this.convertToFrozen(USEntities.FROZEN_COPPER_GOLEM,true);
