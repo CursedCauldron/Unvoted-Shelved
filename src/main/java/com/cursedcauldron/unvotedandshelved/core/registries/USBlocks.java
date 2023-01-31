@@ -55,8 +55,6 @@ public class USBlocks {
     public static final Block WAXED_WEATHERED_LIGHTNING_ROD = register("waxed_weathered_lightning_rod", new WeatheringLightningRodBlock(BlockBehaviour.Properties.copy(Blocks.LIGHTNING_ROD), WeatheringCopper.WeatherState.WEATHERED), CreativeModeTab.TAB_REDSTONE);
     public static final Block WAXED_OXIDIZED_LIGHTNING_ROD = register("waxed_oxidized_lightning_rod", new WeatheringLightningRodBlock(BlockBehaviour.Properties.copy(Blocks.LIGHTNING_ROD), WeatheringCopper.WeatherState.OXIDIZED), CreativeModeTab.TAB_REDSTONE);
 
-    public static final Block BUTTERCUP = register("buttercup", new FlowerBlock(MobEffects.SATURATION, 7, BlockBehaviour.Properties.of(Material.PLANT).noCollission().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ)), CreativeModeTab.TAB_DECORATIONS);
-
     public static Block register(String id, Block block) {
         return BLOCKS.register(id, block);
     }

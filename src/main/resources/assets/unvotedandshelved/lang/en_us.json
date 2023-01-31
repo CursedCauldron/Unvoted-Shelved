@@ -17,7 +17,6 @@
   "subtitles.unvotedandshelved.glare_give_glow_berries": "Glare rustles",
   "subtitles.unvotedandshelved.glowberry_dust_place": "Glowberry Dust is placed",
   "subtitles.unvotedandshelved.glowberry_dust_collect": "Glowberry Dust collected",
-  "subtitles.unvotedandshelved.chinese_rip_off_winnie_the_pooh": "Orcinus在你後面",
   "subtitles.unvotedandshelved.copper_button_click": "Button clicks",
   "subtitles.unvotedandshelved.copper_golem_headspin": "Copper Golem rotates",
   "subtitles.unvotedandshelved.copper_golem_walk": "Footsteps",
@@ -27,7 +26,6 @@
   "subtitles.unvotedandshelved.copper_golem_damage": "Copper Golem breaks",
 
   "item.unvotedandshelved.glare_spawn_egg": "Glare Spawn Egg",
-  "item.unvotedandshelved.moobloom_spawn_egg": "Moobloom Spawn Egg",
 
   "block.unvotedandshelved.glowberry_dust": "Bottle of Glowberry Dust",
   "block.unvotedandshelved.copper_button": "Copper Button",
@@ -54,7 +52,6 @@
   "block.unvotedandshelved.waxed_exposed_lightning_rod": "Waxed Exposed Lightning Rod",
   "block.unvotedandshelved.waxed_weathered_lightning_rod": "Waxed Weathered Lightning Rod",
   "block.unvotedandshelved.waxed_oxidized_lightning_rod": "Waxed Oxidized Lightning Rod",
-  "block.unvotedandshelved.buttercup": "Buttercup",
 
   "entity.unvotedandshelved.copper_golem": "Copper Golem",
   "entity.unvotedandshelved.oxidized_copper_golem": "Oxidized Copper Golem",
