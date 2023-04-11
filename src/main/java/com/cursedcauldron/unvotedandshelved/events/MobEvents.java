@@ -9,6 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -24,9 +25,8 @@ public class MobEvents {
     }
 
     @SubscribeEvent
-    public void onLivingCreated(LivingSpawnEvent event) {
-        LivingEntity livingEntity = event.getEntityLiving();
-        if (livingEntity instanceof Zombie zombie) {
+    public void onLivingCreated(EntityJoinWorldEvent event) {
+        if (event.getEntity() instanceof Zombie zombie) {
             zombie.goalSelector.addGoal(3, new NearestAttackableTargetGoal<>(zombie, CopperGolemEntity.class, true));
         }
     }
